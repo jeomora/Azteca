@@ -15,7 +15,7 @@
 		</div>
 
 		<!-- Javascript files-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
 		<!-- Mainly scripts -->
 		<script src="<?php echo base_url('/assets/js/jquery-2.1.1.js'); ?>"></script>
 		<script src="<?php echo base_url('/assets/js/bootstrap.min.js'); ?>"></script>
@@ -46,6 +46,11 @@
 		<!-- Toastr -->
 		<script src="<?php echo base_url('/assets/js/plugins/toastr/toastr.min.js'); ?>"></script>
 
-		
-	</body>
+		<?php if (isset($scripts) && $scripts): ?><!-- Para cargar scripts -->
+			<?php foreach ($scripts as $rows): ?>
+				<script type="text/javascript" src="<?php echo base_url($rows.'.js') ?>"></script>
+			<?php endforeach ?>
+		<?php endif ?>
+
+</body>
 </html>

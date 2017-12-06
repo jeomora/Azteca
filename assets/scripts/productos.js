@@ -2,17 +2,17 @@ jQuery(document).ready(function($) {
 
 	$(document).off("click", ".save").on("click", ".save", function(event) {
 		event.preventDefault();
-		sendDatos("Familias/accion/I", $("#form_familia_new"));
+		sendDatos("Productos/accion/I/",$("#form_producto_new"));
 	});
 
 	$(document).off("click", ".update").on("click", ".update", function(event) {
 		event.preventDefault();
-		sendDatos("Familias/accion/U/",$("#form_familia_edit"));
+		sendDatos("Productos/accion/U/",$("#form_producto_edit"));
 	});
 
 	$(document).off("click", ".delete").on("click", ".delete", function(event) {
 		event.preventDefault();
-		sendDatos("Familias/accion/D", $("#form_familia_delete"));
+		sendDatos("Productos/accion/D",$("#form_producto_edit"));
 	});
 
 });

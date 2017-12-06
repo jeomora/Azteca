@@ -1,5 +1,5 @@
 <?php
-  defined('BASEPATH') OR exit('No direct script access allowed');
+	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -9,7 +9,7 @@
 				<h5>REGISTRAR USUARIOS</h5>
 				</div>
 
-<div id="infoMessage"><?php echo $message;?></div>
+				<div id="infoMessage"><?php echo $message;?></div>
 
 				<div class="ibox-content">
 					<div class="row">
@@ -60,16 +60,26 @@
 						</div>
 
 						<div class="row">
-							<div class="col-sm-6">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label for="grupo">Grupos</label>
+									<select name="grupo" class="form-control">
+										<?php if ($grupos): foreach ($grupos as $key => $value): ?>
+											<option value="<?php echo $value->id ?>"> <?php echo strtoupper($value->name) ?> </option>
+										<?php endforeach; endif ?>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-4">
 								<div class="form-group">
 									<label for="password">Contraseña</label>
 									<input type="password" name="password" value="" required="" class="form-control" placeholder="**********">
 								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-4">
 								<div class="form-group">
 									<label for="password_confirm">Confirmar contraseña</label>
-									<input type="password" name="email" value="" required="" class="form-control" placeholder="**********">
+									<input type="password" name="password_confirm" value="" required="" class="form-control" placeholder="**********">
 								</div>
 							</div>
 						</div>

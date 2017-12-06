@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Main_control extends MY_Controller {
+class Main extends MY_Controller {
 
 	function __construct(){
 		parent::__construct();
@@ -71,5 +71,5 @@ class Main_control extends MY_Controller {
 
 }
 
-/* End of file Main_controller.php */
-/* Location: ./application/controllers/Main_controller.php */
+/* End of file Main.php */
+/* Location: ./application/controllers/Main.php */

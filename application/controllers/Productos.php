@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Productos_control extends MY_Controller {
+class Productos extends MY_Controller {
 
 	function __construct(){
 		parent::__construct();
@@ -11,6 +11,7 @@ class Productos_control extends MY_Controller {
 
 	public function productos_view(){
 		$data["productos"] = $this->pro_md->getProductos();
+		$data["scripts"] = ["/assets/scripts/productos"];
 		$this->estructura("Productos/table_productos", $data);
 	}
 
@@ -40,40 +41,38 @@ class Productos_control extends MY_Controller {
 	}
 
 	public function accion($param){
-		$producto = array(
-				'nombre'		=>	strtoupper($this->input->post('nombre')),
-				'precio'		=>	$this->input->post('precio'),
-				'descripcion'	=>	$this->input->post('descripcion'),
-				'longitud'		=>	$this->input->post('longitud'),
-				'latitud'		=>	$this->input->post('latitud'),
-				'id_categoria'	=>	($this->input->post('id_categoria') !="-1") ? $this->input->post('id_categoria') : NULL
-			);
+		$producto = [
+				'codigo'	=>	$this->input->post('codigo'),
+				'nombre'	=>	strtoupper($this->input->post('nombre')),
+				'precio'	=>	$this->input->post('precio'),
+				'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
+			];
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):
-				$data ['id_producto']=$this->pr_md->insert($producto);
-				$mensaje = array(
+				$data ['id_producto']=$this->pro_md->insert($producto);
+				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Producto registrado correctamente',
 					"type"	=> 'success'
-				);
+				];
 				break;
 
 			case (substr($param, 0, 1) === 'U'):
-				$data ['id_producto'] = $this->pr_md->update($producto, $this->input->post('id_producto'));
-				$mensaje = array(
+				$data ['id_producto'] = $this->pro_md->update($producto, $this->input->post('id_producto'));
+				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Producto actualizado correctamente',
 					"type"	=> 'success'
-				);
+				];
 				break;
 
 			default:
-				$data ['id_producto'] = $this->pr_md->update(["estatus" => 1], $this->input->post('id_producto'));
-				$mensaje = array(
+				$data ['id_producto'] = $this->pro_md->update(["estatus" => 1], $this->input->post('id_producto'));
+				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Producto eliminado correctamente',
 					"type"	=> 'success'
-				);
+				];
 				break;
 		}
 		$this->jsonResponse($mensaje);
@@ -81,5 +80,5 @@ class Productos_control extends MY_Controller {
 
 }
 
-/* End of file Productos_control.php */
-/* Location: ./application/controllers/Productos_control.php */
+/* End of file Productos.php */
+/* Location: ./application/controllers/Productos.php */

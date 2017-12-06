@@ -21,9 +21,9 @@
 					<li class="dropdown">
 						<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> REGISTROS <span class="caret"></span></a>
 						<ul role="menu" class="dropdown-menu">
-							<li><a href="<?php echo site_url('Auth/create_user') ?>">Usuarios</a></li>
-							<li><a href="<?php echo site_url('Productos_control/productos_view') ?>">Articulos</a></li>
-							<li><a href="<?php echo site_url('Familias_control/familias_view') ?>">Familias</a></li>
+							<li><a href="<?php echo site_url('Auth/') ?>">Usuarios</a></li>
+							<li><a href="<?php echo site_url('Productos/productos_view') ?>">Articulos</a></li>
+							<li><a href="<?php echo site_url('Familias/familias_view') ?>">Familias</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

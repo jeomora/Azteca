@@ -10,7 +10,7 @@
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">
-						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn tool btn-primary btn-modal" href="<?php echo site_url('Productos_control/add_producto'); ?>" data-target="#myModal">
+						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn tool btn-primary btn-modal" href="<?php echo site_url('Productos/add_producto'); ?>" data-target="#myModal">
 							<i class="fa fa-plus"></i>
 						</a>
 					</div>
@@ -35,8 +35,8 @@
 											<td>$<?php echo number_format($value->precio, 2, '.', ',') ?></td>
 											<td><?php echo $value->familia ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_control/update_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_control/delete_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos/update_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos/delete_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
