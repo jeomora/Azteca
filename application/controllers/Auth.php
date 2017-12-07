@@ -445,7 +445,7 @@ class Auth extends MY_Controller {
 		$this->data['title'] = $this->lang->line('edit_user_heading');
 
 		if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))){
-			redirect('auth', 'refresh');
+			redirect('Auth', 'refresh');
 		}
 
 		$user = $this->ion_auth->user($id)->row();
@@ -483,8 +483,6 @@ class Auth extends MY_Controller {
 					$data['password'] = $this->input->post('password');
 				}
 
-
-
 				// Only allow updating groups if user is admin
 				if ($this->ion_auth->is_admin()){
 					//Update the groups user belongs to
@@ -497,16 +495,15 @@ class Auth extends MY_Controller {
 						foreach ($groupData as $grp) {
 							$this->ion_auth->add_to_group($grp, $id);
 						}
-
 					}
 				}
 
-			// check to see if we are updating the user
-			   if($this->ion_auth->update($user->id, $data)){
+				// check to see if we are updating the user
+				if($this->ion_auth->update($user->id, $data)){
 					// redirect them back to the admin page if admin, or to the base url if non admin
 					$this->session->set_flashdata('message', $this->ion_auth->messages() );
 					if ($this->ion_auth->is_admin()){
-						redirect('auth', 'refresh');
+						redirect('Auth', 'refresh');
 					}else{
 						redirect('/', 'refresh');
 					}
@@ -515,7 +512,7 @@ class Auth extends MY_Controller {
 					// redirect them back to the admin page if admin, or to the base url if non admin
 					$this->session->set_flashdata('message', $this->ion_auth->errors() );
 					if ($this->ion_auth->is_admin()){
-						redirect('auth', 'refresh');
+						redirect('Auth', 'refresh');
 					}else{
 						redirect('/', 'refresh');
 					}
@@ -525,10 +522,8 @@ class Auth extends MY_Controller {
 
 		// display the edit user form
 		$this->data['csrf'] = $this->_get_csrf_nonce();
-
 		// set the flash data error message if there is one
 		$this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
 		// pass the user to the view
 		$this->data['user'] = $user;
 		$this->data['groups'] = $groups;
@@ -568,10 +563,8 @@ class Auth extends MY_Controller {
 			'id'   => 'password_confirm',
 			'type' => 'password'
 		);
-
 		// $this->_render_page('Auth/edit_user', $this->data);
 		$this->load->view("Auth/edit_user", $this->data);
-		$this->load->view("Structure/footer_modal_edit");
 	}
 
 	// create a new group
