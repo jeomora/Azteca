@@ -276,19 +276,17 @@ class Auth extends MY_Controller {
 		}
 	}
 
-
 	// activate the user
 	public function activate($id, $code=false){
 		if ($code !== false){
 			$activation = $this->ion_auth->activate($id, $code);
-		}else if ($this->ion_auth->is_admin()){
+		}else if ($this->ion_auth->is_admin()){//Solo un administrador puede activar
 			$activation = $this->ion_auth->activate($id);
 		}
-
 		if ($activation){
 			// redirect them to the auth page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			redirect("Auth", 'refresh');
 		}else{
 			// redirect them to the forgot password page
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
@@ -298,6 +296,8 @@ class Auth extends MY_Controller {
 
 	// deactivate the user
 	public function deactivate($id = NULL){
+		$data["title"]="Desactivar usuario";
+		$this->load->view("Structure/header_modal", $data);
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 			// redirect them to the home page because they must be an administrator to view this
 			return show_error('You must be an administrator to view this page.');
@@ -313,7 +313,6 @@ class Auth extends MY_Controller {
 			// insert csrf check
 			$this->data['csrf'] = $this->_get_csrf_nonce();
 			$this->data['user'] = $this->ion_auth->user($id)->row();
-
 			$this->_render_page('Auth/deactivate_user', $this->data);
 		}else{
 			// do we really want to deactivate?
@@ -322,27 +321,25 @@ class Auth extends MY_Controller {
 				if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id')){
 					show_error($this->lang->line('error_csrf'));
 				}
-
 				// do we have the right userlevel?
 				if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()){
 					$this->ion_auth->deactivate($id);
 				}
 			}
-
 			// redirect them back to the auth page
-			redirect('auth', 'refresh');
+			redirect('Auth', 'refresh');
 		}
 	}
 
 	// create a new user
 	public function create_user(){
+		$data["title"]="Registrar usuarios";
+		$this->load->view("Structure/header_modal", $data);
 		$this->data['title'] = $this->lang->line('create_user_heading');
-
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
-			redirect('auth', 'refresh');
-		}
-					$this->data["grupos"]=$this->ion_auth->groups()->result_array();//Para agregar los grupos
-
+			redirect('Auth', 'refresh');
+		}	
+		$this->data["grupos"]=$this->ion_auth->groups()->result_array();//Para agregar los grupos
 		$tables = $this->config->item('tables','ion_auth');
 		$identity_column = $this->config->item('identity','ion_auth');
 		$this->data['identity_column'] = $identity_column;
@@ -364,6 +361,7 @@ class Auth extends MY_Controller {
 			$email    = strtolower($this->input->post('email'));
 			$identity = ($identity_column==='email') ? $email : $this->input->post('identity');
 			$password = $this->input->post('password');
+			$username = strtolower($this->input->post('first_name'));
 
 			$additional_data = array(
 				'first_name' => $this->input->post('first_name'),
@@ -374,12 +372,12 @@ class Auth extends MY_Controller {
 		}
 
 		$grupo =["goup_id" => $this->input->post('grupo')];
-
-		if ($this->form_validation->run() == true && $this->ion_auth->register($identity, $password, $email, $additional_data, $grupo)){
+		
+		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data, $grupo)){
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			redirect("Auth", 'refresh');
 		}else{
 			// display the create user form
 			// set the flash data error message if there is one
@@ -433,10 +431,9 @@ class Auth extends MY_Controller {
 				'type'  => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			);
-
 			// $this->_render_page('Auth/create_user', $this->data);
-			$this->estructura("Auth/create_user",  $this->data);
-			// $this->load->view("Auth/create_user", $this->data);
+			// $this->estructura("Auth/create_user",  $this->data);
+			$this->load->view("Auth/create_user", $this->data);
 		}
 	}
 
@@ -579,14 +576,12 @@ class Auth extends MY_Controller {
 
 	// create a new group
 	public function create_group(){
-		$data["title"]="Registrar grupo";
-		$this->load->view("Structure/header_modal", $data);
-
 		$this->data['title'] = $this->lang->line('create_group_title');
 
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
-			redirect('Auth', 'refresh');
+			redirect('auth', 'refresh');
 		}
+
 		// validate form input
 		$this->form_validation->set_rules('group_name', $this->lang->line('create_group_validation_name_label'), 'required|alpha_dash');
 
@@ -596,7 +591,7 @@ class Auth extends MY_Controller {
 				// check to see if we are creating the group
 				// redirect them back to the admin page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect("Auth", 'refresh');
+				redirect("auth", 'refresh');
 			}
 		}else{
 			// display the create group form
@@ -616,26 +611,20 @@ class Auth extends MY_Controller {
 				'value' => $this->form_validation->set_value('description'),
 			);
 
-			// $this->_render_page('Auth/create_group', $this->data);
-			// $this->estructura("Auth/create_group",  $this->data);
-			$this->load->view("Auth/create_group", $data);
-
+			$this->_render_page('Auth/create_group', $this->data);
 		}
 	}
 
 	// edit a group
-	public function edit_group($id)
-	{
+	public function edit_group($id){
 		// bail if no group id given
-		if(!$id || empty($id))
-		{
+		if(!$id || empty($id)){
 			redirect('auth', 'refresh');
 		}
 
 		$this->data['title'] = $this->lang->line('edit_group_title');
 
-		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
-		{
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 			redirect('auth', 'refresh');
 		}
 
@@ -644,18 +633,13 @@ class Auth extends MY_Controller {
 		// validate form input
 		$this->form_validation->set_rules('group_name', $this->lang->line('edit_group_validation_name_label'), 'required|alpha_dash');
 
-		if (isset($_POST) && !empty($_POST))
-		{
-			if ($this->form_validation->run() === TRUE)
-			{
+		if (isset($_POST) && !empty($_POST)){
+			if ($this->form_validation->run() === TRUE){
 				$group_update = $this->ion_auth->update_group($id, $_POST['group_name'], $_POST['group_description']);
 
-				if($group_update)
-				{
+				if($group_update){
 					$this->session->set_flashdata('message', $this->lang->line('edit_group_saved'));
-				}
-				else
-				{
+				}else{
 					$this->session->set_flashdata('message', $this->ion_auth->errors());
 				}
 				redirect("auth", 'refresh');
@@ -687,27 +671,20 @@ class Auth extends MY_Controller {
 		$this->_render_page('Auth/edit_group', $this->data);
 	}
 
-
-	public function _get_csrf_nonce()
-	{
+	public function _get_csrf_nonce(){
 		$this->load->helper('string');
 		$key   = random_string('alnum', 8);
 		$value = random_string('alnum', 20);
 		$this->session->set_flashdata('csrfkey', $key);
 		$this->session->set_flashdata('csrfvalue', $value);
-
 		return array($key => $value);
 	}
 
-	public function _valid_csrf_nonce()
-	{
+	public function _valid_csrf_nonce(){
 		$csrfkey = $this->input->post($this->session->flashdata('csrfkey'));
-		if ($csrfkey && $csrfkey == $this->session->flashdata('csrfvalue'))
-		{
+		if ($csrfkey && $csrfkey == $this->session->flashdata('csrfvalue')){
 			return TRUE;
-		}
-		else
-		{
+		}else{
 			return FALSE;
 		}
 	}
