@@ -24,7 +24,7 @@ class Familias extends MY_Controller {
 	public function update_familia($id){
 		$data["title"]="Actualizar datos de la familia";
 		$this->load->view("Structure/header_modal", $data);
-		$data["familia"] = $this->fam_md->get(['id_familia'=>$id])[0];
+		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
 		$this->load->view("Familias/edit_familia", $data);
 		$this->load->view("Structure/footer_modal_edit");
 	}
@@ -32,7 +32,7 @@ class Familias extends MY_Controller {
 	public function delete_familia($id){
 		$data["title"]="Familia a eliminar";
 		$this->load->view("Structure/header_modal", $data);
-		$data["familia"] = $this->fam_md->get(['id_familia'=>$id])[0];
+		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
 		$this->load->view("Familias/delete_familia", $data);
 		$this->load->view("Structure/footer_modal_delete");
 	}

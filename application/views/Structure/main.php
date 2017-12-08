@@ -20,6 +20,21 @@
 			}
 			$( ".btn-modal").unbind( "click" );
 		});
+
+		/*$(document).off("click", "a").on("click", "a", function (event){
+			event.preventDefault();
+			var href = $(this).href;
+			var element = $(this);
+			console.log("ruta = ",href);
+			console.log("elemento = ",element);
+			if(element.hasClass("print")){
+				window.open(element);
+			}else{
+				// window.location=element;
+				$("#main_container").html(element);
+			}
+		});*/
+		
 	});
 
 	function datePicker() {
@@ -83,5 +98,4 @@
 		});
 	}
 
-	
 </script>

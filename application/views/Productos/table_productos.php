@@ -20,7 +20,6 @@
 									<th>NO</th>
 									<th>CÓDIGO</th>
 									<th>NOMBRE</th>
-									<th>PRECIO</th>
 									<th>FAMILIA</th>
 									<th>ACCIÓN</th>
 								</tr>
@@ -32,7 +31,6 @@
 											<th><?php echo $value->id_producto ?></th>
 											<td><?php echo $value->codigo ?></td>
 											<td><?php echo $value->producto ?></td>
-											<td>$<?php echo number_format($value->precio, 2, '.', ',') ?></td>
 											<td><?php echo $value->familia ?></td>
 											<td>
 												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos/update_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>

@@ -45,6 +45,10 @@
 		<script src="<?php echo base_url('/assets/js/plugins/chartJs/Chart.min.js'); ?>"></script>
 		<!-- Toastr -->
 		<script src="<?php echo base_url('/assets/js/plugins/toastr/toastr.min.js'); ?>"></script>
+		<!-- Formato de numeros -->
+		<script src="<?php echo base_url("/assets/js/jquery.number.min.js");?>"></script>
+		<!-- Input Mask -->
+		<script src="<?php echo base_url("/assets/js/jquery.inputmask.bundle.min.js")  ?>"></script>
 
 		<?php if (isset($scripts) && $scripts): ?><!-- Para cargar scripts -->
 			<?php foreach ($scripts as $rows): ?>

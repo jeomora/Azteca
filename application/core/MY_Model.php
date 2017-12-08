@@ -28,43 +28,31 @@ class MY_Model extends CI_Model {
 		$this->select  = "";
 	}
 
-	public function get($where = array(), $like = array()) {
-		if ($this->select) {
-			$this->db->select($this->select);
-		} else {
-			$this->db->select("*");
+	public function get($columns='', $where = [], $joins=[],  $like = [], $limit = 0, $start = 10, $order = ''){
+		if(! empty($columns)) {
+			$this->db->select($columns);
 		}
-		if ($like) {
+		if(! empty($where)){
+			$this->db->where($where);
+		}
+		if(! empty($joins)){
+			$this->db->join($joins["table"], $joins["ON"], $joins["clausula"]);
+		}
+		if(! empty($like)){
 			$this->db->like($like);
 		}
-
-		$this->db->from($this->TABLE_NAME);
-		if ($this->joins) {
-			foreach ($this->joins as $join) {
-				$this->db->join($join["table"], $join["on"], $join["clausula"]);
-			}
+		if(! empty($order)){
+			$this->db->order_by($order);
 		}
-		if ($where !== NULL) {
-			if (is_array($where)) {
-				foreach ($where as $field=>$value) {
-					$this->db->where($field, $value);
-				}
-			} else {
-				$this->db->where($this->PRI_INDEX, $where);
-			}
+		if($limit > 0){
+			$this->db->limit($limit, $start);
 		}
-
 		$this->db->where($this->TABLE_NAME.".estatus", 1);
-		$result = $this->db->get()->result();
-
-		if ($result) {
-			if (is_array($where)) {
-				return $result;
-			} else {
-				return array_shift($result);
-			}
-		} else {
-			return false;
+		$query = $this->db->get($this->TABLE_NAME);
+		if(is_array($where)){
+			return $query->result();
+		}else{
+			return $query->row();
 		}
 	}
 

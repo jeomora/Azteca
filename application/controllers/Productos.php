@@ -26,7 +26,7 @@ class Productos extends MY_Controller {
 	public function update_producto($id){
 		$data["title"]="Actualizar datos del producto";
 		$this->load->view("Structure/header_modal", $data);
-		$data["producto"] = $this->pro_md->get(['id_producto'=>$id])[0];
+		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
 		$data["familias"] = $this->fam_md->get();
 		$this->load->view("Productos/edit_producto", $data);
 		$this->load->view("Structure/footer_modal_edit");
@@ -35,7 +35,7 @@ class Productos extends MY_Controller {
 	public function delete_producto($id){
 		$data["title"]="Producto a eliminar";
 		$this->load->view("Structure/header_modal", $data);
-		$data["producto"] = $this->pro_md->get(['id_producto'=>$id])[0];
+		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
 		$this->load->view("Productos/delete_producto", $data);
 		$this->load->view("Structure/footer_modal_delete");
 	}
@@ -44,7 +44,7 @@ class Productos extends MY_Controller {
 		$producto = [
 				'codigo'	=>	$this->input->post('codigo'),
 				'nombre'	=>	strtoupper($this->input->post('nombre')),
-				'precio'	=>	$this->input->post('precio'),
+				// 'precio'	=>	$this->input->post('precio'),
 				'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
 			];
 		switch ($param) {

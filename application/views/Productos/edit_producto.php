@@ -23,12 +23,12 @@
 				</div>
 			</div>
 			
-			<div class="col-sm-6">
+			<!-- <div class="col-sm-6">
 				<div class="form-group">
 					<label for="precio">Precio</label>
 					<input type="text" name="precio" value="<?php echo $producto->precio ?>" class="form-control" placeholder="0.00">
 				</div>
-			</div>
+			</div> -->
 
 			<div class="col-sm-6">
 				<div class="form-group">
