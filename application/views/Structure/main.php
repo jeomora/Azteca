@@ -52,7 +52,7 @@
 
 	function sendDatos(url, formData){
 		$.ajax({
-			url: urlbase + url,
+			url: site_url + url,
 			type: "POST",
 			dataType: "JSON",
 			data: (formData).serializeArray()

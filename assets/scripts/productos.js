@@ -1,4 +1,18 @@
 jQuery(document).ready(function($) {
+	$("#table_productos").dataTable({
+		responsive: true,
+		pageLength  : 10,
+		"order": [[0, 'ASC']],
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 50, 25, 10, -1 ],
+			[ '50 registros', '30 registros', '10 registros', 'Mostrar todos']
+		],
+		buttons: [{
+			extend: 'pageLength'
+		}]
+	});
+});
 
 	$(document).off("click", ".save").on("click", ".save", function(event) {
 		event.preventDefault();
@@ -14,5 +28,3 @@ jQuery(document).ready(function($) {
 		event.preventDefault();
 		sendDatos("Productos/accion/D",$("#form_producto_edit"));
 	});
-
-});

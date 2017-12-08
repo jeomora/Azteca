@@ -40,7 +40,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 	<?php if (isset($links) && $links): ?>
 		<?php foreach ($links as $value): ?>
-			<link rel="stylesheet" type="text/css" href="<?php echo base_url('theme/vendors/'.$value.'.css') ?>">
+			<link rel="stylesheet" type="text/css" href="<?php echo base_url($value.'.css') ?>">
 		<?php endforeach ?>
 	<?php endif ?>
 </head>
