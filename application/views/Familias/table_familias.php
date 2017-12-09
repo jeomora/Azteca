@@ -14,7 +14,7 @@
 							<i class="fa fa-plus"></i>
 						</a>
 					</div>
-						<table class="table table-striped table-bordered table-hover" id="">
+						<table class="table table-striped table-bordered table-hover" id="table_familias">
 							<thead>
 								<tr>
 									<th>NO</th>

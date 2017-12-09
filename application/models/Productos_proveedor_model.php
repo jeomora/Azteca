@@ -9,16 +9,18 @@ class Productos_proveedor_model extends MY_Model {
 		$this->PRI_INDEX = "id_producto_proveedor";
 	}
 
-	public function getCotizados($where = []){
+	public function getProductos_proveedor($where = []){
 		$this->db->select("
 			productos_proveedor.id_producto_proveedor,
 			productos_proveedor.precio,
-			p.nombre AS producto,
+			UPPER(p.nombre) AS producto,
 			p.codigo,
 			u.first_name,
-			u.last_name")
+			u.last_name,
+			UPPER(f.nombre) as familia")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
+		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1);
 		if ($where !== NULL) {

@@ -13,14 +13,13 @@ class Auth extends MY_Controller {
 
 	// redirect if needed, otherwise display the user list
 	public function index(){
-		if (!$this->ion_auth->logged_in()){
-			// redirect them to the login page
+		if (!$this->ion_auth->logged_in()){// redirect them to the login page
 			redirect('Auth/login', 'refresh');
 		}elseif (!$this->ion_auth->is_admin()){ // remove this elseif if you want to enable this for non-admins
 			// redirect them to the home page because they must be an administrator to view this
-			return show_error('You must be an administrator to view this page.');
-		}else{
-			// set the flash data error message if there is one
+			// return show_error('You must be an administrator to view this page.');
+			return show_error('Debes ser un Administrador para ver esta página.', NULL, 'Alerta de seguridad');
+		}else{// set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			//list the users
 			$this->data['users'] = $this->ion_auth->users()->result();
