@@ -46,3 +46,5 @@
 		</div>
 	</div>
 </div>
+
+<script src="<?php echo base_url("/assets/scripts/productos.js");?>"></script>

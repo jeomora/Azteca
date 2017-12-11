@@ -43,7 +43,9 @@ $(document).off("click", ".save").on("click", ".save", function (argument) {
 						toastr.error(res.desc, $("#name_user").val());
 					}else{
 						toastr.success(res.desc, $("#name_user").val());
-						location.reload();
+						$("#main_container").load(site_url+"Productos_proveedor/productos_proveedor_view");
+						cleanModal();
+						$("#myModal").modal("hide");
 					}
 				})
 				.fail(function(res) {
@@ -86,10 +88,10 @@ function save(argument) {
 
 $(document).off("click", ".update").on("click", ".update", function(event) {
 	event.preventDefault();
-	sendDatos("Productos_proveedor/accion/U/",$("#form_asignacion_edit"));
+	sendDatos("Productos_proveedor/accion/U/",$("#form_asignacion_edit"),"Productos_proveedor/productos_proveedor_view");
 });
 
 $(document).off("click", ".delete").on("click", ".delete", function(event) {
 	event.preventDefault();
-	sendDatos("Productos_proveedor/accion/D", $("#form_asignacion_delete"));
+	sendDatos("Productos_proveedor/accion/D", $("#form_asignacion_delete"),"Productos_proveedor/productos_proveedor_view");
 });

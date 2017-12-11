@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
-				<h2>BIENVENIDO</h2>
+				<h2>BIENVENIDO AL SISTEMA DE ABARROTES AZTECA</h2>
 			</div>
 		</div>
 	</div>

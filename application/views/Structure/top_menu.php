@@ -22,15 +22,15 @@
 							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> REGISTROS <span class="caret"></span></a>
 							<ul role="menu" class="dropdown-menu">
 								<li><a href="<?php echo site_url('Auth/') ?>">Usuarios y Proveedores</a></li>
-								<li><a href="<?php echo site_url('Productos/productos_view') ?>">Articulos</a></li>
-								<li><a href="<?php echo site_url('Familias/familias_view') ?>">Familias</a></li>
+								<li><a href="<?php echo site_url('Productos/productos_view') ?>" control="" funcion="" >Articulos</a></li>
+								<li><a href="<?php echo site_url('Familias/familias_view') ?>" control="" funcion="" >Familias</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">CONSULTAS <span class="caret"></span></a>
 							<ul role="menu" class="dropdown-menu">
 								<li><a href="<?php echo site_url('Promociones/promociones_view') ?>">Promociones</a></li>
-								<li><a href="<?php echo site_url('Productos_proveedor/productos_proveedor_view') ?>">Cotizaciones</a></li>
+								<li><a href="<?php echo site_url('Productos_proveedor/productos_proveedor_view') ?>" control="" funcion="">Cotizaciones</a></li>
 								<li><a href="#">Opcion 3</a></li>
 							</ul>
 						</li>

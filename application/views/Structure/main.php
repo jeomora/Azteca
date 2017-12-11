@@ -1,6 +1,9 @@
 <script type="text/javascript">
 
-	$(function() {
+	var name_control = "";//Nombre del controlador activo
+	var name_function = "";//Nombre de la función cargada
+
+	$(function($) {
 		var iniciar =1;
 
 		$("#myModal").modal({
@@ -21,21 +24,30 @@
 			$( ".btn-modal").unbind( "click" );
 		});
 
-		/*$(document).off("click", "a").on("click", "a", function (event){
+		$(document).off("click", "a").on("click", "a", function (event){
 			event.preventDefault();
-			var href = $(this).href;
 			var element = $(this);
-			console.log("ruta = ",href);
-			console.log("elemento = ",element);
-			if(element.hasClass("print")){
-				window.open(element);
+			name_control = element.attr("control");
+			name_function = element.attr("funcion");
+			if(!element.hasClass("close-session") && !element.hasClass("print")){
+				if(element.attr("href") !="#" && element != base_url && element != "" && !element.hasClass("btn-modal")){ 
+					$("#main_container").html('');//Limpiamos el contenedor
+					$("#main_container").load(this.href);//Le cargamos el contenido nuevo
+				
+				}
+
 			}else{
-				// window.location=element;
-				$("#main_container").html(element);
+				if(element.hasClass("print")){
+					window.open(element);
+				}else{
+					window.location=element;
+				}
 			}
-		});*/
+
+		});
 		
 	});
+
 
 	function datePicker() {
 		$(".datepicker").datepicker({
@@ -50,7 +62,10 @@
 		$("#myModal .modal-footer").empty();
 	}
 
-	function sendDatos(url, formData){
+	function sendDatos(url, formData, url_repuesta){
+
+		url_repuesta = typeof url_repuesta === 'undefined' ? "/#" : url_repuesta;
+
 		$.ajax({
 			url: site_url + url,
 			type: "POST",
@@ -63,38 +78,40 @@
 					cleanModal();
 					$("#myModal").modal("hide");
 					toastr.success(response.desc, response.id);
-					location.reload();
+					// location.reload();
+					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				case "info":
 					cleanModal();
 					$("#myModal").modal("hide");
 					toastr.info(response.desc, response.id);
-					location.reload();
+					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				case "warning":
 					cleanModal();
 					$("#myModal").modal("hide");
 					toastr.warning(response.desc, response.id);
-					location.reload();
+					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				default:
 					cleanModal();
 					$("#myModal").modal("hide");
 					toastr.error(response.desc, response.id);
-					location.reload();
+					$("#main_container").load(site_url+url_repuesta);
 			}
 			$("#notifications").html(response);
+
 		})
 		.fail(function(response) {
-			console.log("Error en la respuesta");
+			console.log("Error en la respuesta: ", response);
 		})
 		.always(function(response) {
 			$("#myModal .modal-content").empty();
 			$("#myModal .modal-body").empty();
-			console.log("Petición completa");
+			console.log("Petición completa: ", response);
 		});
 	}
 

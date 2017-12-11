@@ -34,7 +34,7 @@ class Cotizaciones extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$this->estructura("Cotizaciones/table_cotizaciones", $data);
+		$this->load->view("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
 
 	public function add_cotizacion(){

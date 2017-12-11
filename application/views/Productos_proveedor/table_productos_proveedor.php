@@ -50,3 +50,5 @@
 		</div>
 	</div>
 </div>
+
+<script src="<?php echo base_url("/assets/scripts/productos_proveedor.js");?>"></script>

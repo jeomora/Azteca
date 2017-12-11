@@ -11,30 +11,7 @@ class Productos_proveedor extends MY_Controller {
 
 	public function productos_proveedor_view(){
 		$data["productosProveedor"] = $this->prod_prov_mdl->getProductos_proveedor();
-
-		$data['links'] = [
-			'/assets/css/plugins/dataTables/dataTables.bootstrap',
-			'/assets/css/plugins/dataTables/dataTables.responsive',
-			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
-			'/assets/css/plugins/dataTables/buttons.dataTables.min',
-		];
-
-		$data['scripts'] = [
-			'/assets/scripts/productos_proveedor',
-			'/assets/js/plugins/dataTables/jquery.dataTables.min',
-			'/assets/js/plugins/dataTables/jquery.dataTables',
-			'/assets/js/plugins/dataTables/dataTables.buttons.min',
-			'/assets/js/plugins/dataTables/buttons.flash.min',
-			'/assets/js/plugins/dataTables/jszip.min',
-			'/assets/js/plugins/dataTables/pdfmake.min',
-			'/assets/js/plugins/dataTables/vfs_fonts',
-			'/assets/js/plugins/dataTables/buttons.html5.min',
-			'/assets/js/plugins/dataTables/buttons.print.min',
-			'/assets/js/plugins/dataTables/dataTables.bootstrap',
-			'/assets/js/plugins/dataTables/dataTables.responsive',
-			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
-		];
-		$this->estructura("Productos_proveedor/table_productos_proveedor", $data);
+		$this->load->view("Productos_proveedor/table_productos_proveedor", $data, FALSE);
 	}
 
 	public function add_asignacion(){

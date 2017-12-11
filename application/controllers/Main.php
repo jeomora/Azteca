@@ -7,27 +7,14 @@ class Main extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Menus_model", "m_md");
 		$this->load->model("Productos_model", "pr_md");
-		// $this->load->model("Categorias_model", "cat_md");
 	}
 
-	public function scripts() {
-		$this->load->view("structure/main");
-	}
-
-	//Primera función que se carga
+	//Primera función que carga la estructura del Sistema
 	public function index(){
 		$data["hola"]='Mensaje de Bienvenida';
 		$this->estructura("Admin/welcome", $data);
 	}
 
-	public function addFoto($id){
-		$data["title"]="Cargar imagen";
-		$this->load->view("Structure/header_modal", $data);
-		$data["producto"] = $this->pr_md->get(['id_producto'=>$id])[0];
-		$data['categoria'] = $this->cat_md->get(['id_categoria' => $data["producto"]->id_categoria])[0];
-		$this->load->view("Admin/addFoto", $data);
-		$this->load->view("Structure/footer_modal_close");
-	}
 
 	public function uploadFoto(){
 		$this->load->library("upload");

@@ -17,7 +17,7 @@
 						<span class="m-r-sm text-muted welcome-message">Bienvenido</span>
 					</li>
 					<li>
-						<a href="<?php echo site_url('Auth/logout') ?>">
+						<a href="<?php echo base_url('/index.php/Auth/logout') ?>" class="close-session">
 							<i class="fa fa-sign-out"></i> Salir
 						</a>
 					</li>

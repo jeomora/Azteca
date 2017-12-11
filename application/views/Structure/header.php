@@ -9,8 +9,32 @@
 	<meta name="robots" content="all,follow">
 
 	<script type="text/javascript">
+		window.onload =	function(){
+			if(typeof history.pushState === "function"){
+				history.pushState("jibberish", null, null);
+				window.onpopstate = function () {
+					history.pushState("newjibberish", null, null);
+					//location.href="";
+					console.log("Click atrás \n");
+				};
+			
+				}else{
+					var ignoreHashChange = true;
+					window.onhashchange = function () {
+						if (!ignoreHashChange) {
+							ignoreHashChange = true;
+							window.location.hash = Math.random();
+							console.log("Aqui otra acción \n");
+						}else{
+							ignoreHashChange = false;
+						}
+					};
+				}
+			}
+
 		var base_url = "<?php echo base_url("/") ?>";//No carga el archivo index
 		var site_url = "<?php echo site_url("/") ?>";//Si carga el index 
+
 	</script>
 
 	<!-- Bootstrap CSS-->
@@ -38,11 +62,12 @@
 	<!-- Tweaks for older IEs--><!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-	<?php if (isset($links) && $links): ?>
-		<?php foreach ($links as $value): ?>
-			<link rel="stylesheet" type="text/css" href="<?php echo base_url($value.'.css') ?>">
-		<?php endforeach ?>
-	<?php endif ?>
+
+	<link href="<?php echo base_url("/assets/css/plugins/dataTables/dataTables.bootstrap.css");?>" rel="stylesheet">
+	<link href="<?php echo base_url("/assets/css/plugins/dataTables/dataTables.responsive.css");?>" rel="stylesheet">
+	<link href="<?php echo base_url("/assets/css/plugins/dataTables/dataTables.tableTools.min.css");?>" rel="stylesheet">
+	<link href="<?php echo base_url("/assets/css/plugins/dataTables/buttons.dataTables.min.css");?>" rel="stylesheet">
+
 </head>
 
 	<!-- Estructura de la ventana modal par insertar, modificar y eliminar datos -->

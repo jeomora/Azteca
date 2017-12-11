@@ -14,6 +14,8 @@
 			</div>
 		</div>
 
+
+
 		<!-- Javascript files-->
 		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
 		<!-- Mainly scripts -->
@@ -50,11 +52,19 @@
 		<!-- Input Mask -->
 		<script src="<?php echo base_url("/assets/js/jquery.inputmask.bundle.min.js")  ?>"></script>
 
-		<?php if (isset($scripts) && $scripts): ?><!-- Para cargar scripts -->
-			<?php foreach ($scripts as $rows): ?>
-				<script type="text/javascript" src="<?php echo base_url($rows.'.js') ?>"></script>
-			<?php endforeach ?>
-		<?php endif ?>
+		<!--script para el dataTables -->
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/jquery.dataTables.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/jquery.dataTables.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/dataTables.buttons.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/buttons.flash.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/jszip.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/pdfmake.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/vfs_fonts.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/buttons.html5.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/buttons.print.min.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/dataTables.bootstrap.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/dataTables.responsive.js");?>"></script>
+		<script src="<?php echo base_url("/assets/js/plugins/dataTables/dataTables.tableTools.min.js");?>"></script>
 
 </body>
 </html>

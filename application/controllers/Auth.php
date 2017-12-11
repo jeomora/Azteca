@@ -28,9 +28,7 @@ class Auth extends MY_Controller {
 					$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 				}
 			}
-			// $this->_render_page('Auth/index', $this->data);
-			// $this->data["scripts"] = ["/assets/scripts/usuarios"];
-			$this->estructura("Auth/index",  $this->data);
+			$this->load->view("Auth/index", $this->data, FALSE);
 		}
 	}
 
