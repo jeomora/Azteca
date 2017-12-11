@@ -12,14 +12,12 @@
 
 </head>
 
-<body class="gray-bg">
+<body class="azteca-bg">
 
 	<div class="middle-box text-center loginscreen  animated fadeInDown">
 		<div>
 			<div>
-
-				<h1 class="logo-name">IN+</h1>
-
+				<img alt="image" width="350px;" style="margin:auto; padding: 5px;" class="img-responsive" src="<?php echo base_url("/assets/img/system_logo.png"); ?>" />
 			</div>
 			<h3>Administración</h3>
 			<p>Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.

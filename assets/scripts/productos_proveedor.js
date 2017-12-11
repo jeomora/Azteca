@@ -1,17 +1,7 @@
 $(function($) {
-	$("#table_prod_proveedor").dataTable({
-		responsive: true,
-		pageLength  : 10,
-		"order": [[0, 'ASC']],
-		dom: 'Bfrtip',
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [{
-			extend: 'pageLength'
-		}]
-	});
+
+	fillDataTable("table_prod_proveedor", 'DESC', 10);
+
 });
 
 var marcados =0;

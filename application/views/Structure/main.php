@@ -31,16 +31,17 @@
 			name_function = element.attr("funcion");
 			if(!element.hasClass("close-session") && !element.hasClass("print")){
 				if(element.attr("href") !="#" && element != base_url && element != "" && !element.hasClass("btn-modal")){ 
+					$("#welcome_container").remove();//Eliminamos el contenedor de bienvenida
 					$("#main_container").html('');//Limpiamos el contenedor
 					$("#main_container").load(this.href);//Le cargamos el contenido nuevo
 				
 				}
-
+			
 			}else{
 				if(element.hasClass("print")){
 					window.open(element);
 				}else{
-					window.location=element;
+					window.location = element.attr("href");
 				}
 			}
 
@@ -112,6 +113,22 @@
 			$("#myModal .modal-content").empty();
 			$("#myModal .modal-body").empty();
 			console.log("Petición completa: ", response);
+		});
+	}
+
+	function fillDataTable(element, order, limit) {
+		$("#"+element).dataTable({
+			responsive: true,
+			pageLength  : limit,
+			"order": [[0, order]],
+			dom: 'Bfrtip',
+			lengthMenu: [
+				[ 10, 30, 50, -1 ],
+				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+			],
+			buttons: [{
+				extend: 'pageLength'
+			}]
 		});
 	}
 

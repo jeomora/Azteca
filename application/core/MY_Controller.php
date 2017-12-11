@@ -34,7 +34,7 @@ class MY_Controller extends CI_Controller {
 	public function estructura($view, $data = NULL) {
 		$this->load->view($this->header, $data);
 		$this->load->view($this->top_menu, $data);
-		// $this->load->view($view, $data);
+		$this->load->view($view, $data);
 		$this->load->view($this->footer, $data);
 		$this->load->view($this->main, $data);
 	}

@@ -1,17 +1,7 @@
 $(function($) {
-	$("#table_familias").dataTable({
-		responsive: true,
-		pageLength  : 10,
-		"order": [[0, 'ASC']],
-		dom: 'Bfrtip',
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [{
-			extend: 'pageLength'
-		}]
-	});
+	
+	fillDataTable("table_familias", 'DESC', 10);
+
 });
 
 $(document).off("click", ".save").on("click", ".save", function(event) {
