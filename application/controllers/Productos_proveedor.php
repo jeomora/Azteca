@@ -10,7 +10,13 @@ class Productos_proveedor extends MY_Controller {
 	}
 
 	public function productos_proveedor_view(){
-		$data["productosProveedor"] = $this->prod_prov_mdl->getProductos_proveedor();
+		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
+		$where = [];
+		
+		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
+			$where = ["productos_proveedor.id_proveedor" => $user->id];
+		}
+		$data["productosProveedor"] = $this->prod_prov_mdl->getProductos_proveedor($where);
 		$this->load->view("Productos_proveedor/table_productos_proveedor", $data, FALSE);
 	}
 

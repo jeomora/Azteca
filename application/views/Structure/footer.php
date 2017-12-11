@@ -2,7 +2,7 @@
 				<!-- Page Footer-->
 						<div class="footer">
 							<div class="pull-right">
-								<strong>Autor: </strong>
+								<strong>Autor: Alguien</strong>
 							</div>
 							<div>
 								<strong>Abarrotes Azteca &copy; 2017-2018 </strong> 
