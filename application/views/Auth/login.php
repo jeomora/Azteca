@@ -12,27 +12,38 @@
 
 </head>
 
-<body class="gray-bg">
+<body class="blue-bg">
 
-	<div class="middle-box text-center loginscreen  animated fadeInDown">
-		<div>
+	<div class="loginColumns animated fadeInDown">
+		<div class="row">
+		
 			<div>
-				<img alt="image" width="350px;" style="margin:auto; padding: 5px;" class="img-responsive" src="<?php echo base_url("/assets/img/system_logo.png"); ?>" />
+				<img alt="image" width="350px;" style="margin:auto; padding: 5px;" class="img-responsive" src="<?php echo base_url(''); ?>" />
 			</div>
-			<h3>Administración</h3>
-			<p>Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
-				<!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
-			</p>
-			<p>Login in. To see it in action.</p>
-			<?php echo form_open("Auth/login",'class="m-t" role="form"');?>
-				<div class="form-group">
-					<input type="email" class="form-control" placeholder="ejemplo@email.com" name="identity" required="">
+
+			<div class="col-md-6">
+				<h2 class="font-bold">Administración</h2>
+				<p>
+					Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+				</p>
+
+				<p>Login in. To see it in action.</p>
+			</div>
+
+			<div class="col-md-6">
+				<div class="ibox-content">
+					<?php echo form_open("Auth/login",'class="m-t" role="form"');?>
+						<div class="form-group">
+							<input type="email" class="form-control" placeholder="ejemplo@email.com" name="identity" required="">
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" placeholder="********" name="password" required="">
+						</div>
+						<button type="submit" class="btn btn-success block full-width m-b">Entrar</button>
+					<?php echo form_close();?>
 				</div>
-				<div class="form-group">
-					<input type="password" class="form-control" placeholder="********" name="password" required="">
-				</div>
-				<button type="submit" class="btn btn-primary block full-width m-b">Entrar</button>
-			<?php echo form_close();?>
+			</div>
+	
 		</div>
 	</div>
 

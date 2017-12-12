@@ -411,38 +411,44 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
   left: 0;
 }
 .top-navigation .navbar-nav .dropdown-menu > .active > a {
-  background: white;
+  background: #49B7E0;
   color: #1ab394;
   font-weight: bold;
 }
 .white-bg .navbar-fixed-top,
 .white-bg .navbar-static-top {
-  background: #fff;
+  background: #49B7E0;
 }
 .top-navigation .navbar {
   margin-bottom: 0;
 }
 .top-navigation .nav > li > a {
   padding: 15px 20px;
-  color: #676a6c;
+  color: #FFF;
+  background: #49B7E0;
+  
 }
 .top-navigation .nav > li a:hover,
 .top-navigation .nav > li a:focus {
-  background: #fff;
-  color: #1ab394;
+  background: #49B7E0;
+  color: #fff;
 }
 .top-navigation .nav > li.active {
-  background: #fff;
+  background: #0000FF;
   border: none;
 }
 .top-navigation .nav > li.active > a {
-  color: #1ab394;
+  color: #49B7E0;
+  background: #0000FF;
+
 }
 .top-navigation .navbar-right {
   margin-right: 10px;
 }
 .top-navigation .navbar-nav .dropdown-menu {
   box-shadow: none;
+  background: #0000FF;
+  color: #FFF;
   border: 1px solid #e7eaec;
 }
 .top-navigation .dropdown-menu > li > a {
@@ -453,7 +459,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
   margin-top: 0px;
 }
 .top-navigation .navbar-brand {
-  background: #1ab394;
+  background: #49B7E0;
   color: #fff;
   padding: 15px 25px;
 }
@@ -3209,8 +3215,8 @@ table.table-mail tr td {
   color: #ffffff;
 }
 .blue-bg {
-  background-color: #1c84c6;
-  color: #ffffff;
+  background-color: #E0FFF0;
+  color: #000000;
 }
 .lazur-bg {
   background-color: #23c6c8;
