@@ -13,16 +13,18 @@ class Productos_proveedor_model extends MY_Model {
 		$this->db->select("
 			productos_proveedor.id_producto_proveedor,
 			productos_proveedor.precio,
+			DATE_FORMAT(productos_proveedor.fecha_registro, '%d-%m-%Y') AS fecha,
 			UPPER(p.nombre) AS producto,
 			p.codigo,
 			u.first_name,
 			u.last_name,
-			UPPER(f.nombre) as familia")
+			UPPER(f.nombre) AS familia")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
 		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
-		->where($this->TABLE_NAME.".estatus", 1);
+		->where($this->TABLE_NAME.".estatus", 1)
+		->order_by($this->TABLE_NAME.".precio", "ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {

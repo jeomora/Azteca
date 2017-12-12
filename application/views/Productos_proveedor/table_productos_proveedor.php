@@ -18,11 +18,14 @@
 							<thead>
 								<tr>
 									<th>NO</th>
-									<th>PROVEEDOR</th>
+									<?php
+										echo (! $this->ion_auth->is_admin()) ? '' : "<th>PROVEEDOR</th>";
+									?>
 									<th>CÓDIGO</th>
 									<th>PRODUCTO</th>
 									<th>PRECIO</th>
 									<th>FAMILIA</th>
+									<th>FECHA</th>
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
@@ -31,11 +34,14 @@
 									<?php foreach ($productosProveedor as $key => $value): ?>
 										<tr>
 											<th><?php echo $value->id_producto_proveedor ?></th>
-											<td><?php echo strtoupper($value->first_name.' '.$value->last_name) ?></td>
+											<?php
+												echo (! $this->ion_auth->is_admin()) ? '' : "<td>". strtoupper($value->first_name.' '.$value->last_name) ."</td>";
+											?>
 											<td><?php echo $value->codigo ?></td>
 											<td><?php echo $value->producto ?></td>
-											<td>$<?php echo number_format($value->precio,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio,2,'.',',') ?></td>
 											<td><?php echo $value->familia ?></td>
+											<td><?php echo $value->fecha ?></td>
 											<td>
 												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_proveedor/update_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
 												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_proveedor/delete_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
