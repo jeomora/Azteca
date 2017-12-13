@@ -14,7 +14,7 @@ class Promociones extends MY_Controller {
 		$where = [];
 		
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
-			$where = ["productos_proveedor.id_proveedor" => $user->id];
+			$where = ["promociones.id_proveedor" => $user->id];
 		}
 		$data["promociones"] = $this->prom_mdl->getPromociones($where);
 		$this->load->view("Promociones/table_promociones", $data, FALSE);
@@ -61,7 +61,7 @@ class Promociones extends MY_Controller {
 				break;
 
 			default:
-				$data ['id_promocion'] = $this->prom_mdl->update(["estatus" => 1], $this->input->post('id_promocion'));
+				$data ['id_promocion'] = $this->prom_mdl->update(["estatus" => 0], $this->input->post('id_promocion'));
 				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Promoción eliminada correctamente',

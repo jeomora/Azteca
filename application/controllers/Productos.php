@@ -66,7 +66,7 @@ class Productos extends MY_Controller {
 				break;
 
 			default:
-				$data ['id_producto'] = $this->pro_md->update(["estatus" => 1], $this->input->post('id_producto'));
+				$data ['id_producto'] = $this->pro_md->update(["estatus" => 0], $this->input->post('id_producto'));
 				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Producto eliminado correctamente',

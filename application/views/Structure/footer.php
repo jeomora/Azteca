@@ -32,6 +32,8 @@
 		<!-- Custom and plugin javascript -->
 		<script src="<?php echo base_url('/assets/js/inspinia.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/pace/pace.min.js') ?>"></script>
+		<!-- Chosen-select -->
+		<script src="<?php echo base_url('/assets/js/plugins/chosen/chosen.jquery.js') ?>"></script>
 		<!-- jQuery UI -->
 		<script src="<?php echo base_url('/assets/js/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
 		<!-- GITTER -->
@@ -63,6 +65,9 @@
 		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.bootstrap.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.responsive.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.tableTools.min.js') ?>"></script>
-
+		<!-- Data Picker -->
+		<script src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.js') ?>"></script>
+		<script src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.es.js') ?>"></script>
+		<script src="<?php echo base_url('/assets/js/plugins/colorpicker/bootstrap-colorpicker.min.js') ?>"></script>
 </body>
 </html>

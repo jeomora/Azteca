@@ -115,3 +115,7 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	
+</script>

@@ -56,6 +56,11 @@
 	<link href="<?php echo base_url('/assets/css/plugins/dataTables/dataTables.responsive.css') ?>" rel="stylesheet">
 	<link href="<?php echo base_url('/assets/css/plugins/dataTables/dataTables.tableTools.min.css') ?>" rel="stylesheet">
 	<link href="<?php echo base_url('/assets/css/plugins/dataTables/buttons.dataTables.min.css') ?>" rel="stylesheet">
+	<!-- Data Picker style -->
+	<link href="<?php echo base_url('/assets/css/plugins/datapicker/datepicker3.css') ?>" rel="stylesheet">
+	<link href="<?php echo base_url('/assets/css/plugins/colorpicker/bootstrap-colorpicker.min.css') ?>" rel="stylesheet">
+
+	<link href="<?php echo base_url('/assets/css/plugins/chosen/chosen.css')?>" rel="stylesheet">
 
 </head>
 

@@ -58,10 +58,10 @@
 
 			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="precio">Precio total</label>
+					<label for="precio_descuento">Precio total</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" id="precio" class="form-control number" value="" readonly="">
+						<input type="text" name="precio_descuento" id="precio_descuento" class="form-control number" value="" readonly="">
 					</div>
 				</div>
 			</div>
@@ -118,10 +118,26 @@
 
 <script type="text/javascript">
 	datePicker();
+
 	$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
 
+	$("#form_promocion_new").validate({
+		rules: {
+			id_producto: {required: true, min:0},
+			precio_producto: {required: true},
+		
+		}
+	});
+
+	jQuery.extend(jQuery.validator.messages, {
+		required: "Este campo es requerido",
+		min: jQuery.validator.format("Este campo es requerido"),
+	});
+
 	$(document).off("click", ".save").on("click", ".save", function(event) {
-		sendDatos("Promociones/accion/I", $("#form_promocion_new"), "Promociones/promociones_view");
+		if($("#form_promocion_new").valid()){
+			sendDatos("Promociones/accion/I", $("#form_promocion_new"), "Promociones/promociones_view");
+		}
 	});
 
 </script>
