@@ -13,3 +13,10 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).off("click", ".update").on("click", ".update", function(event) {
+		event.preventDefault();
+		sendDatos("Familias/accion/U/",$("#form_familia_edit"), "Familias/familias_view");
+	});
+</script>

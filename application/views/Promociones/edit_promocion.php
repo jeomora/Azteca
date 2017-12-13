@@ -13,7 +13,7 @@
 						<option value="">Seleccionar...</option>
 						<?php if ($productos): ?>
 							<?php foreach ($productos as $key => $value): ?>
-								<option value="<?php echo $value->id_producto ?>"><?php echo strtoupper($value->nombre) ?></option>
+								<option value="<?php echo $value->id_producto ?>" <?php echo $promocion->id_producto == $value->id_producto ? 'selected' : '' ?> ><?php echo strtoupper($value->nombre) ?></option>
 							<?php endforeach ?>
 						<?php endif ?>
 					</select>
@@ -25,9 +25,9 @@
 					<label for="rango">Rango</label>
 					<div class="input-daterange input-group">
 						<span class="input-group-addon">De</span>
-						<input class="form-control number" placeholder="0.00" name="precio_desde" id="precio_desde" type="text">
+						<input class="form-control" placeholder="0.00" name="precio_desde" id="precio_desde" type="text">
 						<span class="input-group-addon">a</span>
-						<input class="form-control number" placeholder="0.00" name="precio_hasta" id="precio_hasta" type="text">
+						<input class="form-control" placeholder="0.00" name="precio_hasta" id="precio_hasta" type="text">
 					</div>
 				</div>
 			</div>
@@ -40,7 +40,7 @@
 					<label for="precio_producto">Precio</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" name="precio_producto"  id="precio_producto" class="form-control number" value="" placeholder="0.00">
+						<input type="text" name="precio_producto"  id="precio_producto" class="form-control" value="" placeholder="0.00">
 						<span class="validar"></span>
 					</div>
 				</div>
@@ -50,7 +50,7 @@
 				<div class="form-group">
 					<label for="porcentaje">Porcentaje</label>
 					<div class="input-group m-b">
-						<input type="text" name="porcentaje" id="porcentaje" class="form-control number" value="" placeholder="0.00">
+						<input type="text" name="porcentaje" id="porcentaje" class="form-control" value="" placeholder="0.00">
 						<span class="input-group-addon sm">%</span>
 					</div>
 				</div>
@@ -61,7 +61,7 @@
 					<label for="precio">Precio total</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" id="precio" class="form-control number" value="" readonly="">
+						<input type="text" id="precio" class="form-control" value="" readonly="">
 					</div>
 				</div>
 			</div>
@@ -111,17 +111,7 @@
 		</div>
 
 		<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
-
+		
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-	datePicker();
-	$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
-
-	$(document).off("click", ".save").on("click", ".save", function(event) {
-		sendDatos("Promociones/accion/I", $("#form_promocion_new"), "Promociones/promociones_view");
-	});
-
-</script>

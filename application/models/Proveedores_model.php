@@ -8,6 +8,7 @@ class Proveedores_model extends MY_Model {
 		$this->TABLE_NAME = "users";
 		$this->PRI_INDEX = "id";
 	}
+	
 	public function getProveedores($where = []){
 		$this->db->select("
 			users.id,

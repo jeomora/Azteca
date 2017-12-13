@@ -11,3 +11,10 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).off("click", ".delete").on("click", ".delete", function(event) {
+		event.preventDefault();
+		sendDatos("Productos/accion/D",$("#form_producto_edit"), "Productos/productos_view");
+	});
+</script>

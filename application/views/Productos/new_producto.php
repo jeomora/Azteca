@@ -39,3 +39,10 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).off("click", ".save").on("click", ".save", function(event) {
+		event.preventDefault();
+		sendDatos("Productos/accion/I/",$("#form_producto_new"), "Productos/productos_view");
+	});
+</script>

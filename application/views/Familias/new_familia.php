@@ -14,3 +14,11 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).off("click", ".save").on("click", ".save", function(event) {
+		event.preventDefault();
+		sendDatos("Familias/accion/I", $("#form_familia_new"), "Familias/familias_view");
+	});
+
+</script>

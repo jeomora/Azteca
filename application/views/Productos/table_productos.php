@@ -47,4 +47,8 @@
 	</div>
 </div>
 
-<script src="<?php echo base_url("/assets/scripts/productos.js");?>"></script>
+<script type="text/javascript">
+	$(function($) {
+		fillDataTable("table_productos", 'DESC', 10);
+	});
+</script>

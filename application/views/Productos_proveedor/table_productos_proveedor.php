@@ -57,4 +57,28 @@
 	</div>
 </div>
 
-<script src="<?php echo base_url("/assets/scripts/productos_proveedor.js");?>"></script>
+<script type="text/javascript">
+	$(function($) {
+		$("#table_prod_proveedor").dataTable({
+			responsive: true,
+			pageLength: 50,
+			order: [[0, 'ASC']],
+			dom: 'Bfrtip',
+			lengthMenu: [
+				[ 10, 30, 50, -1 ],
+				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+			],
+			buttons: [
+				{ extend: 'pageLength' },
+				{
+					extend: 'excel',
+					exportOptions: {
+						columns: [0,1,2,3,4,5,6]
+					},
+					title: 'Cotizaciones',
+				},
+			]
+		});
+	});
+	
+</script>

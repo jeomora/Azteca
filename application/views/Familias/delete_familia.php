@@ -9,3 +9,11 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).off("click", ".delete").on("click", ".delete", function(event) {
+		event.preventDefault();
+		sendDatos("Familias/accion/D", $("#form_familia_delete"), "Familias/familias_view");
+	});
+
+</script>

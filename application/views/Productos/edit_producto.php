@@ -46,3 +46,10 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).off("click", ".update").on("click", ".update", function(event) {
+		event.preventDefault();
+		sendDatos("Productos/accion/U/",$("#form_producto_edit"), "Productos/productos_view");
+	});
+</script>
