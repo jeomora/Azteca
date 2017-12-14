@@ -19,14 +19,16 @@
 								<tr>
 									<th>NO</th>
 									<th>PRODUCTO</th>
-									<th>PROVEEDOR</th>
+									<?php
+										echo (! $this->ion_auth->is_admin()) ? '' : "<th>PROVEEDOR</th>";
+									?>
 									<th>F. REGISTRO</th>
-									<th>F. FIN</th>
+									<th>F. VENCE</th>
 									<th>EXISTENCIAS</th>
-									<th>DESCUENTO</th>
-									<th>RANGO PRECIOS</th>
 									<th>PRECIO</th>
+									<th>DESCUENTO</th>
 									<th>P. DESCUENTO</th>
+									<th>RANGO PRECIOS</th>
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
@@ -36,17 +38,21 @@
 										<tr>
 											<th><?php echo $value->id_promocion ?></th>
 											<td><?php echo strtoupper($value->producto) ?></td>
-											<td><?php echo strtoupper($value->first_name.' '.$value->last_name) ?></td>
+											<?php
+												echo (! $this->ion_auth->is_admin()) ? '' : "<td>". strtoupper($value->first_name.' '.$value->last_name) ."</td>";
+											?>
 											<td><?php echo date('d-m-Y', strtotime($value->fecha_registro)) ?></td>
-											<td><?php echo date('d-m-Y', strtotime($value->fecha_caduca)) ?></td>
-											<td><?php echo number_format($value->existencias,2,'.',',') ?></td>
-											<td><?php echo number_format($value->descuento,2,'.',',') ?></td>
+											<td><?php echo ($value->fecha_caduca != '') ? date('d-m-Y', strtotime($value->fecha_caduca)) : '' ?></td>
+											<td><?php echo ($value->existencias > 0) ? number_format($value->existencias,2,'.',',') : '' ?></td>
+											<td><?php echo '$ '.number_format($value->precio_fijo,2,'.',',') ?></td>
+											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,2,'.',',').' %' : '' ?></td>
+											<td><?php echo ($value->precio_descuento > 0) ? '$ '.number_format($value->precio_descuento,2,'.',',') : '' ?></td>
 											<td>
-												DE: <?php echo number_format($value->precio_inicio,2,'.',',') ?>
-												A: <?php echo number_format($value->precio_fin,2,'.',',') ?>
+												<?php echo ($value->precio_inicio > 0 && $value->precio_fin > 0) 
+														? 'DE: $ '.number_format($value->precio_inicio,2,'.',',').' A: $ '.number_format($value->precio_fin,2,'.',',')
+														: ''
+												?>
 											</td>
-											<td><?php echo number_format($value->precio_fijo,2,'.',',') ?></td>
-											<td><?php echo number_format($value->precio_descuento,2,'.',',') ?></td>
 											<td>
 												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Promociones/update_promocion/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
 												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Promociones/delete_promocion/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
@@ -64,6 +70,25 @@
 
 <script type="text/javascript">
 	$(function ($) {
-		fillDataTable("table_promociones", 'DESC', 10);
+		$("#table_promociones").dataTable({
+			responsive: true,
+			pageLength: 50,
+			order: [[0, 'ASC']],
+			dom: 'Bfrtip',
+			lengthMenu: [
+				[ 10, 30, 50, -1 ],
+				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+			],
+			buttons: [
+				{ extend: 'pageLength' },
+				{
+					extend: 'excel',
+					exportOptions: {
+						columns: [0,1,2,3,4,5,6,7,8,9]
+					},
+					title: 'Promociones',
+				},
+			]
+		});
 	});
 </script>

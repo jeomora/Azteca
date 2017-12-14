@@ -94,7 +94,7 @@
 					<label for="existencias">Existencias</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-slack"></i></span>
-						<input type="text" name="existencias" id="existencias" class="form-control" value="" placeholder="0">
+						<input type="text" name="existencias" id="existencias" class="form-control number" value="" placeholder="0">
 					</div>
 				</div>
 			</div>
@@ -136,7 +136,15 @@
 
 	$(document).off("click", ".save").on("click", ".save", function(event) {
 		if($("#form_promocion_new").valid()){
-			sendDatos("Promociones/accion/I", $("#form_promocion_new"), "Promociones/promociones_view");
+			sendDatos("Promociones/accion/I", $("#form_promocion_new"), "Promociones/promociones_view", "show");
+		}
+	});
+
+	$("#porcentaje").keyup(function() {
+		var descuento = $(this).val().replace(/[^0-9\.]+/g,"");
+		var precio_producto = $("#precio_producto").val().replace(/[^0-9\.]+/g,"");
+		if(precio_producto != ''){
+			$("#precio_descuento").val((precio_producto - (precio_producto * descuento)));
 		}
 	});
 
