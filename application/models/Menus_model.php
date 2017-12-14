@@ -3,25 +3,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Menus_model extends CI_Model {
 
+	public function getMenus(){
+		$this->db->select("
+			menus.id_menu,  menus.nombre, menus.depende,
+			menus.icono,  menus.nivel, menus.ruta")
+		->from("menus")
+		->where("menus.estatus", 1);
 
-	public function levelOne(){
-		return $this->db->select("menus.id_menu, menus.nombre, menus.depende,
-			menus.icono, menus.nivel, menus.ruta,
-			m2.nombre AS nombre2, m2.ruta AS ruta2,
-			m3.nombre AS nombre3, m3.ruta AS ruta3")
-			->from("menus")
-			->join("menus m2", "menus.depende = m2.id_menu", "LEFT")
-			->join("menus m3", "menus.depende = m3.id_menu", "LEFT")
-			->where("menus.estatus", 1)
-			->get()->result();
-	}
-
-	public function levelTwo(){
-		return $this->db->select("menus.id_menu, menus.nombre, menus.depende,
-			menus.icono, menus.nivel, menus.ruta")
-			->from("menus")
-			->where("menus.estatus", 1)
-			->get()->result();
+		$menus = $this->db->get()->result();
+		
+		if($menus){
+			foreach ($menus as $a => $value) {
+				$submenu = $this->db->select("
+					m2.nombre AS nombre2,
+					m2.ruta as ruta2")
+				->from("menus m2")
+				->where("m2.estatus", 1)
+				->where("m2.depende", $value->id_menu)
+				->get()->result();
+				
+			if($submenu){
+				foreach ($submenu as $b => $val) {
+						$menus[$a]->submenu[$b] = $submenu[$b];
+					}
+				}
+			}
+		}
+		return $menus;
 	}
 
 

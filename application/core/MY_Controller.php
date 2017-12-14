@@ -14,10 +14,8 @@ class MY_Controller extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model("Menus_model", "m_md");
-		$data["main_menu"] = $this->m_md->levelOne();
-		$data["menu_level2"] = $this->m_md->levelTwo();
+		$data["main_menu"] = $this->m_md->getMenus();
 		$data["usuario"] = $this->ion_auth->user()->row();
-
 		//Asignamos el valor a las variables"!
 		$this->ASSETS = "./assets/";
 		$this->UPLOADS = "uploads/";

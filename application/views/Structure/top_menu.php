@@ -2,6 +2,11 @@
 	<div id="page-wrapper" class="blue-bg">
 		<div class="row border-bottom white-bg">
 			<nav class="navbar navbar-static-top" role="navigation">
+				<!--
+				<div class="navbar-header">
+					<img alt="image" width="50px;" style="margin:auto; padding: 5px;" class="img-responsive" src="<?php echo base_url('/assets/img/avatar-3.jpg'); ?>" />
+				</div>
+				-->
 				<div class="navbar-header">
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 						<i class="fa fa-reorder"></i>
@@ -13,49 +18,32 @@
 						<li class="active">
 							<a href="#" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
 						</li>
-						<!-- <?php 
-						echo "<pre>";
-						print_r ($main_menu);
-						echo "</pre>";
-						?> -->
+					
+					<?php if ($this->ion_auth->is_admin()): ?><!--Solo los Administradores pueden ver -->
 						<?php if ($main_menu):?>
 							<?php foreach ($main_menu as $key => $value): ?>
-
+								<?php if ($value->nivel == 1): ?>
+									<li class="dropdown">
+										<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> <?php echo strtoupper($value->nombre) ?> <span class="caret"></span></a>
+										<?php if (isset($value->submenu) && count($value->submenu) > 0 ): ?>
+											<ul role="menu" class="dropdown-menu">
+											<?php foreach ($value->submenu as $key => $val): ?>
+												<li><a href="<?php echo site_url($val->ruta2) ?>"><?php echo $val->nombre2 ?></a></li>
+											<?php endforeach ?>
+											</ul>
+										<?php endif ?>
+									</li>
+								<?php endif ?>
 							<?php endforeach ?>
 						<?php endif ?>
 
-					<?php if ($this->ion_auth->is_admin()): ?><!--Solo los Administradores pueden ver -->
-						<li class="dropdown">
-							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> REGISTROS <span class="caret"></span></a>
-							<ul role="menu" class="dropdown-menu">
-								<li><a href="<?php echo site_url('Auth/') ?>">Usuarios y Proveedores</a></li>
-								<li><a href="<?php echo site_url('Productos/productos_view') ?>" control="" funcion="" >Articulos</a></li>
-								<li><a href="<?php echo site_url('Familias/familias_view') ?>" control="" funcion="" >Familias</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">CONSULTAS <span class="caret"></span></a>
-							<ul role="menu" class="dropdown-menu">
-								<li><a href="<?php echo site_url('Promociones/promociones_view') ?>" control="" funcion="" >Promociones</a></li>
-								<li><a href="<?php echo site_url('Productos_proveedor/productos_proveedor_view') ?>" control="" funcion="">Cotizaciones</a></li>
-								<li><a href="#">Opcion 3</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">REPORTES <span class="caret"></span></a>
-							<ul role="menu" class="dropdown-menu">
-								<li><a href="#">Precios bajos</a></li>
-								<li><a href="#">Reporte 2</a></li>
-								<li><a href="#">Reporte 3</a></li>
-							</ul>
-						</li>
 					</ul>
 					<?php else: ?> <!--Solo Usuario proveedor -->
 						<li class="dropdown">
 							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">CONSULTAS <span class="caret"></span></a>
 							<ul role="menu" class="dropdown-menu">
-								<li><a href="<?php echo site_url('Productos_proveedor/productos_proveedor_view') ?>" control="" funcion="">Cotizaciones</a></li>
-								<li><a href="<?php echo site_url('Promociones/promociones_view') ?>" control="" funcion="">Promociones</a></li>
+								<li><a href="<?php echo site_url('Productos_proveedor/productos_proveedor_view') ?>">Cotizaciones</a></li>
+								<li><a href="<?php echo site_url('Promociones/promociones_view') ?>" >Promociones</a></li>
 							</ul>
 						</li>
 					</ul>
