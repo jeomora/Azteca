@@ -9,11 +9,13 @@
 					<h5>Listado de Cotizaciones</h5>
 				</div>
 				<div class="ibox-content">
-					<div class="btn-group">
-						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn btn-primary tool btn-modal" href="<?php echo site_url('Productos_proveedor/add_asignacion'); ?>" data-target="#myModal">
-							<i class="fa fa-plus"></i>
-						</a>
-					</div>
+					<?php if (! $this->ion_auth->is_admin()): ?>
+						<div class="btn-group">
+							<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn btn-primary tool btn-modal" href="<?php echo site_url('Productos_proveedor/add_asignacion'); ?>" data-target="#myModal">
+								<i class="fa fa-plus"></i>
+							</a>
+						</div>
+					<?php endif ?>
 						<table class="table table-striped table-bordered table-hover" id="table_prod_proveedor">
 							<thead>
 								<tr>
@@ -26,7 +28,9 @@
 									<th>PRECIO</th>
 									<th>FAMILIA</th>
 									<th>FECHA</th>
-									<th>ACCIÓN</th>
+									<?php if (! $this->ion_auth->is_admin()): ?>
+										<th>ACCIÓN</th>
+									<?php endif ?>
 								</tr>
 							</thead>
 							<tbody>
@@ -42,10 +46,12 @@
 											<td><?php echo '$ '.number_format($value->precio,2,'.',',') ?></td>
 											<td><?php echo $value->familia ?></td>
 											<td><?php echo $value->fecha ?></td>
-											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_proveedor/update_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_proveedor/delete_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
-											</td>
+											<?php if (! $this->ion_auth->is_admin()): ?>
+												<td>
+													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_proveedor/update_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+													<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_proveedor/delete_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												</td>
+											<?php endif ?>
 										</tr>
 									<?php endforeach ?>
 								<?php endif ?>
