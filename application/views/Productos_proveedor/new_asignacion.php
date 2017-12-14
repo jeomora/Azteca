@@ -42,10 +42,10 @@
 </div>
 
 <script type="text/javascript">
+	var marcados =0;
 	$(".precio").inputmask("currency", {radixPoint: ".", prefix: ""});
 
 	$(document).off("change", ".id_producto").on("change", ".id_producto", function() {
-		var marcados =0;
 		if($(this).is(":checked")) {
 			marcados = marcados + 1;
 			$(this).closest("tr").find(".precio ").removeAttr('readonly');
