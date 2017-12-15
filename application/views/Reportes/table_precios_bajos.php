@@ -17,7 +17,7 @@
 								<th>PRODUCTO</th>
 								<th>PRECIO</th>
 								<th>P. DESCUENTO</th>
-								<th>PROMOCIÒN</th>
+								<th>PROMOCIÓN</th>
 								<th>OBSERVACIONES</th>
 								<th>DESCUENTO 1</th>
 								<th>DESCUENTO 2</th>
