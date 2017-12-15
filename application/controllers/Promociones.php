@@ -23,9 +23,7 @@ class Promociones extends MY_Controller {
 	public function add_promocion(){
 		$data["title"]="Registrar promociones";
 		$this->load->view("Structure/header_modal", $data);
-
 		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
-		echo $this->db->last_query();
 		$this->load->view("Promociones/new_promocion", $data);
 		$this->load->view("Structure/footer_modal_save");
 	}
