@@ -38,10 +38,10 @@ class Promociones extends MY_Controller {
 			'precio_fijo'		=>	str_replace(',', '', $this->input->post('precio_producto')),
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 			'precio_descuento'	=>	str_replace(',', '', $this->input->post('precio_descuento')),
-			'fecha_registro'	=>	date('Y-m-d h:i:s', strtotime($this->input->post('fecha'))),
+			'fecha_registro'	=>	date('Y-m-d H:i:s', strtotime($this->input->post('fecha'))),
 			'fecha_caduca'		=>	date('Y-m-d', strtotime($this->input->post('fecha_vence'))),
 			'existencias'		=>	$this->input->post('existencias'),
-			'observaciones'		=>	$this->input->post('observaciones')
+			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
 		];
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):

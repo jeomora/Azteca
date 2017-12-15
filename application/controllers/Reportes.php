@@ -9,7 +9,7 @@ class Reportes extends MY_Controller {
 	}
 
 	public function precios_bajos(){
-		$data["promociones"] = $this->prom_mdl->getPromociones();
+		$data["precios_bajos"] = $this->prom_mdl->getPromociones();
 		$this->load->view("Reportes/table_precios_bajos", $data, FALSE);
 	}
 
