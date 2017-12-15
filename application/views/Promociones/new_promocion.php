@@ -19,7 +19,16 @@
 					</select>
 				</div>
 			</div>
+			
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="nombre">Nombre</label>
+					<input class="form-control" placeholder="Nombre de la promoción" name="nombre" id="nombre" type="text">
+				</div>
+			</div>
+		</div>
 
+		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="rango">Rango</label>
@@ -32,9 +41,6 @@
 				</div>
 			</div>
 
-		</div>
-
-		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="precio_producto">Precio</label>
@@ -55,7 +61,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
+		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="precio_descuento">Precio total</label>
@@ -66,9 +74,6 @@
 				</div>
 			</div>
 
-		</div>
-
-		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="fecha">Fecha</label>
@@ -88,7 +93,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
+		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="existencias">Existencias</label>
@@ -98,16 +105,13 @@
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-8">
 				<div class="form-group">
 					<label for="observaciones">Observaciones</label>
 					<textarea type="text" rows="5" placeholder="Escrina las observaciones" class="form-control" name="observaciones" id="observaciones"></textarea>
 				</div>
 			</div>
-
 		</div>
 
 		<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
@@ -124,6 +128,7 @@
 	$("#form_promocion_new").validate({
 		rules: {
 			id_producto: {required: true, min:0},
+			nombre: {required: true},
 			precio_producto: {required: true},
 		
 		}

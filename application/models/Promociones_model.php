@@ -12,6 +12,7 @@ class Promociones_model extends MY_Model {
 	public function getPromociones($where = []){
 		$this->db->select("
 			promociones.id_promocion,
+			promociones.nombre AS promocion,
 			promociones.precio_fijo,
 			promociones.precio_descuento,
 			promociones.precio_inicio,
@@ -21,8 +22,7 @@ class Promociones_model extends MY_Model {
 			promociones.fecha_caduca,
 			promociones.existencias,
 			promociones.observaciones,
-			u.first_name,
-			u.last_name,
+			u.first_name, u.last_name,
 			p.nombre AS producto")
 		->from($this->TABLE_NAME)
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")

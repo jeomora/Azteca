@@ -20,6 +20,7 @@
 							<thead>
 								<tr>
 									<th>NO</th>
+									<th>NOMBRE</th>
 									<th>PRODUCTO</th>
 									<?php
 										echo (! $this->ion_auth->is_admin()) ? '' : "<th>PROVEEDOR</th>";
@@ -31,7 +32,6 @@
 									<th>DESCUENTO</th>
 									<th>P. DESCUENTO</th>
 									<th>RANGO PRECIOS</th>
-									<th>OBSERVACIONES</th>
 									<?php if (! $this->ion_auth->is_admin()): ?>
 										<th>ACCIÓN</th>
 									<?php endif ?>
@@ -42,6 +42,7 @@
 									<?php foreach ($promociones as $key => $value): ?>
 										<tr>
 											<th><?php echo $value->id_promocion ?></th>
+											<td><?php echo $value->promocion ?></td>
 											<td><?php echo strtoupper($value->producto) ?></td>
 											<?php
 												echo (! $this->ion_auth->is_admin()) ? '' : "<td>". strtoupper($value->first_name.' '.$value->last_name) ."</td>";
@@ -58,7 +59,6 @@
 														: ''
 												?>
 											</td>
-											<td><?php echo $value->observaciones ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
 													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Promociones/update_promocion/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>

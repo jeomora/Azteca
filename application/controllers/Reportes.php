@@ -13,6 +13,11 @@ class Reportes extends MY_Controller {
 		$this->load->view("Reportes/table_precios_bajos", $data, FALSE);
 	}
 
+	public function precios_iguales(){
+		$data["promociones_igual"] = $this->prom_mdl->getPromociones();
+		$this->load->view("Reportes/table_precios_iguales", $data, FALSE);
+	}
+
 
 	public function fillExcel(){
 		$promociones = $this->prom_mdl->getPromociones();
