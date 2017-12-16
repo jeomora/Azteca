@@ -16,9 +16,21 @@
 </div>
 
 <script type="text/javascript">
+	$("#form_familia_new").validate({
+		rules: {
+			nombre: {required: true}
+		}
+	});
+
+	jQuery.extend(jQuery.validator.messages, {
+		required: "Este campo es requerido",
+	});
+
 	$(document).off("click", ".save").on("click", ".save", function(event) {
 		event.preventDefault();
-		sendDatos("Familias/accion/I", $("#form_familia_new"), "Familias/familias_view");
+		if($("#form_familia_new").valid()){
+			sendDatos("Familias/accion/I", $("#form_familia_new"), "Familias/familias_view");
+		}
 	});
 
 </script>

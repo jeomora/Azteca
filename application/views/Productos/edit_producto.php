@@ -48,8 +48,23 @@
 </div>
 
 <script type="text/javascript">
+	$("#form_producto_edit").validate({
+		rules: {
+			codigo: {required: true},
+			nombre: {required: true},
+			id_familia: {required: true, min:0}
+		}
+	});
+
+	jQuery.extend(jQuery.validator.messages, {
+		required: "Este campo es requerido",
+		min: jQuery.validator.format("Este campo es requerido"),
+	});
+
 	$(document).off("click", ".update").on("click", ".update", function(event) {
 		event.preventDefault();
-		sendDatos("Productos/accion/U/",$("#form_producto_edit"), "Productos/productos_view");
+		if($("#form_producto_edit").valid()){
+			sendDatos("Productos/accion/U/",$("#form_producto_edit"), "Productos/productos_view");
+		}
 	});
 </script>
