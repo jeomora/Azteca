@@ -2,7 +2,7 @@
 				<!-- Page Footer-->
 						<div class="footer">
 							<div class="pull-right">
-								<strong>AUTOR: Alguien</strong>
+								<strong>AUTOR: </strong>
 							</div>
 							<div>
 								<strong>ABARROTES AZTECA AUTOSERVICIOS S.A DE CV &copy; 2017-2018 </strong> 

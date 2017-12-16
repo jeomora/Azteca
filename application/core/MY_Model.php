@@ -96,6 +96,55 @@ class MY_Model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
+	public function count_all(){
+		return $this->db->count_all($this->TABLE_NAME);
+	}
+
+	public function get_pagination($columns='', $where = [], $joins=[],  $like = [], $limit = 0, $start = 10, $order = ''){
+		if(! empty($columns)) {
+			$this->db->select($columns);
+		}
+		if(! empty($where)){
+			$this->db->where($where);
+		}
+		if(! empty($joins)){
+			$this->db->join($joins["table"], $joins["ON"], $joins["clausula"]);
+		}
+		if(! empty($like)){
+			$this->db->like($like);
+		}
+		if(! empty($order)){
+			$this->db->order_by($order);
+		}
+		if($limit > 0){
+			$this->db->limit($limit, $start);
+		}
+		$this->db->where($this->TABLE_NAME.".estatus", 1);
+
+		$this->db->from($this->TABLE_NAME);
+
+		if($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					$this->db->where($field, $value);
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0){
+			foreach($query->result() as $k => $row){
+				$data[]	= $row;
+			}
+			return $data;
+		}
+		return false;
+	}
+
+
 }
 
 /* End of file MY_model.php */
