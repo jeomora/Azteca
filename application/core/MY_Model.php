@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Model extends CI_Model {
 
 	protected $TABLE_NAME;
-	protected $PRI_INDEX ;
+	protected $PRI_INDEX;
 	protected $PARAMETERS;
 
 	public function __construct($params =  array()){
@@ -13,11 +13,6 @@ class MY_Model extends CI_Model {
 			$this->TABLE_NAME = $this->PARAMETERS["table"];
 			$this->PRI_INDEX = $this->parameters["primary_key"];
 		}
-		/**
-		 * [$this->joins ejemplo de uso
-		 * $this->joins[] = array("table" => "cita", "on" => "cita.ID = ".$this->TABLE_NAME.".ID_cita", "clausula" => "");]
-		 * @var array
-		 */
 	}
 
 	public function get($columns='', $where = [], $joins=[],  $like = [], $limit = 0, $start = 10, $order = ''){
