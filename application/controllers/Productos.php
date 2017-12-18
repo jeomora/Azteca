@@ -7,12 +7,44 @@ class Productos extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Productos_model", "pro_md");
 		$this->load->model("Familias_model", "fam_md");
+		$this->load->library("pagination");
 	}
 
 	public function productos_view(){
 		$data["productos"] = $this->pro_md->getProductos();
 		$this->load->view("Productos/table_productos", $data, FALSE);
 	}
+
+	// Esta función es de ejemplo para paginación
+	// public function productos_view(){
+	// 	$columns = "productos.id_producto,
+	// 		productos.nombre AS producto,
+	// 		productos.precio,
+	// 		productos.codigo,
+	// 		f.nombre AS familia";
+
+	// 	$joins =  [
+	// 			["table"	=>	"familias f",	"ON"	=>	"productos.id_familia = f.id_familia",	"clausula"	=>	"LEFT"]
+	// 	];
+
+	// 	$limit_per_page = 50;
+	// 	$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+	// 	$total_rows = $this->pro_md->count_all();
+	// 	if($total_rows > 0){
+	// 		$data["productos"] = $this->pro_md->get_pagination($columns, NULL, $joins, "", $limit_per_page, $start_index, 'id_producto');
+	// 		$config =[
+	// 			"base_url"			=>	site_url().'/Productos/productos_view/',
+	// 			"total_rows"		=>	$total_rows,
+	// 			"per_page"			=>	$limit_per_page,
+	// 			"uri_segment"		=>	3,
+
+	// 			"reuse_query_string"=> TRUE
+	// 		];
+	// 		$this->pagination->initialize($config);
+	// 		$data["links"] = $this->pagination->create_links();
+	// 	}
+	// 	$this->load->view("Productos/productos_table", $data, FALSE);
+	// }
 
 	public function add_producto(){
 		$data["title"]="Registrar productos";

@@ -4,28 +4,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Model extends CI_Model {
 
 	protected $TABLE_NAME;
-	protected $SELECT;
 	protected $PRI_INDEX ;
-	protected $parameters;
-	protected $joins;
-	protected $wheres;
-	protected $select;
+	protected $PARAMETERS;
 
-	public function __construct($params_conf =  array()){
-		$this->parameters = $params_conf;
-		if ($this->parameters) {
-			$this->TABLE_NAME = $this->parameters["table"];
+	public function __construct($params =  array()){
+		$this->PARAMETERS = $params;
+		if ($this->PARAMETERS) {
+			$this->TABLE_NAME = $this->PARAMETERS["table"];
 			$this->PRI_INDEX = $this->parameters["primary_key"];
-			$this->SELECT = "*";
 		}
 		/**
 		 * [$this->joins ejemplo de uso
 		 * $this->joins[] = array("table" => "cita", "on" => "cita.ID = ".$this->TABLE_NAME.".ID_cita", "clausula" => "");]
 		 * @var array
 		 */
-		$this->joins = [];
-		$this->wheres = [];
-		$this->select  = "";
 	}
 
 	public function get($columns='', $where = [], $joins=[],  $like = [], $limit = 0, $start = 10, $order = ''){
@@ -108,7 +100,9 @@ class MY_Model extends CI_Model {
 			$this->db->where($where);
 		}
 		if(! empty($joins)){
-			$this->db->join($joins["table"], $joins["ON"], $joins["clausula"]);
+			foreach($joins as $k => $join){
+				$this->db->join($join["table"], $join["ON"], $join["clausula"]);
+			}
 		}
 		if(! empty($like)){
 			$this->db->like($like);
