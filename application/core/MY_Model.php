@@ -23,7 +23,9 @@ class MY_Model extends CI_Model {
 			$this->db->where($where);
 		}
 		if(! empty($joins)){
-			$this->db->join($joins["table"], $joins["ON"], $joins["clausula"]);
+			foreach($joins as $k => $join){
+				$this->db->join($join["table"], $join["ON"], $join["clausula"]);
+			}
 		}
 		if(! empty($like)){
 			$this->db->like($like);

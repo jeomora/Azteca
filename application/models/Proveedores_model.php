@@ -21,7 +21,8 @@ class Proveedores_model extends MY_Model {
 		->from($this->TABLE_NAME)
 		->join("users_groups ug", $this->TABLE_NAME.".id = ug.user_id", "LEFT")
 		->join("groups g", "ug.group_id = g.id", "LEFT")
-		->where($this->TABLE_NAME.".active", 1);
+		->where($this->TABLE_NAME.".active", 1)
+		->where("ug.group_id", 2);
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
