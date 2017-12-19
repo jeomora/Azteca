@@ -48,8 +48,8 @@
 											<td><?php echo $value->fecha ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
-													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_proveedor/update_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-													<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_proveedor/delete_asignacion/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_proveedor/get_update/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+													<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_proveedor/get_delete/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
 												</td>
 											<?php endif ?>
 										</tr>

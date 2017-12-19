@@ -55,7 +55,7 @@ class Productos_proveedor extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function update_asignacion($id){
+	public function get_update($id){
 		$data["title"]="Actualizar cotización";
 		$this->load->view("Structure/header_modal", $data);
 		$data["prod_prov"] = $this->prod_prov_mdl->get(NULL, ['id_producto_proveedor'=>$id])[0];
@@ -64,7 +64,7 @@ class Productos_proveedor extends MY_Controller {
 		$this->load->view("Structure/footer_modal_edit");
 	}
 
-	public function delete_asignacion($id){
+	public function get_delete($id){
 		$data["title"]="Cotización a eliminar";
 		$this->load->view("Structure/header_modal", $data);
 		$data["prod_prov"] = $this->prod_prov_mdl->get(NULL, ['id_producto_proveedor'=>$id])[0];

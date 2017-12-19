@@ -61,8 +61,8 @@
 											</td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
-													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Promociones/update_promocion/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-													<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Promociones/delete_promocion/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Promociones/get_update/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+													<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Promociones/get_delete/'.$value->id_promocion);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
 												</td>
 											<?php endif ?>
 										</tr>

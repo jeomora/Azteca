@@ -54,7 +54,7 @@ class Productos extends MY_Controller {
 		$this->load->view("Structure/footer_modal_save");
 	}
 
-	public function update_producto($id){
+	public function get_update($id){
 		$data["title"]="Actualizar datos del producto";
 		$this->load->view("Structure/header_modal", $data);
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
@@ -63,7 +63,7 @@ class Productos extends MY_Controller {
 		$this->load->view("Structure/footer_modal_edit");
 	}
 
-	public function delete_producto($id){
+	public function get_delete($id){
 		$data["title"]="Producto a eliminar";
 		$this->load->view("Structure/header_modal", $data);
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];

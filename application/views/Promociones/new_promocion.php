@@ -141,7 +141,7 @@
 
 	$(document).off("click", ".save").on("click", ".save", function(event) {
 		if($("#form_promocion_new").valid()){
-			sendDatos("Promociones/accion/I", $("#form_promocion_new"), "Promociones/promociones_view", "show");
+			sendDatos("Promociones/save", $("#form_promocion_new"), "Promociones/promociones_view", "show");
 		}
 	});
 

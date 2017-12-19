@@ -33,8 +33,8 @@
 											<td><?php echo $value->producto ?></td>
 											<td><?php echo $value->familia ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos/update_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos/delete_producto/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos/get_update/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos/get_delete/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>

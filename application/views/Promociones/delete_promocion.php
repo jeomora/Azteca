@@ -15,6 +15,6 @@
 <script type="text/javascript">
 	$(document).off("click", ".delete").on("click", ".delete", function(event) {
 		event.preventDefault();
-		sendDatos("Promociones/accion/D", $("#form_promocion_delete"), "Promociones/promociones_view");
+		sendDatos("Promociones/delete", $("#form_promocion_delete"), "Promociones/promociones_view");
 	});
 </script>

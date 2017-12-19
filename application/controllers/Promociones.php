@@ -28,7 +28,7 @@ class Promociones extends MY_Controller {
 		$this->load->view("Structure/footer_modal_save");
 	}
 
-	public function accion($param){
+	public function save(){
 		$promocion = [
 			'nombre'			=>	strtoupper($this->input->post('nombre')),
 			'id_producto'		=>	$this->input->post('id_producto'),
@@ -43,38 +43,48 @@ class Promociones extends MY_Controller {
 			'existencias'		=>	$this->input->post('existencias'),
 			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
 		];
-		switch ($param) {
-			case (substr($param, 0, 1) === 'I'):
-				$data ['id_promocion']=$this->prom_mdl->insert($promocion);
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Promoción registrada correctamente',
-					"type"	=> 'success'
-				];
-				break;
-
-			case (substr($param, 0, 1) === 'U'):
-				$data ['id_promocion'] = $this->prom_mdl->update($promocion, $this->input->post('id_promocion'));
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Promoción actualizada correctamente',
-					"type"	=> 'success'
-				];
-				break;
-
-			default:
-				$data ['id_promocion'] = $this->prom_mdl->update(["estatus" => 0], $this->input->post('id_promocion'));
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Promoción eliminada correctamente',
-					"type"	=> 'success'
-				];
-				break;
-		}
+		$data ['id_promocion']=$this->prom_mdl->insert($promocion);
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Promoción registrada correctamente',
+			"type"	=> 'success'
+		];
 		$this->jsonResponse($mensaje);
 	}
 
-	public function update_promocion($id){
+	public function update(){
+		$promocion = [
+			'nombre'			=>	strtoupper($this->input->post('nombre')),
+			'id_producto'		=>	$this->input->post('id_producto'),
+			'precio_inicio'		=>	str_replace(',', '', $this->input->post('precio_desde')),
+			'precio_fin'		=>	str_replace(',', '', $this->input->post('precio_hasta')),
+			'precio_fijo'		=>	str_replace(',', '', $this->input->post('precio_producto')),
+			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
+			'precio_descuento'	=>	str_replace(',', '', $this->input->post('precio_descuento')),
+			'fecha_caduca'		=>	date('Y-m-d', strtotime($this->input->post('fecha_vence'))),
+			'existencias'		=>	$this->input->post('existencias'),
+			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
+		];
+		$data ['id_promocion'] = $this->prom_mdl->update($promocion, $this->input->post('id_promocion'));
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Promoción actualizada correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+
+	public function delete(){
+		$data ['id_promocion'] = $this->prom_mdl->update(["estatus" => 0], $this->input->post('id_promocion'));
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Promoción eliminada correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+
+	public function get_update($id){
 		$data["title"]="Actualizar promoción";
 		$this->load->view("Structure/header_modal", $data);
 		$data["promocion"] = $this->prom_mdl->get(NULL, ['id_promocion'=>$id])[0];
@@ -83,7 +93,7 @@ class Promociones extends MY_Controller {
 		$this->load->view("Structure/footer_modal_edit");
 	}
 
-	public function delete_promocion($id){
+	public function get_delete($id){
 		$data["title"]="Promoción a eliminar";
 		$this->load->view("Structure/header_modal", $data);
 		$data["promocion"] = $this->prom_mdl->get(NULL, ['id_promocion'=>$id])[0];

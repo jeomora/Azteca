@@ -29,8 +29,8 @@
 											<th><?php echo $value->id_familia ?></th>
 											<td><?php echo $value->nombre ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Familias/update_familia/'.$value->id_familia);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Familias/delete_familia/'.$value->id_familia);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Familias/get_update/'.$value->id_familia);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Familias/get_delete/'.$value->id_familia);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>

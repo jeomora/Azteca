@@ -142,7 +142,7 @@
 
 	$(document).off("click", ".update").on("click", ".update", function(event) {
 		if($("#form_promocion_edit").valid()){
-			sendDatos("Promociones/accion/U/", $("#form_promocion_edit"), "Promociones/promociones_view", "show");
+			sendDatos("Promociones/update", $("#form_promocion_edit"), "Promociones/promociones_view", "show");
 		}
 	});
 
