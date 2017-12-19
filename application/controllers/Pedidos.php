@@ -6,8 +6,10 @@ class Pedidos extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Pedidos_model", "ped_mdl");
-		$this->load->model("Pedidos_model", "ped_mdl");
+		$this->load->model("Detalles_pedidos_model", "det_ped_mdl");
+		$this->load->model("Sucursales_model", "suc_mdl");
 		$this->load->model("Proveedores_model", "pro_mdl");
+		$this->load->model("Productos_proveedor_model", "pro_prov_mdl");
 	}
 
 	public function pedidos_view(){
@@ -25,58 +27,101 @@ class Pedidos extends MY_Controller {
 		$data["title"]="Registrar pedidos";
 		$this->load->view("Structure/header_modal", $data);
 		$data["proveedores"] = $this->pro_mdl->getProveedores();
+		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
 		$this->load->view("Pedidos/new_pedido", $data);
 		$this->load->view("Structure/footer_modal_save");
 	}
 
-	public function update_pedido($id){
+	public function get_update($id){
 		$data["title"]="Actualizar datos del pedido";
 		$this->load->view("Structure/header_modal", $data);
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
+		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
 		$this->load->view("Pedidos/edit_pedido", $data);
 		$this->load->view("Structure/footer_modal_edit");
 	}
 
-	public function delete_pedido($id){
+	public function get_delete($id){
 		$data["title"]="Pedido a eliminar";
 		$this->load->view("Structure/header_modal", $data);
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
+		$data["proveedor"] = $this->pro_mdl->getProveedores(['users.id' => $data['pedido']->id_proveedor])[0];
 		$this->load->view("Pedidos/delete_pedido", $data);
 		$this->load->view("Structure/footer_modal_delete");
 	}
 
-	public function accion($param){
-		$pedido = [];
+	public function update(){
+	
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Pedido actualizado correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
 
-		switch ($param) {
-			case (substr($param, 0, 1) === 'I'):
-				// $data ['id_pedido']=$this->ped_mdl->insert($pedido);
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Pedido registrado correctamente',
-					"type"	=> 'success'
-				];
-				break;
+	public function delete(){
+		$data ['id_pedido'] = $this->ped_mdl->update(["estatus" => 0], $this->input->post('id_pedido'));
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Pedido eliminado correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
 
-			case (substr($param, 0, 1) === 'U'):
-				// $data ['id_pedido'] = $this->ped_mdl->update($pedido, $this->input->post('id_pedido'));
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Pedido actualizado correctamente',
-					"type"	=> 'success'
-				];
-				break;
+	public function get_productos(){
+		$id_proveedor = $this->input->post('id_proveedor');
+		$where = ["productos_proveedor.id_proveedor" => $id_proveedor];
+		$productosProveedor = $this->pro_prov_mdl->productos_proveedor($where);
+		$this->jsonResponse($productosProveedor);
+	}
 
-			default:
-				// $data ['id_pedido'] = $this->ped_mdl->update(["estatus" => 0], $this->input->post('id_pedido'));
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Pedido eliminado correctamente',
-					"type"	=> 'success'
-				];
-				break;
+	public function save_pedido(){
+		$pedido = [
+			"id_sucursal"		=>	$this->input->post('id_sucursal'),
+			"id_proveedor"		=>	$this->input->post('id_proveedor'),
+			"id_user_registra"	=>	$this->ion_auth->user()->row()->id, 
+			"fecha_registro"	=>	date("Y-m-d H:i:s"),
+			"total"				=>	str_replace(",", "", $this->input->post('total'))
+		];
+		
+		$id_pedido = $this->ped_mdl->insert($pedido);
+		
+		$size = sizeof($this->input->post('id_producto[]'));
+		$productos = $this->input->post('id_producto[]');
+		for($i = 0; $i < $size; $i++){
+			$detalle_pedido[] = array(
+				'id_pedido'		=>	$id_pedido,
+				'id_producto'	=>	$productos[$i],
+				'cantidad'		=>	str_replace(",", "", $this->input->post('cantidad[]')[$i]),
+				'precio'		=>	str_replace(",", "", $this->input->post('precio[]')[$i]),
+				'importe'		=>	str_replace(",", "", $this->input->post('importe[]')[$i])
+			);
+		}
+		if($this->det_ped_mdl->insertm($detalle_pedido) > 0){
+			$mensaje = [
+				"id" 	=> 'Éxito',
+				"desc"	=> 'Pedido registrado correctamente',
+				"type"	=> 'success'
+			];
+		}else{
+			$mensaje = [
+				"id" 	=> 'Error',
+				"desc"	=> 'No se registro el Pedido',
+				"type"	=> 'error'
+			];
 		}
 		$this->jsonResponse($mensaje);
+	}
+
+	public function get_detalle($id){
+		$data["title"]="Detalle del Pedido";
+		$this->load->view("Structure/header_modal", $data);
+		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
+		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
+		$this->load->view("Pedidos/detalle_pedido", $data);
+		$this->load->view("Structure/footer_modal_close");
 	}
 
 }

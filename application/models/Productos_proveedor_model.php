@@ -45,6 +45,37 @@ class Productos_proveedor_model extends MY_Model {
 			return false;
 		}
 	}
+
+	public function productos_proveedor($where=[]){
+		$this->db->select("
+			productos_proveedor.id_producto_proveedor, productos_proveedor.precio,
+			p.id_producto, UPPER(p.nombre) AS producto,
+			u.id, UPPER(CONCAT(u.first_name,' ',u.last_name)) AS proveedor")
+		->from($this->TABLE_NAME)
+		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
+		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
+		->where($this->TABLE_NAME.".estatus", 1);
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Productos_proveedor_model.php */

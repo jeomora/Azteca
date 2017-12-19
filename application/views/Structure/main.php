@@ -109,12 +109,12 @@
 
 		})
 		.fail(function(response) {
-			console.log("Error en la respuesta: ", response);
+			// console.log("Error en la respuesta: ", response);
 		})
 		.always(function(response) {
 			$("#myModal .modal-content").empty();
 			$("#myModal .modal-body").empty();
-			console.log("Petición completa: ", response);
+			// console.log("Petición completa: ", response);
 		});
 	}
 
@@ -145,6 +145,18 @@
 		for (var selector in config) {
 			$(selector).chosen(config[selector]);
 		}
+	}
+
+	/**
+	* Funciones para formatear cantidades
+	* @author Internet
+	* @parm {num=cantidad, d=decimales}
+	*/
+	function formatNumber(num, d){
+		var p = num.toFixed(d).split(".");
+		return p[0].split("").reverse().reduce(function(acc, num, i, orig) {
+			return  num=="-" ? acc : num + (i && !(i % 3) ? "," : "") + acc;
+		}, "") + "." + p[1];
 	}
 
 

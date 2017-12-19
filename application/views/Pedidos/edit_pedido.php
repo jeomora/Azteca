@@ -28,7 +28,7 @@
 	$(document).off("click", ".update").on("click", ".update", function(event) {
 		event.preventDefault();
 		if ($("#form_pedido_edit").valid()) {
-			sendDatos("Pedidos/accion/U/",$("#form_pedido_edit"), "Pedidos/pedidos_view");
+			sendDatos("Pedidos/update",$("#form_pedido_edit"), "Pedidos/pedidos_view");
 		}
 	});
 </script>

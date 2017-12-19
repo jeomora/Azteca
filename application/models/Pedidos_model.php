@@ -12,11 +12,13 @@ class Pedidos_model extends MY_Model {
 	public function getPedidos($where=[]){
 		$this->db->select("
 			pedidos.id_pedido,
-			pedidos.fecha_registro,
+			DATE_FORMAT(pedidos.fecha_registro,'%d-%m-%Y') AS fecha, 
 			pedidos.total,
-			pro.first_name, pro.last_name,
-			us.first_name, us.last_name")
+			UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
+			UPPER(CONCAT(us.first_name,' ',us.last_name)) AS user_registra,
+			s.nombre AS sucursal")
 		->from($this->TABLE_NAME)
+		->join("sucursales s", $this->TABLE_NAME.".id_sucursal = s.id_sucursal", "LEFT")
 		->join("users pro", $this->TABLE_NAME.".id_proveedor = pro.id", "LEFT")
 		->join("users us", $this->TABLE_NAME.".id_user_registra = us.id", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1);

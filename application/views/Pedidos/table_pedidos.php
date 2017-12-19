@@ -21,6 +21,7 @@
 									<th>PROVEEDOR</th>
 									<th>TOTAL</th>
 									<th>FECHA</th>
+									<th>SUCURSAL</th>
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
@@ -29,12 +30,14 @@
 									<?php foreach ($pedidos as $key => $value): ?>
 										<tr>
 											<th><?php echo $value->id_pedido ?></th>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
+											<td><?php echo $value->proveedor ?></td>
+											<td><?php echo '$ '.number_format($value->total,2,'.',',') ?></td>
+											<td><?php echo $value->fecha ?></td>
+											<td><?php echo strtoupper($value->sucursal) ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Pedidos/update_pedido/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Pedidos/delete_pedido/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Pedidos/get_update/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Ver"  class="btn tool btn-success btn-modal" href="<?php echo site_url('Pedidos/get_detalle/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-eye"></i></a>
+												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Pedidos/get_delete/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
