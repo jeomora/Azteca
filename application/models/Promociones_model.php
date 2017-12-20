@@ -27,7 +27,8 @@ class Promociones_model extends MY_Model {
 		->from($this->TABLE_NAME)
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
-		->where($this->TABLE_NAME.".estatus", 1);
+		->where($this->TABLE_NAME.".estatus", 1)
+		->order_by($this->TABLE_NAME.".precio_fijo", "ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
