@@ -2,10 +2,10 @@
 
 	var name_control = "";//Nombre del controlador activo
 	var name_function = "";//Nombre de la función cargada
+	var window_modal = $("#mainModal");//Ventana modal usada 
 
 	$(function($) {
 		var iniciar =1;
-
 		$("#myModal").modal({
 			backdrop: 'static',
 			keyboard: false,
@@ -46,7 +46,7 @@
 			}
 
 		});
-		
+
 	});
 
 
@@ -159,5 +159,90 @@
 		}, "") + "." + p[1];
 	}
 
+	function getModal(url){
+
+		$.ajax({
+			url: site_url + url,
+			type: "GET",
+			dataType: "JSON"
+		})
+		.done(function(response) {
+			window_modal.find(".modal-title").html(response.title);
+			window_modal.find(".modal-body").html(response.view);
+			window_modal.find(".modal-footer").find("#mybotton").addClass(response.class);
+			window_modal.modal("show");
+
+		})
+		.fail(function(response) {
+			toastr.error("Se generó un error en el Sistema", "USUARIO");
+
+		});
+	}
+
+	function loadScript(url, callback){
+		var script = document.createElement("script")
+			script.type = "text/javascript";
+			if (script.readyState){//IE
+				script.onreadystatechange = function(){
+					if (script.readyState == "loaded" || script.readyState == "complete"){
+						script.onreadystatechange = null;
+						callback();
+					}
+				};
+			}else{//Others
+				script.onload = function(){
+					callback();
+				};
+			}
+			script.src = url;
+		document.getElementsByTagName("head")[0].appendChild(script);
+	}
+
+	function sendForm(url, formData, url_repuesta){
+
+		url_repuesta = typeof url_repuesta === 'undefined' ? "/#" : url_repuesta;
+
+		$.ajax({
+			url: site_url + url,
+			type: "POST",
+			dataType: "JSON",
+			data: (formData).serializeArray()
+		})
+		.done(function(response) {
+			switch(response.type){
+				case "success":
+					cleanModal();
+					$("#mainModal").modal("hide");
+					toastr.success(response.desc, response.id);
+					location.reload();
+				break;
+
+				case "info":
+					cleanModal();
+					$("#mainModal").modal("hide");
+					toastr.info(response.desc, response.id);
+					location.reload();
+				break;
+
+				case "warning":
+					cleanModal();
+					$("#mainModal").modal("hide");
+					toastr.warning(response.desc, response.id);
+					location.reload();
+				break;
+
+				default:
+					cleanModal();
+					$("#mainModal").modal("hide");
+					toastr.error(response.desc, response.id);
+					location.reload();
+			}
+			$("#notifications").html(response);
+
+		})
+		.fail(function(response) {
+			// console.log("Error en la respuesta: ", response);
+		});
+	}
 
 </script>

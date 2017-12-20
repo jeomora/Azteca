@@ -8,6 +8,33 @@ class Sucursales extends MY_Controller {
 		$this->load->model("Sucursales_model", "suc_md");
 	}
 
+/*	public function sucursales_view(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/sucursales',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["sucursales"] = $this->suc_md->get();
+		$this->estructura("Sucursales/table_sucursales", $data);
+	}*/
+
 	public function sucursales_view(){
 		$data["sucursales"] = $this->suc_md->get();
 		$this->load->view("Sucursales/table_sucursales", $data, FALSE);
@@ -26,7 +53,6 @@ class Sucursales extends MY_Controller {
 		$data["sucursal"] = $this->suc_md->get(NULL, ['id_sucursal'=>$id])[0];
 		$this->load->view("Sucursales/edit_sucursal", $data);
 		$this->load->view("Structure/footer_modal_edit");
-
 	}
 
 	public function get_delete($id){
@@ -74,6 +100,12 @@ class Sucursales extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function newSucursal(){
+		$data["title"] = "AGREGAR SUCURSALES";
+		$data["class"] = "add_sucursal";
+		$data["view"] =  $this->load->view("Sucursales/sucursal_new", NULL, TRUE);
+		$this->jsonResponse($data);
+	}
 
 }
 

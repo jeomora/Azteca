@@ -65,9 +65,37 @@
 		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.bootstrap.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.responsive.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.tableTools.min.js') ?>"></script>
+		<!--
+		<?php if (isset($scripts) && $scripts): ?>
+			<?php foreach ($scripts as $row): ?>
+			<script type="text/javascript" src="<?php echo base_url($row.'.js') ?>"></script>
+			<?php endforeach ?>
+		<?php endif ?>-->
 		<!-- Data Picker -->
 		<script src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.es.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/colorpicker/bootstrap-colorpicker.min.js') ?>"></script>
 </body>
 </html>
+
+<div class="modal inmodal" id="mainModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content animated flipInY">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<i class="fa fa-times-circle-o"></i>
+				</button>
+				<h4 class="modal-title">TÍTULO</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+			<div class="modal-footer">
+				<button id="mybotton" class="btn btn-success" type="button">
+					<span class="bold"><i class="fa fa-floppy-o"></i></span>
+					&nbsp;Guardar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -14,6 +14,11 @@
 							<i class="fa fa-plus"></i>
 						</a>
 					</div>
+					
+<!-- 					<button class="btn btn-success" id="new_sucursal">
+						<i class="fa fa-plus"></i> Nueva
+					</button> -->
+
 						<table class="table table-striped table-bordered table-hover" id="table_sucursales">
 							<thead>
 								<tr>
@@ -44,7 +49,6 @@
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript">
 	$(function($) {
 		fillDataTable("table_sucursales", 'DESC', 10);
