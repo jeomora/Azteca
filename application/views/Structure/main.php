@@ -44,7 +44,6 @@
 					window.location = element.attr("href");
 				}
 			}
-
 		});
 
 	});
@@ -148,9 +147,9 @@
 	}
 
 	/**
-	* Funciones para formatear cantidades
-	* @author Internet
-	* @parm {num=cantidad, d=decimales}
+	 * Funciones para formatear cantidades
+	 * @author Internet
+	 * @parm {num=cantidad, d=decimales}
 	*/
 	function formatNumber(num, d){
 		var p = num.toFixed(d).split(".");
@@ -159,8 +158,13 @@
 		}, "") + "." + p[1];
 	}
 
-	function getModal(url){
+	function emptyModal(){
+		window_modal.find(".modal-body").empty();
+		window_modal.find(".modal-title").empty();
+	}
 
+	function getModal(url, success, error){
+		emptyModal();
 		$.ajax({
 			url: site_url + url,
 			type: "GET",
@@ -171,11 +175,19 @@
 			window_modal.find(".modal-body").html(response.view);
 			window_modal.find(".modal-footer").find("#mybotton").addClass(response.class);
 			window_modal.modal("show");
-
+			if(typeof success === "function"){
+				success();
+			}else{
+				$("body").css("cursor", "auto");
+			}
 		})
 		.fail(function(response) {
+			console.log("Error en la petición: ",response);
 			toastr.error("Se generó un error en el Sistema", "USUARIO");
-
+			if (typeof error === "function"){
+				error();
+			}
+			window_modal.modal("hide");
 		});
 	}
 
@@ -199,9 +211,7 @@
 	}
 
 	function sendForm(url, formData, url_repuesta){
-
 		url_repuesta = typeof url_repuesta === 'undefined' ? "/#" : url_repuesta;
-
 		$.ajax({
 			url: site_url + url,
 			type: "POST",
@@ -213,29 +223,24 @@
 				case "success":
 					cleanModal();
 					$("#mainModal").modal("hide");
+					$("#main_container").empty();
 					toastr.success(response.desc, response.id);
-					location.reload();
+					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				case "info":
 					cleanModal();
 					$("#mainModal").modal("hide");
 					toastr.info(response.desc, response.id);
-					location.reload();
+					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				case "warning":
-					cleanModal();
-					$("#mainModal").modal("hide");
 					toastr.warning(response.desc, response.id);
-					location.reload();
 				break;
 
 				default:
-					cleanModal();
-					$("#mainModal").modal("hide");
 					toastr.error(response.desc, response.id);
-					location.reload();
 			}
 			$("#notifications").html(response);
 
