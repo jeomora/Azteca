@@ -6,10 +6,16 @@ class Reportes extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Promociones_model", "prom_mdl");
+		$this->load->model("Productos_model", "prod_mdl");
+		$this->load->model("Proveedores_model", "pro_mdl");
 	}
 
 	public function precios_bajos(){
-		$data["precios_bajos"] = $this->prom_mdl->getPromociones();
+		ini_get("memory_limit")."\n";
+		ini_set("memory_limit","512M");
+		$data["preciosBajos"] = $this->prom_mdl->preciosBajos();
+		// $this->load->library('table');
+		// $data['table'] = $this->table->generate($data['precios_bajos']);
 		$this->load->view("Reportes/table_precios_bajos", $data, FALSE);
 	}
 

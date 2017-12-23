@@ -116,7 +116,13 @@
 			// console.log("Petición completa: ", response);
 		});
 	}
-
+	
+	/**
+	 * Funciones para construir el dataTable
+	 * @param [element 	=> Es el selector de la tabla ]
+	 * @param [order 	=> Orden que se mostrará la información (ASC-DESC)]
+	 * @param [limit 	=> Cantidad de registros por pagina]
+	*/
 	function fillDataTable(element, order, limit) {
 		$("#"+element).dataTable({
 			responsive: true,
@@ -147,9 +153,10 @@
 	}
 
 	/**
-	 * Funciones para formatear cantidades
+	 * Funciones para formatear cantidades de números
 	 * @author Internet
-	 * @parm {num=cantidad, d=decimales}
+	 * @param [num 	=> Es la cantidad a formatear ]
+	 * @param [d 	=> Son la cantidad de decimales a mostrar]
 	*/
 	function formatNumber(num, d){
 		var p = num.toFixed(d).split(".");
@@ -158,11 +165,20 @@
 		}, "") + "." + p[1];
 	}
 
+	/**
+	 * Funciones para vaciar una ventana modal
+	*/
 	function emptyModal(){
 		window_modal.find(".modal-body").empty();
 		window_modal.find(".modal-title").empty();
 	}
 
+	/**
+	 * Funciones para cargar una ventana modal
+	 * @param [url 		=> Es la ruta de la petición (Controlador/función)]
+	 * @param [success	=> Es la función que se ejecutará en caso de éxito]
+	 * @param [error	=> Es la función que se ejecutará en caso de error]
+	*/
 	function getModal(url, success, error){
 		emptyModal();
 		$.ajax({
@@ -191,25 +207,91 @@
 		});
 	}
 
-	function loadScript(url, callback){
-		var script = document.createElement("script")
-			script.type = "text/javascript";
-			if (script.readyState){//IE
-				script.onreadystatechange = function(){
-					if (script.readyState == "loaded" || script.readyState == "complete"){
-						script.onreadystatechange = null;
-						callback();
-					}
-				};
-			}else{//Others
-				script.onload = function(){
-					callback();
-				};
-			}
-			script.src = url;
-		document.getElementsByTagName("head")[0].appendChild(script);
+	/**
+	 * [Comprueb si una librería esta cargada]
+	 * @param  [js_url 	=> Es la url completa de la libreía]
+	 * @param  [type 	=> Es el tipo de archivo de la libreía]
+	 * @return [boolean	=> true si esta cargada false si no esta cargada]
+	*/
+	var isLoaded = function(js_url, type) {
+		typeof type !== "undefined" ? type : "script";
+		var scripts = document.getElementsByTagName("script");
+		if(type === "script"){
+			return Array.from(scripts) // transformo a un array
+				.map(s => s.src) // Mapeo a un array con solos los src de los JS ya cargados
+				.filter(url => url == js_url) // filtro las url que coincidan con el que se intenta cargar
+				.length > 0 // si existe más de una, obvio, está cargada
+		}else{
+			return Array.from(scripts) // transformo a un array
+				.map(s => s.src) // Mapeo a un array con solos los src de los JS ya cargados
+				.filter(url => url == js_url) // filtro las url que coincidan con el que se intenta cargar
+				.length > 0 // si existe más de una, obvio, está cargada
+		}
 	}
 
+	/**
+	 * Funciíon para verificar si una libreria de javascrip existe y si no la carga, posteriormente
+	 * @param [url		=> Ruta donde esta cargada la libreria de java script]
+	 * @param [callback => Función que se ejecutara despues de cargar el scrip]
+	*/
+	function loadScript(url, callback){
+		if(isLoaded() === false){
+			var script = document.createElement("script")
+				script.type = "text/javascript";
+				if (script.readyState){//IE
+					script.onreadystatechange = function(){
+						if (script.readyState == "loaded" || script.readyState == "complete"){
+							script.onreadystatechange = null;
+							callback();
+						}
+					};
+				}else{//Others
+					script.onload = function(){
+						callback();
+					};
+				}
+				script.src = url;
+			document.getElementsByTagName("head")[0].appendChild(script);
+		}else{
+			if(typeof callback === "function"){
+				callback();
+			}
+		}
+	}
+
+	function loadLink(url, callback){
+		if(isLoaded() === false){
+			var link = document.createElement("link")
+			link.rel = "stylesheet";
+			if (link.readyState) { //IE
+				link.onreadystatechange = function() {
+						if (link.readyState == "loaded" || link.readyState == "complete") {
+								link.onreadystatechange = null;
+								callback();
+						}
+				};
+			}else{//Others
+				if(typeof callback === "function") {
+					link.onload = function() {
+							callback();
+					};
+				}
+			}
+		link.src = url;
+		document.getElementsByTagName("head")[0].appendChild(link);
+		}else{
+			if(typeof callback === "function"){
+				callback();
+			}
+		}
+	}
+
+	/**
+	 * Funciíon para enviar un formulario method POST
+	 * @param [url			=> Es la ruta que se le envian los datos]
+	 * @param [formData 	=> Es el formulario a enviar]
+	 * @param [url_repuesta => Url a cargar despues de recibir los datos]
+	*/
 	function sendForm(url, formData, url_repuesta){
 		url_repuesta = typeof url_repuesta === 'undefined' ? "/#" : url_repuesta;
 		$.ajax({
