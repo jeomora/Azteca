@@ -11,11 +11,10 @@ class Reportes extends MY_Controller {
 	}
 
 	public function precios_bajos(){
-		ini_get("memory_limit")."\n";
+		ini_get("memory_limit");
 		ini_set("memory_limit","512M");
+		ini_get("memory_limit");
 		$data["preciosBajos"] = $this->prom_mdl->preciosBajos();
-		// $this->load->library('table');
-		// $data['table'] = $this->table->generate($data['precios_bajos']);
 		$this->load->view("Reportes/table_precios_bajos", $data, FALSE);
 	}
 
