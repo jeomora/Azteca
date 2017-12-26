@@ -3,7 +3,8 @@
 	var name_control = "";//Nombre del controlador activo
 	var name_function = "";//Nombre de la función cargada
 	var window_modal = $("#mainModal");//Ventana modal usada 
-
+	var progress = document.getElementById("myProgress");
+	progress.style.display='none';
 	$(function($) {
 		var iniciar =1;
 		$("#myModal").modal({
@@ -33,8 +34,13 @@
 				if(element.attr("href") !="#" && element != base_url && element != "" && !element.hasClass("btn-modal")){ 
 					$("#welcome_container").remove();//Eliminamos el contenedor de bienvenida
 					$("#main_container").html('');//Limpiamos el contenedor
-					$("#main_container").load(this.href);//Le cargamos el contenido nuevo
-				
+					progress.style.display = 'block';
+					loading();
+					$.get(element.attr("href"), function(resp){
+						progress.style.display = 'none';
+						$("#main_container").html(resp);//Le cargamos la respuesata
+					});
+					// $("#main_container").load(this.href);//Le cargamos el contenido nuevo
 				}
 			
 			}else{
@@ -48,6 +54,20 @@
 
 	});
 
+	function loading(){
+		var barra = document.getElementById("barra");
+		var width = 10;
+		var id = setInterval(frame, 10);
+		function frame(){
+			if(width >= 100) {
+				clearInterval(id);
+			}else{
+				width++;
+				barra.style.width = width + '%';
+				barra.innerHTML = width * 1  + '%';
+			}
+		}
+	}
 
 	function datePicker() {
 		$(".datepicker").datepicker({
