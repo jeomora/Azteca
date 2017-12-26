@@ -1,25 +1,49 @@
-<h1><?php echo lang('change_password_heading');?></h1>
+<?php
+	defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open("auth/change_password");?>
+<div class="ibox-content">
+	<div class="row">
+		<?php echo form_open("Auth/change_password");?>
+		<div class="row">
+			<div class="col-lg-12">
 
-      <p>
-            <?php echo lang('change_password_old_password_label', 'old_password');?> <br />
-            <?php echo form_input($old_password);?>
-      </p>
+			<div class="form-group">
+				<label for="old">Contraseña actual</label>
+				<input type="password" name="old" value="" required="" class="form-control" placeholder="********">
+			</div>
+			</div>
+		</div>
+		<div class="row ">
+			<div class="col-lg-6">
+				<div class="form-group">
+				<label for="new">Contraseña nueva (Requiere 8 caracteres de longitud)</label>
+					<input type="password" name="new" value="" required="" class="form-control" placeholder="********">
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="form-group">
+				<label for="new_confirm">Confirmar contraseña</label>
+					<input type="password" name="new_confirm" value="" required="" class="form-control" placeholder="********">
+				</div>
+			</div>
+		</div>
 
-      <p>
-            <label for="new_password"><?php echo sprintf(lang('change_password_new_password_label'), $min_password_length);?></label> <br />
-            <?php echo form_input($new_password);?>
-      </p>
+		<div class="row">
+			<div class="col-sm-2 pull-right">
+				<button class="btn btn-primary pull-right" type="submit">
+					<span class="bold"><i class="fa fa-floppy-o"></i></span>
+					&nbsp;Guardar
+				</button>
+			</div>
+		</div>
+		<?php echo form_close();?>
+	</div>
+</div>
 
-      <p>
-            <?php echo lang('change_password_new_password_confirm_label', 'new_password_confirm');?> <br />
-            <?php echo form_input($new_password_confirm);?>
-      </p>
-
-      <?php echo form_input($user_id);?>
-      <p><?php echo form_submit('submit', lang('change_password_submit_btn'));?></p>
-
-<?php echo form_close();?>
+</div> <!-- Cierra el cuerpo de la modal-->
+<div class="modal-footer">
+	<br>	<br>
+</div>

@@ -21,7 +21,6 @@ class Auth extends MY_Controller {
 			return show_error('Debes ser un Administrador para ver esta página.', NULL, 'Alerta de seguridad');
 		}else{// set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-			//list the users
 			$this->data['users'] = $this->ion_auth->users()->result();
 			if ($this->data['users']) {
 				foreach ($this->data['users'] as $k => $user){
@@ -82,8 +81,15 @@ class Auth extends MY_Controller {
 		redirect('Auth/login', 'refresh');
 	}
 
+	public function user_view(){
+		$data["usuario"] = $this->ion_auth->user()->row();
+		$this->load->view("Auth/table_user", $data, FALSE);
+	}
+
 	// change password
 	public function change_password(){
+		$data["title"]="Cambiar contraseña";
+		$this->load->view("Structure/header_modal", $data);
 		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
 		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
 		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
@@ -123,14 +129,11 @@ class Auth extends MY_Controller {
 				'type'  => 'hidden',
 				'value' => $user->id,
 			);
-
-			// render
-			$this->_render_page('Auth/change_password', $this->data);
+			// $this->_render_page('Auth/change_password', $this->data);
+			$this->load->view("Auth/change_password", $this->data);
 		}else{
 			$identity = $this->session->userdata('identity');
-
 			$change = $this->ion_auth->change_password($identity, $this->input->post('old'), $this->input->post('new'));
-
 			if ($change){
 				//if the password was successfully changed
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
