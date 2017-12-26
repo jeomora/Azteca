@@ -23,12 +23,12 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><?php echo strtoupper($usuario->first_name.' '.$usuario->last_name) ?></td>
+								<td><?php echo htmlspecialchars(strtoupper($usuario->first_name.' '.$usuario->last_name),ENT_QUOTES,'UTF-8') ?></td>
 								<td><?php echo htmlspecialchars($usuario->phone,ENT_QUOTES,'UTF-8')?> </td>
 								<td><?php echo htmlspecialchars($usuario->email,ENT_QUOTES,'UTF-8') ?> </td>
 								<td><?php echo htmlspecialchars(strtoupper($usuario->company),ENT_QUOTES,'UTF-8') ?></td>
 								<td><?php echo htmlspecialchars($usuario->username,ENT_QUOTES,'UTF-8')?> </td>
-								<td><?php echo htmlspecialchars('PROVEEDOR')?> </td>
+								<td><?php echo 'PROVEEDOR' ?> </td>
 								<td>
 									<a data-toggle="modal" data-tooltip="tooltip" title="Cambiar contraseña"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Auth/change_password/'.$usuario->id) ?>" data-target="#myModal" ><i class="fa fa-key"></i></a>
 								</td>
