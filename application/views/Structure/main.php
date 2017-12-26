@@ -4,8 +4,8 @@
 	var name_function = "";//Nombre de la función cargada
 	var window_modal = $("#mainModal");//Ventana modal usada 
 	var progress = document.getElementById("myProgress");
-	progress.style.display='none';
-	$(function($) {
+	
+	$(function() {
 		var iniciar =1;
 		$("#myModal").modal({
 			backdrop: 'static',

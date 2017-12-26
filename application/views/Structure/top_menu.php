@@ -64,7 +64,8 @@
 			<!-- Para mostra las notificaciones -->
 		</div>
 
-		<div id="myProgress">
+		<div id="myProgress" style="display: none;">
+			<!-- Para mostrar un progressbar  -->
 			<div id="barra">10%</div>
 		</div>
 
