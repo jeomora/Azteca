@@ -15,6 +15,8 @@
 					<th>#</th>
 					<th>NOMBRE</th>
 					<th>PRECIO</th>
+					<th>DESCUENTO</th>
+					<th>TOTAL</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,7 +28,19 @@
 							<td>
 								<div class="input-group m-b">
 									<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-									<input type="text" class="form-control precio" value="" readonly="" placeholder="0.00">
+									<input type="text" class="form-control precio numeric" value="" readonly="" placeholder="0.00">
+								</div>
+							</td>
+							<td>
+								<div class="input-group m-b">
+									<input type="text" class="form-control descuento" value="" readonly="" placeholder="0" style="text-align:right" size="1">
+									<span class="input-group-addon sm">%</span>
+								</div>
+							</td>
+							<td>
+								<div class="input-group m-b">
+									<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+									<input type="text" class="form-control total numeric" value="" readonly="" placeholder="0.00">
 								</div>
 							</td>
 						</tr>
@@ -43,20 +57,39 @@
 
 <script type="text/javascript">
 	var marcados =0;
-	$(".precio").inputmask("currency", {radixPoint: ".", prefix: ""});
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+	$(".descuento").number(true, 0);
 
 	$(document).off("change", ".id_producto").on("change", ".id_producto", function() {
+		var tr = $(this).closest("tr");
 		if($(this).is(":checked")) {
 			marcados = marcados + 1;
-			$(this).closest("tr").find(".precio ").removeAttr('readonly');
-			$(this).closest("tr").find(".id_producto ").attr('name', 'id_producto[]');
-			$(this).closest("tr").find(".precio ").attr('name', 'precio[]');
+			tr.find(".id_producto").attr('name', 'id_producto[]');
+			tr.find(".precio").removeAttr('readonly').attr('name', 'precio[]');
+			tr.find(".descuento").removeAttr('readonly').attr('name', 'descuento[]');
+			tr.find(".total").attr('name', 'total[]');
 		}else{
 			$(this).removeAttr("checked");
 			marcados = marcados - 1;
-			$(this).closest("tr").find(".precio ").attr('readonly', 'readonly');
-			$(this).closest("tr").find(".precio .id_producto").removeAttr('name').val('');
-			$(this).closest("tr").find(".id_producto ").removeAttr('name');
+			tr.find(".id_producto").removeAttr('name').val('');
+			tr.find(".precio").attr('readonly', 'readonly').removeAttr('name').val('');
+			tr.find(".descuento").attr('readonly', 'readonly').removeAttr('name').val('');
+			tr.find(".total").removeAttr('name').val('');
+		}
+	});
+
+	$(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
+		var tr = $(this).closest("tr");
+		var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+		var descuento = $(this).val();
+
+		if(descuento.replace(/[^0-9\.]+/g,"") > 0){
+			if($(this).val().length > 1){
+				$(this).val('');
+			}else{
+				descuento = '0.0'+descuento;
+				tr.find(".total").val(precio - (precio * parseFloat(descuento)));
+			}
 		}
 	});
 

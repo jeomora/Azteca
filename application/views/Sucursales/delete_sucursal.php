@@ -9,11 +9,3 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$(document).off("click", ".delete").on("click", ".delete", function(event) {
-		event.preventDefault();
-		sendDatos("Sucursales/accion/D", $("#form_sucursal_delete"), "Sucursales/sucursales_view");
-	});
-
-</script>

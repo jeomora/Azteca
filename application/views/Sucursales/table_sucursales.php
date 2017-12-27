@@ -10,14 +10,10 @@
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">
-						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn btn-primary tool btn-modal" href="<?php echo site_url('Sucursales/add_sucursal'); ?>" data-target="#myModal">
+						<button class="btn btn-primary" id="new_sucursal">
 							<i class="fa fa-plus"></i>
-						</a>
+						</button>
 					</div>
-					
-<!-- 					<button class="btn btn-success" id="new_sucursal">
-						<i class="fa fa-plus"></i> Nueva
-					</button> -->
 
 						<table class="table table-striped table-bordered table-hover" id="table_sucursales">
 							<thead>
@@ -36,8 +32,12 @@
 											<td><?php echo strtoupper($value->nombre) ?></td>
 											<td><?php echo $value->telefono ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Sucursales/get_update/'.$value->id_sucursal);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Sucursales/get_delete/'.$value->id_sucursal);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<button id="update_sucursal" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-sucursal="<?php echo $value->id_sucursal ?>">
+													<i class="fa fa-pencil"></i>
+												</button>
+												<button id="delete_sucursal" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-sucursal="<?php echo $value->id_sucursal ?>">
+													<i class="fa fa-trash"></i>
+												</button>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -49,8 +49,3 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	$(function($) {
-		fillDataTable("table_sucursales", 'DESC', 10);
-	});
-</script>

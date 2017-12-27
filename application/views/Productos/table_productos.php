@@ -10,9 +10,9 @@
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">
-						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn tool btn-primary btn-modal" href="<?php echo site_url('Productos/add_producto'); ?>" data-target="#myModal">
+						<button class="btn btn-primary" title="Registrar" id="new_producto">
 							<i class="fa fa-plus"></i>
-						</a>
+						</button>
 					</div>
 						<table class="table table-striped table-bordered table-hover" id="table_productos">
 							<thead>
@@ -33,8 +33,12 @@
 											<td><?php echo $value->producto ?></td>
 											<td><?php echo $value->familia ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos/get_update/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos/get_delete/'.$value->id_producto);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<button id="update_producto" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-producto="<?php echo $value->id_producto ?>">
+													<i class="fa fa-pencil"></i>
+												</button>
+												<button id="delete_producto" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-producto="<?php echo $value->id_producto ?>">
+													<i class="fa fa-trash"></i>
+												</button>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -46,9 +50,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$(function($) {
-		fillDataTable("table_productos", 'DESC', 10);
-	});
-</script>

@@ -14,6 +14,10 @@
 							<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn btn-primary tool btn-modal" href="<?php echo site_url('Productos_proveedor/add_asignacion'); ?>" data-target="#myModal">
 								<i class="fa fa-plus"></i>
 							</a>
+							<!--
+							<a data-tooltip="tooltip" title="Registrar" class="btn btn-primary" href="<?php echo site_url('Productos_proveedor/add_asignacion'); ?>">
+								<i class="fa fa-plus"></i>
+							</a> -->
 						</div>
 					<?php endif ?>
 						<table class="table table-striped table-bordered table-hover" id="table_prod_proveedor">

@@ -8,7 +8,7 @@ class Sucursales extends MY_Controller {
 		$this->load->model("Sucursales_model", "suc_md");
 	}
 
-/*	public function sucursales_view(){
+	public function sucursales_view(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',
@@ -33,34 +33,35 @@ class Sucursales extends MY_Controller {
 		];
 		$data["sucursales"] = $this->suc_md->get();
 		$this->estructura("Sucursales/table_sucursales", $data);
-	}*/
+	}
 
-	public function sucursales_view(){
+	public function table_sucursales(){
 		$data["sucursales"] = $this->suc_md->get();
 		$this->load->view("Sucursales/table_sucursales", $data, FALSE);
 	}
 
+
 	public function add_sucursal(){
-		$data["title"]="Registrar sucursales";
-		$this->load->view("Structure/header_modal", $data);
-		$this->load->view("Sucursales/new_sucursal", $data);
-		$this->load->view("Structure/footer_modal_save");
+		$data["title"]="REGISTRAR SUCURSALES";
+		$data["class"]="new_sucursal";
+		$data["view"] =$this->load->view("Sucursales/new_sucursal", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
-		$data["title"]="Actualizar datos de la sucursal";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="ACTUALIZAR DATOS DE LA SUCURSAL";
+		$data["class"]="update_sucursal";
 		$data["sucursal"] = $this->suc_md->get(NULL, ['id_sucursal'=>$id])[0];
-		$this->load->view("Sucursales/edit_sucursal", $data);
-		$this->load->view("Structure/footer_modal_edit");
+		$data["view"]=$this->load->view("Sucursales/edit_sucursal", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
-		$data["title"]="Sucursal a eliminar";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="SUCURSAL A ELIMINAR";
+		$data["class"]="delete_sucursal";
 		$data["sucursal"] = $this->suc_md->get(NULL, ['id_sucursal'=>$id])[0];
-		$this->load->view("Sucursales/delete_sucursal", $data);
-		$this->load->view("Structure/footer_modal_delete");
+		$data["view"]=$this->load->view("Sucursales/delete_sucursal", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function accion($param){
@@ -98,13 +99,6 @@ class Sucursales extends MY_Controller {
 				break;
 		}
 		$this->jsonResponse($mensaje);
-	}
-
-	public function newSucursal(){
-		$data["title"] = "AGREGAR SUCURSALES";
-		$data["class"] = "add_sucursal";
-		$data["view"] =  $this->load->view("Sucursales/sucursal_new", NULL, TRUE);
-		$this->jsonResponse($data);
 	}
 
 }

@@ -9,31 +9,59 @@ class Familias extends MY_Controller {
 	}
 
 	public function familias_view(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/familias',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["familias"] = $this->fam_md->get();
+		$this->estructura("Familias/table_familias", $data);
+		// $this->load->view("Familias/table_familias", $data, FALSE);
+	}
+
+	public function table_familias(){
 		$data["familias"] = $this->fam_md->get();
 		$this->load->view("Familias/table_familias", $data, FALSE);
 	}
 
 	public function add_familia(){
-		$data["title"]="Registrar familias";
-		$this->load->view("Structure/header_modal", $data);
-		$this->load->view("Familias/new_familia", $data);
-		$this->load->view("Structure/footer_modal_save");
+		$data["title"]="REGISTRAR FAMILIAS";
+		$data["class"] = "new_familia";
+		$data["view"] = $this->load->view("Familias/new_familia", NULL, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
-		$data["title"]="Actualizar datos de la familia";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="ACTUALIZAR DATOS DE LA FAMILIA";
+		$data["class"] = "update_familia";
 		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
-		$this->load->view("Familias/edit_familia", $data);
-		$this->load->view("Structure/footer_modal_edit");
+		$data["view"] = $this->load->view("Familias/edit_familia", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
-		$data["title"]="Familia a eliminar";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="FAMILIA A ELIMINAR";
+		$data["class"] = "delete_familia";
 		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
-		$this->load->view("Familias/delete_familia", $data);
-		$this->load->view("Structure/footer_modal_delete");
+		$data["view"] = $this->load->view("Familias/delete_familia", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function accion($param){

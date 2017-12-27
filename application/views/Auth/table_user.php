@@ -18,7 +18,6 @@
 								<th>EMPRESA</th>
 								<th>USUARIO</th>
 								<th>TIPO</th>
-								<th>ACCIÓN</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -29,9 +28,6 @@
 								<td><?php echo htmlspecialchars(strtoupper($usuario->company),ENT_QUOTES,'UTF-8') ?></td>
 								<td><?php echo htmlspecialchars($usuario->username,ENT_QUOTES,'UTF-8')?> </td>
 								<td><?php echo 'PROVEEDOR' ?> </td>
-								<td>
-									<a data-toggle="modal" data-tooltip="tooltip" title="Cambiar contraseña"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Auth/change_password/'.$usuario->id) ?>" data-target="#myModal" ><i class="fa fa-key"></i></a>
-								</td>
 							</tr>
 						</tbody>
 					</table>

@@ -52,25 +52,11 @@
 		<script src="<?php echo base_url('/assets/js/jquery.inputmask.bundle.min.js') ?>"></script>
 		<!-- Validate -->
 		<script src="<?php echo base_url('/assets/js/plugins/validate/jquery.validate.min.js') ?>"></script>
-		<!--script para el dataTables -->
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/jquery.dataTables.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/jquery.dataTables.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.buttons.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/buttons.flash.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/jszip.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/pdfmake.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/vfs_fonts.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/buttons.html5.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/buttons.print.min.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.bootstrap.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.responsive.js') ?>"></script>
-		<script src="<?php echo base_url('/assets/js/plugins/dataTables/dataTables.tableTools.min.js') ?>"></script>
-		<!--
 		<?php if (isset($scripts) && $scripts): ?>
 			<?php foreach ($scripts as $row): ?>
 			<script type="text/javascript" src="<?php echo base_url($row.'.js') ?>"></script>
 			<?php endforeach ?>
-		<?php endif ?>-->
+		<?php endif ?>
 		<!-- Data Picker -->
 		<script src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.js') ?>"></script>
 		<script src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.es.js') ?>"></script>

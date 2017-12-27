@@ -25,7 +25,7 @@
 			$( ".btn-modal").unbind( "click" );
 		});
 
-		$(document).off("click", "a").on("click", "a", function (event){
+		/*$(document).off("click", "a").on("click", "a", function (event){
 			event.preventDefault();
 			var element = $(this);
 			name_control = element.attr("control");
@@ -50,7 +50,7 @@
 					window.location = element.attr("href");
 				}
 			}
-		});
+		});*/
 
 	});
 
@@ -327,14 +327,14 @@
 					$("#mainModal").modal("hide");
 					$("#main_container").empty();
 					toastr.success(response.desc, response.id);
-					$("#main_container").load(site_url+url_repuesta);
+					location.reload();
 				break;
 
 				case "info":
 					cleanModal();
 					$("#mainModal").modal("hide");
 					toastr.info(response.desc, response.id);
-					$("#main_container").load(site_url+url_repuesta);
+					location.reload();
 				break;
 
 				case "warning":

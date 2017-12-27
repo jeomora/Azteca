@@ -11,8 +11,30 @@ class Productos extends MY_Controller {
 	}
 
 	public function productos_view(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/productos',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
 		$data["productos"] = $this->pro_md->getProductos();
-		$this->load->view("Productos/table_productos", $data, FALSE);
+		$this->estructura("Productos/table_productos", $data);
 	}
 
 	// Esta función es de ejemplo para paginación
@@ -47,28 +69,28 @@ class Productos extends MY_Controller {
 	// }
 
 	public function add_producto(){
-		$data["title"]="Registrar productos";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="REGISTRAR PRODUCTOS";
+		$data["class"] = "new_producto";
 		$data["familias"] = $this->fam_md->get();
-		$this->load->view("Productos/new_producto", $data);
-		$this->load->view("Structure/footer_modal_save");
+		$data["view"] =$this->load->view("Productos/new_producto", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
-		$data["title"]="Actualizar datos del producto";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="ACTUALIZAR DATOS DEL PRODUCTO";
+		$data["class"]="update_producto";
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
 		$data["familias"] = $this->fam_md->get();
-		$this->load->view("Productos/edit_producto", $data);
-		$this->load->view("Structure/footer_modal_edit");
+		$data["view"] =$this->load->view("Productos/edit_producto", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
-		$data["title"]="Producto a eliminar";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="PRODUCTO A ELIMINAR";
+		$data["class"]="delete_producto";
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
-		$this->load->view("Productos/delete_producto", $data);
-		$this->load->view("Structure/footer_modal_delete");
+		$data["view"] = $this->load->view("Productos/delete_producto", $data,TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function accion($param){

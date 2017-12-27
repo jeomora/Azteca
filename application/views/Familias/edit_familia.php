@@ -13,22 +13,3 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$("#form_familia_edit").validate({
-		rules: {
-			nombre: {required: true}
-		}
-	});
-
-	jQuery.extend(jQuery.validator.messages, {
-		required: "Este campo es requerido",
-	});
-
-	$(document).off("click", ".update").on("click", ".update", function(event) {
-		event.preventDefault();
-		if ($("#form_familia_edit").valid()) {
-			sendDatos("Familias/accion/U/",$("#form_familia_edit"), "Familias/familias_view");
-		}
-	});
-</script>

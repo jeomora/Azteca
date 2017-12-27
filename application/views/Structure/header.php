@@ -51,17 +51,11 @@
 	<link href="<?php echo base_url('/assets/css/style.css') ?>" rel="stylesheet">
 	<!-- Favicon-->
 	<link href="<?php echo base_url('/assets/img/favicon.ico') ?>" rel="shortcut icon">
-	<!-- Plugins para los dataTables-->
-	<link href="<?php echo base_url('/assets/css/plugins/dataTables/dataTables.bootstrap.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/css/plugins/dataTables/dataTables.responsive.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/css/plugins/dataTables/dataTables.tableTools.min.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/css/plugins/dataTables/buttons.dataTables.min.css') ?>" rel="stylesheet"> 
-	<!--
 	<?php if (isset($links) && $links): ?>
 		<?php foreach ($links as $link): ?>
 			<link rel="stylesheet" href="<?php echo base_url($link.'.css') ?>">
 		<?php endforeach ?>
-	<?php endif ?> -->
+	<?php endif ?>
 	<!-- Data Picker style -->
 	<link href="<?php echo base_url('/assets/css/plugins/datapicker/datepicker3.css') ?>" rel="stylesheet">
 	<link href="<?php echo base_url('/assets/css/plugins/colorpicker/bootstrap-colorpicker.min.css') ?>" rel="stylesheet">

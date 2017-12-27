@@ -19,23 +19,3 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$("#form_sucursal_edit").validate({
-		rules: {
-			nombre: {required: true},
-			telefono: {required: true}
-		}
-	});
-
-	jQuery.extend(jQuery.validator.messages, {
-		required: "Este campo es requerido",
-	});
-
-	$(document).off("click", ".update").on("click", ".update", function(event) {
-		event.preventDefault();
-		if ($("#form_sucursal_edit").valid()) {
-			sendDatos("Sucursales/accion/U/",$("#form_sucursal_edit"), "Sucursales/sucursales_view");
-		}
-	});
-</script>

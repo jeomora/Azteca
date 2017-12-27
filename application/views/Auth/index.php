@@ -58,6 +58,7 @@
 										<?php else: ?>
 											<a data-tooltip="tooltip" title="Activar" class="btn tool btn-danger" href="<?php echo site_url('Auth/activate/'.$user->id) ?>"><i class="fa fa-thumbs-o-up"></i></a>
 										<?php endif ?>
+										<a data-toggle="modal" data-tooltip="tooltip" title="Cambiar contraseña"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Auth/change_password/'.$usuario->id) ?>" data-target="#myModal" ><i class="fa fa-key"></i></a>
 									</td>
 								</tr>
 							<?php endforeach; endif ?>

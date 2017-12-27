@@ -33,10 +33,12 @@ class Productos_proveedor extends MY_Controller {
 		$productos = $this->input->post('id_producto[]');
 		for($i = 0; $i < $size; $i++){
 			$new_asignados[]= array(
-				'id_proveedor' => $this->input->post('id_proveedor'),
-				'id_producto' => $productos[$i],
-				'fecha_registro' => date('Y-m-d H:i:s'),
-				'precio' => str_replace(",", "", $this->input->post('precio[]')[$i])
+				'id_proveedor'		=>	$this->input->post('id_proveedor'),
+				'id_producto'		=>	$productos[$i],
+				'fecha_registro'	=>	date('Y-m-d H:i:s'),
+				'precio'			=>	str_replace(",", "", $this->input->post('precio[]')[$i]),
+				'descuento'			=>	($this->input->post('descuento[]')[$i] > 0) ? $this->input->post('descuento[]')[$i] : NULL,
+				'total_descuento'	=>	($this->input->post('descuento[]')[$i] > 0) ? str_replace(',', '', $this->input->post('total')[$i]) : str_replace(",", "", $this->input->post('precio[]')[$i])
 			);
 		}
 		if($this->prod_prov_mdl->insertm($new_asignados) > 0){
@@ -75,7 +77,8 @@ class Productos_proveedor extends MY_Controller {
 
 	public function accion($param){
 		$prod_prov = [
-			'precio'	=>	str_replace(',', '', $this->input->post('precio'))
+			'fecha_modificado'	=> date('Y-m-d H:i:s'),
+			'precio'			=>	str_replace(',', '', $this->input->post('precio'))
 			];
 
 		switch ($param) {
@@ -83,7 +86,7 @@ class Productos_proveedor extends MY_Controller {
 				$data ['id_prod_proveedor'] = $this->prod_prov_mdl->update($prod_prov, $this->input->post('id_producto_proveedor'));
 				$mensaje = [
 					"id" 	=> 'Éxito',
-					"desc"	=> 'Asignación actualizada correctamente',
+					"desc"	=> 'Cotización actualizada correctamente',
 					"type"	=> 'success'
 				];
 				break;
@@ -92,7 +95,7 @@ class Productos_proveedor extends MY_Controller {
 				$data ['id_prod_proveedor'] = $this->prod_prov_mdl->update(["estatus" => 0], $this->input->post('id_producto_proveedor'));
 				$mensaje = [
 					"id" 	=> 'Éxito',
-					"desc"	=> 'Asignación eliminada correctamente',
+					"desc"	=> 'Cotización eliminada correctamente',
 					"type"	=> 'success'
 				];
 				break;
