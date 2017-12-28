@@ -9,7 +9,7 @@
 	<meta name="robots" content="all,follow">
 
 	<script type="text/javascript">
-		window.onload =	function(){
+		/*window.onload =	function(){
 			if(typeof history.pushState === "function"){
 				history.pushState("jibberish", null, null);
 				window.onpopstate = function () {
@@ -30,7 +30,7 @@
 						}
 					};
 				}
-			}
+			}*/
 
 		var base_url = "<?php echo base_url("/") ?>";//No carga el archivo index
 		var site_url = "<?php echo site_url("/") ?>";//Si carga el index 
