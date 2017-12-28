@@ -13,22 +13,3 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$("#form_pedido_edit").validate({
-		rules: {
-			nombre: {required: true}
-		}
-	});
-
-	jQuery.extend(jQuery.validator.messages, {
-		required: "Este campo es requerido",
-	});
-
-	$(document).off("click", ".update").on("click", ".update", function(event) {
-		event.preventDefault();
-		if ($("#form_pedido_edit").valid()) {
-			sendDatos("Pedidos/update",$("#form_pedido_edit"), "Pedidos/pedidos_view");
-		}
-	});
-</script>

@@ -19,35 +19,57 @@ class Pedidos extends MY_Controller {
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
 			$where = ["promociones.id_proveedor" => $user->id];
 		}
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/pedidos',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
 		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
-		$this->load->view("Pedidos/table_pedidos", $data, FALSE);
+		$this->estructura("Pedidos/table_pedidos", $data, FALSE);
 	}
 
 	public function add_pedido(){
-		$data["title"]="Registrar pedidos";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="REGISTRAR PEDIDOS";
+		$data["class"]="new_pedido";
 		$data["proveedores"] = $this->pro_mdl->getProveedores();
 		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
-		$this->load->view("Pedidos/new_pedido", $data);
-		$this->load->view("Structure/footer_modal_save");
+		$data["view"]=$this->load->view("Pedidos/new_pedido", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
-		$data["title"]="Actualizar datos del pedido";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="ACTUALIZAR DATOS DEL PEDIDO";
+		$data["class"]="update_pedido";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
-		$this->load->view("Pedidos/edit_pedido", $data);
-		$this->load->view("Structure/footer_modal_edit");
+		$data["view"]=$this->load->view("Pedidos/edit_pedido", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="Pedido a eliminar";
-		$this->load->view("Structure/header_modal", $data);
+		$data["class"]="delete_pedido";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["proveedor"] = $this->pro_mdl->getProveedores(['users.id' => $data['pedido']->id_proveedor])[0];
-		$this->load->view("Pedidos/delete_pedido", $data);
-		$this->load->view("Structure/footer_modal_delete");
+		$data["view"]=$this->load->view("Pedidos/delete_pedido", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function update(){
@@ -116,12 +138,12 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function get_detalle($id){
-		$data["title"]="Detalle del Pedido";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="DETALLE DEL PEDIDO";
+		$data["class"]='';
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
-		$this->load->view("Pedidos/detalle_pedido", $data);
-		$this->load->view("Structure/footer_modal_close");
+		$data["view"]=$this->load->view("Pedidos/detalle_pedido", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 }

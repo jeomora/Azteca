@@ -10,9 +10,9 @@
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">
-						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn btn-primary tool btn-modal" href="<?php echo site_url('Pedidos/add_pedido'); ?>" data-target="#myModal">
+						<button class="btn btn-primary" title="Registrar" id="new_pedido">
 							<i class="fa fa-plus"></i>
-						</a>
+						</button>
 					</div>
 						<table class="table table-striped table-bordered table-hover" id="table_pedidos">
 							<thead>
@@ -35,9 +35,16 @@
 											<td><?php echo $value->fecha ?></td>
 											<td><?php echo strtoupper($value->sucursal) ?></td>
 											<td>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Pedidos/get_update/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Ver"  class="btn tool btn-success btn-modal" href="<?php echo site_url('Pedidos/get_detalle/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-eye"></i></a>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Pedidos/get_delete/'.$value->id_pedido);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+												<button id="update_pedido" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-pedido="<?php echo $value->id_pedido ?>">
+													<i class="fa fa-pencil"></i>
+												</button>
+												<button id="show_pedido" class="btn btn-success" data-toggle="tooltip" title="Ver" data-id-pedido="<?php echo $value->id_pedido ?>">
+													<i class="fa fa-eye"></i>
+												</button>
+												<button id="delete_pedido" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-pedido="<?php echo $value->id_pedido ?>">
+													<i class="fa fa-trash"></i>
+												</button>
+
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -49,9 +56,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$(function($) {
-		fillDataTable("table_pedidos", 'DESC', 10);
-	});
-</script>
