@@ -10,6 +10,28 @@ class Productos_proveedor extends MY_Controller {
 	}
 
 	public function productos_proveedor_view(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/productos_proveedor',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
 		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
 		$where = [];
 		
@@ -17,15 +39,15 @@ class Productos_proveedor extends MY_Controller {
 			$where = ["productos_proveedor.id_proveedor" => $user->id];
 		}
 		$data["productosProveedor"] = $this->prod_prov_mdl->getProductos_proveedor($where);
-		$this->load->view("Productos_proveedor/table_productos_proveedor", $data, FALSE);
+		$this->estructura("Productos_proveedor/table_productos_proveedor", $data);
 	}
 
 	public function add_asignacion(){
-		$data["title"]="Registrar cotizaciones";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="REGISTRAR COTIZACIONES";
+		$data["class"]="new_asignacion";
 		$data["productos"] = $this->prod_mdl->get('id_producto, nombre');
-		$this->load->view("Productos_proveedor/new_asignacion", $data);
-		$this->load->view("Structure/footer_modal_save");
+		$data["view"]=$this->load->view("Productos_proveedor/new_asignacion", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function save_asignados(){
@@ -58,21 +80,21 @@ class Productos_proveedor extends MY_Controller {
 	}
 
 	public function get_update($id){
-		$data["title"]="Actualizar cotización";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="ACTUALIZAR COTIZACIÓN";
+		$data["class"]="update_asignacion";
 		$data["prod_prov"] = $this->prod_prov_mdl->get(NULL, ['id_producto_proveedor'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["prod_prov"]->id_producto])[0];
-		$this->load->view("Productos_proveedor/edit_asignacion", $data);
-		$this->load->view("Structure/footer_modal_edit");
+		$data["view"]=$this->load->view("Productos_proveedor/edit_asignacion", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
-		$data["title"]="Cotización a eliminar";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="COTIZACIÓN A ELIMINAR";
+		$data["class"] = "delete_asignacion";
 		$data["prod_prov"] = $this->prod_prov_mdl->get(NULL, ['id_producto_proveedor'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["prod_prov"]->id_producto])[0];
-		$this->load->view("Productos_proveedor/delete_asignacion", $data);
-		$this->load->view("Structure/footer_modal_delete");
+		$data["view"]=$this->load->view("Productos_proveedor/delete_asignacion", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function accion($param){

@@ -11,13 +11,9 @@
 				<div class="ibox-content">
 					<?php if (! $this->ion_auth->is_admin()): ?>
 						<div class="btn-group">
-							<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn btn-primary tool btn-modal" href="<?php echo site_url('Productos_proveedor/add_asignacion'); ?>" data-target="#myModal">
+							<button class="btn btn-primary" title="Registrar" id="new_asignacion">
 								<i class="fa fa-plus"></i>
-							</a>
-							<!--
-							<a data-tooltip="tooltip" title="Registrar" class="btn btn-primary" href="<?php echo site_url('Productos_proveedor/add_asignacion'); ?>">
-								<i class="fa fa-plus"></i>
-							</a> -->
+							</button>
 						</div>
 					<?php endif ?>
 						<table class="table table-striped table-bordered table-hover" id="table_prod_proveedor">
@@ -52,8 +48,12 @@
 											<td><?php echo $value->fecha ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
-													<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Productos_proveedor/get_update/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-													<a data-toggle="modal" data-tooltip="tooltip" title="Eliminar"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Productos_proveedor/get_delete/'.$value->id_producto_proveedor);?>" data-target="#myModal" ><i class="fa fa-trash"></i></a>
+													<button id="update_asignacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-prod_proveedor="<?php echo $value->id_producto_proveedor ?>">
+														<i class="fa fa-pencil"></i>
+													</button>
+													<button id="delete_asignacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-prod_proveedor="<?php echo $value->id_producto_proveedor ?>">
+														<i class="fa fa-trash"></i>
+													</button>
 												</td>
 											<?php endif ?>
 										</tr>
@@ -66,29 +66,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$(function($) {
-		$("#table_prod_proveedor").dataTable({
-			responsive: true,
-			pageLength: 50,
-			order: [[0, 'ASC']],
-			dom: 'Bfrtip',
-			lengthMenu: [
-				[ 10, 30, 50, -1 ],
-				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-			],
-			buttons: [
-				{ extend: 'pageLength' },
-				{
-					extend: 'excel',
-					exportOptions: {
-						columns: [0,1,2,3,4,5,6]
-					},
-					title: 'Cotizaciones',
-				},
-			]
-		});
-	});
-	
-</script>

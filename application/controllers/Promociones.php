@@ -16,16 +16,38 @@ class Promociones extends MY_Controller {
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
 			$where = ["promociones.id_proveedor" => $user->id];
 		}
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/promociones',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
 		$data["promociones"] = $this->prom_mdl->getPromociones($where);
-		$this->load->view("Promociones/table_promociones", $data, FALSE);
+		$this->estructura("Promociones/table_promociones", $data);
 	}
 
 	public function add_promocion(){
-		$data["title"]="Registrar promociones";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="REGISTRAR PROMOCIONES";
+		$data["class"]="new_promocion";
 		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
-		$this->load->view("Promociones/new_promocion", $data);
-		$this->load->view("Structure/footer_modal_save");
+		$data["view"]=$this->load->view("Promociones/new_promocion", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function save(){
@@ -85,21 +107,21 @@ class Promociones extends MY_Controller {
 	}
 
 	public function get_update($id){
-		$data["title"]="Actualizar promoción";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="ACTUALIZAR PROMOCIÓN";
+		$data["class"]="update_promocion";
 		$data["promocion"] = $this->prom_mdl->get(NULL, ['id_promocion'=>$id])[0];
 		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
-		$this->load->view("Promociones/edit_promocion", $data);
-		$this->load->view("Structure/footer_modal_edit");
+		$data["view"]=$this->load->view("Promociones/edit_promocion", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
-		$data["title"]="Promoción a eliminar";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="PROMOCIÓN A ELIMINAR";
+		$data["class"]="delete_promocion";
 		$data["promocion"] = $this->prom_mdl->get(NULL, ['id_promocion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["promocion"]->id_producto])[0];
-		$this->load->view("Promociones/delete_promocion", $data);
-		$this->load->view("Structure/footer_modal_delete");
+		$data["view"]=$this->load->view("Promociones/delete_promocion", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 

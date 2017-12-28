@@ -44,13 +44,13 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="password">Contraseña (Si quieres cambiarla) </label>
-					<input type="password" name="password" value="" required="" class="form-control" placeholder="**********">
+					<input type="password" name="password" value="" class="form-control" placeholder="**********">
 				</div>
 			</div>
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="password_confirm">Confirmar contraseña (Si quieres cambiarla) </label>
-					<input type="password" name="password_confirm" value="" required="" class="form-control" placeholder="**********">
+					<input type="password" name="password_confirm" value="" class="form-control" placeholder="**********">
 				</div>
 			</div>
 		</div>

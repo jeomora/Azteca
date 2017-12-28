@@ -119,38 +119,3 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
-<script type="text/javascript">
-	datePicker();
-
-	$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
-
-	$("#form_promocion_new").validate({
-		rules: {
-			id_producto: {required: true, min:0},
-			nombre: {required: true},
-			precio_producto: {required: true},
-		
-		}
-	});
-
-	jQuery.extend(jQuery.validator.messages, {
-		required: "Este campo es requerido",
-		min: jQuery.validator.format("Este campo es requerido"),
-	});
-
-	$(document).off("click", ".save").on("click", ".save", function(event) {
-		if($("#form_promocion_new").valid()){
-			sendDatos("Promociones/save", $("#form_promocion_new"), "Promociones/promociones_view", "show");
-		}
-	});
-
-	$("#porcentaje").keyup(function() {
-		var descuento = $(this).val().replace(/[^0-9\.]+/g,"");
-		var precio_producto = $("#precio_producto").val().replace(/[^0-9\.]+/g,"");
-		if(precio_producto != ''){
-			$("#precio_descuento").val((precio_producto - (precio_producto * descuento)));
-		}
-	});
-
-</script>

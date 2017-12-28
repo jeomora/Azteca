@@ -27,7 +27,7 @@ class Auth extends MY_Controller {
 					$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 				}
 			}
-			$this->load->view("Auth/index", $this->data, FALSE);
+			$this->estructura("Auth/index", $this->data);
 		}
 	}
 
@@ -83,7 +83,7 @@ class Auth extends MY_Controller {
 
 	public function user_view(){
 		$data["usuario"] = $this->ion_auth->user()->row();
-		$this->load->view("Auth/table_user", $data, FALSE);
+		$this->estructura("Auth/table_user", $data);
 	}
 
 	// change password

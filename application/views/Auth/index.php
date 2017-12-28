@@ -70,9 +70,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-	$(function ($) {
-		fillDataTable("table_usuarios", 'DESC', 10);
-	});
-</script>
