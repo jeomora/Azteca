@@ -24,34 +24,23 @@ $(function($) {
 $(document).off("click", "#new_promocion").on("click", "#new_promocion", function(event) {
 	event.preventDefault();
 	getModal("Promociones/add_promocion", function (){
+		datePicker();
+		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
 		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
-			$("#form_familia_new").validate({
+			$("#form_promocion_new").validate({
 				rules: {
-					nombre: {required: true}
+					id_producto: {required: true, min:0},
+					nombre: {required: true},
+					precio_producto: {required: true}
 				}
 			});
-			jQuery.extend(jQuery.validator.messages,{
+
+			jQuery.extend(jQuery.validator.messages, {
 				required: "Este campo es requerido",
+				min: jQuery.validator.format("Este campo es requerido"),
 			});
 		});
 	});
-});
-
-// datePicker();
-
-$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
-
-$("#form_promocion_new").validate({
-	rules: {
-		id_producto: {required: true, min:0},
-		nombre: {required: true},
-		precio_producto: {required: true}
-	}
-});
-
-jQuery.extend(jQuery.validator.messages, {
-	required: "Este campo es requerido",
-	min: jQuery.validator.format("Este campo es requerido"),
 });
 
 $(document).off("click", ".new_promocion").on("click", ".new_promocion", function(event) {
@@ -72,6 +61,8 @@ $(document).off("click", "#update_promocion").on("click", "#update_promocion", f
 	event.preventDefault();
 	var id_promocion = $(this).closest("tr").find("#update_promocion").data("idPromocion");
 	getModal("Promociones/get_update/"+ id_promocion, function (){
+		datePicker();
+		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
 		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
 			$("#form_promocion_edit").validate({
 				rules: {

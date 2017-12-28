@@ -11,7 +11,7 @@
 				<div class="ibox-content">
 					<?php if (! $this->ion_auth->is_admin()): ?>
 						<div class="btn-group">
-							<button class="btn btn-primary" title="Registrar" id="new_asignacion">
+							<button class="btn btn-primary tool" title="Registrar" id="new_asignacion">
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
@@ -48,10 +48,10 @@
 											<td><?php echo $value->fecha ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
-													<button id="update_asignacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-prod_proveedor="<?php echo $value->id_producto_proveedor ?>">
+													<button id="update_asignacion" class="btn btn-info tool" data-toggle="tooltip" title="Editar" data-id-prod_proveedor="<?php echo $value->id_producto_proveedor ?>">
 														<i class="fa fa-pencil"></i>
 													</button>
-													<button id="delete_asignacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-prod_proveedor="<?php echo $value->id_producto_proveedor ?>">
+													<button id="delete_asignacion" class="btn btn-warning tool" data-toggle="tooltip" title="Eliminar" data-id-prod_proveedor="<?php echo $value->id_producto_proveedor ?>">
 														<i class="fa fa-trash"></i>
 													</button>
 												</td>

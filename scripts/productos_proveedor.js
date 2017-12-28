@@ -23,12 +23,13 @@ $(function($) {
 
 $(document).off("click", "#new_asignacion").on("click", "#new_asignacion", function(event) {
 	event.preventDefault();
-	getModal("Productos_proveedor/add_asignacion", function (){ });
+	getModal("Productos_proveedor/add_asignacion", function (){
+		$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+		$(".descuento").number(true, 0);
+	});
 });
 
 var marcados =0;
-$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
-$(".descuento").number(true, 0);
 
 $(document).off("change", ".id_producto").on("change", ".id_producto", function() {
 	var tr = $(this).closest("tr");
@@ -117,6 +118,7 @@ $(document).off("click", "#update_asignacion").on("click", "#update_asignacion",
 	event.preventDefault();
 	var id_prod_proveedor = $(this).closest("tr").find("#update_asignacion").data("idProd_proveedor");
 	getModal("Productos_proveedor/get_update/"+id_prod_proveedor, function (){
+		$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
 		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
 			$("#form_asignacion_edit").validate({
 				rules: {

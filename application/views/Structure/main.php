@@ -13,6 +13,12 @@
 			show: false
 		});
 
+		$("#mainModal").modal({
+			backdrop: 'static',
+			keyboard: false,
+			show: false
+		});
+
 		$(document).off("click", "btn-modal").on("click", ".btn-modal", function(event){
 			event.preventDefault();
 			iniciar = 2;
