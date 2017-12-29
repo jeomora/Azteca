@@ -200,14 +200,16 @@ $(document).off("click", ".update_pedido").on("click", ".update_pedido", functio
 $(document).off("click", "#delete_pedido").on("click", "#delete_pedido", function(event){
 	event.preventDefault();
 	var id_pedido = $(this).closest("tr").find("#delete_pedido").data("idPedido");
-	getModal("Pedidos/get_delete/"+ id_pedido, function (){ });
+	getModal("Pedidos/get_delete/"+ id_pedido, function (){
+		$("#mybotton").html('&nbsp;Aceptar').addClass('btn btn-warning');
+		$("#mybotton").find('bold').removeClass('fa-floppy-o');
+		$("#mybotton").addClass('fa fa-trash');
+	});
 });
 
 $(document).off("click", ".delete_pedido").on("click", ".delete_pedido", function(event) {
 	event.preventDefault();
-	if($("#form_pedido_delete").valid()){
-		sendForm("Pedidos/delete", $("#form_pedido_delete"), "");
-	}
+	sendForm("Pedidos/delete", $("#form_pedido_delete"), "");
 });
 
 $(document).off("click", "#show_pedido").on("click", "#show_pedido", function(event){
