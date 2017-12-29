@@ -30,8 +30,9 @@
 									<th>EXISTENCIAS</th>
 									<th>PRECIO</th>
 									<th>DESCUENTO</th>
-									<th>P. DESCUENTO</th>
-									<th>RANGO PRECIOS</th>
+									<th>PRE. DESCUENTO</th>
+									<th>DESCUENTO 1</th>
+									<th>DESCUENTO 2</th>
 									<?php if (! $this->ion_auth->is_admin()): ?>
 										<th>ACCIÓN</th>
 									<?php endif ?>
@@ -53,12 +54,8 @@
 											<td><?php echo '$ '.number_format($value->precio_fijo,2,'.',',') ?></td>
 											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,2,'.',',').' %' : '' ?></td>
 											<td><?php echo ($value->precio_descuento > 0) ? '$ '.number_format($value->precio_descuento,2,'.',',') : '' ?></td>
-											<td>
-												<?php echo ($value->precio_inicio > 0 && $value->precio_fin > 0) 
-														? 'DE: $ '.number_format($value->precio_inicio,2,'.',',').' A: $ '.number_format($value->precio_fin,2,'.',',')
-														: ''
-												?>
-											</td>
+											<td><?php echo ($value->precio_inicio > 0 ) ? '$ '.number_format($value->precio_inicio,2,'.',',') : '' ?></td>
+											<td><?php echo ($value->precio_fin > 0) ? '$ '.number_format($value->precio_fin,2,'.',',') : '' ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
 													<button id="update_promocion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-promocion="<?php echo $value->id_promocion ?>">

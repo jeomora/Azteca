@@ -14,6 +14,7 @@ class Productos_proveedor_model extends MY_Model {
 			productos_proveedor.id_producto_proveedor,
 			productos_proveedor.precio,
 			productos_proveedor.descuento,
+			productos_proveedor.total_descuento,
 			DATE_FORMAT(productos_proveedor.fecha_registro, '%d-%m-%Y') AS fecha,
 			UPPER(p.nombre) AS producto,
 			p.codigo,

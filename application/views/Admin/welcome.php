@@ -3,48 +3,36 @@
 ?>
 <div class="wrapper wrapper-content animated fadeInRight" id="welcome_container">
 	<div class="row col-lg-12">
-		<h3>MENSAJE DE BIENVENIDA</h3>
-		<div class="col-lg-3">
-			<div class="ibox">
-				<div class="ibox-content">
-					<h5 class="m-b-md">Server status Q12</h5>
-					<h2 class="text-navy">
-						<i class="fa fa-play fa-rotate-270"></i> Up
-					</h2>
-					<small>Last down 42 days ago</small>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-4">
 			<div class="ibox">
 				<div class="ibox-content ">
-					<h5 class="m-b-md">Server status Q13</h5>
+					<h5 class="m-b-md">ARTICULOS</h5>
 					<h2 class="text-navy">
-						<i class="fa fa-play fa-rotate-270"></i> Up
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo number_format(count($productos),2,'.',',') ?>
 					</h2>
-					<small>Last down 42 days ago</small>
+					<small>EN EL SISTEMA</small>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-4">
 			<div class="ibox">
 				<div class="ibox-content">
-					<h5 class="m-b-md">Server status Q42</h5>
-					<h2 class="text-danger">
-						<i class="fa fa-play fa-rotate-90"></i> Down
+					<h5 class="m-b-md">FAMILIAS</h5>
+					<h2 class="text-navy">
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo number_format(count($familias),2,'.',',') ?>
 					</h2>
-					<small>Server down since 4 days</small>
+					<small>EN EL SISTEMA</small>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-4">
 			<div class="ibox">
 				<div class="ibox-content">
-					<h5 class="m-b-md">Server status Q43</h5>
-					<h2 class="text-danger">
-						<i class="fa fa-play fa-rotate-90"></i> Down
+					<h5 class="m-b-md">COTIZACIONES</h5>
+					<h2 class="text-navy">
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo number_format(count($prod_proveedores),2,'.',',') ?>
 					</h2>
-					<small>Server down since 4:32 pm.</small>
+					<small>EN EL SISTEMA</small>
 				</div>
 			</div>
 		</div>

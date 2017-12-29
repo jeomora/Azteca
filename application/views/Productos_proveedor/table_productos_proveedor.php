@@ -26,6 +26,8 @@
 									<th>CÓDIGO</th>
 									<th>PRODUCTO</th>
 									<th>PRECIO</th>
+									<th>DESCUENTO</th>
+									<th>PRE. DESCUENTO</th>
 									<th>FAMILIA</th>
 									<th>FECHA</th>
 									<?php if (! $this->ion_auth->is_admin()): ?>
@@ -44,6 +46,8 @@
 											<td><?php echo $value->codigo ?></td>
 											<td><?php echo $value->producto ?></td>
 											<td><?php echo '$ '.number_format($value->precio,2,'.',',') ?></td>
+											<td><?php echo number_format($value->descuento,0,'.',',').' %' ?></td>
+											<td><?php echo '$ '.number_format($value->total_descuento,2,'.',',') ?></td>
 											<td><?php echo $value->familia ?></td>
 											<td><?php echo $value->fecha ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>

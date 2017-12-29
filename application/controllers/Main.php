@@ -5,13 +5,23 @@ class Main extends MY_Controller {
 
 	function __construct(){
 		parent::__construct();
-		$this->load->model("Menus_model", "m_md");
+		$this->load->model("Familias_model", "fam_md");
 		$this->load->model("Productos_model", "pr_md");
+		$this->load->model("Productos_proveedor_model", "prod_prov_md");
+		$this->load->model("Proveedores_model", "prov_md");
 	}
 
-	//Primera función que carga la estructura del Sistema
+	//Primera función que carga el dashboard
 	public function index(){
-		$data["hola"]='Mensaje de Bienvenida';
+		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
+		$data["proveedores"]=$this->prov_md->getProveedores();
+		$data["productos"]=$this->pr_md->get();
+		$data["familias"]=$this->fam_md->get();
+		$where = [];
+		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
+			$where = ["productos_proveedor.id_proveedor" => $user->id];
+		}
+		$data["prod_proveedores"] = $this->prod_prov_md->getProductos_proveedor($where);
 		$this->estructura("Admin/welcome", $data);
 	}
 
