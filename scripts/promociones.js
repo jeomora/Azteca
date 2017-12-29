@@ -90,11 +90,7 @@ $(document).off("click", ".update_promocion").on("click", ".update_promocion", f
 $(document).off("click", "#delete_promocion").on("click", "#delete_promocion", function(event){
 	event.preventDefault();
 	var id_promocion = $(this).closest("tr").find("#delete_promocion").data("idPromocion");
-	getModal("Promociones/get_delete/"+ id_promocion, function (){
-		$("#mybotton").html('&nbsp;Aceptar').addClass('btn btn-warning');
-		$("#mybotton").find('bold').removeClass('fa-floppy-o');
-		$("#mybotton").addClass('fa fa-trash');
-	});
+	getModal("Promociones/get_delete/"+ id_promocion, function (){ });
 });
 
 $(document).off("click", ".delete_promocion").on("click", ".delete_promocion", function(event) {

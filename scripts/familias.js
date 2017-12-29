@@ -52,11 +52,7 @@ $(document).off("click", ".update_familia").on("click", ".update_familia", funct
 $(document).off("click", "#delete_familia").on("click", "#delete_familia", function(event){
 	event.preventDefault();
 	var id_familia = $(this).closest("tr").find("#delete_familia").data("idFamilia");
-	getModal("Familias/get_delete/"+ id_familia, function (){
-		$("#mybotton").html('&nbsp;Aceptar').addClass('btn btn-warning');
-		$("#mybotton").find('bold').removeClass('fa-floppy-o');
-		$("#mybotton").addClass('fa fa-trash');
-	});
+	getModal("Familias/get_delete/"+ id_familia, function (){ });
 });
 
 $(document).off("click", ".delete_familia").on("click", ".delete_familia", function(event) {

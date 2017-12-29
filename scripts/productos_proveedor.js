@@ -142,11 +142,7 @@ $(document).off("click", ".update_asignacion").on("click", ".update_asignacion",
 $(document).off("click", "#delete_asignacion").on("click", "#delete_asignacion", function(event) {
 	event.preventDefault();
 	var id_prod_proveedor = $(this).closest("tr").find("#delete_asignacion").data("idProd_proveedor");
-	getModal("Productos_proveedor/get_delete/"+id_prod_proveedor, function (){
-		$("#mybotton").html('&nbsp;Aceptar').addClass('btn btn-warning');
-		$("#mybotton").find('bold').removeClass('fa-floppy-o');
-		$("#mybotton").addClass('fa fa-trash');
-	});
+	getModal("Productos_proveedor/get_delete/"+id_prod_proveedor, function (){ });
 });
 
 $(document).off("click", ".delete_asignacion").on("click", ".delete_asignacion", function(event) {

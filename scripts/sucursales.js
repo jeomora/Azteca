@@ -54,11 +54,7 @@ $(document).off("click", ".update_sucursal").on("click", ".update_sucursal", fun
 $(document).off("click", "#delete_sucursal").on("click", "#delete_sucursal", function(event){
 	event.preventDefault();
 	var id_sucursal = $(this).closest("tr").find("#delete_sucursal").data("idSucursal");
-	getModal("Sucursales/get_delete/"+ id_sucursal, function (){
-		$("#mybotton").html('&nbsp;Aceptar').addClass('btn btn-warning');
-		$("#mybotton").find('bold').removeClass('fa-floppy-o');
-		$("#mybotton").addClass('fa fa-trash');
-	});
+	getModal("Sucursales/get_delete/"+ id_sucursal, function (){ });
 });
 
 $(document).off("click", ".delete_sucursal").on("click", ".delete_sucursal", function(event) {

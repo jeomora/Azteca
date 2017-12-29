@@ -58,11 +58,7 @@ $(document).off("click", ".update_producto").on("click", ".update_producto", fun
 $(document).off("click", "#delete_producto").on("click", "#delete_producto", function(event){
 	event.preventDefault();
 	var id_producto = $(this).closest("tr").find("#delete_producto").data("idProducto");
-	getModal("Productos/get_delete/"+ id_producto, function (){
-		$("#mybotton").html('&nbsp;Aceptar').addClass('btn btn-warning');
-		$("#mybotton").find('bold').removeClass('fa-floppy-o');
-		$("#mybotton").addClass('fa fa-trash');
-	});
+	getModal("Productos/get_delete/"+ id_producto, function (){ });
 });
 
 $(document).off("click", ".delete_producto").on("click", ".delete_producto", function(event) {
