@@ -1,4 +1,7 @@
-$(function($) {
+$(function($){
+	$("[data-toggle='tooltip']").tooltip({
+		placement:'top'
+	});
 	fillDataTable("table_familias", 'DESC', 10);
 });
 

@@ -25,16 +25,6 @@
 		<script src="<?php echo base_url('/assets/js/plugins/pace/pace.min.js') ?>"></script>
 		<!-- Chosen-select -->
 		<script src="<?php echo base_url('/assets/js/plugins/chosen/chosen.jquery.js') ?>"></script>
-		<!-- jQuery UI -->
-		<script src="<?php echo base_url('/assets/js/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
-		<!-- GITTER -->
-		<script src="<?php echo base_url('/assets/js/plugins/gritter/jquery.gritter.min.js') ?>"></script>
-		<!-- Sparkline -->
-		<script src="<?php echo base_url('/assets/js/plugins/sparkline/jquery.sparkline.min.js') ?>"></script>
-		<!-- Sparkline demo data  -->
-		<script src="<?php echo base_url('/assets/js/demo/sparkline-demo.js') ?>"></script>
-		<!-- ChartJS-->
-		<script src="<?php echo base_url('/assets/js/plugins/chartJs/Chart.min.js') ?>"></script>
 		<!-- Toastr -->
 		<script src="<?php echo base_url('/assets/js/plugins/toastr/toastr.min.js') ?>"></script>
 		<!-- Formato de numeros -->

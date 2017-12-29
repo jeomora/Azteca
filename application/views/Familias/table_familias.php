@@ -10,7 +10,7 @@
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">
-						<button class="btn btn-primary" id="new_familia">
+						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_familia">
 							<i class="fa fa-plus"></i>
 						</button>
 					</div>
