@@ -64,7 +64,7 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function get_delete($id){
-		$data["title"]="Pedido a eliminar";
+		$data["title"]="PEDIDO A ELIMINAR";
 		$data["class"]="delete_pedido";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["proveedor"] = $this->pro_mdl->getProveedores(['users.id' => $data['pedido']->id_proveedor])[0];

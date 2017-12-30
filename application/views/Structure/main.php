@@ -144,7 +144,7 @@
 	}
 	
 	/**
-	 * Funciones para construir el dataTable
+	 * Función para construir el dataTable
 	 * @param [element 	=> Es el selector de la tabla ]
 	 * @param [order 	=> Orden que se mostrará la información (ASC-DESC)]
 	 * @param [limit 	=> Cantidad de registros por pagina]
@@ -179,7 +179,7 @@
 	}
 
 	/**
-	 * Funciones para formatear cantidades de números
+	 * Función para formatear cantidades de números
 	 * @author Internet
 	 * @param [num 	=> Es la cantidad a formatear ]
 	 * @param [d 	=> Son la cantidad de decimales a mostrar]
@@ -192,7 +192,7 @@
 	}
 
 	/**
-	 * Funciones para vaciar una ventana modal
+	 * Función para vaciar una ventana modal
 	*/
 	function emptyModal(){
 		window_modal.find(".modal-body").empty();
@@ -200,7 +200,7 @@
 	}
 
 	/**
-	 * Funciones para cargar una ventana modal
+	 * Funcióne para cargar una ventana modal
 	 * @param [url 		=> Es la ruta de la petición (Controlador/función)]
 	 * @param [success	=> Es la función que se ejecutará en caso de éxito]
 	 * @param [error	=> Es la función que se ejecutará en caso de error]
@@ -225,7 +225,7 @@
 		})
 		.fail(function(response) {
 			console.log("Error en la petición: ",response);
-			toastr.error("Se generó un error en el Sistema", "USUARIO");
+			toastr.error("Se generó un error en el Sistema", user_name);
 			if (typeof error === "function"){
 				error();
 			}
@@ -234,7 +234,7 @@
 	}
 
 	/**
-	 * [Comprueb si una librería esta cargada]
+	 * [Comprueba si una librería esta cargada]
 	 * @param  [js_url 	=> Es la url completa de la libreía]
 	 * @param  [type 	=> Es el tipo de archivo de la libreía]
 	 * @return [boolean	=> true si esta cargada false si no esta cargada]
@@ -256,7 +256,7 @@
 	}
 
 	/**
-	 * Funciíon para verificar si una libreria de javascrip existe y si no la carga, posteriormente
+	 * Función para verificar si una libreria de javascrip existe y si no la carga, posteriormente
 	 * @param [url		=> Ruta donde esta cargada la libreria de java script]
 	 * @param [callback => Función que se ejecutara despues de cargar el scrip]
 	*/
@@ -313,7 +313,7 @@
 	}
 
 	/**
-	 * Funciíon para enviar un formulario method POST
+	 * Función para enviar un formulario method POST
 	 * @param [url			=> Es la ruta que se le envian los datos]
 	 * @param [formData 	=> Es el formulario a enviar]
 	 * @param [url_repuesta => Url a cargar despues de recibir los datos]

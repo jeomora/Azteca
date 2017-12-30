@@ -214,5 +214,10 @@ $(document).off("click", ".delete_pedido").on("click", ".delete_pedido", functio
 $(document).off("click", "#show_pedido").on("click", "#show_pedido", function(event){
 	event.preventDefault();
 	var id_pedido = $(this).closest("tr").find("#show_pedido").data("idPedido");
-	getModal("Pedidos/get_detalle/"+ id_pedido, function (){ });
+	getModal("Pedidos/get_detalle/"+ id_pedido, function (){
+		$("#mybotton").hide();
+		$(".close").click(function() {
+			location.reload();
+		});
+	});
 });
