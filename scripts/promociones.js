@@ -1,4 +1,7 @@
 $(function($) {
+	$("[data-toggle='tooltip']").tooltip({
+		placement:'top'
+	});
 	$("#table_promociones").dataTable({
 		responsive: true,
 		pageLength: 50,

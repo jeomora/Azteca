@@ -1,4 +1,7 @@
 $(function($) {
+	$("[data-toggle='tooltip']").tooltip({
+		placement:'top'
+	});
 	fillDataTable("table_pedidos", 'DESC', 10);
 });
 

@@ -1,4 +1,7 @@
 $(function($) {
+	$("[data-toggle='tooltip']").tooltip({
+		placement:'top'
+	});
 	fillDataTable("table_productos", 'DESC', 50);
 });
 

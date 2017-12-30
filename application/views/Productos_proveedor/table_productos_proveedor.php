@@ -11,7 +11,7 @@
 				<div class="ibox-content">
 					<?php if (! $this->ion_auth->is_admin()): ?>
 						<div class="btn-group">
-							<button class="btn btn-primary tool" title="Registrar" id="new_asignacion">
+							<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_asignacion">
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
