@@ -56,6 +56,9 @@ class Auth extends MY_Controller {
 
 	// log the user in
 	public function login(){
+		if($this->session->userdata("username")){
+			redirect('Main/','refresh');
+		}
 		$this->data['title'] = $this->lang->line('login_heading');
 		//validate form input
 		$this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
@@ -69,6 +72,7 @@ class Auth extends MY_Controller {
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				$this->session->set_userdata("username", $this->input->post('identity'));
 				redirect('Main/', 'refresh');
 			}else{
 				// if the login was un-successful
