@@ -58,6 +58,8 @@ class Pedidos extends MY_Controller {
 		$data["title"]="ACTUALIZAR DATOS DEL PEDIDO";
 		$data["class"]="update_pedido";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
+		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
+		$data["proveedores"] = $this->pro_mdl->getProveedores();
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
 		$data["view"]=$this->load->view("Pedidos/edit_pedido", $data, TRUE);
 		$this->jsonResponse($data);

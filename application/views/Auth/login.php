@@ -5,11 +5,11 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
-	<link href="<?php echo base_url('/assets/css/bootstrap.min.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/fonts/css/font-awesome.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/css/animate.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/css/style.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/img/favicon_login.png') ?>" rel="shortcut icon">
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/bootstrap.min.css') ?>" >
+	<link rel="stylesheet" href="<?php echo base_url('/assets/fonts/css/font-awesome.css') ?>" >
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/animate.css') ?>" >
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/style.css') ?>" >
+	<link rel="shortcut icon" href="<?php echo base_url('/assets/img/favicon_login.png') ?>" >
 </head>
 <style type="text/css">
 	img {
@@ -47,8 +47,8 @@
 	</div>
 
 	<!-- Mainly scripts -->
-	<script src="<?php echo base_url('/assets/js/jquery-2.1.1.js') ?>"></script>
-	<script src="<?php echo base_url('/assets/js/bootstrap.min.js') ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('/assets/js/jquery-2.1.1.js') ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('/assets/js/bootstrap.min.js') ?>"></script>
 
 </body>
 

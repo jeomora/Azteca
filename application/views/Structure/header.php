@@ -39,27 +39,27 @@
 	</script>
 
 	<!-- Bootstrap CSS-->
-	<link href="<?php echo base_url('/assets/css/bootstrap.min.css') ?>" rel="stylesheet" >
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/bootstrap.min.css') ?>" >
 
-	<link href="<?php echo base_url('/assets/fonts/css/font-awesome.css') ?>" rel="stylesheet">
+	<link rel="stylesheet" href="<?php echo base_url('/assets/fonts/css/font-awesome.css') ?>" >
 
-	<link href="<?php echo base_url('/assets/css/animate.css') ?>" rel="stylesheet">
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/animate.css') ?>" >
 
-	<link href="<?php echo base_url('/assets/css/style.css') ?>" rel="stylesheet">
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/style.css') ?>" >
 	<!-- Toastr style -->
-	<link href="<?php echo base_url('/assets/css/plugins/toastr/toastr.min.css') ?>" rel="stylesheet">
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/toastr/toastr.min.css') ?>" >
 	<!-- Favicon-->
-	<link href="<?php echo base_url('/assets/img/favicon.ico') ?>" rel="shortcut icon">
+	<link rel="shortcut icon" href="<?php echo base_url('/assets/img/favicon.ico') ?>" >
 	<?php if (isset($links) && $links): ?>
 		<?php foreach ($links as $link): ?>
 			<link rel="stylesheet" href="<?php echo base_url($link.'.css') ?>">
 		<?php endforeach ?>
 	<?php endif ?>
 	<!-- Data Picker style -->
-	<link href="<?php echo base_url('/assets/css/plugins/datapicker/datepicker3.css') ?>" rel="stylesheet">
-	<link href="<?php echo base_url('/assets/css/plugins/colorpicker/bootstrap-colorpicker.min.css') ?>" rel="stylesheet">
-
-	<link href="<?php echo base_url('/assets/css/plugins/chosen/chosen.css')?>" rel="stylesheet">
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/datapicker/datepicker3.css') ?>" >
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/colorpicker/bootstrap-colorpicker.min.css') ?>" >
+	
+	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/chosen/chosen.css')?>" >
 
 </head>
 
