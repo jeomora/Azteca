@@ -16,6 +16,7 @@
 							</button>
 						</div>
 					<?php endif ?>
+					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_promociones">
 							<thead>
 								<tr>
@@ -71,6 +72,7 @@
 								<?php endif ?>
 							</tbody>
 						</table>
+					</div>
 				</div>
 			</div>
 		</div>

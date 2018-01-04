@@ -16,6 +16,7 @@
 							</button>
 						</div>
 					<?php endif ?>
+					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_prod_proveedor">
 							<thead>
 								<tr>
@@ -65,6 +66,7 @@
 								<?php endif ?>
 							</tbody>
 						</table>
+					</div>
 				</div>
 			</div>
 		</div>

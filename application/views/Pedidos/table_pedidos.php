@@ -14,6 +14,7 @@
 							<i class="fa fa-plus"></i>
 						</button>
 					</div>
+					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_pedidos">
 							<thead>
 								<tr>
@@ -51,6 +52,7 @@
 								<?php endif ?>
 							</tbody>
 						</table>
+					</div>
 				</div>
 			</div>
 		</div>
