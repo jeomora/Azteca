@@ -1,5 +1,10 @@
 <script type="text/javascript">
 
+	// function recarga(){
+	// 	location.href=location.href
+	// }
+	// setInterval('recarga()',5000);
+
 	var name_control = "";//Nombre del controlador activo
 	var name_function = "";//Nombre de la función cargada
 	var window_modal = $("#mainModal");//Ventana modal usada 
@@ -330,26 +335,23 @@
 		.done(function(response) {
 			switch(response.type){
 				case "success":
-					cleanModal();
+					emptyModal();
 					$("#mainModal").modal("hide");
-					$("#main_container").empty();
-					toastr.success(response.desc, response.id);
-					location.reload();
+					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
 				break;
 
 				case "info":
-					cleanModal();
+					emptyModal();
 					$("#mainModal").modal("hide");
-					toastr.info(response.desc, response.id);
-					location.reload();
+					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
 				break;
 
 				case "warning":
-					toastr.warning(response.desc, response.id);
+					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
 				break;
 
 				default:
-					toastr.error(response.desc, response.id);
+					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
 			}
 			$("#notifications").html(response);
 
