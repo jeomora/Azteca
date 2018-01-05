@@ -343,18 +343,17 @@
 				case "info":
 					emptyModal();
 					$("#mainModal").modal("hide");
-					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
+					setTimeout("location.reload()", 1300, toastr.info(response.desc, response.id), "");
 				break;
 
 				case "warning":
-					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
+					toastr.warning(response.desc, response.id);
 				break;
 
 				default:
-					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
+					toastr.error(response.desc, response.id);
 			}
 			$("#notifications").html(response);
-
 		})
 		.fail(function(response) {
 			// console.log("Error en la respuesta: ", response);

@@ -74,15 +74,25 @@ class Familias extends MY_Controller {
 		$familia = [
 			'nombre'	=>	strtoupper($this->input->post('nombre'))
 			];
-
+		
+		$getFamilia = $this->fam_md->get(NULL, ['nombre'=>$familia['nombre']])[0];
+		
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):
-				$data ['id_familia']=$this->fam_md->insert($familia);
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Familia registrada correctamente',
-					"type"	=> 'success'
-				];
+				if(sizeof($getFamilia) == 0){
+					$data ['id_familia'] = $this->fam_md->insert($familia);
+					$mensaje = [
+						"id" 	=> 'Éxito',
+						"desc"	=> 'Familia registrada correctamente',
+						"type"	=> 'success'
+					];
+				}else{
+					$mensaje = [
+						"id" 	=> 'Alerta',
+						"desc"	=> 'La familia ya esta registrada en el Sitema',
+						"type"	=> 'warning'
+					];
+				}
 				break;
 
 			case (substr($param, 0, 1) === 'U'):

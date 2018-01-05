@@ -38,11 +38,7 @@ class MY_Model extends CI_Model {
 		}
 		$this->db->where($this->TABLE_NAME.".estatus", 1);
 		$query = $this->db->get($this->TABLE_NAME);
-		if(is_array($where)){
-			return $query->result();
-		}else{
-			return $query->row();
-		}
+		return $query->num_rows() > 0 ? $query->result() : 0;
 	}
 
 	public function insert(Array $data){
