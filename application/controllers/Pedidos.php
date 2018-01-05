@@ -47,30 +47,39 @@ class Pedidos extends MY_Controller {
 
 	public function add_pedido(){
 		$data["title"]="REGISTRAR PEDIDOS";
-		$data["class"]="new_pedido";
 		$data["proveedores"] = $this->pro_mdl->getProveedores();
 		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
 		$data["view"]=$this->load->view("Pedidos/new_pedido", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_pedido' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span>
+							&nbsp;Guardar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR DATOS DEL PEDIDO";
-		$data["class"]="update_pedido";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
 		$data["proveedores"] = $this->pro_mdl->getProveedores();
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
 		$data["view"]=$this->load->view("Pedidos/edit_pedido", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_pedido' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span>
+							&nbsp;Guardar cambios
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="PEDIDO A ELIMINAR";
-		$data["class"]="delete_pedido";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["proveedor"] = $this->pro_mdl->getProveedores(['users.id' => $data['pedido']->id_proveedor])[0];
 		$data["view"]=$this->load->view("Pedidos/delete_pedido", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger delete_pedido' type='button'>
+							<span class='bold'><i class='fa fa-times'></i></span>
+							&nbsp;Aceptar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
@@ -141,10 +150,10 @@ class Pedidos extends MY_Controller {
 
 	public function get_detalle($id){
 		$data["title"]="DETALLE DEL PEDIDO";
-		$data["class"]='';
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
 		$data["view"]=$this->load->view("Pedidos/detalle_pedido", $data, TRUE);
+		$data["button"]="";
 		$this->jsonResponse($data);
 	}
 

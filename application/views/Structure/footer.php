@@ -56,10 +56,7 @@
 				
 			</div>
 			<div class="modal-footer">
-				<button id="mybotton" class="btn btn-success" type="button">
-					<span class="bold"><i class="fa fa-floppy-o"></i></span>
-					&nbsp;Guardar
-				</button>
+				
 			</div>
 		</div>
 	</div>

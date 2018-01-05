@@ -43,24 +43,33 @@ class Familias extends MY_Controller {
 
 	public function add_familia(){
 		$data["title"]="REGISTRAR FAMILIAS";
-		$data["class"] = "new_familia";
 		$data["view"] = $this->load->view("Familias/new_familia", NULL, TRUE);
+		$data["button"]="<button class='btn btn-success new_familia' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span>
+							&nbsp;Guardar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR DATOS DE LA FAMILIA";
-		$data["class"] = "update_familia";
 		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
 		$data["view"] = $this->load->view("Familias/edit_familia", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_familia' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span>
+							&nbsp;Guardar cambios
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="FAMILIA A ELIMINAR";
-		$data["class"] = "delete_familia";
 		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
 		$data["view"] = $this->load->view("Familias/delete_familia", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger delete_familia' type='button'>
+							<span class='bold'><i class='fa fa-times'></i></span>
+							&nbsp;Aceptar
+						</button>";
 		$this->jsonResponse($data);
 	}
 

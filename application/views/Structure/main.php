@@ -197,6 +197,7 @@
 	function emptyModal(){
 		window_modal.find(".modal-body").empty();
 		window_modal.find(".modal-title").empty();
+		window_modal.find(".modal-footer").empty();
 	}
 
 	/**
@@ -215,7 +216,7 @@
 		.done(function(response) {
 			window_modal.find(".modal-title").html(response.title);
 			window_modal.find(".modal-body").html(response.view);
-			window_modal.find(".modal-footer").find("#mybotton").addClass(response.class);
+			window_modal.find(".modal-footer").html(response.button);
 			window_modal.modal("show");
 			if(typeof success === "function"){
 				success();
