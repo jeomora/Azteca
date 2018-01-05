@@ -44,9 +44,11 @@ class Productos_proveedor extends MY_Controller {
 
 	public function add_asignacion(){
 		$data["title"]="REGISTRAR COTIZACIONES";
-		$data["class"]="new_asignacion";
 		$data["productos"] = $this->prod_mdl->get('id_producto, nombre');
 		$data["view"]=$this->load->view("Productos_proveedor/new_asignacion", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_asignacion' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
@@ -81,19 +83,23 @@ class Productos_proveedor extends MY_Controller {
 
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR COTIZACIÓN";
-		$data["class"]="update_asignacion";
 		$data["prod_prov"] = $this->prod_prov_mdl->get(NULL, ['id_producto_proveedor'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["prod_prov"]->id_producto])[0];
 		$data["view"]=$this->load->view("Productos_proveedor/edit_asignacion", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_asignacion' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="COTIZACIÓN A ELIMINAR";
-		$data["class"] = "delete_asignacion";
 		$data["prod_prov"] = $this->prod_prov_mdl->get(NULL, ['id_producto_proveedor'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["prod_prov"]->id_producto])[0];
 		$data["view"]=$this->load->view("Productos_proveedor/delete_asignacion", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger delete_asignacion' type='button'>
+							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar
+						</button>";
 		$this->jsonResponse($data);
 	}
 

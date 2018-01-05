@@ -44,9 +44,11 @@ class Promociones extends MY_Controller {
 
 	public function add_promocion(){
 		$data["title"]="REGISTRAR PROMOCIONES";
-		$data["class"]="new_promocion";
 		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
 		$data["view"]=$this->load->view("Promociones/new_promocion", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_promocion' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
@@ -108,19 +110,23 @@ class Promociones extends MY_Controller {
 
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR PROMOCIÓN";
-		$data["class"]="update_promocion";
 		$data["promocion"] = $this->prom_mdl->get(NULL, ['id_promocion'=>$id])[0];
 		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
 		$data["view"]=$this->load->view("Promociones/edit_promocion", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_promocion' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="PROMOCIÓN A ELIMINAR";
-		$data["class"]="delete_promocion";
 		$data["promocion"] = $this->prom_mdl->get(NULL, ['id_promocion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["promocion"]->id_producto])[0];
 		$data["view"]=$this->load->view("Promociones/delete_promocion", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger delete_promocion' type='button'>
+							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar
+						</button>";
 		$this->jsonResponse($data);
 	}
 

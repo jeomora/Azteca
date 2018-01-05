@@ -70,26 +70,32 @@ class Productos extends MY_Controller {
 
 	public function add_producto(){
 		$data["title"]="REGISTRAR PRODUCTOS";
-		$data["class"] = "new_producto";
 		$data["familias"] = $this->fam_md->get();
 		$data["view"] =$this->load->view("Productos/new_producto", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_producto' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR DATOS DEL PRODUCTO";
-		$data["class"]="update_producto";
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
 		$data["familias"] = $this->fam_md->get();
 		$data["view"] =$this->load->view("Productos/edit_producto", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_producto' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="PRODUCTO A ELIMINAR";
-		$data["class"]="delete_producto";
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
 		$data["view"] = $this->load->view("Productos/delete_producto", $data,TRUE);
+		$data["button"]="<button class='btn btn-danger delete_producto' type='button'>
+							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar
+						</button>";
 		$this->jsonResponse($data);
 	}
 

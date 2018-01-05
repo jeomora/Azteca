@@ -43,24 +43,30 @@ class Sucursales extends MY_Controller {
 
 	public function add_sucursal(){
 		$data["title"]="REGISTRAR SUCURSALES";
-		$data["class"]="new_sucursal";
 		$data["view"] =$this->load->view("Sucursales/new_sucursal", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_sucursal' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
+						</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR DATOS DE LA SUCURSAL";
-		$data["class"]="update_sucursal";
 		$data["sucursal"] = $this->suc_md->get(NULL, ['id_sucursal'=>$id])[0];
 		$data["view"]=$this->load->view("Sucursales/edit_sucursal", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_sucursal' type='button'>
+					<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
+				</button>";
 		$this->jsonResponse($data);
 	}
 
 	public function get_delete($id){
 		$data["title"]="SUCURSAL A ELIMINAR";
-		$data["class"]="delete_sucursal";
 		$data["sucursal"] = $this->suc_md->get(NULL, ['id_sucursal'=>$id])[0];
 		$data["view"]=$this->load->view("Sucursales/delete_sucursal", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger delete_sucursal' type='button'>
+					<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar
+				</button>";
 		$this->jsonResponse($data);
 	}
 

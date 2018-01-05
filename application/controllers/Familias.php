@@ -45,8 +45,7 @@ class Familias extends MY_Controller {
 		$data["title"]="REGISTRAR FAMILIAS";
 		$data["view"] = $this->load->view("Familias/new_familia", NULL, TRUE);
 		$data["button"]="<button class='btn btn-success new_familia' type='button'>
-							<span class='bold'><i class='fa fa-floppy-o'></i></span>
-							&nbsp;Guardar
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
 						</button>";
 		$this->jsonResponse($data);
 	}
@@ -56,8 +55,7 @@ class Familias extends MY_Controller {
 		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
 		$data["view"] = $this->load->view("Familias/edit_familia", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_familia' type='button'>
-							<span class='bold'><i class='fa fa-floppy-o'></i></span>
-							&nbsp;Guardar cambios
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
 						</button>";
 		$this->jsonResponse($data);
 	}
@@ -67,8 +65,7 @@ class Familias extends MY_Controller {
 		$data["familia"] = $this->fam_md->get(NULL, ['id_familia'=>$id])[0];
 		$data["view"] = $this->load->view("Familias/delete_familia", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_familia' type='button'>
-							<span class='bold'><i class='fa fa-times'></i></span>
-							&nbsp;Aceptar
+							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar
 						</button>";
 		$this->jsonResponse($data);
 	}
