@@ -9,19 +9,17 @@
 					<h5>Listado de Usuarios</h5>
 				</div>
 				<div class="ibox-content">
-					<div class="row col-lg-12">
-						<div class="btn-group">
-							<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn tool btn-primary btn-modal" href="<?php echo site_url('Auth/create_user'); ?>" data-target="#myModal" >
-								<i class="fa fa-plus"></i>
-							</a>
-						</div>
+					<div class="btn-group">
+						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn tool btn-primary btn-modal" href="<?php echo site_url('Auth/create_user'); ?>" data-target="#myModal" >
+							<i class="fa fa-plus"></i>
+						</a>
+					</div>
 					<!-- Por el momento no se ocupa crear grupos
 					<div class="btn-group">
 						<a data-tooltip="tooltip" title="Agregar grupo" class="btn tool btn-primary" href="<?php echo site_url('Auth/create_group'); ?>">
 							<i class="fa fa-users"></i>
 						</a>
 					</div> -->
-					</div>
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_usuarios">
 							<thead>
