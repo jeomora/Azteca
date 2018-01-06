@@ -42,8 +42,8 @@
 						<li class="dropdown">
 							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">CONSULTAS <span class="caret"></span></a>
 							<ul role="menu" class="dropdown-menu">
-								<li><a href="<?php echo site_url('Productos_proveedor/productos_proveedor_view') ?>">Cotizaciones</a></li>
-								<li><a href="<?php echo site_url('Promociones/promociones_view') ?>" >Promociones</a></li>
+								<li><a href="<?php echo site_url('Productos_proveedor/') ?>">Cotizaciones</a></li>
+								<li><a href="<?php echo site_url('Promociones/') ?>" >Promociones</a></li>
 								<li><a href="<?php echo site_url('Auth/user_view') ?>" >Usuario</a></li>
 							</ul>
 						</li>
