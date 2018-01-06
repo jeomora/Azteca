@@ -11,7 +11,7 @@ class Reportes extends MY_Controller {
 		$this->load->model("Productos_proveedor_model", "prod_prov_mdl");
 	}
 
-	public function index(){
+	public function precios_bajos(){
 		ini_get("memory_limit");
 		ini_set("memory_limit","512M");
 		ini_get("memory_limit");
