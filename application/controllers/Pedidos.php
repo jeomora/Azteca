@@ -12,7 +12,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Productos_proveedor_model", "pro_prov_mdl");
 	}
 
-	public function pedidos_view(){
+	public function index(){
 		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
 		$where = [];
 

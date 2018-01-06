@@ -9,7 +9,7 @@ class Promociones extends MY_Controller {
 		$this->load->model("Promociones_model", "prom_mdl");
 	}
 
-	public function promociones_view(){
+	public function index(){
 		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
 		$where = [];
 

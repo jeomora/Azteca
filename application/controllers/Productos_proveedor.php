@@ -9,7 +9,7 @@ class Productos_proveedor extends MY_Controller {
 		$this->load->model("Productos_proveedor_model", "prod_prov_mdl");
 	}
 
-	public function productos_proveedor_view(){
+	public function index(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',

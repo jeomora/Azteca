@@ -8,7 +8,7 @@ class Sucursales extends MY_Controller {
 		$this->load->model("Sucursales_model", "suc_md");
 	}
 
-	public function sucursales_view(){
+	public function index(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',

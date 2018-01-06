@@ -10,7 +10,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Proveedores_model", "prov_mdl");
 	}
 
-	public function cotizaciones_view(){
+	public function index(){
 		$data["cotizaciones"] = "";
 		$this->load->view("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}

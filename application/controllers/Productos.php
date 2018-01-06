@@ -10,7 +10,7 @@ class Productos extends MY_Controller {
 		$this->load->library("pagination");
 	}
 
-	public function productos_view(){
+	public function index(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',
