@@ -4,19 +4,12 @@
 
 <div class="ibox-content">
 	<div class="row">
-		<?php echo form_open("", array("id"=>'form_cotizacion_new')); ?>
+		<?php echo form_open("", array("id"=>'form_cotizacion_edit')); ?>
+		<input type="hidden" name="id_cotizacion" id="id_cotizacion" value="<?php echo $cotizacion->id_cotizacion ?>">
 		<div class="row">
 			<div class="col-sm-8">
 				<div class="form-group">
-					<label for="id_producto">Articulos</label>
-					<select name="id_producto" id="id_producto" class="form-control chosen-select">
-						<option value="">Seleccionar...</option>
-						<?php if ($productos): ?>
-							<?php foreach ($productos as $key => $value): ?>
-								<option value="<?php echo $value->id_producto ?>"><?php echo strtoupper($value->nombre) ?></option>
-							<?php endforeach ?>
-						<?php endif ?>
-					</select>
+					<input type="text" class="form-control" value="<?php echo $cotizacion->producto ?>" readonly="">
 				</div>
 			</div>
 			<div class="col-sm-2">
@@ -24,7 +17,7 @@
 					<label for="fecha_caducidad">Fecha caducidad</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text" name="fecha_caducidad" id="fecha_caducidad" class="form-control datepicker" value="" placeholder="00-00-0000">
+						<input type="text" name="fecha_caducidad" id="fecha_caducidad" class="form-control datepicker" value="<?php echo date('d-m-Y', strtotime($cotizacion->fecha_caduca)) ?>" placeholder="00-00-0000">
 					</div>
 				</div>
 			</div>
@@ -33,7 +26,7 @@
 					<label for="existencias">Existencias</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-slack"></i></span>
-						<input type="text" name="existencias" id="existencias" class="form-control number" value="" placeholder="0">
+						<input type="text" name="existencias" id="existencias" class="form-control number" value="<?php echo $cotizacion->existencias ?>" placeholder="0">
 					</div>
 				</div>
 			</div>
@@ -45,17 +38,17 @@
 				<div class="form-group">
 					<div class="input-group">
 						<span class="input-group-addon"> <input type="radio" class="promocion"> </span>
-						<input class="form-control numeric" placeholder="0" id="num_one" name="num_one" type="text" readonly="">
+						<input class="form-control numeric" placeholder="0" id="num_one" name="num_one" type="text" value="<?php echo $cotizacion->num_one ?>" readonly="">
 						<span class="input-group-addon"><b>En</b></span>
-						<input class="form-control numeric" placeholder="0" id="num_two" name="num_two" type="text" readonly="">
+						<input class="form-control numeric" placeholder="0" id="num_two" name="num_two" type="text" value="<?php echo $cotizacion->num_two ?>" readonly="">
 					</div>
 				</div>
 				<div class="form-group">
-					<input class="form-control" placeholder="Nombre de la promoción" name="nombre" id="nombre" type="text">
+					<input class="form-control" placeholder="Nombre de la promoción" name="nombre" id="nombre" type="text" value="<?php echo $cotizacion->promocion ?>" >
 				</div>
 				<div class="input-group m-b">
 					<span class="input-group-addon"> <input type="radio" class="descuento"> <b>Descuento</b> </span>
-					<input type="text" id="porcentaje" nam="porcentaje" class="form-control numeric" value="" placeholder="0" readonly="">
+					<input type="text" id="porcentaje" name="porcentaje" class="form-control numeric" value="<?php echo $cotizacion->descuento ?>" placeholder="0" readonly="">
 					<span class="input-group-addon sm">%</span>
 				</div>
 			</div>
@@ -63,7 +56,7 @@
 				<label for="precio_factura">Precio factura C/Promoción</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-					<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="" placeholder="0.00" readonly="">
+					<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="<?php echo $cotizacion->precio_factura ?>" placeholder="0.00" readonly="">
 					<span class="validar"></span>
 				</div>
 			</div>
@@ -73,7 +66,7 @@
 					<label for="precio">Precio factura S/Promoción</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" name="precio"  id="precio" class="form-control number" value="" placeholder="0.00" readonly="">
+						<input type="text" name="precio"  id="precio" class="form-control number" value="<?php echo $cotizacion->precio ?>" placeholder="0.00" readonly="">
 						<span class="validar"></span>
 					</div>
 				</div>
@@ -82,7 +75,7 @@
 			<div class="col-sm-8">
 				<div class="form-group">
 					<label for="observaciones">Observaciones</label>
-					<textarea type="text" rows="5" placeholder="Escriba las observaciones" class="form-control" name="observaciones" id="observaciones"></textarea>
+					<textarea type="text" rows="5" placeholder="Escriba las observaciones" class="form-control" name="observaciones" id="observaciones"><?php echo $cotizacion->observaciones ?></textarea>
 				</div>
 			</div>
 		</div>

@@ -40,12 +40,10 @@
 					</ul>
 					<?php else: ?> <!--Solo Usuario proveedor -->
 						<li class="dropdown">
-							<a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">CONSULTAS <span class="caret"></span></a>
-							<ul role="menu" class="dropdown-menu">
-								<li><a href="<?php echo site_url('Productos_proveedor') ?>">Cotizaciones</a></li>
-								<li><a href="<?php echo site_url('Promociones') ?>" >Promociones</a></li>
-								<li><a href="<?php echo site_url('Auth/user_view') ?>" >Usuario</a></li>
-							</ul>
+							<a href="<?php echo site_url('Cotizaciones') ?>" >COTIZACIONES </a>
+						</li>
+						<li class="dropdown">
+							<a href="#">ARTICULOS COTIZADOS </a>
 						</li>
 					</ul>
 
