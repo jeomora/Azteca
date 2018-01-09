@@ -9,7 +9,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Detalles_pedidos_model", "det_ped_mdl");
 		$this->load->model("Sucursales_model", "suc_mdl");
 		$this->load->model("Proveedores_model", "pro_mdl");
-		$this->load->model("Productos_proveedor_model", "pro_prov_mdl");
+		$this->load->model("Cotizaciones_model", "ct_mdl");
 	}
 
 	public function index(){
@@ -102,8 +102,8 @@ class Pedidos extends MY_Controller {
 
 	public function get_productos(){
 		$id_proveedor = $this->input->post('id_proveedor');
-		$where = ["productos_proveedor.id_proveedor" => $id_proveedor];
-		$productosProveedor = $this->pro_prov_mdl->productos_proveedor($where);
+		$where = ["cotizaciones.id_proveedor" => $id_proveedor];
+		$productosProveedor = $this->ct_mdl->productos_proveedor($where);
 		$this->jsonResponse($productosProveedor);
 	}
 

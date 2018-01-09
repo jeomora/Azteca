@@ -5,10 +5,7 @@ class Reportes extends MY_Controller {
 
 	function __construct(){
 		parent::__construct();
-		$this->load->model("Promociones_model", "prom_mdl");
-		$this->load->model("Productos_model", "prod_mdl");
-		$this->load->model("Proveedores_model", "pro_mdl");
-		$this->load->model("Productos_proveedor_model", "prod_prov_mdl");
+		$this->load->model("Cotizaciones_model", "ct_mdl");
 	}
 
 	public function precios_bajos(){
@@ -37,7 +34,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["preciosBajos"] = $this->prod_prov_mdl->preciosBajosProveedor();
+		$data["preciosBajos"] = $this->ct_mdl->preciosBajosProveedor();
 		$this->estructura("Reportes/table_precios_bajos", $data);
 
 	}
@@ -65,7 +62,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["promociones_igual"] = $this->prom_mdl->getPromociones();
+		$data["promociones_igual"] = $this->ct_mdl->getCotizaciones();
 		$this->estructura("Reportes/table_precios_iguales", $data);
 	}
 

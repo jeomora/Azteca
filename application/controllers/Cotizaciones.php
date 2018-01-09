@@ -32,7 +32,13 @@ class Cotizaciones extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones();
+		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
+		$where = [];
+		
+		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
+			$where = ["cotizaciones.id_proveedor" => $user->id];
+		}
+		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
 

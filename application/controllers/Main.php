@@ -7,7 +7,7 @@ class Main extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Familias_model", "fam_md");
 		$this->load->model("Productos_model", "pr_md");
-		$this->load->model("Productos_proveedor_model", "prod_prov_md");
+		$this->load->model("Cotizaciones_model", "cot_md");
 		$this->load->model("Proveedores_model", "prov_md");
 	}
 
@@ -18,10 +18,10 @@ class Main extends MY_Controller {
 		$data["productos"]=$this->pr_md->get();
 		$data["familias"]=$this->fam_md->get();
 		$where = [];
-		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
-			$where = ["productos_proveedor.id_proveedor" => $user->id];
+		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cotizados cuando es proveedor
+			$where = ["cotizaciones.id_proveedor" => $user->id];
 		}
-		$data["prod_proveedores"] = $this->prod_prov_md->getProductos_proveedor($where);
+		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
 		$this->estructura("Admin/welcome", $data);
 	}
 

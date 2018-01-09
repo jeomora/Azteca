@@ -29,15 +29,15 @@
 								<?php if ($promociones_igual): ?>
 									<?php foreach ($promociones_igual as $key => $value): ?>
 										<tr>
-											<th><?php echo $value->id_promocion ?></th>
+											<th><?php echo $value->id_cotizacion ?></th>
 											<td><?php echo strtoupper($value->first_name.' '.$value->last_name) ?> </td>
 											<td><?php echo strtoupper($value->producto) ?></td>
-											<td><?php echo '$ '.number_format($value->precio_fijo,2,'.',',') ?></td>
-											<td><?php echo ($value->precio_descuento > 0) ? '$ '.number_format($value->precio_descuento,2,'.',',') : '' ?></td>
+											<td><?php echo '$ '.number_format($value->precio,2,'.',',') ?></td>
+											<td><?php echo ($value->precio_factura > 0) ? '$ '.number_format($value->precio_factura,2,'.',',') : '' ?></td>
 											<td><?php echo $value->promocion ?></td>
 											<td><?php echo $value->observaciones ?></td>
-											<td><?php echo ($value->precio_inicio > 0) ? '$ '.number_format($value->precio_inicio,2,'.',',') : '' ?></td>
-											<td><?php echo ($value->precio_fin > 0) ? '$ '.number_format($value->precio_fin,2,'.',',') : '' ?></td>
+											<td><?php echo ($value->num_one > 0) ? '$ '.number_format($value->num_one,2,'.',',') : '' ?></td>
+											<td><?php echo ($value->num_two > 0) ? '$ '.number_format($value->num_two,2,'.',',') : '' ?></td>
 											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,2,'.',',').' %' : '' ?></td>
 										</tr>
 									<?php endforeach ?>

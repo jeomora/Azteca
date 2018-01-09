@@ -8,6 +8,7 @@
 		<input type="hidden" name="id_cotizacion" id="id_cotizacion" value="<?php echo $cotizacion->id_cotizacion ?>">
 		<div class="row">
 			<div class="col-sm-8">
+				<label for="">Artículo</label>
 				<div class="form-group">
 					<input type="text" class="form-control" value="<?php echo $cotizacion->producto ?>" readonly="">
 				</div>

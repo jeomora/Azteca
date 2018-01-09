@@ -43,7 +43,7 @@
 							<a href="<?php echo site_url('Cotizaciones') ?>" >COTIZACIONES </a>
 						</li>
 						<li class="dropdown">
-							<a href="#">ARTICULOS COTIZADOS </a>
+							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
 						</li>
 					</ul>
 

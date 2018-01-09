@@ -8,7 +8,7 @@
 				<div class="ibox-content ">
 					<h5 class="m-b-md">ARTICULOS</h5>
 					<h2 class="text-navy">
-						<i class="fa fa-play fa-rotate-45"></i> <?php echo number_format(count($productos),2,'.',',') ?>
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo empty($productos) ? 0 : number_format(sizeof($productos),2,'.',',') ?>
 					</h2>
 					<small>EN EL SISTEMA</small>
 				</div>
@@ -19,7 +19,7 @@
 				<div class="ibox-content">
 					<h5 class="m-b-md">FAMILIAS</h5>
 					<h2 class="text-navy">
-						<i class="fa fa-play fa-rotate-45"></i> <?php echo number_format(count($familias),2,'.',',') ?>
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo empty($familias) ? 0 : number_format(sizeof($familias),2,'.',',') ?>
 					</h2>
 					<small>EN EL SISTEMA</small>
 				</div>
@@ -30,7 +30,7 @@
 				<div class="ibox-content">
 					<h5 class="m-b-md">COTIZACIONES</h5>
 					<h2 class="text-navy">
-						<i class="fa fa-play fa-rotate-45"></i> <?php echo number_format(count($prod_proveedores),2,'.',',') ?>
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo empty($cotizaciones) ? 0 : number_format(sizeof($cotizaciones),2,'.',',') ?>
 					</h2>
 					<small>EN EL SISTEMA</small>
 				</div>

@@ -50,6 +50,81 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
+	public function preciosBajosProveedor(){
+		$query ="SELECT
+			p.nombre AS producto,
+			UPPER(CONCAT(proveedor_m.first_name,' ',proveedor_m.last_name)) AS proveedor_minimo,
+			ct.precio AS precio_minimo,
+			ct.precio_factura AS precio_factura_minimo,
+			ct.nombre AS promocion_minimo,
+			ct.observaciones AS observaciones_minimo,
+			ct.num_one AS num_one_minimo,
+			ct.num_two AS num_two_minimo,
+			ct.descuento AS descuento_minimo,
+			UPPER(CONCAT(proveedor_s.first_name,' ',proveedor_s.last_name)) AS proveedor_siguiente,
+			ps.precio AS precio_siguiente,
+			ps.precio_factura AS precio_factura_siguiente,
+			ps.nombre AS promocion_siguiente,
+			ps.observaciones AS observaciones_siguiente,
+			ps.num_one AS num_one_siguiente,
+			ps.num_two AS num_two_siguiente,
+			ps.descuento AS descuento_siguiente
+			FROM  cotizaciones
+				LEFT JOIN productos p ON cotizaciones.id_producto = p.id_producto
+				JOIN cotizaciones ct
+					ON ct.id_cotizacion = (SELECT
+						p1.id_cotizacion 
+						FROM cotizaciones p1
+							WHERE cotizaciones.id_producto = p1.id_producto 
+							AND p1.precio = (SELECT MIN(p2.precio)
+							FROM cotizaciones p2
+								WHERE p2.id_producto = p1.id_producto))
+				LEFT JOIN cotizaciones ps 
+					ON ps.id_cotizacion =(SELECT
+						id_cotizacion 
+						FROM cotizaciones
+							WHERE cotizaciones.id_producto = ct.id_producto
+							AND cotizaciones.precio >= ct.precio
+							AND cotizaciones.id_cotizacion <> ct.id_cotizacion
+							ORDER BY cotizaciones.precio ASC
+							LIMIT 1)
+				LEFT JOIN users proveedor_m ON ct.id_proveedor = proveedor_m.id
+				LEFT JOIN users proveedor_s ON ps.id_proveedor = proveedor_s.id
+				GROUP BY ct.id_producto
+				ORDER BY ct.id_producto DESC, ct.precio ASC;";
+			return $this->db->query($query,FALSE)->result();
+	}
+
+	public function productos_proveedor($where=[]){
+		$this->db->select("
+			cotizaciones.id_cotizacion, cotizaciones.precio,
+			p.id_producto, UPPER(p.nombre) AS producto,
+			u.id, UPPER(CONCAT(u.first_name,' ',u.last_name)) AS proveedor")
+		->from($this->TABLE_NAME)
+		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
+		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
+		->where($this->TABLE_NAME.".estatus", 1);
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Cotizaciones_model.php */

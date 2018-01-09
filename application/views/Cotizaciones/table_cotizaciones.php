@@ -22,12 +22,12 @@
 								<tr>
 									<th>NO</th>
 									<th>PROMOCIÓN</th>
-									<th>PRODUCTO</th>
+									<th>ARTÍCULO</th>
 									<?php
 										echo (! $this->ion_auth->is_admin()) ? '' : "<th>PROVEEDOR</th>";
 									?>
-									<th>F. REGISTRO</th>
-									<th>F. CADUCIDAD</th>
+									<th>FECHA REGISTRO</th>
+									<th>FECHA CADUCIDAD</th>
 									<th>EXISTENCIAS</th>
 									<th>PRECIO FACTURA C/PROMOCIÓN</th>
 									<th>PRECIO FACTURA S/PROMOCIÓN</th>
@@ -41,10 +41,10 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php if ($cotizaciones): ?>
+								<?php if ($cotizaciones): $a=0; ?>
 									<?php foreach ($cotizaciones as $key => $value): ?>
 										<tr>
-											<th><?php echo $value->id_cotizacion ?></th>
+											<th><?php echo $a+1; ?></th>
 											<td><?php echo $value->promocion ?></td>
 											<td><?php echo strtoupper($value->producto) ?></td>
 											<?php
@@ -70,7 +70,7 @@
 												</td>
 											<?php endif ?>
 										</tr>
-									<?php endforeach ?>
+									<?php $a++; endforeach ?>
 								<?php endif ?>
 							</tbody>
 						</table>

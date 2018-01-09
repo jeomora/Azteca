@@ -34,13 +34,13 @@
 											<td><?php echo $value->producto ?></td>
 											<td><?php echo $value->proveedor_minimo ?></td>
 											<td><?php echo '$ '.number_format($value->precio_minimo,2,'.',',') ?></td>
-											<td><?php echo isset($value->descuento_minimo) ? number_format($value->descuento_minimo,2,'.',',').' %' : '' ?></td>
-											<td><?php echo isset($value->precio_descuento_minimo) ? '$ '.number_format($value->precio_descuento_minimo,2,'.',',') : '' ?></td>
+											<td><?php echo ($value->descuento_minimo > 0) ? $value->descuento_minimo.' %' : '' ?></td>
+											<td><?php echo isset($value->precio_factura_minimo) ? '$ '.number_format($value->precio_factura_minimo,2,'.',',') : '' ?></td>
 											<th>|</th>
 											<td><?php echo $value->proveedor_siguiente ?></td>
 											<td><?php echo isset($value->precio_siguiente) ? '$ '.number_format($value->precio_siguiente,2,'.',',') : '' ?></td>
-											<td><?php echo isset($value->descuento_siguiente) ? number_format($value->descuento_siguiente,2,'.',',').' %' :'' ?></td>
-											<td><?php echo isset($value->precio_descuento_siguiente) ? '$ '.number_format($value->precio_descuento_siguiente,2,'.',',') : '' ?></td>
+											<td><?php echo ($value->descuento_siguiente > 0) ? number_format($value->descuento_siguiente,2,'.',',').' %' :'' ?></td>
+											<td><?php echo isset($value->precio_factura_siguiente) ? '$ '.number_format($value->precio_factura_siguiente,2,'.',',') : '' ?></td>
 										</tr>
 									<?php $a++; endforeach ?>
 								<?php endif ?>

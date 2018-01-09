@@ -14,12 +14,21 @@ class MY_Controller extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model("Menus_model", "m_md");
+		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$data["main_menu"] = $this->m_md->getMenus();
 		$data["usuario"] = $this->ion_auth->user()->row();
 		//Asignamos el valor a las variables"!
 		$this->ASSETS = "./assets/";
 		$this->UPLOADS = "uploads/";
 
+		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
+		$where = [];
+		
+		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
+			@$where = ["cotizaciones.id_proveedor" => $data['usuario']->id];
+		}
+		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
+		
 		$this->load->vars($data);
 		$this->header = "Structure/header";
 		$this->top_menu  = "Structure/top_menu";

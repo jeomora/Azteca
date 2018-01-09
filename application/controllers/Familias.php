@@ -89,7 +89,7 @@ class Familias extends MY_Controller {
 				}else{
 					$mensaje = [
 						"id" 	=> 'Alerta',
-						"desc"	=> 'La familia ya esta registrada en el Sitema',
+						"desc"	=> 'La familia ya esta registrada en el Sistema',
 						"type"	=> 'warning'
 					];
 				}
