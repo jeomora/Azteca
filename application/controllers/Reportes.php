@@ -36,7 +36,6 @@ class Reportes extends MY_Controller {
 		];
 		$data["preciosBajos"] = $this->ct_mdl->preciosBajosProveedor();
 		$this->estructura("Reportes/table_precios_bajos", $data);
-
 	}
 
 	public function precios_iguales(){
@@ -91,6 +90,35 @@ class Reportes extends MY_Controller {
 		header("Expires: 0");
 	}
 
+	public function comparar_precios(){
+		ini_get("memory_limit");
+		ini_set("memory_limit","512M");
+		ini_get("memory_limit");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/reportes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["comparaPrecios"] = $this->ct_mdl->comparaPrecios();
+		$this->estructura("Reportes/table_comparar_precios", $data);
+	}
 
 }
 

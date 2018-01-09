@@ -125,6 +125,10 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
+	public function comparaPrecios($value=''){
+		# code...
+	}
+
 }
 
 /* End of file Cotizaciones_model.php */

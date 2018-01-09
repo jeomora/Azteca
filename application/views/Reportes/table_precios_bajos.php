@@ -16,14 +16,14 @@
 									<th>NO</th>
 									<th>ARTICULO</th>
 									<th>PROVEEDOR 1</th>
-									<th>PRECIO</th>
+									<th>PRECIO BAJO</th>
 									<th>DESCUENTO</th>
-									<th>PRECIO DESCUENTO</th>
+									<th>PRECIO FACTURA</th>
 									<th>|</th>
 									<th>PROVEEDOR 2</th>
-									<th>PRECIO</th>
+									<th>PRECIO BAJO</th>
 									<th>DESCUENTO</th>
-									<th>PRECIO DESCUENTO</th>
+									<th>PRECIO FACTURA</th>
 								</tr>
 							</thead>
 							<tbody>
