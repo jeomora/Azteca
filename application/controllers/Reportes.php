@@ -116,7 +116,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["comparaPrecios"] = $this->ct_mdl->comparaPrecios();
+		$data["comparaPrecios"] = $this->ct_mdl->comparaPrecios(["DATE_FORMAT(cotizaciones.fecha_registro, '%d-%m-%Y') <" => '07-01-2018']);
 		$this->estructura("Reportes/table_comparar_precios", $data);
 	}
 
