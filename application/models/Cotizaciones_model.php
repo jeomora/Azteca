@@ -184,6 +184,35 @@ class Cotizaciones_model extends MY_Model {
 		// }
 	}
 
+	SELECT 
+	ct_old.id_cotizacion AS id_cotizacion_old,
+	WEEKOFYEAR(DATE_ADD(ct_old.fecha_actualiza,INTERVAL 1 WEEK)) AS week_befor,
+	ct_old.nombre AS promocion_old,
+	ct_old.precio AS precio_old,
+	pro_old.nombre AS producto_old,
+	fam_old.nombre AS familia_old,
+	UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
+	ct_new.id_cotizacion AS id_cotizacion_new,
+	ct_new.nombre AS promocion_new,
+	ct_new.precio AS precio_new,
+	WEEKOFYEAR(ct_new.fecha_actualiza) AS week_now
+FROM
+  cotizaciones ct_new
+	JOIN cotizaciones ct_old ON ct_old.id_producto = ct_new.id_producto
+	JOIN users pro ON ct_new.id_proveedor = pro.id 
+	JOIN productos pro_old ON ct_old.id_producto = pro_old.id_producto
+	JOIN productos pro_new ON ct_new.id_producto = pro_new.id_producto
+	JOIN familias fam_old ON pro_old.id_familia = pro_old.id_familia
+	JOIN familias fam_new ON pro_new.id_familia = fam_new.id_familia
+AND ct_old.fecha_actualiza IS NOT NULL
+	WHERE ct_new.fecha_actualiza IS NOT NULL 
+	AND WEEKOFYEAR(DATE_ADD(ct_old.fecha_actualiza,INTERVAL 1 WEEK)) = WEEKOFYEAR(ct_new.fecha_actualiza)
+GROUP BY ct_new.id_cotizacion;
+
+
+
+
+
 
 
 }
