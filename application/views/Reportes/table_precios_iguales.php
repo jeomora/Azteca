@@ -30,7 +30,7 @@
 									<?php foreach ($promociones_igual as $key => $value): ?>
 										<tr>
 											<th><?php echo $value->id_cotizacion ?></th>
-											<td><?php echo strtoupper($value->first_name.' '.$value->last_name) ?> </td>
+											<td><?php echo $value->proveedor ?> </td>
 											<td><?php echo strtoupper($value->producto) ?></td>
 											<td><?php echo '$ '.number_format($value->precio,2,'.',',') ?></td>
 											<td><?php echo ($value->precio_factura > 0) ? '$ '.number_format($value->precio_factura,2,'.',',') : '' ?></td>

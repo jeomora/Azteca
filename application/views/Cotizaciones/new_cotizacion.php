@@ -43,36 +43,36 @@
 				<label for="promocion">Promoción del artículo</label>
 				<div class="form-group">
 					<div class="input-group">
-						<span class="input-group-addon"> <input type="radio" class="promocion"> </span>
-						<input class="form-control numeric" placeholder="0" id="num_one" name="num_one" type="text" readonly="">
+						<span class="input-group-addon"> <input type="checkbox" class="promocion"> </span>
+						<input class="form-control numeric" placeholder="0" id="num_one" type="text" readonly="">
 						<span class="input-group-addon"><b>En</b></span>
-						<input class="form-control numeric" placeholder="0" id="num_two" name="num_two" type="text" readonly="">
+						<input class="form-control numeric" placeholder="0" id="num_two" type="text" readonly="">
 					</div>
 				</div>
 				<div class="form-group">
 					<input class="form-control" placeholder="Nombre de la promoción" name="nombre" id="nombre" type="text">
 				</div>
 				<div class="input-group m-b">
-					<span class="input-group-addon"> <input type="radio" class="descuento"> <b>Descuento</b> </span>
-					<input type="text" id="porcentaje" nam="porcentaje" class="form-control numeric" value="" placeholder="0" readonly="">
+					<span class="input-group-addon"> <input type="checkbox" class="descuento"> <b>Descuento</b> </span>
+					<input type="text" id="porcentaje" class="form-control numeric" value="" placeholder="0" readonly="">
 					<span class="input-group-addon sm">%</span>
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<label for="precio_factura">Precio factura</label>
+				<label for="precio">Precio factura</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-					<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="" placeholder="0.00" readonly="">
+					<input type="text" name="precio"  id="precio" class="form-control number" value="" placeholder="0.00">
 					<span class="validar"></span>
 				</div>
 			</div>
 		
 			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="precio">Precio factura C/Promoción</label>
+					<label for="precio_factura">Precio factura C/Promoción</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" name="precio"  id="precio" class="form-control number" value="" placeholder="0.00" readonly="">
+						<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="" placeholder="0.00" readonly="">
 						<span class="validar"></span>
 					</div>
 				</div>

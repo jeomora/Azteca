@@ -22,7 +22,7 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.fecha_caduca,
 			cotizaciones.existencias,
 			cotizaciones.observaciones,
-			u.first_name, u.last_name,
+			UPPER(CONCAT(u.first_name,' ',u.last_name)) AS proveedor,
 			p.nombre AS producto")
 		->from($this->TABLE_NAME)
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
@@ -128,19 +128,26 @@ class Cotizaciones_model extends MY_Model {
 	public function comparaPrecios($where=[]){
 		$this->db->select("
 			cotizaciones.id_cotizacion,
-			DATE_FORMAT(cotizaciones.fecha_registro, '%d-%m-%Y') as fecha,
-			cotizaciones.nombre AS promocion,
-			cotizaciones.precio,
-			cotizaciones.id_producto,
-			p.nombre AS producto,
-			f.id_familia, f.nombre AS familia,
-			pro.id, UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor")
+			pro.id, UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
+			WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_actualiza, INTERVAL 1 WEEK)) AS week_befor,
+			ctz_befor.nombre AS promocion_befor,
+			ctz_befor.precio AS precio_befor,
+			prod.codigo AS codigo,
+			prod.nombre AS producto,
+			fam.id_familia, fam.nombre AS familia,
+			WEEKOFYEAR(cotizaciones.fecha_actualiza) AS week_now,
+			cotizaciones.nombre AS promocion_now,
+			cotizaciones.precio_nuevo AS precio_now")
 		->from($this->TABLE_NAME)
+		->join("cotizaciones ctz_befor", $this->TABLE_NAME.".id_producto = ctz_befor.id_producto", "LEFT")
 		->join("users pro", $this->TABLE_NAME.".id_proveedor = pro.id", "LEFT")
-		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
-		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
-		->where($this->TABLE_NAME.".estatus", 1);
-		if ($where !== NULL) {
+		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
+		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
+		->where($this->TABLE_NAME.".estatus", 1)
+		->where("ctz_befor.fecha_actualiza !=", NULL)
+		->where("WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_registro, INTERVAL 1 WEEK)) = WEEKOFYEAR({$this->TABLE_NAME}.fecha_actualiza)")
+		->group_by($this->TABLE_NAME.".id_cotizacion");
+		if($where !== NULL){
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
 					$this->db->where($field, $value);
@@ -150,70 +157,16 @@ class Cotizaciones_model extends MY_Model {
 			}
 		}
 		$comparativa = $this->db->get()->result();
-		
-		/*
-		$comparativa_indexada = [];
-
-		for ($i=0; $i<sizeof($comparativa); $i++) { 
-			if(isset($comparativa_indexada[$i]->id_familia)){
-
-			}else{
-				$comparativa_indexada[$comparativa[$i]->id_familia] = [];
-				$comparativa_indexada[$comparativa[$i]->id_familia]["familia"] = $comparativa[$i]->familia;
-				$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"] = [];
+		if ($comparativa) {
+			if (is_array($where)) {
+				return $comparativa;
+			} else {
+				return array_shift($comparativa);
 			}
-
-			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["id_cotizacion"]=	$comparativa[$i]->id_cotizacion;
-			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["id_producto"]	=	$comparativa[$i]->id_producto;
-			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
-			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["precio"]		=	$comparativa[$i]->precio;
-			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["promocion"]	=	$comparativa[$i]->promocion;
+		} else {
+			return false;
 		}
-		return $comparativa_indexada;*/
-		
-		return $comparativa;
-
-		// if($comparativa_indexada){
-		// 	if(is_array($where)){
-		// 		return $comparativa_indexada;
-		// 	}else{
-		// 		return array_shift($comparativa_indexada);
-		// 	}
-		// }else{
-		// 	return false;
-		// }
 	}
-
-	SELECT 
-	ct_old.id_cotizacion AS id_cotizacion_old,
-	WEEKOFYEAR(DATE_ADD(ct_old.fecha_actualiza,INTERVAL 1 WEEK)) AS week_befor,
-	ct_old.nombre AS promocion_old,
-	ct_old.precio AS precio_old,
-	pro_old.nombre AS producto_old,
-	fam_old.nombre AS familia_old,
-	UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
-	ct_new.id_cotizacion AS id_cotizacion_new,
-	ct_new.nombre AS promocion_new,
-	ct_new.precio AS precio_new,
-	WEEKOFYEAR(ct_new.fecha_actualiza) AS week_now
-FROM
-  cotizaciones ct_new
-	JOIN cotizaciones ct_old ON ct_old.id_producto = ct_new.id_producto
-	JOIN users pro ON ct_new.id_proveedor = pro.id 
-	JOIN productos pro_old ON ct_old.id_producto = pro_old.id_producto
-	JOIN productos pro_new ON ct_new.id_producto = pro_new.id_producto
-	JOIN familias fam_old ON pro_old.id_familia = pro_old.id_familia
-	JOIN familias fam_new ON pro_new.id_familia = fam_new.id_familia
-AND ct_old.fecha_actualiza IS NOT NULL
-	WHERE ct_new.fecha_actualiza IS NOT NULL 
-	AND WEEKOFYEAR(DATE_ADD(ct_old.fecha_actualiza,INTERVAL 1 WEEK)) = WEEKOFYEAR(ct_new.fecha_actualiza)
-GROUP BY ct_new.id_cotizacion;
-
-
-
-
-
-
 
 }
 

@@ -31,7 +31,6 @@ $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", funct
 		getChosen();
 		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
 		$(".numeric").number(true, 0);
-
 		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
 			$("#form_cotizacion_new").validate({
 				rules: {
@@ -39,7 +38,6 @@ $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", funct
 					precio: {required: true}
 				}
 			});
-
 			jQuery.extend(jQuery.validator.messages, {
 				required: "Este campo es requerido",
 				min: jQuery.validator.format("Este campo es requerido"),
@@ -52,18 +50,21 @@ $(document).off("click", ".promocion").on("click", ".promocion", function() {
 	if($(this).is(":checked")){
 		$("#num_one").removeAttr('readonly').attr('name', 'num_one');
 		$("#num_two").removeAttr('readonly').attr('name', 'num_two');
-		$("#precio_factura").removeAttr('readonly').attr('name', 'precio_factura');
-		$(".descuento").removeAttr("checked");
+	}else{
+		$("#num_one").attr('readonly','readonly').removeAttr('name').val('');
+		$("#num_two").attr('readonly','readonly').removeAttr('name').val('');
+		$("#precio").val('');
+		$("#precio_factura").val('');
 	}
 });
 
 $(document).off("click", ".descuento").on("click", ".descuento", function() {
-	if($(this).is(":checked")) {
-		$("#num_one").attr('readonly','readonly').removeAttr('name').val('');
-		$("#num_two").attr('readonly','readonly').removeAttr('name').val('');
+	if($(this).is(":checked")){
 		$("#porcentaje").removeAttr('readonly').attr('name', 'porcentaje');
-		$("#precio_factura").removeAttr('readonly').attr('name', 'precio_factura');
-		$(".promocion").removeAttr("checked");
+	}else{
+		$("#porcentaje").attr('readonly', 'readonly').removeAttr('name').val('');
+		$("#precio").val('');
+		$("#precio_factura").val('');
 	}
 });
 
@@ -73,19 +74,19 @@ $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", funct
 	}
 });
 
-$(document).off("keyup", "#precio_factura").on("keyup", "#precio_factura", function() {
+$(document).off("keyup", "#precio").on("keyup", "#precio", function() {
 	var total =0;
 	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
-	var precio_factura = Number($(this).val().replace(/[^0-9\.]+/g,""));
+	var precio = Number($(this).val().replace(/[^0-9\.]+/g,""));
 	if($(".descuento").is(":checked")){
 		descuento = Number('0.0'+descuento);
-		total = (precio_factura - (precio_factura * descuento));
-		$("#precio").val(total);
+		total = (precio - (precio * descuento));
+		$("#precio_factura").val(total);
 	}else{
 		var num_1 = Number($("#num_one").val().replace(/[^0-9\.]+/g,""));
 		var num_2 = Number($("#num_two").val().replace(/[^0-9\.]+/g,""));
-		total = ((precio_factura * num_2) / (num_1 + num_2));
-		$("#precio").val(total);
+		total = ((precio * num_2) / (num_1 + num_2));
+		$("#precio_factura").val(total);
 	}
 });
 

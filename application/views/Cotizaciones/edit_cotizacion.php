@@ -53,20 +53,20 @@
 				</div>
 			</div>
 			<div class="col-sm-4">
-				<label for="precio_factura">Precio factura</label>
+				<label for="precio">Precio factura</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-					<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="<?php echo $cotizacion->precio_factura ?>" placeholder="0.00" readonly="">
+					<input type="text" name="precio"  id="precio" class="form-control number" value="<?php echo $cotizacion->precio ?>" placeholder="0.00">
 					<span class="validar"></span>
 				</div>
 			</div>
 		
 			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="precio">Precio factura C/Promoción</label>
+					<label for="precio_factura">Precio factura C/Promoción</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" name="precio"  id="precio" class="form-control number" value="<?php echo $cotizacion->precio ?>" placeholder="0.00" readonly="">
+						<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="<?php echo $cotizacion->precio_factura ?>" placeholder="0.00" readonly="">
 						<span class="validar"></span>
 					</div>
 				</div>

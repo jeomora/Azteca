@@ -21,7 +21,6 @@
 							<thead>
 								<tr>
 									<th>NO</th>
-									<th>PROMOCIÓN</th>
 									<th>ARTÍCULO</th>
 									<?php
 										echo (! $this->ion_auth->is_admin()) ? '' : "<th>PROVEEDOR</th>";
@@ -29,12 +28,12 @@
 									<th>FECHA REGISTRO</th>
 									<th>FECHA CADUCIDAD</th>
 									<th>EXISTENCIAS</th>
+									<th>PRECIO FACTURA</th>
 									<th>PRECIO FACTURA C/PROMOCIÓN</th>
-									<th>PRECIO FACTURA S/PROMOCIÓN</th>
-									<th>PROMOCIÓN CON DESCUENTO 1</th>
-									<th>EN</th>
-									<th>PROMOCIÓN CON DESCUENTO 2</th>
 									<th>DESCUENTO ADICIONAL</th>
+									<th>PROMOCIÓN</th>
+									<th></th>
+									<th>OBSERVACIONES</th>
 									<?php if (! $this->ion_auth->is_admin()): ?>
 										<th>ACCIÓN</th>
 									<?php endif ?>
@@ -45,20 +44,19 @@
 									<?php foreach ($cotizaciones as $key => $value): ?>
 										<tr>
 											<th><?php echo $a+1; ?></th>
-											<td><?php echo $value->promocion ?></td>
 											<td><?php echo strtoupper($value->producto) ?></td>
 											<?php
-												echo (! $this->ion_auth->is_admin()) ? '' : "<td>". strtoupper($value->first_name.' '.$value->last_name) ."</td>";
+												echo (! $this->ion_auth->is_admin()) ? '' : "<td>".$value->proveedor."</td>";
 											?>
 											<td><?php echo date('d-m-Y', strtotime($value->fecha_registro)) ?></td>
 											<td><?php echo ($value->fecha_caduca != '') ? date('d-m-Y', strtotime($value->fecha_caduca)) : '' ?></td>
 											<td><?php echo ($value->existencias > 0) ? number_format($value->existencias,2,'.',',') : '' ?></td>
 											<td><?php echo '$ '.number_format($value->precio_factura,2,'.',',') ?></td>
 											<td><?php echo ($value->precio > 0) ? '$ '.number_format($value->precio,2,'.',',') : '' ?></td>
-											<td><?php echo ($value->num_one > 0 ) ? $value->num_one : '' ?></td>
-											<td></td>
-											<td><?php echo ($value->num_two > 0) ? $value->num_two : '' ?></td>
-											<td><?php echo ($value->descuento > 0) ? $value->descuento.' %' : ''  ?></td>
+											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,0,'.',',').' %' : ''  ?></td>
+											<td><?php echo ($value->num_one > 0 && $value->num_two > 0) ? $value->num_one.'&nbsp; EN &nbsp;'.$value->num_two : '' ?></td>
+											<td><?php echo $value->promocion ?></td>
+											<td><?php echo $value->observaciones ?></td>
 											<?php if (! $this->ion_auth->is_admin()): ?>
 												<td>
 													<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-promocion="<?php echo $value->id_cotizacion ?>">

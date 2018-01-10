@@ -14,10 +14,12 @@
 							<thead>
 								<tr>
 									<th>NO</th>
+									<th>CÓDIGO</th>
 									<th>ARTICULO</th>
 									<th>PRECIO</th>
 									<th>PROMOCIÓN</th>
 									<th>VS</th>
+									<th>CÓDIGO</th>
 									<th>ARTICULO</th>
 									<th>PRECIO</th>
 									<th>PROMOCIÓN</th>
@@ -28,14 +30,15 @@
 									<?php foreach ($comparaPrecios as $key => $value): ?>
 										<tr>
 											<th><?php echo $a+1 ?></th>
+											<td><?php echo $value->codigo ?></td>
 											<td><?php echo $value->producto ?></td>
-											<td><?php echo number_format($value->precio,2,',','.') ?></td>
-											<td><?php echo $value->promocion ?></td>
-											<th>|</th>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
-											
+											<td><?php echo '$ '.number_format($value->precio_befor,2,'.',',') ?></td>
+											<td><?php echo $value->promocion_befor ?></td>
+											<th><?php echo ($value->precio_now > $value->precio_befor) ? '$ '.number_format(($value->precio_now - $value->precio_befor),2,'.',',') : '$ '.number_format(($value->precio_befor - $value->precio_now),2,'.',',') ?></th>
+											<td><?php echo $value->codigo ?></td>
+											<td><?php echo $value->producto ?></td>
+											<td><?php echo '$ '.number_format($value->precio_now,2,'.',',') ?></td>
+											<td><?php echo $value->promocion_now ?></td>
 										</tr>
 									<?php $a++; endforeach ?>
 								<?php endif ?>
