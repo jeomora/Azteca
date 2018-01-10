@@ -125,9 +125,66 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
-	public function comparaPrecios($value=''){
-		# code...
+	public function comparaPrecios($where=[]){
+		$this->db->select("
+			cotizaciones.id_cotizacion,
+			DATE_FORMAT(cotizaciones.fecha_registro, '%d-%m-%Y') as fecha,
+			cotizaciones.nombre AS promocion,
+			cotizaciones.precio,
+			cotizaciones.id_producto,
+			p.nombre AS producto,
+			f.id_familia, f.nombre AS familia,
+			pro.id, UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor")
+		->from($this->TABLE_NAME)
+		->join("users pro", $this->TABLE_NAME.".id_proveedor = pro.id", "LEFT")
+		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
+		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
+		->where($this->TABLE_NAME.".estatus", 1);
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		
+		/*
+		$comparativa_indexada = [];
+
+		for ($i=0; $i<sizeof($comparativa); $i++) { 
+			if(isset($comparativa_indexada[$i]->id_familia)){
+
+			}else{
+				$comparativa_indexada[$comparativa[$i]->id_familia] = [];
+				$comparativa_indexada[$comparativa[$i]->id_familia]["familia"] = $comparativa[$i]->familia;
+				$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"] = [];
+			}
+
+			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["id_cotizacion"]=	$comparativa[$i]->id_cotizacion;
+			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["id_producto"]	=	$comparativa[$i]->id_producto;
+			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
+			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["precio"]		=	$comparativa[$i]->precio;
+			$comparativa_indexada[$comparativa[$i]->id_familia]["diferencia"][$comparativa[$i]->id_cotizacion]["promocion"]	=	$comparativa[$i]->promocion;
+		}
+		return $comparativa_indexada;*/
+		
+		return $comparativa;
+
+		// if($comparativa_indexada){
+		// 	if(is_array($where)){
+		// 		return $comparativa_indexada;
+		// 	}else{
+		// 		return array_shift($comparativa_indexada);
+		// 	}
+		// }else{
+		// 	return false;
+		// }
 	}
+
+
 
 }
 

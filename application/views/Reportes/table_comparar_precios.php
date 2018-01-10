@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>REPORTE DE PRECIOS BAJOS</h5>
+					<h5>COMPARATIVA DE PRECIOS</h5>
 				</div>
 				<div class="ibox-content">
 					<div class="table-responsive">
@@ -28,9 +28,9 @@
 									<?php foreach ($comparaPrecios as $key => $value): ?>
 										<tr>
 											<th><?php echo $a+1 ?></th>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
+											<td><?php echo $value->producto ?></td>
+											<td><?php echo number_format($value->precio,2,',','.') ?></td>
+											<td><?php echo $value->promocion ?></td>
 											<th>|</th>
 											<td><?php echo '' ?></td>
 											<td><?php echo '' ?></td>
