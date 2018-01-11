@@ -15,6 +15,22 @@
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
+						
+						<div class="btn-group">
+							<div class="col-sm-2">
+								<a href="<?php echo base_url('./assets/uploads/Formato_cotizacion.csv'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato de Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							</div>
+						</div>
+
+						<div class="btn-group">
+							<?php echo form_open_multipart("", array('id' => 'upload_file')); ?>
+								<div class="col-sm-4">
+									<input class="btn btn-info" type="file" id="file_csv" name="file_csv" value=""/>
+								</div>
+								<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
+							<?php echo form_close(); ?>
+						</div>
+
 					<?php endif ?>
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_cotizaciones">

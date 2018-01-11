@@ -129,6 +129,55 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
+
+	public function change_prices(){
+		set_time_limit(300);
+		ini_get("memory_limit");
+		ini_set("memory_limit","512M");
+		ini_get("memory_limit");
+		$this->load->helper("path");
+		$this->load->library("upload");
+
+		$config=["upload_path"	=>	'./assets/uploads/',
+				"file_name"		=>	$_FILES['file_csv']['name'],
+				"allowed_types"	=>	'csv',
+				"remove_spaces"	=>	TRUE,
+				"overwrite"		=> TRUE
+		];
+		
+		$this->upload->initialize($config);
+
+		if (! $this->upload->do_upload('file_csv')){
+			$mensaje= [	"id" 	=>	'Error',
+						"desc"	=>	$this->upload->display_errors(),
+						"type"	=>	 'error'];
+		}else{
+			$file_name = $this->upload->data('full_path');
+			$cont =0;
+			$open_file = fopen($file_name,'r') or die("No se puede abrir el archivo");
+			while(($file_csv = fgetcsv($open_file, 0,",","\n")) !== FALSE){
+				if($cont === 0){//Son los encabezados del archivo
+				
+				}else{
+					$change_precios = [
+						"nombre"	=>	$file_csv[0],
+						"precio"	=>	$file_csv[1],
+						"promocion"	=>	$file_csv[2]
+					];
+				}
+				$cont++;
+			}
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Precios actualizados correctamente',
+						"type"	=>	 'success'];
+			// echo "<pre>";
+			// print_r ($change_precios);
+			// echo "</pre>";
+		}
+		$this->jsonResponse($mensaje);
+
+	}
+
 }
 
 /* End of file Cotizaciones.php */

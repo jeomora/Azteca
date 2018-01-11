@@ -29,9 +29,10 @@
 								<?php $a=0; if ($comparaPrecios): ?>
 									<?php foreach ($comparaPrecios as $key => $value): ?>
 										<tr>
-											<td rowspan="<?php echo sizeof($value['articulos']) +1 ?>"> <b><?php echo $value['familia'] ?> </b> </td>
+											<td colspan="10"> <b><?php echo $value['familia'] ?> </b> </td>
 											<?php if ($value['articulos']): foreach ($value['articulos'] as $key => $val): ?>
 												<tr>
+													<td></td>
 													<td><?php echo $val['codigo'] ?></td>
 													<td><?php echo $val['producto'] ?></td>
 													<td><?php echo '$ '.number_format($val['precio_befor'],2,'.',',') ?></td>
@@ -43,9 +44,6 @@
 													<td><?php echo $val['promocion_now'] ?></td>
 												</tr>
 											<?php endforeach; endif ?>
-										<tr>
-											<td colspan="10"> </td>
-										</tr>
 										</tr>
 									<?php $a++; endforeach ?>
 								<?php endif ?>

@@ -104,3 +104,29 @@ $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion",
 	event.preventDefault();
 	sendForm("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
 });
+
+$(document).off("change", "#file_csv").on("change", "#file_csv", function(event) {
+	event.preventDefault();
+	var fdata = new FormData($("#upload_file")[0]);
+	uploadFileCsv(fdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, $("#name_user").val());
+			}else{
+				toastr.success(resp.desc, $("#name_user").val());
+
+			}
+		});
+});
+
+function uploadFileCsv(formData) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/change_prices",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

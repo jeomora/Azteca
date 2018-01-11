@@ -110,7 +110,7 @@
 				case "success":
 					cleanModal();
 					$("#myModal").modal("hide");
-					toastr.success(response.desc, response.id);
+					toastr.success(response.desc, user_name);
 					// location.reload();
 					$("#main_container").load(site_url+url_repuesta);
 				break;
@@ -118,21 +118,21 @@
 				case "info":
 					cleanModal();
 					$("#myModal").modal("hide");
-					toastr.info(response.desc, response.id);
+					toastr.info(response.desc, user_name);
 					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				case "warning":
 					cleanModal();
 					$("#myModal").modal("hide");
-					toastr.warning(response.desc, response.id);
+					toastr.warning(response.desc, user_name);
 					$("#main_container").load(site_url+url_repuesta);
 				break;
 
 				default:
 					cleanModal();
 					$("#myModal").modal("hide");
-					toastr.error(response.desc, response.id);
+					toastr.error(response.desc, user_name);
 					$("#main_container").load(site_url+url_repuesta);
 			}
 			$("#notifications").html(response);
@@ -336,21 +336,21 @@
 				case "success":
 					emptyModal();
 					$("#mainModal").modal("hide");
-					setTimeout("location.reload()", 1300, toastr.success(response.desc, response.id), "");
+					setTimeout("location.reload()", 1300, toastr.success(response.desc, user_name), "");
 				break;
 
 				case "info":
 					emptyModal();
 					$("#mainModal").modal("hide");
-					setTimeout("location.reload()", 1300, toastr.info(response.desc, response.id), "");
+					setTimeout("location.reload()", 1300, toastr.info(response.desc, user_name), "");
 				break;
 
 				case "warning":
-					toastr.warning(response.desc, response.id);
+					toastr.warning(response.desc, user_name);
 				break;
 
 				default:
-					toastr.error(response.desc, response.id);
+					toastr.error(response.desc, user_name);
 			}
 			$("#notifications").html(response);
 		})
