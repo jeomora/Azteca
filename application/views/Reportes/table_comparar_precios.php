@@ -13,14 +13,14 @@
 						<table class="table table-striped table-bordered table-hover" id="table_compara_precios">
 							<thead>
 								<tr>
-									<th>NO</th>
+									<th>FAMILIAS</th>
 									<th>CÓDIGO</th>
-									<th>ARTICULO</th>
+									<th>ARTÍCULO</th>
 									<th>PRECIO</th>
 									<th>PROMOCIÓN</th>
 									<th>VS</th>
 									<th>CÓDIGO</th>
-									<th>ARTICULO</th>
+									<th>ARTÍCULO</th>
 									<th>PRECIO</th>
 									<th>PROMOCIÓN</th>
 								</tr>
@@ -29,16 +29,23 @@
 								<?php $a=0; if ($comparaPrecios): ?>
 									<?php foreach ($comparaPrecios as $key => $value): ?>
 										<tr>
-											<th><?php echo $a+1 ?></th>
-											<td><?php echo $value->codigo ?></td>
-											<td><?php echo $value->producto ?></td>
-											<td><?php echo '$ '.number_format($value->precio_befor,2,'.',',') ?></td>
-											<td><?php echo $value->promocion_befor ?></td>
-											<th><?php echo ($value->precio_now > $value->precio_befor) ? '$ '.number_format(($value->precio_now - $value->precio_befor),2,'.',',') : '$ '.number_format(($value->precio_befor - $value->precio_now),2,'.',',') ?></th>
-											<td><?php echo $value->codigo ?></td>
-											<td><?php echo $value->producto ?></td>
-											<td><?php echo '$ '.number_format($value->precio_now,2,'.',',') ?></td>
-											<td><?php echo $value->promocion_now ?></td>
+											<td rowspan="<?php echo sizeof($value['articulos']) +1 ?>"> <b><?php echo $value['familia'] ?> </b> </td>
+											<?php if ($value['articulos']): foreach ($value['articulos'] as $key => $val): ?>
+												<tr>
+													<td><?php echo $val['codigo'] ?></td>
+													<td><?php echo $val['producto'] ?></td>
+													<td><?php echo '$ '.number_format($val['precio_befor'],2,'.',',') ?></td>
+													<td><?php echo $val['promocion_befor'] ?></td>
+													<th><?php echo ($val['precio_now'] > $val['precio_befor']) ? '$ '.number_format(($val['precio_now'] - $val['precio_befor']),2,'.',',') : '$ '.number_format(($val['precio_befor'] - $val['precio_now']),2,'.',',') ?></th>
+													<td><?php echo $val['codigo'] ?></td>
+													<td><?php echo $val['producto'] ?></td>
+													<td><?php echo '$ '.number_format($val['precio_now'],2,'.',',') ?></td>
+													<td><?php echo $val['promocion_now'] ?></td>
+												</tr>
+											<?php endforeach; endif ?>
+										<tr>
+											<td colspan="10"> </td>
+										</tr>
 										</tr>
 									<?php $a++; endforeach ?>
 								<?php endif ?>

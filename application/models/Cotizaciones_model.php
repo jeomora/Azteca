@@ -157,11 +157,27 @@ class Cotizaciones_model extends MY_Model {
 			}
 		}
 		$comparativa = $this->db->get()->result();
-		if ($comparativa) {
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) { 
+			if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
+				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
+			}
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["codigo"]			=	$comparativa[$i]->codigo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_befor"]	=	$comparativa[$i]->precio_befor;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_befor"]	=	$comparativa[$i]->promocion_befor;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_now"]		=	$comparativa[$i]->precio_now;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_now"]	=	$comparativa[$i]->promocion_now;
+		}
+		if ($comparativaIndexada) {
 			if (is_array($where)) {
-				return $comparativa;
+				return $comparativaIndexada;
 			} else {
-				return array_shift($comparativa);
+				return array_shift($comparativaIndexada);
 			}
 		} else {
 			return false;

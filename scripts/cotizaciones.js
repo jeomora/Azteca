@@ -31,18 +31,6 @@ $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", funct
 		getChosen();
 		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
 		$(".numeric").number(true, 0);
-		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
-			$("#form_cotizacion_new").validate({
-				rules: {
-					id_producto: {required: true, min:0},
-					precio: {required: true}
-				}
-			});
-			jQuery.extend(jQuery.validator.messages, {
-				required: "Este campo es requerido",
-				min: jQuery.validator.format("Este campo es requerido"),
-			});
-		});
 	});
 });
 
@@ -69,8 +57,10 @@ $(document).off("click", ".descuento").on("click", ".descuento", function() {
 });
 
 $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", function(event) {
-	if($("#form_cotizacion_new").valid()){
+	if($("#id_producto").val() !== ''){
 		sendForm("Cotizaciones/save", $("#form_cotizacion_new"), "");
+	}else{
+		toastr.warning("Seleccione un artículo de la lista", $("#name_user").val());
 	}
 });
 
@@ -96,28 +86,12 @@ $(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion",
 	getModal("Cotizaciones/get_update/"+ id_cotizacion, function (){
 		datePicker();
 		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
-		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
-			$("#form_cotizacion_edit").validate({
-				rules: {
-					id_producto: {required: true, min:0},
-					precio_producto: {required: true},
-				
-				}
-			});
-
-			jQuery.extend(jQuery.validator.messages, {
-				required: "Este campo es requerido",
-				min: jQuery.validator.format("Este campo es requerido"),
-			});
-		});
 	});
 });
 
 $(document).off("click", ".update_cotizacion").on("click", ".update_cotizacion", function(event) {
 	event.preventDefault();
-	if($("#form_cotizacion_edit").valid()){
-		sendForm("Cotizaciones/update", $("#form_cotizacion_edit"), "");
-	}
+	sendForm("Cotizaciones/update", $("#form_cotizacion_edit"), "");
 });
 
 $(document).off("click", "#delete_cotizacion").on("click", "#delete_cotizacion", function(event){
