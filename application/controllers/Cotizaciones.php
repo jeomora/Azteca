@@ -60,7 +60,7 @@ class Cotizaciones extends MY_Controller {
 			'num_one'			=>	str_replace(',', '', $this->input->post('num_one')),
 			'num_two'			=>	str_replace(',', '', $this->input->post('num_two')),
 			'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
-			'precio_factura'	=>	($this->input->post('precio_factura') > 0) ? str_replace(',', '', $this->input->post('precio_factura')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
+			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 			'fecha_registro'	=>	date('Y-m-d H:i:s'),
 			'fecha_caduca'		=>	($this->input->post('fecha_caducidad') !='') ? date('Y-m-d', strtotime($this->input->post('fecha_caducidad'))) : NULL,
@@ -82,7 +82,7 @@ class Cotizaciones extends MY_Controller {
 			'num_one'			=>	str_replace(',', '', $this->input->post('num_one')),
 			'num_two'			=>	str_replace(',', '', $this->input->post('num_two')),
 			'precio_nuevo'		=>	str_replace(',', '', $this->input->post('precio')),
-			'precio_factura'	=>	($this->input->post('precio_factura') > 0) ? str_replace(',', '', $this->input->post('precio_factura')) : str_replace(',', '', $this->input->post('precio')),
+			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 			'fecha_actualiza'	=>	date('Y-m-d H:i:s'),
 			'fecha_caduca'		=>	date('Y-m-d', strtotime($this->input->post('fecha_caducidad'))),
@@ -159,7 +159,7 @@ class Cotizaciones extends MY_Controller {
 				if($cont === 0){//Son los encabezados del archivo
 				
 				}else{
-					$change_precios = [
+					$change_precios[]=[
 						"nombre"	=>	$file_csv[0],
 						"precio"	=>	$file_csv[1],
 						"promocion"	=>	$file_csv[2]
@@ -169,10 +169,10 @@ class Cotizaciones extends MY_Controller {
 			}
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Precios actualizados correctamente',
-						"type"	=>	 'success'];
-			// echo "<pre>";
-			// print_r ($change_precios);
-			// echo "</pre>";
+						"type"	=>	'success'];
+			echo "<pre>";
+			print_r ($change_precios);
+			echo "</pre>";
 		}
 		$this->jsonResponse($mensaje);
 

@@ -14,7 +14,7 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.id_cotizacion,
 			cotizaciones.nombre AS promocion,
 			cotizaciones.precio,
-			cotizaciones.precio_factura,
+			cotizaciones.precio_promocion,
 			cotizaciones.num_one,
 			cotizaciones.num_two,
 			cotizaciones.descuento,
@@ -28,7 +28,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
-		->order_by($this->TABLE_NAME.".precio_factura", "ASC");
+		->order_by($this->TABLE_NAME.".precio_promocion", "ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
@@ -55,7 +55,7 @@ class Cotizaciones_model extends MY_Model {
 			p.nombre AS producto,
 			UPPER(CONCAT(proveedor_m.first_name,' ',proveedor_m.last_name)) AS proveedor_minimo,
 			ct.precio AS precio_minimo,
-			ct.precio_factura AS precio_factura_minimo,
+			ct.precio_promocion AS precio_promocion_minimo,
 			ct.nombre AS promocion_minimo,
 			ct.observaciones AS observaciones_minimo,
 			ct.num_one AS num_one_minimo,
@@ -63,7 +63,7 @@ class Cotizaciones_model extends MY_Model {
 			ct.descuento AS descuento_minimo,
 			UPPER(CONCAT(proveedor_s.first_name,' ',proveedor_s.last_name)) AS proveedor_siguiente,
 			ps.precio AS precio_siguiente,
-			ps.precio_factura AS precio_factura_siguiente,
+			ps.precio_promocion AS precio_promocion_siguiente,
 			ps.nombre AS promocion_siguiente,
 			ps.observaciones AS observaciones_siguiente,
 			ps.num_one AS num_one_siguiente,

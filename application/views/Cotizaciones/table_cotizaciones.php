@@ -67,7 +67,7 @@
 											<td><?php echo date('d-m-Y', strtotime($value->fecha_registro)) ?></td>
 											<td><?php echo ($value->fecha_caduca != '') ? date('d-m-Y', strtotime($value->fecha_caduca)) : '' ?></td>
 											<td><?php echo ($value->existencias > 0) ? number_format($value->existencias,2,'.',',') : '' ?></td>
-											<td><?php echo '$ '.number_format($value->precio_factura,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio_promocion,2,'.',',') ?></td>
 											<td><?php echo ($value->precio > 0) ? '$ '.number_format($value->precio,2,'.',',') : '' ?></td>
 											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,0,'.',',').' %' : ''  ?></td>
 											<td><?php echo ($value->num_one > 0 && $value->num_two > 0) ? $value->num_one.'&nbsp; EN &nbsp;'.$value->num_two : '' ?></td>

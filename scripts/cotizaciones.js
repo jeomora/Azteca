@@ -42,7 +42,7 @@ $(document).off("click", ".promocion").on("click", ".promocion", function() {
 		$("#num_one").attr('readonly','readonly').removeAttr('name').val('');
 		$("#num_two").attr('readonly','readonly').removeAttr('name').val('');
 		$("#precio").val('');
-		$("#precio_factura").val('');
+		$("#precio_promocion").val('');
 	}
 });
 
@@ -52,7 +52,7 @@ $(document).off("click", ".descuento").on("click", ".descuento", function() {
 	}else{
 		$("#porcentaje").attr('readonly', 'readonly').removeAttr('name').val('');
 		$("#precio").val('');
-		$("#precio_factura").val('');
+		$("#precio_promocion").val('');
 	}
 });
 
@@ -71,12 +71,12 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function() {
 	if($(".descuento").is(":checked")){
 		descuento = Number('0.0'+descuento);
 		total = (precio - (precio * descuento));
-		$("#precio_factura").val(total);
+		$("#precio_promocion").val(total);
 	}else{
 		var num_1 = Number($("#num_one").val().replace(/[^0-9\.]+/g,""));
 		var num_2 = Number($("#num_two").val().replace(/[^0-9\.]+/g,""));
 		total = ((precio * num_2) / (num_1 + num_2));
-		$("#precio_factura").val(total);
+		$("#precio_promocion").val(total);
 	}
 });
 

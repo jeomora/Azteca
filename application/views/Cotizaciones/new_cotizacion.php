@@ -69,10 +69,10 @@
 		
 			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="precio_factura">Precio factura C/Promoción</label>
+					<label for="precio_promocion">Precio factura C/Promoción</label>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" name="precio_factura"  id="precio_factura" class="form-control number" value="" placeholder="0.00" readonly="">
+						<input type="text" name="precio_promocion"  id="precio_promocion" class="form-control number" value="" placeholder="0.00" readonly="">
 						<span class="validar"></span>
 					</div>
 				</div>
