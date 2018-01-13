@@ -33,7 +33,7 @@
 											<td><?php echo $value->proveedor ?> </td>
 											<td><?php echo strtoupper($value->producto) ?></td>
 											<td><?php echo '$ '.number_format($value->precio,2,'.',',') ?></td>
-											<td><?php echo ($value->precio_factura > 0) ? '$ '.number_format($value->precio_factura,2,'.',',') : '' ?></td>
+											<td><?php echo ($value->precio_promocion > 0) ? '$ '.number_format($value->precio_promocion,2,'.',',') : '' ?></td>
 											<td><?php echo $value->promocion ?></td>
 											<td><?php echo $value->observaciones ?></td>
 											<td><?php echo ($value->num_one > 0) ? number_format($value->num_one,2,'.',',') : '' ?></td>

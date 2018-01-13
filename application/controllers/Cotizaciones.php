@@ -16,7 +16,6 @@ class Cotizaciones extends MY_Controller {
 			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
 			'/assets/css/plugins/dataTables/buttons.dataTables.min',
 		];
-
 		$data['scripts'] = [
 			'/scripts/cotizaciones',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
@@ -34,10 +33,10 @@ class Cotizaciones extends MY_Controller {
 		];
 		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
 		$where = [];
-		
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
 			$where = ["cotizaciones.id_proveedor" => $user->id];
 		}
+		$data["cotizacionesProveedor"] = $this->ct_mdl->preciosBajosProveedor();
 		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
@@ -142,8 +141,7 @@ class Cotizaciones extends MY_Controller {
 				"file_name"		=>	$_FILES['file_csv']['name'],
 				"allowed_types"	=>	'csv',
 				"remove_spaces"	=>	TRUE,
-				"overwrite"		=> TRUE
-		];
+				"overwrite"		=>	TRUE ];
 		
 		$this->upload->initialize($config);
 
@@ -162,25 +160,25 @@ class Cotizaciones extends MY_Controller {
 					if($file_csv[1] !== ''){
 						$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[0], ENT_QUOTES, 'UTF-8')])[0];
 						if(sizeof($productos) > 0){
-							$change_precios[]=[	"id_producto"	=>	$productos->id_producto,
-												"nombre"		=>	htmlspecialchars($file_csv[0], ENT_QUOTES, 'UTF-8'),
-												"precio"		=>	str_replace('$','',str_replace(',','',$file_csv[1])),
-												"promocion"		=>	$file_csv[2]
+							$change_precios[]=[	"id_producto"		=>	$productos->id_producto,
+												"id_proveedor"		=>	$this->ion_auth->user()->row()->id,
+												"precio"			=>	($file_csv[2] =='') ? str_replace('$','',$file_csv[1]) : NULL,
+												"precio_promocion"	=>	($file_csv[2] !='') ? str_replace('$','',$file_csv[1]) : NULL,
+												"fecha_registro"	=>	date('Y-m-d H:i:s'),
+												"observaciones"		=>	strtoupper($file_csv[2])
 							];
 						}
 					}
 				}
 				$cont++;
 			}
+			fclose($open_file);//Cerramos el archivo
+			$data['cotizacion']=$this->ct_mdl->insert_batch($change_precios);
 			$mensaje=[	"id"	=>	'Éxito',
-						"desc"	=>	'Precios actualizados correctamente',
+						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
 						"type"	=>	'success'];
-			echo "<pre>";
-			print_r ($change_precios);
-			echo "</pre>";
 		}
 		$this->jsonResponse($mensaje);
-
 	}
 
 }

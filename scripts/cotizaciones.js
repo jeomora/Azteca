@@ -2,7 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	$("#table_cotizaciones").dataTable({
+	$("#table_cot_admin").dataTable({
 		responsive: true,
 		pageLength: 50,
 		order: [[0, 'ASC']],
@@ -16,12 +16,14 @@ $(function($) {
 			{
 				extend: 'excel',
 				exportOptions: {
-					columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+					columns: [0,1,2,3,4,5,6,7,8,9,10]
 				},
 				title: 'Cotizaciones',
 			},
 		]
 	});
+
+	fillDataTable("table_cot_proveedores", 'DESC', 50);
 });
 
 $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", function(event) {
@@ -113,8 +115,7 @@ $(document).off("change", "#file_csv").on("change", "#file_csv", function(event)
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
 			}else{
-				toastr.success(resp.desc, $("#name_user").val());
-
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
 			}
 		});
 });

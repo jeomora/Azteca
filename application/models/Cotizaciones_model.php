@@ -52,7 +52,8 @@ class Cotizaciones_model extends MY_Model {
 
 	public function preciosBajosProveedor(){
 		$query ="SELECT
-			p.nombre AS producto,
+			ct.id_cotizacion,
+			p.codigo, p.nombre AS producto,
 			UPPER(CONCAT(proveedor_m.first_name,' ',proveedor_m.last_name)) AS proveedor_minimo,
 			ct.precio AS precio_minimo,
 			ct.precio_promocion AS precio_promocion_minimo,
@@ -129,23 +130,23 @@ class Cotizaciones_model extends MY_Model {
 		$this->db->select("
 			cotizaciones.id_cotizacion,
 			pro.id, UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
-			WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_actualiza, INTERVAL 1 WEEK)) AS week_befor,
+			WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_cambio, INTERVAL 1 WEEK)) AS week_befor,
 			ctz_befor.nombre AS promocion_befor,
 			ctz_befor.precio AS precio_befor,
 			prod.codigo AS codigo,
 			prod.nombre AS producto,
 			fam.id_familia, fam.nombre AS familia,
-			WEEKOFYEAR(cotizaciones.fecha_actualiza) AS week_now,
+			WEEKOFYEAR(cotizaciones.fecha_cambio) AS week_now,
 			cotizaciones.nombre AS promocion_now,
-			cotizaciones.precio_nuevo AS precio_now")
+			cotizaciones.precio_promocion AS precio_now")
 		->from($this->TABLE_NAME)
 		->join("cotizaciones ctz_befor", $this->TABLE_NAME.".id_producto = ctz_befor.id_producto", "LEFT")
 		->join("users pro", $this->TABLE_NAME.".id_proveedor = pro.id", "LEFT")
 		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
-		->where("ctz_befor.fecha_actualiza !=", NULL)
-		->where("WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_registro, INTERVAL 1 WEEK)) = WEEKOFYEAR({$this->TABLE_NAME}.fecha_actualiza)")
+		->where("ctz_befor.fecha_cambio !=", NULL)
+		->where("WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_registro, INTERVAL 1 WEEK)) = WEEKOFYEAR({$this->TABLE_NAME}.fecha_cambio)")
 		->group_by($this->TABLE_NAME.".id_cotizacion");
 		if($where !== NULL){
 			if (is_array($where)) {
