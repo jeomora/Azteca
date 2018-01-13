@@ -129,7 +129,7 @@ class Pedidos extends MY_Controller {
 				'importe'		=>	str_replace(",", "", $this->input->post('importe[]')[$i])
 			);
 		}
-		if($this->det_ped_mdl->insertm($detalle_pedido) > 0){
+		if($this->det_ped_mdl->insert_batch($detalle_pedido) > 0){
 			$mensaje = [
 				"id" 	=> 'Éxito',
 				"desc"	=> 'Pedido registrado correctamente',

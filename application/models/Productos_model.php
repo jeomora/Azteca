@@ -13,7 +13,6 @@ class Productos_model extends MY_Model {
 		$this->db->select("
 			productos.id_producto,
 			productos.nombre AS producto,
-			productos.precio,
 			productos.codigo,
 			f.nombre AS familia")
 		->from($this->TABLE_NAME)

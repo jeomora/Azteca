@@ -159,11 +159,16 @@ class Cotizaciones extends MY_Controller {
 				if($cont === 0){//Son los encabezados del archivo
 				
 				}else{
-					$change_precios[]=[
-						"nombre"	=>	$file_csv[0],
-						"precio"	=>	$file_csv[1],
-						"promocion"	=>	$file_csv[2]
-					];
+					if($file_csv[1] !== ''){
+						$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[0], ENT_QUOTES, 'UTF-8')])[0];
+						if(sizeof($productos) > 0){
+							$change_precios[]=[	"id_producto"	=>	$productos->id_producto,
+												"nombre"		=>	htmlspecialchars($file_csv[0], ENT_QUOTES, 'UTF-8'),
+												"precio"		=>	str_replace('$','',str_replace(',','',$file_csv[1])),
+												"promocion"		=>	$file_csv[2]
+							];
+						}
+					}
 				}
 				$cont++;
 			}

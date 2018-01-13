@@ -49,7 +49,7 @@ class MY_Model extends CI_Model {
 		}
 	}
 
-	public function insertm(Array $data){
+	public function insert_batch(Array $data){
 		if ($this->db->insert_batch($this->TABLE_NAME, $data)){
 			return $this->db->affected_rows();
 		} else {
@@ -65,7 +65,7 @@ class MY_Model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 
-	public function updatem(Array $data, $where = NULL){
+	public function update_batch(Array $data, $where = NULL){
 		if ($where === NULL){
 			$where = $this->PRI_INDEX;
 		}
