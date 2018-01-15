@@ -50,8 +50,8 @@
 											<td><?php echo '' ?></td>
 											<td><?php echo '$ '.number_format($value->precio_minimo,2,'.',',') ?></td>
 											<td><?php echo $value->proveedor_minimo ?></td>
-											<td><?php echo '' ?></td>
-											<td><?php echo isset($value->precio_factura_minimo) ? '$ '.number_format($value->precio_factura_minimo,2,'.',',') : '' ?></td>
+											<td><?php echo '$ '.number_format($value->precio_maximo,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio_promedio,2,'.',',') ?></td>
 											<td><?php echo isset($value->precio_siguiente) ? '$ '.number_format($value->precio_siguiente,2,'.',',') : '' ?></td>
 											<td><?php echo $value->proveedor_siguiente ?></td>
 											<td><?php echo '' ?></td>
