@@ -36,7 +36,9 @@ class Cotizaciones extends MY_Controller {
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
 			$where = ["cotizaciones.id_proveedor" => $user->id];
 		}
-		$data["cotizacionesProveedor"] = $this->ct_mdl->preciosBajosProveedor();
+		$filter=["WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()];
+		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones($filter);
+		// echo $this->db->last_query();
 		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
@@ -129,7 +131,7 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
-	public function change_prices(){
+	public function upload_cotizaciones(){
 		set_time_limit(300);
 		ini_get("memory_limit");
 		ini_set("memory_limit","512M");
@@ -145,7 +147,7 @@ class Cotizaciones extends MY_Controller {
 		
 		$this->upload->initialize($config);
 
-		if (! $this->upload->do_upload('file_csv')){
+		if (! $this->upload->do_upload('file_cotizaciones')){
 			$mensaje= [	"id" 	=>	'Error',
 						"desc"	=>	$this->upload->display_errors(),
 						"type"	=>	 'error'];
@@ -176,6 +178,59 @@ class Cotizaciones extends MY_Controller {
 			$data['cotizacion']=$this->ct_mdl->insert_batch($change_precios);
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+						"type"	=>	'success'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function upload_precios(){
+		set_time_limit(300);
+		ini_get("memory_limit");
+		ini_set("memory_limit","512M");
+		ini_get("memory_limit");
+		$this->load->helper("path");
+		$this->load->library("upload");
+
+		$config=["upload_path"	=>	'./assets/uploads/',
+				"file_name"		=>	$_FILES['file_precios']['name'],
+				"allowed_types"	=>	'csv',
+				"remove_spaces"	=>	TRUE,
+				"overwrite"		=>	TRUE ];
+		
+		$this->upload->initialize($config);
+
+		if (! $this->upload->do_upload('file_precios')){
+			$mensaje= [	"id" 	=>	'Error',
+						"desc"	=>	$this->upload->display_errors(),
+						"type"	=>	 'error'];
+		}else{
+			$file_name = $this->upload->data('full_path');
+			$cont =0;
+			$open_file = fopen($file_name,'r') or die("No se puede abrir el archivo");
+			while(($file_csv = fgetcsv($open_file, 0,",","\n")) !== FALSE){
+				if($cont === 0){//Son los encabezados del archivo
+				
+				}else{
+					if($file_csv[1] !== ''){
+						$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[1], ENT_QUOTES, 'UTF-8')])[0];
+						if(sizeof($productos) > 0){
+							$new_precios[]=[	"id_producto"	=>	$productos->id_producto,
+												"nombre"		=>	$file_csv[1],
+												"precio_sistema"=>	str_replace('"', '', str_replace('$', '', str_replace(',', '', trim($file_csv[2])))),
+												"precio_four"	=>	str_replace('"', '', str_replace('$', '', str_replace(',', '', trim($file_csv[2]))))
+											];
+						}
+					}
+				}
+				$cont++;
+			}
+			fclose($open_file);//Cerramos el archivo
+			// $data['cotizacion']=$this->ct_mdl->insert_batch($new_precios);
+			echo "<pre>";
+			print_r ($new_precios);
+			echo "</pre>";
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Precios cargados correctamente en el Sistema',
 						"type"	=>	'success'];
 		}
 		$this->jsonResponse($mensaje);

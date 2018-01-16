@@ -16,7 +16,7 @@ $(function($) {
 			{
 				extend: 'excel',
 				exportOptions: {
-					columns: [0,1,2,3,4,5,6,7,8,9,10]
+					columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
 				},
 				title: 'Cotizaciones',
 			},
@@ -107,10 +107,10 @@ $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion",
 	sendForm("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
 });
 
-$(document).off("change", "#file_csv").on("change", "#file_csv", function(event) {
+$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
 	event.preventDefault();
-	var fdata = new FormData($("#upload_file")[0]);
-	uploadFileCsv(fdata)
+	var fdata = new FormData($("#upload_cotizaciones")[0]);
+	uploadCotizaciones(fdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
@@ -120,9 +120,35 @@ $(document).off("change", "#file_csv").on("change", "#file_csv", function(event)
 		});
 });
 
-function uploadFileCsv(formData) {
+function uploadCotizaciones(formData) {
 	return $.ajax({
-		url: site_url+"Cotizaciones/change_prices",
+		url: site_url+"Cotizaciones/upload_cotizaciones",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
+
+$(document).off("change", "#file_precios").on("change", "#file_precios", function(event) {
+	event.preventDefault();
+	var formdata = new FormData($("#upload_precios")[0]);
+	uploadPrecios(formdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, $("#name_user").val());
+			}else{
+				toastr.success(resp.desc, $("#name_user").val());
+				// setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
+			}
+		});
+});
+
+function uploadPrecios(formData) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/upload_precios",
 		type: "POST",
 		cache: false,
 		contentType: false,

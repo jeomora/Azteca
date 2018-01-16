@@ -12,13 +12,13 @@
 					<div class="ibox-content">
 						<div class="btn-group">
 							<div class="col-sm-2">
-								<a href="<?php echo base_url('./assets/uploads/Formato.csv'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato de Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+								<a href="<?php echo base_url('./assets/uploads/Formato_precios.csv'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato de Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 							</div>
 						</div>
 						<div class="btn-group">
-							<?php echo form_open_multipart("", array('id' => 'upload_file')); ?>
+							<?php echo form_open_multipart("", array('id' => 'upload_precios')); ?>
 								<div class="col-sm-4">
-									<input class="btn btn-info" type="file" id="file_csv" name="file_csv" value=""/>
+									<input class="btn btn-info" type="file" id="file_precios" name="file_precios" value=""/>
 								</div>
 								<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
 							<?php echo form_close(); ?>
@@ -27,6 +27,7 @@
 							<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
 								<thead>
 									<tr>
+										<th>FAMILIAS</th>
 										<th>CÓDIGO</th>
 										<th>DESCRIPCIÓN</th>
 										<th>SISTEMA</th>
@@ -42,29 +43,37 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php if ($cotizacionesProveedor): foreach ($cotizacionesProveedor as $key => $value): ?>
+									<?php if ($cotizacionesProveedor): ?>
+									<?php foreach ($cotizacionesProveedor as $key => $value): ?>
 										<tr>
-											<td><?php echo $value->codigo ?></td>
-											<td><?php echo $value->producto ?></td>
-											<td><?php echo '' ?></td>
-											<td><?php echo '' ?></td>
-											<td><?php echo '$ '.number_format($value->precio_minimo,2,'.',',') ?></td>
-											<td><?php echo $value->proveedor_minimo ?></td>
-											<td><?php echo '$ '.number_format($value->precio_maximo,2,'.',',') ?></td>
-											<td><?php echo '$ '.number_format($value->precio_promedio,2,'.',',') ?></td>
-											<td><?php echo isset($value->precio_siguiente) ? '$ '.number_format($value->precio_siguiente,2,'.',',') : '' ?></td>
-											<td><?php echo $value->proveedor_siguiente ?></td>
-											<td><?php echo '' ?></td>
-											<td>
-												<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-promocion="<?php echo $value->id_cotizacion ?>">
-													<i class="fa fa-pencil"></i>
-												</button>
-												<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-promocion="<?php echo $value->id_cotizacion ?>">
-													<i class="fa fa-trash"></i>
-												</button>
-											</td>
+											<td colspan="13"> <b><?php echo $value['familia'] ?> </b> </td>
+											<?php if ($value['articulos']): foreach ($value['articulos'] as $key => $val): ?>
+												<tr>
+													<td></td>
+													<td><?php echo $val['codigo'] ?></td>
+													<td><?php echo $val['producto'] ?></td>
+													<td></td>
+													<td></td>
+													<td><?php echo '$ '.number_format($val['precio_first'],2,'.',',') ?></td>
+													<td><?php echo $val['proveedor_first'] ?></td>
+													<td><?php echo '$ '.number_format($val['precio_maximo'],2,'.',',') ?></td>
+													<td><?php echo '$ '.number_format($val['precio_promedio'],2,'.',',') ?></td>
+													<td><?php echo '$ '.number_format($val['precio_next'],2,'.',',') ?></td>
+													<td><?php echo $val['proveedor_next'] ?></td>
+													<td><?php echo $val['promocion_first'] ?></td>
+													<td>
+														<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-promocion="<?php echo $val['id_cotizacion'] ?>">
+															<i class="fa fa-pencil"></i>
+														</button>
+														<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-promocion="<?php echo $val['id_cotizacion'] ?>">
+															<i class="fa fa-trash"></i>
+														</button>
+													</td>
+												</tr>
+											<?php endforeach; endif ?>
 										</tr>
-									<?php endforeach;  endif ?>
+									<?php endforeach ?>
+								<?php endif ?>
 								</tbody>
 							</table>
 						</div>
@@ -82,9 +91,9 @@
 							</div>
 						</div>
 						<div class="btn-group">
-							<?php echo form_open_multipart("", array('id' => 'upload_file')); ?>
+							<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 								<div class="col-sm-4">
-									<input class="btn btn-info" type="file" id="file_csv" name="file_csv" value=""/>
+									<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
 								</div>
 								<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
 							<?php echo form_close(); ?>

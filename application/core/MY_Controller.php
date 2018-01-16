@@ -35,7 +35,6 @@ class MY_Controller extends CI_Controller {
 		$this->footer = "Structure/footer";
 		$this->main = "Structure/main";
 		$this->folder = "Structure";
-
 	}
 
 	public function estructura($view, $data = NULL) {
@@ -60,6 +59,16 @@ class MY_Controller extends CI_Controller {
 			mkdir($ruta, 0777);
 		}
 		return $ruta;
+	}
+
+	public function weekNumber($date=NULL){
+		if (empty($date)) {
+			$date = date("Y-m-d");
+		}
+		$day	=	substr(date($date),8,2);//Día actual
+		$month	=	substr(date($date),5,2);//Mes actual
+		$year	=	substr(date($date),0,4);//Año actul
+		return date("W", mktime(0,0,0,$month,$day,$year));//El número de la semana
 	}
 
 }
