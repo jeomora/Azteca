@@ -115,7 +115,8 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
 			}else{
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
+				toastr.success(resp.desc, $("#name_user").val());
+				// setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
 			}
 		});
 });

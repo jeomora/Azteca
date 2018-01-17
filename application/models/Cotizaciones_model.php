@@ -18,6 +18,7 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.num_one,
 			cotizaciones.num_two,
 			cotizaciones.descuento,
+			WEEKOFYEAR(DATE_ADD(cotizaciones.fecha_registro, INTERVAL 1 WEEK)) AS week_befor,
 			cotizaciones.fecha_registro,
 			cotizaciones.fecha_caduca,
 			cotizaciones.existencias,
@@ -51,7 +52,7 @@ class Cotizaciones_model extends MY_Model {
 	}
 
 	public function comparaCotizaciones($where=[]){
-		$this->db->select("ctz_first.id_cotizacion, WEEKOFYEAR(DATE_ADD(ctz_first.fecha_cambio, INTERVAL 1 WEEK)) AS week_befor,
+		$this->db->select("ctz_first.id_cotizacion, WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) AS week_befor,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,

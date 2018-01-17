@@ -23,6 +23,13 @@
 								<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
 							<?php echo form_close(); ?>
 						</div>
+						<?php echo form_open("Cotizaciones/fill_excel", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+							<div class="btn-group">
+								<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+									<i class="fa fa-file-excel-o"></i>
+								</button>
+							</div>
+						<?php echo form_close(); ?>
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
 								<thead>
