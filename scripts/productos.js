@@ -2,7 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	fillDataTable("table_productos", 'DESC', 50);
+	fillDataTable("table_productos", 50);
 });
 
 $(document).off("click", "#new_producto").on("click", "#new_producto", function(event) {

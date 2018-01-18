@@ -2,10 +2,9 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	$("#table_cot_admin").dataTable({
+	/*$("#table_cot_admin").dataTable({
 		responsive: true,
 		pageLength: 50,
-		order: [[0, 'ASC']],
 		dom: 'Bfrtip',
 		lengthMenu: [
 			[ 10, 30, 50, -1 ],
@@ -21,9 +20,8 @@ $(function($) {
 				title: 'Cotizaciones',
 			},
 		]
-	});
-
-	fillDataTable("table_cot_proveedores", 'DESC', 50);
+	});*/
+	fillDataTable("table_cot_proveedores", 50);
 });
 
 $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", function(event) {
@@ -84,7 +82,7 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function() {
 
 $(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion", function(event){
 	event.preventDefault();
-	var id_cotizacion = $(this).closest("tr").find("#update_cotizacion").data("idPromocion");
+	var id_cotizacion = $(this).closest("tr").find("#update_cotizacion").data("idCotizacion");
 	getModal("Cotizaciones/get_update/"+ id_cotizacion, function (){
 		datePicker();
 		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
@@ -98,7 +96,7 @@ $(document).off("click", ".update_cotizacion").on("click", ".update_cotizacion",
 
 $(document).off("click", "#delete_cotizacion").on("click", "#delete_cotizacion", function(event){
 	event.preventDefault();
-	var id_cotizacion = $(this).closest("tr").find("#delete_cotizacion").data("idPromocion");
+	var id_cotizacion = $(this).closest("tr").find("#delete_cotizacion").data("idCotizacion");
 	getModal("Cotizaciones/get_delete/"+ id_cotizacion, function (){ });
 });
 
@@ -115,8 +113,8 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
 			}else{
-				toastr.success(resp.desc, $("#name_user").val());
-				// setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
+				// toastr.success(resp.desc, $("#name_user").val());
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
 			}
 		});
 });
@@ -141,8 +139,8 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
 			}else{
-				toastr.success(resp.desc, $("#name_user").val());
-				// setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
+				// toastr.success(resp.desc, $("#name_user").val());
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
 			}
 		});
 });

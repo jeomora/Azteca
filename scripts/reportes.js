@@ -2,7 +2,6 @@ $(function($) {
 	$("#table_precios_bajos").dataTable({
 		responsive: true,
 		pageLength: 50,
-		order: [[0, 'ASC']],
 		dom: 'Bfrtip',
 		lengthMenu: [
 			[ 10, 30, 50, -1 ],
@@ -23,7 +22,6 @@ $(function($) {
 	$("#table_precios_iguales").dataTable({
 		responsive: true,
 		pageLength: 50,
-		order: [[0, 'ASC']],
 		dom: 'Bfrtip',
 		lengthMenu: [
 			[ 10, 30, 50, -1 ],
@@ -44,7 +42,6 @@ $(function($) {
 	$("#table_compara_precios").dataTable({
 		responsive: true,
 		pageLength: 50,
-		order: [[0, 'ASC']],
 		dom: 'Bfrtip',
 		lengthMenu: [
 			[ 10, 30, 50, -1 ],

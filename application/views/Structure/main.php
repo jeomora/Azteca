@@ -154,11 +154,10 @@
 	 * @param [order 	=> Orden que se mostrará la información (ASC-DESC)]
 	 * @param [limit 	=> Cantidad de registros por pagina]
 	*/
-	function fillDataTable(element, order, limit) {
+	function fillDataTable(element, limit) {
 		$("#"+element).dataTable({
 			responsive: true,
 			pageLength  : limit,
-			"order": [[0, order]],
 			dom: 'Bfrtip',
 			lengthMenu: [
 				[ 10, 30, 50, -1 ],

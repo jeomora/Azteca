@@ -36,13 +36,12 @@ class Cotizaciones extends MY_Controller {
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cotizados cuando es proveedor
 			$where = [
 				"cotizaciones.id_proveedor" => $user->id,
-				"WEEKOFYEAR(DATE_ADD(cotizaciones.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()
 			];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
+			// echo $this->db->last_query();
 		}
 		$week=["WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()];//Semana actual
 		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones($week);
-		// echo $this->db->last_query();
 		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
 
@@ -143,7 +142,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->library("upload");
 
 		$config=["upload_path"	=>	'./assets/uploads/',
-				"file_name"		=>	$_FILES['file_csv']['name'],
+				"file_name"		=>	$_FILES['file_cotizaciones']['name'],
 				"allowed_types"	=>	'csv',
 				"remove_spaces"	=>	TRUE,
 				"overwrite"		=>	TRUE ];
@@ -217,10 +216,10 @@ class Cotizaciones extends MY_Controller {
 					if($file_csv[1] !== ''){
 						$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[1], ENT_QUOTES, 'UTF-8')])[0];
 						if(sizeof($productos) > 0){
-							$new_precios[]=[	"id_producto"	=>	$productos->id_producto,
-												"nombre"		=>	$file_csv[1],
-												"precio_sistema"=>	str_replace('"', '', str_replace('$', '', str_replace(',', '', trim($file_csv[2])))),
-												"precio_four"	=>	str_replace('"', '', str_replace('$', '', str_replace(',', '', trim($file_csv[2]))))
+							$new_precios[]=[	
+												"id_producto"	=>	$productos->id_producto,
+												"precio_sistema"=>	$file_csv[2],
+												"precio_four"	=>	$file_csv[3]
 											];
 						}
 					}
@@ -228,10 +227,7 @@ class Cotizaciones extends MY_Controller {
 				$cont++;
 			}
 			fclose($open_file);//Cerramos el archivo
-			// $data['cotizacion']=$this->ct_mdl->insert_batch($new_precios);
-			echo "<pre>";
-			print_r ($new_precios);
-			echo "</pre>";
+			$data['cotizacion']=$this->ct_mdl->update_batch($new_precios, 'id_producto');
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Precios cargados correctamente en el Sistema',
 						"type"	=>	'success'];
@@ -249,32 +245,33 @@ class Cotizaciones extends MY_Controller {
 		$hoja = $this->excelfile->getActiveSheet();
 		
 		$hoja->setCellValue("A2", "FAMILIAS")->getColumnDimension('A')->setWidth(20); //Nombre y ajuste de texto a la columna
-		$hoja->setCellValue("B2", "CÓDIGO")->getColumnDimension('B')->setWidth(35);
-		$hoja->setCellValue("C2", "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(20);
-		$hoja->setCellValue("D2", "SISTEMA")->getColumnDimension('D')->setWidth(20);
-		$hoja->setCellValue("E2", "PRECIO 4")->getColumnDimension('E')->setWidth(20);
-		$hoja->setCellValue("F2", "PRECIO MENOR")->getColumnDimension('F')->setWidth(20);
+		$hoja->setCellValue("B2", "CÓDIGO")->getColumnDimension('B')->setWidth(20);
+		$hoja->setCellValue("C2", "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(35);
+		$hoja->setCellValue("D2", "SISTEMA")->getColumnDimension('D')->setWidth(15);
+		$hoja->setCellValue("E2", "PRECIO 4")->getColumnDimension('E')->setWidth(15);
+		$hoja->setCellValue("F2", "PRECIO MENOR")->getColumnDimension('F')->setWidth(15);
 		$hoja->setCellValue("G2", "PROVEEDOR")->getColumnDimension('G')->setWidth(20);
-		$hoja->setCellValue("H2", "PRECIO MAXIMO")->getColumnDimension('H')->setWidth(20);
-		$hoja->setCellValue("I2", "PRECIO PROMEDIO")->getColumnDimension('I')->setWidth(20);
-		$hoja->setCellValue("J2", "PRECIO 2DO")->getColumnDimension('J')->setWidth(20);
+		$hoja->setCellValue("H2", "PRECIO MAXIMO")->getColumnDimension('H')->setWidth(15);
+		$hoja->setCellValue("I2", "PRECIO PROMEDIO")->getColumnDimension('I')->setWidth(15);
+		$hoja->setCellValue("J2", "PRECIO 2DO")->getColumnDimension('J')->setWidth(15);
 		$hoja->setCellValue("K2", "2DO PROVEEDOR")->getColumnDimension('K')->setWidth(20);
-		$hoja->setCellValue("L2", "PROMOCIÓN")->getColumnDimension('L')->setWidth(20);
+		$hoja->setCellValue("L2", "PROMOCIÓN")->getColumnDimension('L')->setWidth(35);
 
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones();
+		$week=["WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()];//Semana actual
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($week);
 
 		$row_print =3; $merge =3;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->setCellValue("A{$row_print}", $value['familia'] )->getStyle("A{$row_print}")->getAlignment()->setWrapText(true);
+				$hoja->setCellValue("A{$row_print}", $value['familia'])->getStyle("A{$row_print}")->getAlignment()->setWrapText(true);
 				$begin = $row_print;
 				$merge = 0;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
-						$hoja->setCellValue("B{$row_print}", $row['codigo'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+						$hoja->setCellValue("B{$row_print}", htmlspecialchars($row['codigo'], ENT_QUOTES,'UTF-8'))->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
 						$hoja->setCellValue("C{$row_print}", $row['producto'])->getStyle("C{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("D{$row_print}", '')->getStyle("D{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("E{$row_print}", '')->getStyle("E{$row_print}")->getAlignment()->setWrapText(true);
+						$hoja->setCellValue("D{$row_print}", number_format($row['precio_sistema'],2,'.',','))->getStyle("D{$row_print}")->getAlignment()->setWrapText(true);
+						$hoja->setCellValue("E{$row_print}", number_format($row['precio_four'],2,'.',','))->getStyle("E{$row_print}")->getAlignment()->setWrapText(true);
 						$hoja->setCellValue("F{$row_print}", number_format($row['precio_first'], 2, '.', ','))->getStyle("F{$row_print}")->getAlignment()->setWrapText(true);
 						$hoja->setCellValue("G{$row_print}", $row['proveedor_first'])->getStyle("G{$row_print}")->getAlignment()->setWrapText(true);
 						$hoja->setCellValue("H{$row_print}", number_format($row['precio_maximo'], 2, '.', ','))->getStyle("H{$row_print}")->getAlignment()->setWrapText(true);
@@ -290,13 +287,13 @@ class Cotizaciones extends MY_Controller {
 				$hoja->mergeCells("A{$begin}:A".$merge)->getStyle("A{$begin}")->getAlignment()->setWrapText(true);
 			}
 		}
-		
+		$row_print +=1;
 		$file_name = "Cotizaciones.xls"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$obj_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
-		$obj_Writer->save("php://output");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer->save("php://output");
 	}
 
 }

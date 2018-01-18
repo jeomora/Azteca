@@ -18,7 +18,6 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.num_one,
 			cotizaciones.num_two,
 			cotizaciones.descuento,
-			WEEKOFYEAR(DATE_ADD(cotizaciones.fecha_registro, INTERVAL 1 WEEK)) AS week_befor,
 			cotizaciones.fecha_registro,
 			cotizaciones.fecha_caduca,
 			cotizaciones.existencias,
@@ -60,6 +59,8 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.precio_promocion AS precio_promocion_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
+			ctz_first.precio_sistema,
+			ctz_first.precio_four,
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
 			WEEKOFYEAR(ctz_next.fecha_registro) AS week_next,
 			ctz_next.precio AS precio_next,
@@ -72,9 +73,9 @@ class Cotizaciones_model extends MY_Model {
 		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT ctz_precio_min.id_cotizacion FROM cotizaciones ctz_precio_min WHERE cotizaciones.id_producto = ctz_precio_min.id_producto 
-				AND ctz_precio_min.precio = (SELECT MIN(ctz_min.precio) FROM cotizaciones ctz_min WHERE ctz_min.id_producto = ctz_precio_min.id_producto))")
+				AND ctz_precio_min.precio = (SELECT MIN(ctz_min.precio) FROM cotizaciones ctz_min WHERE ctz_min.id_producto = ctz_precio_min.id_producto) LIMIT 1)")
 		->join("cotizaciones ctz_max", "ctz_max.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto 
-				AND ctz_max.precio = (SELECT MAX(ctz_precio_max.precio) FROM cotizaciones ctz_precio_max WHERE ctz_precio_max.id_producto = ctz_max.id_producto))")
+				AND ctz_max.precio = (SELECT MAX(ctz_precio_max.precio) FROM cotizaciones ctz_precio_max WHERE ctz_precio_max.id_producto = ctz_max.id_producto) LIMIT 1)")
 		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 				AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion ORDER BY cotizaciones.precio ASC LIMIT 1)", "LEFT")
 		->join("users proveedor_first", "ctz_first.id_proveedor = proveedor_first.id", "LEFT")
@@ -111,6 +112,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_first"]	=	$comparativa[$i]->precio_first;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["proveedor_first"]	=	$comparativa[$i]->proveedor_first;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_first"]	=	$comparativa[$i]->promocion_first;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_sistema"]	=	$comparativa[$i]->precio_sistema;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_four"]		=	$comparativa[$i]->precio_four;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_next"]		=	$comparativa[$i]->precio_next;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["proveedor_next"]	=	$comparativa[$i]->proveedor_next;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_next"]	=	$comparativa[$i]->promocion_next;

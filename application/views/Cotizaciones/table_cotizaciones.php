@@ -23,13 +23,13 @@
 								<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
 							<?php echo form_close(); ?>
 						</div>
-						<?php echo form_open("Cotizaciones/fill_excel", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
-							<div class="btn-group">
+						<div class="btn-group">
+							<?php echo form_open("Cotizaciones/fill_excel", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 								<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 									<i class="fa fa-file-excel-o"></i>
 								</button>
-							</div>
-						<?php echo form_close(); ?>
+							<?php echo form_close(); ?>
+						</div>
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
 								<thead>
@@ -53,14 +53,15 @@
 									<?php if ($cotizacionesProveedor): ?>
 									<?php foreach ($cotizacionesProveedor as $key => $value): ?>
 										<tr>
-											<td colspan="13"> <b><?php echo $value['familia'] ?> </b> </td>
+											<td colspan="13"> <b><?php echo $value['familia'] ?> </b> </td> 
+											<?php $size = count($value['articulos']) ?>
 											<?php if ($value['articulos']): foreach ($value['articulos'] as $key => $val): ?>
 												<tr>
 													<td></td>
 													<td><?php echo $val['codigo'] ?></td>
 													<td><?php echo $val['producto'] ?></td>
-													<td></td>
-													<td></td>
+													<td><?php echo '$ '.number_format($val['precio_sistema'],2,'.',',') ?></td>
+													<td><?php echo '$ '.number_format($val['precio_four'],2,'.',',') ?></td>
 													<td><?php echo '$ '.number_format($val['precio_first'],2,'.',',') ?></td>
 													<td><?php echo $val['proveedor_first'] ?></td>
 													<td><?php echo '$ '.number_format($val['precio_maximo'],2,'.',',') ?></td>
@@ -69,10 +70,10 @@
 													<td><?php echo $val['proveedor_next'] ?></td>
 													<td><?php echo $val['promocion_first'] ?></td>
 													<td>
-														<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-promocion="<?php echo $val['id_cotizacion'] ?>">
+														<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="<?php echo $val['id_cotizacion'] ?>">
 															<i class="fa fa-pencil"></i>
 														</button>
-														<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-promocion="<?php echo $val['id_cotizacion'] ?>">
+														<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="<?php echo $val['id_cotizacion'] ?>">
 															<i class="fa fa-trash"></i>
 														</button>
 													</td>
@@ -136,10 +137,10 @@
 												<td><?php echo $value->promocion ?></td>
 												<td><?php echo $value->observaciones ?></td>
 												<td>
-													<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-promocion="<?php echo $value->id_cotizacion ?>">
+													<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
 														<i class="fa fa-pencil"></i>
 													</button>
-													<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-promocion="<?php echo $value->id_cotizacion ?>">
+													<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
 														<i class="fa fa-trash"></i>
 													</button>
 												</td>
