@@ -60,13 +60,13 @@
 													<td></td>
 													<td><?php echo $val['codigo'] ?></td>
 													<td><?php echo $val['producto'] ?></td>
-													<td><?php echo '$ '.number_format($val['precio_sistema'],2,'.',',') ?></td>
-													<td><?php echo '$ '.number_format($val['precio_four'],2,'.',',') ?></td>
+													<td><?php echo ($val['precio_sistema'] >0) ? '$ '.number_format($val['precio_sistema'],2,'.',',') : '' ?></td>
+													<td><?php echo ($val['precio_four'] >0) ? '$ '.number_format($val['precio_four'],2,'.',',') : '' ?></td>
 													<td><?php echo '$ '.number_format($val['precio_first'],2,'.',',') ?></td>
 													<td><?php echo $val['proveedor_first'] ?></td>
 													<td><?php echo '$ '.number_format($val['precio_maximo'],2,'.',',') ?></td>
 													<td><?php echo '$ '.number_format($val['precio_promedio'],2,'.',',') ?></td>
-													<td><?php echo '$ '.number_format($val['precio_next'],2,'.',',') ?></td>
+													<td><?php echo ($val['precio_next'] >0) ?'$ '.number_format($val['precio_next'],2,'.',',') : '' ?></td>
 													<td><?php echo $val['proveedor_next'] ?></td>
 													<td><?php echo $val['promocion_first'] ?></td>
 													<td>

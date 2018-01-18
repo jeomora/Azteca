@@ -34,7 +34,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["preciosBajos"] = $this->ct_mdl->preciosBajosProveedor();
+		$data["preciosBajos"] = $this->ct_mdl->preciosBajos();
 		$this->estructura("Reportes/table_precios_bajos", $data);
 	}
 

@@ -38,10 +38,9 @@ class Cotizaciones extends MY_Controller {
 				"cotizaciones.id_proveedor" => $user->id,
 			];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
-			// echo $this->db->last_query();
 		}
 		$week=["WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()];//Semana actual
-		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones($week);
+		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones();
 		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
 
@@ -84,10 +83,10 @@ class Cotizaciones extends MY_Controller {
 			'nombre'			=>	strtoupper($this->input->post('nombre')),
 			'num_one'			=>	str_replace(',', '', $this->input->post('num_one')),
 			'num_two'			=>	str_replace(',', '', $this->input->post('num_two')),
-			'precio_nuevo'		=>	str_replace(',', '', $this->input->post('precio')),
+			'precio'			=>	str_replace(',', '', $this->input->post('precio')),
 			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
-			'fecha_actualiza'	=>	date('Y-m-d H:i:s'),
+			'fecha_cambio'		=>	date('Y-m-d H:i:s'),
 			'fecha_caduca'		=>	date('Y-m-d', strtotime($this->input->post('fecha_caducidad'))),
 			'existencias'		=>	str_replace(',', '',$this->input->post('existencias')),
 			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
