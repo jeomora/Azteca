@@ -51,7 +51,8 @@ class Cotizaciones_model extends MY_Model {
 	}
 
 	public function comparaCotizaciones($where=[]){
-		$this->db->select("cotizaciones.id_cotizacion, WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) AS week_befor,
+		$this->db->select("cotizaciones.id_cotizacion, 
+			ctz_first.fecha_registro fecha_befor,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
@@ -62,7 +63,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.precio_sistema,
 			ctz_first.precio_four,
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
-			WEEKOFYEAR(ctz_next.fecha_registro) AS week_next,
+			ctz_next.fecha_registro AS fecha_next,
 			ctz_next.precio AS precio_next,
 			ctz_next.precio_promocion AS precio_promocion_next,
 			ctz_next.nombre AS promocion_next,
@@ -221,7 +222,6 @@ class Cotizaciones_model extends MY_Model {
 
 	public function preciosBajos($where=[]){
 		$this->db->select("cotizaciones.id_cotizacion,
-			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
 			ctz_first.precio AS precio_first,
@@ -231,7 +231,6 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.precio_sistema,
 			ctz_first.precio_four,
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
-			WEEKOFYEAR(ctz_next.fecha_registro) AS week_next,
 			ctz_next.precio AS precio_next,
 			ctz_next.precio_promocion AS precio_promocion_next,
 			ctz_next.nombre AS promocion_next,
@@ -240,7 +239,6 @@ class Cotizaciones_model extends MY_Model {
 			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
 		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
-		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
 			AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto) LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto

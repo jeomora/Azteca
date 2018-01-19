@@ -36,11 +36,12 @@ class Cotizaciones extends MY_Controller {
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cotizados cuando es proveedor
 			$where = [
 				"cotizaciones.id_proveedor" => $user->id,
+				"WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()
 			];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 		}
-		$week=["WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()];//Semana actual
-		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones();
+		$week=["WEEKOFYEAR(ctz_first.fecha_registro) >=" => ($this->weekNumber()-1)];//Semana actual
+		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones($week);
 		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
 
@@ -245,7 +246,7 @@ class Cotizaciones extends MY_Controller {
 		
 		$hoja->setCellValue("A2", "FAMILIAS")->getColumnDimension('A')->setWidth(20); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B2", "CÓDIGO")->getColumnDimension('B')->setWidth(20);
-		$hoja->setCellValue("C2", "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(35);
+		$hoja->setCellValue("C2", "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(40);
 		$hoja->setCellValue("D2", "SISTEMA")->getColumnDimension('D')->setWidth(15);
 		$hoja->setCellValue("E2", "PRECIO 4")->getColumnDimension('E')->setWidth(15);
 		$hoja->setCellValue("F2", "PRECIO MENOR")->getColumnDimension('F')->setWidth(15);
@@ -256,7 +257,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("K2", "2DO PROVEEDOR")->getColumnDimension('K')->setWidth(20);
 		$hoja->setCellValue("L2", "PROMOCIÓN")->getColumnDimension('L')->setWidth(35);
 
-		$week=["WEEKOFYEAR(DATE_ADD(ctz_first.fecha_registro, INTERVAL 1 WEEK)) =" => $this->weekNumber()];//Semana actual
+		$week=["WEEKOFYEAR(ctz_first.fecha_registro) >=" => ($this->weekNumber()-1)];//Semana actual
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($week);
 
 		$row_print =3; $merge =3;
