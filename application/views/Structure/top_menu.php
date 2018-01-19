@@ -16,7 +16,7 @@
 				<div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="#" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
+							<a href="#" id="progress" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
 						</li>
 					
 					<?php if ($this->ion_auth->is_admin()): ?><!--Solo los Administradores pueden ver -->
@@ -61,11 +61,6 @@
 
 		<div id="notifications">
 			<!-- Para mostra las notificaciones -->
-		</div>
-
-		<div id="myProgress" style="display: none;">
-			<!-- Para mostrar un progressbar  -->
-			<div id="barra">10%</div>
 		</div>
 
 		<div id="main_container">

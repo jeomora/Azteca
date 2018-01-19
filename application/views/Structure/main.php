@@ -7,8 +7,7 @@
 
 	var name_control = "";//Nombre del controlador activo
 	var name_function = "";//Nombre de la función cargada
-	var window_modal = $("#mainModal");//Ventana modal usada 
-	var progress = document.getElementById("myProgress");
+	var window_modal = $("#mainModal");//Ventana modal usada
 	
 	$(function() {
 		var iniciar =1;
@@ -45,10 +44,8 @@
 				if(element.attr("href") !="#" && element != base_url && element != "" && !element.hasClass("btn-modal")){ 
 					$("#welcome_container").remove();//Eliminamos el contenedor de bienvenida
 					$("#main_container").html('');//Limpiamos el contenedor
-					progress.style.display = 'block';
-					loading();
+					loadingBar();
 					$.get(element.attr("href"), function(resp){
-						progress.style.display = 'none';
 						$("#main_container").html(resp);//Le cargamos la respuesata
 					});
 					// $("#main_container").load(this.href);//Le cargamos el contenido nuevo
@@ -65,17 +62,16 @@
 
 	});
 
-	function loading(){
-		var barra = document.getElementById("barra");
-		var width = 10;
-		var id = setInterval(frame, 10);
+	function loadingBar(){
+		var progress = document.getElementById("progress");
+		var contador = 5;
+		var id = setInterval(frame, 30);
 		function frame(){
-			if(width >= 100) {
+			if(contador == 100) {
 				clearInterval(id);
 			}else{
-				width++;
-				barra.style.width = width + '%';
-				barra.innerHTML = width * 1  + '%';
+				contador +=1;
+				progress.innerHTML = contador  + '% Cargando...';
 			}
 		}
 	}
