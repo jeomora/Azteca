@@ -5036,19 +5036,8 @@ body.skin-3 {
   }
 }
 
-/*
-* Estilos para mostrar un progresbar [26/12/2017]
-*/
-#myProgress {
-    width: 100%;
-    background-color: #DDD;
-}
-
-#barra{
-    width: 10%;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-    color: #FFF!important;
-    background-color: #2DFF07!important;
+/*Con este estilo se muestra el spinner dentro del fondo*/
+.loader_cover{
+    width     : 60px !important;
+    height    : 60px !important;
 }

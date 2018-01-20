@@ -132,59 +132,7 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
-
-	public function upload_cotizaciones(){
-		set_time_limit(300);
-		ini_get("memory_limit");
-		ini_set("memory_limit","512M");
-		ini_get("memory_limit");
-		$this->load->helper("path");
-		$this->load->library("upload");
-
-		$config=["upload_path"	=>	'./assets/uploads/',
-				"file_name"		=>	$_FILES['file_cotizaciones']['name'],
-				"allowed_types"	=>	'csv',
-				"remove_spaces"	=>	TRUE,
-				"overwrite"		=>	TRUE ];
-		
-		$this->upload->initialize($config);
-
-		if (! $this->upload->do_upload('file_cotizaciones')){
-			$mensaje= [	"id" 	=>	'Error',
-						"desc"	=>	$this->upload->display_errors(),
-						"type"	=>	 'error'];
-		}else{
-			$file_name = $this->upload->data('full_path');
-			$cont =0;
-			$open_file = fopen($file_name,'r') or die("No se puede abrir el archivo");
-			while(($file_csv = fgetcsv($open_file, 0,",","\n")) !== FALSE){
-				if($cont === 0){//Son los encabezados del archivo
-				
-				}else{
-					if($file_csv[1] !== ''){
-						$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[0], ENT_QUOTES, 'UTF-8')])[0];
-						if(sizeof($productos) > 0){
-							$change_precios[]=[	"id_producto"		=>	$productos->id_producto,
-												"id_proveedor"		=>	$this->ion_auth->user()->row()->id,
-												"precio"			=>	($file_csv[2] =='') ? str_replace('$','',$file_csv[1]) : NULL,
-												"precio_promocion"	=>	($file_csv[2] !='') ? str_replace('$','',$file_csv[1]) : NULL,
-												"fecha_registro"	=>	date('Y-m-d H:i:s'),
-												"observaciones"		=>	strtoupper($file_csv[2])
-							];
-						}
-					}
-				}
-				$cont++;
-			}
-			fclose($open_file);//Cerramos el archivo
-			$data['cotizacion']=$this->ct_mdl->insert_batch($change_precios);
-			$mensaje=[	"id"	=>	'Éxito',
-						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
-						"type"	=>	'success'];
-		}
-		$this->jsonResponse($mensaje);
-	}
-
+	
 	public function upload_precios(){
 		set_time_limit(300);
 		ini_get("memory_limit");
@@ -216,18 +164,19 @@ class Cotizaciones extends MY_Controller {
 					if($file_csv[1] !== ''){
 						$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[1], ENT_QUOTES, 'UTF-8')])[0];
 						if(sizeof($productos) > 0){
-							$new_precios[]=[	
-												"id_producto"	=>	$productos->id_producto,
-												"precio_sistema"=>	$file_csv[2],
-												"precio_four"	=>	$file_csv[3]
-											];
+							$new_precios=[	"precio_sistema"=>	$file_csv[2],
+											"precio_four"	=>	$file_csv[3] ];
 						}
+						$data['cotizacion']=$this->ct_mdl->update($new_precios, 
+							['fecha_registro >=' =>'2018-01-14', 'id_producto'=>$productos->id_producto]);
+							// ['fecha_registro >=' =>'2018-01-14', 'id_producto'=>$this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($file_csv[1], ENT_QUOTES, 'UTF-8')])[0]->id_producto]);
+						echo "{$this->db->last_query()} <br>";
 					}
 				}
 				$cont++;
 			}
 			fclose($open_file);//Cerramos el archivo
-			$data['cotizacion']=$this->ct_mdl->update_batch($new_precios, 'id_producto');
+			// $data['cotizacion']=$this->ct_mdl->update_batch($new_precios, 'id_producto');
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Precios cargados correctamente en el Sistema',
 						"type"	=>	'success'];
@@ -294,6 +243,41 @@ class Cotizaciones extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
 		$excel_Writer->save("php://output");
+	}
+
+	public function upload_cotizaciones(){
+		$this->load->library("excelfile");
+		ini_set("memory_limit", "-1");
+		$file = $_FILES["file_cotizaciones"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$sheet->setActiveSheetIndex(0);
+		$num_rows = $sheet->setActiveSheetIndex(0)->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) { 
+			if($sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue() !=''){
+				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getActiveSheet()->getCell('A'.$i)->getCalculatedValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$new_cotizacion[$i]=[
+						"id_producto"		=>	$productos->id_producto,
+						"id_proveedor"		=>	$this->ion_auth->user()->row()->id,
+						"precio"			=>	str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue())),
+						"precio_promocion"	=>	($sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue() == '') ? NULL : str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue())),
+						"fecha_registro"	=>	date('Y-m-d H:i:s'),
+						"observaciones"		=>	$sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue()
+					];
+				}
+			}
+		}
+		if (sizeof($new_cotizacion) > 0) {
+			$data['cotizacion']=$this->ct_mdl->insert_batch($new_cotizacion);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
 	}
 
 }

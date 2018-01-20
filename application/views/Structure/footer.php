@@ -20,6 +20,8 @@
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/bootstrap.min.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/metisMenu/jquery.metisMenu.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/slimscroll/jquery.slimscroll.min.js') ?>"></script>
+		<script type="text/javascript" src="<?php echo base_url('assets/js/jquery.blockUI.js'); ?>"></script>
+		
 		<!-- Custom and plugin javascript -->
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/inspinia.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/pace/pace.min.js') ?>"></script>

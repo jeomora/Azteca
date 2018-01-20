@@ -73,3 +73,11 @@
 	</div>
 
 <body class="top-navigation">
+
+	<div id="cover" hidden="true">
+		<div class="sk-spinner sk-spinner-cube-grid loader_cover"> </div>
+		<span class="loaderText">
+			<p style="font-size: 30px; font-weight: bold;"> <?php echo strtoupper($usuario->username) ?> </p>
+			<p style="font-size: 30px "> Espere mientras se carga la información...</p>
+		</span>
+	</div>

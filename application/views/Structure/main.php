@@ -44,7 +44,6 @@
 				if(element.attr("href") !="#" && element != base_url && element != "" && !element.hasClass("btn-modal")){ 
 					$("#welcome_container").remove();//Eliminamos el contenedor de bienvenida
 					$("#main_container").html('');//Limpiamos el contenedor
-					loadingBar();
 					$.get(element.attr("href"), function(resp){
 						$("#main_container").html(resp);//Le cargamos la respuesata
 					});
@@ -61,20 +60,6 @@
 		});*/
 
 	});
-
-	function loadingBar(){
-		var progress = document.getElementById("progress");
-		var contador = 5;
-		var id = setInterval(frame, 30);
-		function frame(){
-			if(contador == 100) {
-				clearInterval(id);
-			}else{
-				contador +=1;
-				progress.innerHTML = contador  + '% Cargando...';
-			}
-		}
-	}
 
 	function datePicker() {
 		$(".datepicker").datepicker({
@@ -352,6 +337,30 @@
 		.fail(function(response) {
 			// console.log("Error en la respuesta: ", response);
 		});
+	}
+
+	/**
+	* Función para bloquear la pagina mostrando un mensaje]
+	* @author Hugo HV hugo@canteradigital.mx
+	*/
+	function blockPage(){
+		$("html").block({
+			message : $("#cover"),
+			class: {
+				"font-size": '10px',
+				position: 'fixed',
+				border: 'none',
+				backgroundColor : 'transparent',
+				"z-index": '9999'
+			}
+		});
+	}
+	/**
+	* Función desbloquear la pagina
+	* @author Hugo HV hugo@canteradigital.mx
+	*/
+	function unblockPage() {
+		$("html").unblock();
 	}
 
 </script>

@@ -107,14 +107,14 @@ $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion",
 
 $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
 	event.preventDefault();
+	blockPage();
 	var fdata = new FormData($("#upload_cotizaciones")[0]);
-	loadingBar();
 	uploadCotizaciones(fdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
 			}else{
-				// toastr.success(resp.desc, $("#name_user").val());
+				unblockPage();
 				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
 			}
 		});
@@ -135,7 +135,6 @@ function uploadCotizaciones(formData) {
 $(document).off("change", "#file_precios").on("change", "#file_precios", function(event) {
 	event.preventDefault();
 	var formdata = new FormData($("#upload_precios")[0]);
-	loadingBar();
 	uploadPrecios(formdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
