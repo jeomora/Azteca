@@ -15,7 +15,7 @@ class MY_Model extends CI_Model {
 		}
 	}
 
-	public function get($columns='', $where = [], $joins=[],  $like = [], $limit = 0, $start = 10, $order = ''){
+	public function get($columns='', $where = [], $joins=[],  $like = [], $limit = FALSE, $start = FALSE, $order = ''){
 		if(! empty($columns)) {
 			$this->db->select($columns);
 		}
@@ -85,7 +85,7 @@ class MY_Model extends CI_Model {
 		return $this->db->count_all($this->TABLE_NAME);
 	}
 
-	public function get_pagination($columns='', $where = [], $joins=[],  $like = [], $limit = 0, $start = 10, $order = ''){
+	public function get_pagination($columns='', $where = [], $joins=[],  $like = [], $limit = FALSE, $start = FALSE, $group='', $order = ''){
 		if(! empty($columns)) {
 			$this->db->select($columns);
 		}
@@ -100,10 +100,13 @@ class MY_Model extends CI_Model {
 		if(! empty($like)){
 			$this->db->like($like);
 		}
+		if(! empty($group)){
+			$this->db->group_by($group);
+		}
 		if(! empty($order)){
 			$this->db->order_by($order);
 		}
-		if($limit > 0){
+		if($limit !==FALSE && $start !==FALSE){
 			$this->db->limit($limit, $start);
 		}
 		$this->db->where($this->TABLE_NAME.".estatus", 1);

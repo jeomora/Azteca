@@ -134,13 +134,14 @@ function uploadCotizaciones(formData) {
 
 $(document).off("change", "#file_precios").on("change", "#file_precios", function(event) {
 	event.preventDefault();
+	blockPage();
 	var formdata = new FormData($("#upload_precios")[0]);
 	uploadPrecios(formdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, $("#name_user").val());
 			}else{
-				// toastr.success(resp.desc, $("#name_user").val());
+				unblockPage();
 				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
 			}
 		});

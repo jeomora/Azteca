@@ -339,26 +339,15 @@
 		});
 	}
 
-	/**
-	* Función para bloquear la pagina mostrando un mensaje]
-	* @author Hugo HV hugo@canteradigital.mx
-	*/
 	function blockPage(){
 		$("html").block({
-			message : $("#cover"),
-			class: {
-				"font-size": '10px',
-				position: 'fixed',
-				border: 'none',
-				backgroundColor : 'transparent',
-				"z-index": '9999'
-			}
+			centerY: 0,
+			message: "<h2>"+user_name+"</h2> <h3> Espera que se cargue la información...</h3>",
+			css: { top: '50px', left: '', right: '10px' },
+			overlayCSS: { backgroundColor: '#00f' }
 		});
 	}
-	/**
-	* Función desbloquear la pagina
-	* @author Hugo HV hugo@canteradigital.mx
-	*/
+	
 	function unblockPage() {
 		$("html").unblock();
 	}

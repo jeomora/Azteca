@@ -9,7 +9,8 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Productos_model", "prod_mdl");
 	}
 
-	public function index(){
+	public function index($pagina = FALSE){
+		ini_set("memory_limit", "-1");
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',
@@ -39,10 +40,91 @@ class Cotizaciones extends MY_Controller {
 				"WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()
 			];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
+			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
+		}else{
+			$this->load->library("pagination");
+		
+			$columns = "cotizaciones.id_cotizacion,
+				ctz_first.fecha_registro fecha_befor,
+				fam.id_familia, fam.nombre AS familia,
+				prod.codigo, prod.nombre AS producto,
+				UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
+				ctz_first.precio AS precio_first,
+				ctz_first.precio_promocion AS precio_promocion_first,
+				ctz_first.nombre AS promocion_first,
+				ctz_first.observaciones AS observaciones_first,
+				ctz_first.precio_sistema,
+				ctz_first.precio_four,
+				UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
+				ctz_next.fecha_registro AS fecha_next,
+				ctz_next.precio AS precio_next,
+				ctz_next.precio_promocion AS precio_promocion_next,
+				ctz_next.nombre AS promocion_next,
+				ctz_next.observaciones AS observaciones_next,
+				ctz_maxima.precio AS precio_maximo,
+				AVG(cotizaciones.precio) AS precio_promedio";
+
+			$joins = [
+				["table"	=>	"productos prod",			"ON"	=>	"cotizaciones.id_producto = prod.id_producto",	"clausula"	=>	"LEFT"],
+				["table"	=>	"familias fam",				"ON"	=>	"prod.id_familia = fam.id_familia",				"clausula"	=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
+					AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto) LIMIT 1)",	"clausula"				=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
+					AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)",	"clausula"			=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
+					AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion ORDER BY cotizaciones.precio ASC LIMIT 1)",	"clausula"						=>	"LEFT"],
+				["table"	=>	"users proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id",	"clausula"	=>	"LEFT"],
+				["table"	=>	"users proveedor_next",		"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id",	"clausula"	=>	"LEFT"],
+				["table"	=>	"users proveedor_max",		"ON"	=>	"ctz_maxima.id_proveedor = proveedor_max.id",	"clausula"	=>	"LEFT"]
+			];
+
+			$group ="ctz_first.id_producto";
+			$order ="ctz_first.id_producto, ctz_first.precio";
+			$where = ["WEEKOFYEAR(ctz_first.fecha_registro) >=" => ($this->weekNumber()-1)];//Semana actual
+			
+			$start__index =0;
+			$limit_per_page = 50;
+			if ($pagina) {
+				$start__index = ($pagina -1) * $limit_per_page;
+			}
+
+			$total_rows = sizeof($this->ct_mdl->get_pagination($columns, $where, $joins, "", FALSE, FALSE, $group, $order));
+
+			if($total_rows > 0){
+				$data["cotizacionesProveedor"] = $this->ct_mdl->get_pagination($columns, $where, $joins, "", $limit_per_page, $start__index, $group, $order);
+				$config = [
+					"base_url"			=>	base_url().'pagina/',
+					"total_rows"		=>	$total_rows,
+					"per_page"			=>	$limit_per_page,
+					"uri_segment"		=>	2,
+					"num_links"			=>	floor($total_rows/$limit_per_page),
+					"reuse_query_string"=>	TRUE,
+					"full_tag_open"		=>	'<ul class="pagination">',
+					"full_tag_close"	=>	'</ul>',
+					"first_link"		=>	FALSE,
+					"last_link"			=>	FALSE,
+					"first_tag_open"	=>	'<li>',
+					"first_tag_close"	=>	'</li>',
+					"first_url"			=>	base_url(),
+					"prev_link"			=>	'Prev',
+					"prev_tag_open"		=>	'<li class="prev">',
+					"prev_tag_close"	=>	'</li>',
+					"next_link"			=>	'Next',
+					"next_tag_open"		=>	'<li>',
+					"next_tag_close"	=>	'</li>',
+					"last_tag_open"		=>	'<li>',
+					"last_tag_close"	=>	'</li>',
+					"cur_tag_open"		=>	'<li class="active"><a href="#">',
+					"cur_tag_close"		=>	'</a></li>',
+					"num_tag_open"		=>	'<li>',
+					"num_tag_close"		=>	'</li>'
+				];
+				// $this->output->enable_profiler(TRUE);
+				$this->pagination->initialize($config);
+				$data["pages"] = $this->pagination->create_links();
+			}
+			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
 		}
-		$week=["WEEKOFYEAR(ctz_first.fecha_registro) >=" => ($this->weekNumber()-1)];//Semana actual
-		$data["cotizacionesProveedor"] = $this->ct_mdl->comparaCotizaciones($week);
-		$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 	}
 
 	public function add_cotizacion(){
@@ -132,8 +214,8 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
-	
-	public function upload_precios(){
+
+	public function upload_precios1(){
 		set_time_limit(300);
 		ini_get("memory_limit");
 		ini_set("memory_limit","512M");
@@ -277,6 +359,36 @@ class Cotizaciones extends MY_Controller {
 						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
 						"type"	=>	'error'];
 		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function upload_precios(){
+		$this->load->library("excelfile");
+		ini_set("memory_limit", "-1");
+		$file = $_FILES["file_precios"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$sheet->setActiveSheetIndex(0);
+		$num_rows = $sheet->setActiveSheetIndex(0)->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) { 
+			if($sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue() !=''){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getActiveSheet()->getCell('A'.$i)->getCalculatedValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$new_precios=[
+						"id_producto"		=>	$productos->id_producto,
+						"precio_sistema"	=>	str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue())),
+						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('D'.$i)->getCalculatedValue())),
+						"fecha_cambio"		=>	date('Y-m-d H:i:s')
+					];
+					// $data['cotizacion']=$this->ct_mdl->update($new_precios,
+					// 	['WEEKOFYEAR(fecha_registro) >=' =>$this->weekNumber(),'id_producto'=>$productos->id_producto]);
+				}
+			}
+			// echo "Semana {$this->weekNumber()}</b>";
+			// echo "{$this->db->last_query()} <br>";
+		}
+		$mensaje=[	"id"	=>	'Éxito',
+					"desc"	=>	'Precios cargados correctamente en el Sistema',
+					"type"	=>	'success'];
 		$this->jsonResponse($mensaje);
 	}
 
