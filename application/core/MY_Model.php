@@ -85,7 +85,7 @@ class MY_Model extends CI_Model {
 		return $this->db->count_all($this->TABLE_NAME);
 	}
 
-	public function get_pagination($columns='', $where = [], $joins=[],  $like = [], $limit = FALSE, $start = FALSE, $group='', $order = ''){
+	public function pagination_get($columns=NULL, $where = [], $joins=[],  $like = [], $limit = FALSE, $start = FALSE, $group='', $order = ''){
 		if(! empty($columns)) {
 			$this->db->select($columns);
 		}
@@ -134,6 +134,67 @@ class MY_Model extends CI_Model {
 		return false;
 	}
 
+	public function get_datatables_query($columns=NULL, $joins = [], $wheres = [], $search=[], $group = NULL, $order = NULL){
+		if(! empty($columns)) {
+			$this->db->select($columns);
+		}
+		$this->db->from($this->TABLE_NAME);
+		
+		if (is_array($search)) {
+			foreach ($search as $key => $val) {
+				if($val != NULL){
+					$this->db->group_start();
+					$this->db->or_like($key, $val, 'AFTER');
+					$this->db->group_end();
+				}
+			}
+		}
+
+		if(! empty($joins)){
+			foreach($joins as $k => $join){
+				$this->db->join($join["table"], $join["ON"], $join["clausula"]);
+			}
+		}else{
+
+		}
+		if(! empty($wheres)){
+			foreach($wheres as $key => $where){
+				$this->db->where($where['clausula'], $where['valor']);
+			}
+		}else{
+
+		}
+		if(! empty($group)){
+			$this->db->group_by($group);
+		}
+		if(! empty($order)){
+			$this->db->order_by($order);
+		}
+	}
+
+	public function get_pagination($columns=NULL, $joins=[], $wheres=[], $search=[], $group=''){
+		$this->get_datatables_query($columns, $joins, $wheres, $search, $group, NULL);
+		if($_POST['length'] != -1){
+			$this->db->limit($_POST['length'], $_POST['start']);
+		}
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function count_filtered($wheres=[], $search=[], $joins=[]){
+		$this->get_datatables_query("COUNT(*) as rows", $joins, $wheres, $search, NULL, NULL);
+		if($wheres !== NULL){
+			if(is_array($wheres)){
+				foreach($wheres as $key => $where){
+					$this->db->where($where['clausula'], $where['valor']);
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $wheres);
+			}
+		}
+		$query = $this->db->get();
+		return $query->row()->rows;
+	}
 
 }
 

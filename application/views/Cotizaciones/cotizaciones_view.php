@@ -11,7 +11,7 @@
 				<div class="ibox-content">
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_precios.csv'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato de Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							<a href="<?php echo base_url('./assets/uploads/Formato_precios.xlsx'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Precios" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">
@@ -49,37 +49,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php if ($cotizacionesProveedor): ?>
-								<?php foreach ($cotizacionesProveedor as $key => $value): ?>
-									<tr>
-										<td></td>
-										<td><?php echo $value->codigo ?></td>
-										<td><?php echo $value->producto ?></td>
-										<td><?php echo ($value->precio_sistema >0) ? '$ '.number_format($value->precio_sistema,2,'.',',') : '' ?></td>
-										<td><?php echo ($value->precio_four >0) ? '$ '.number_format($value->precio_four,2,'.',',') : '' ?></td>
-										<td><?php echo '$ '.number_format($value->precio_first,2,'.',',') ?></td>
-										<td><?php echo $value->proveedor_first ?></td>
-										<td><?php echo '$ '.number_format($value->precio_maximo,2,'.',',') ?></td>
-										<td><?php echo '$ '.number_format($value->precio_promedio,2,'.',',') ?></td>
-										<td><?php echo ($value->precio_next >0) ?'$ '.number_format($value->precio_next,2,'.',',') : '' ?></td>
-										<td><?php echo $value->proveedor_next ?></td>
-										<td><?php echo $value->promocion_first ?></td>
-										<td>
-											<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
-												<i class="fa fa-pencil"></i>
-											</button>
-											<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
-												<i class="fa fa-trash"></i>
-											</button>
-										</td>
-									</tr>
-								<?php endforeach ?>
-							<?php endif ?>
+								<!-- Aqui cargamos el contenido -->
 							</tbody>
 						</table>
-						<div class="row col-sm-12">
-							<?php echo isset($pages) ? $pages : '' ?>
-						</div>
 					</div>
 				</div>
 			</div>

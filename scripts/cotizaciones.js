@@ -2,7 +2,14 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	/*$("#table_cot_admin").dataTable({
+
+	$("#table_cot_admin").DataTable({
+		ajax: {
+			url: site_url +"Cotizaciones/cotizaciones_datatable",
+			type: "POST"
+		},
+		processing: true,
+		serverSide: true,
 		responsive: true,
 		pageLength: 50,
 		dom: 'Bfrtip',
@@ -12,15 +19,9 @@ $(function($) {
 		],
 		buttons: [
 			{ extend: 'pageLength' },
-			{
-				extend: 'excel',
-				exportOptions: {
-					columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
-				},
-				title: 'Cotizaciones',
-			},
 		]
-	});*/
+	});
+
 	fillDataTable("table_cot_proveedores", 50);
 });
 

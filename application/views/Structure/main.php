@@ -342,7 +342,7 @@
 	function blockPage(){
 		$("html").block({
 			centerY: 0,
-			message: "<h2>"+user_name+"</h2> <h3> Espera que se cargue la información...</h3>",
+			message: "<h2>"+user_name+"</h2> <img src='./assets/img/busy.gif'/> <h3>Espere que se cargue la información ...</h3>",
 			css: { top: '50px', left: '', right: '10px' },
 			overlayCSS: { backgroundColor: '#00f' }
 		});
