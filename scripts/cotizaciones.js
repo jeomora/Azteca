@@ -5,7 +5,7 @@ $(function($) {
 
 	$("#table_cot_admin").DataTable({
 		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_datatable",
+			url: site_url +"Cotizaciones/cotizaciones_dataTable",
 			type: "POST"
 		},
 		processing: true,

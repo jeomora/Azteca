@@ -255,14 +255,18 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function cotizaciones_datatable(){
+	public function cotizaciones_dataTable(){
 		ini_set("memory_limit", "-1");
 
-		$column_order = ["cotizaciones.id_cotizacion","fam.nombre","prod.codigo","prod.nombre","proveedor_first.first_name", "proveedor_first.last_name"]; //set column field database for datatable orderable
-		$search = ["cotizaciones.id_cotizacion","fam.nombre","prod.codigo","prod.nombre","proveedor_first.first_name", "proveedor_first.last_name"]; //set column field database for datatable orderable
+		$search = [
+			"cotizaciones.id_cotizacion", "cotizaciones.precio", "cotizaciones.precio_sistema", "cotizaciones.precio_four",
+			"fam.nombre", "prod.codigo", "prod.nombre", 
+			"ctz_first.precio", "ctz_first.precio_promocion", "ctz_first.nombre", "ctz_first.observaciones", "ctz_first.precio_sistema", "ctz_first.precio_four", 
+			"proveedor_first.first_name", "proveedor_first.last_name",
+			"ctz_next.precio",
+			"proveedor_next.first_name", "proveedor_next.last_name"];
 
-		$columns = "cotizaciones.id_cotizacion,
-			ctz_first.fecha_registro fecha_befor,
+		$columns = "cotizaciones.id_cotizacion, cotizaciones.fecha_registro, cotizaciones.precio_sistema, cotizaciones.precio_four,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
@@ -270,14 +274,8 @@ class Cotizaciones extends MY_Controller {
 			ctz_first.precio_promocion AS precio_promocion_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
-			ctz_first.precio_sistema,
-			ctz_first.precio_four,
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
-			ctz_next.fecha_registro AS fecha_next,
 			ctz_next.precio AS precio_next,
-			ctz_next.precio_promocion AS precio_promocion_next,
-			ctz_next.nombre AS promocion_next,
-			ctz_next.observaciones AS observaciones_next,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio";
 
@@ -295,20 +293,18 @@ class Cotizaciones extends MY_Controller {
 			["table"	=>	"users proveedor_max",		"ON"	=>	"ctz_maxima.id_proveedor = proveedor_max.id",	"clausula"	=>	"LEFT"]
 		];
 
-		$group ="ctz_first.id_producto";
-		$order=[
-			"ctz_first.id_producto"	=>	"ASC",
-			"ctz_first.precio"		=>	"ASC"];
+		$group ="prod.id_producto";
+		$order="cotizaciones.id_producto, fam.id_familia";
 		
-		$where[] = [
-			"clausula"	=>	"cotizaciones.estatus",						"valor"	=>	1,
-			"clausula"	=>	"WEEKOFYEAR(cotizaciones.fecha_registro)",	"valor"	=>	$this->weekNumber()
+		$where = [
+			["clausula"	=>	"cotizaciones.estatus",						"valor"	=>	1],
+			["clausula"	=>	"WEEKOFYEAR(cotizaciones.fecha_registro)",	"valor"	=>	$this->weekNumber()]
 		];
 
-		$cotizacionesProveedor = $this->ct_mdl->get_pagination($columns, $joins, $where, NULL, $group);
+		$cotizacionesProveedor = $this->ct_mdl->get_pagination($columns, $joins, $where, $search, $group, $order);
 
 		$data =[];
-		$no = $_POST['start'];
+		$no = $_POST["start"];
 		if ($cotizacionesProveedor) {
 			foreach ($cotizacionesProveedor as $key => $value) {
 				$no ++;
@@ -332,8 +328,8 @@ class Cotizaciones extends MY_Controller {
 		$salida = [
 			"query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
-			"recordsTotal"		=>	$this->ct_mdl->count_filtered($where, NULL, $joins, $group),
-			"recordsFiltered"	=>	$this->ct_mdl->count_filtered($where, NULL, $joins, $group),
+			"recordsTotal"		=>	$this->ct_mdl->count_filtered($where, $search, $joins, $group),
+			"recordsFiltered"	=>	$this->ct_mdl->count_filtered($where, $search, $joins, $group),
 			"data" => $data];
 		$this->jsonResponse($salida);
 	}
