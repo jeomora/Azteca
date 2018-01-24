@@ -71,6 +71,20 @@ class MY_Controller extends CI_Controller {
 		return date("W", mktime(0,0,0,$month,$day,$year));//El número de la semana
 	}
 
+	public function cellStyle($cells=NULL, $background=NULL, $font_color=NULL, $bold=FALSE, $font_size=NULL, $font_family=NULL){
+		$this->load->library("excelfile");
+		$this->excelfile->getActiveSheet()->getStyle($cells)->applyFromArray(
+			array(	"fill"	=>	array(	"type"	=>	PHPExcel_Style_Fill::FILL_SOLID,
+										"color"	=>	array("rgb"	=>	$background)),
+					"alignment"	=>	array(	"horizontal"	=>	PHPExcel_Style_Alignment::HORIZONTAL_CENTER,),
+					"font"		=>	array(	"bold"			=>	$bold,
+											"color"			=>	array(	"rgb"	=>	$font_color),
+											"size"			=>	$font_size,
+											"name"			=>	$font_family))
+		);
+	}
+
+
 }
 
 /* End of file MY_Controller.php */

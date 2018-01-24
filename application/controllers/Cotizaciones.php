@@ -136,58 +136,54 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function fill_excel(){
-		ini_get("memory_limit");
-		ini_set("memory_limit","256M");
-		ini_get("memory_limit");
+		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
 
-		$this->excelfile->setActiveSheetIndex(0)->mergeCells('A1:C1')->setCellValue("A1", 'LISTADO DE COTIZACIONES');//Título del archivo
 		$hoja = $this->excelfile->getActiveSheet();
 		
-		$hoja->setCellValue("A2", "FAMILIAS")->getColumnDimension('A')->setWidth(20); //Nombre y ajuste de texto a la columna
-		$hoja->setCellValue("B2", "CÓDIGO")->getColumnDimension('B')->setWidth(20);
-		$hoja->setCellValue("C2", "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(45);
-		$hoja->setCellValue("D2", "SISTEMA")->getColumnDimension('D')->setWidth(15);
-		$hoja->setCellValue("E2", "PRECIO 4")->getColumnDimension('E')->setWidth(15);
-		$hoja->setCellValue("F2", "PRECIO MENOR")->getColumnDimension('F')->setWidth(15);
-		$hoja->setCellValue("G2", "PROVEEDOR")->getColumnDimension('G')->setWidth(20);
-		$hoja->setCellValue("H2", "PRECIO MÁXIMO")->getColumnDimension('H')->setWidth(15);
-		$hoja->setCellValue("I2", "PRECIO PROMEDIO")->getColumnDimension('I')->setWidth(15);
-		$hoja->setCellValue("J2", "PRECIO 2DO")->getColumnDimension('J')->setWidth(15);
-		$hoja->setCellValue("K2", "2DO PROVEEDOR")->getColumnDimension('K')->setWidth(20);
-		$hoja->setCellValue("L2", "PROMOCIÓN")->getColumnDimension('L')->setWidth(35);
+		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
+		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(15);
+		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(15);
+		$hoja->setCellValue("E1", "PRECIO MENOR")->getColumnDimension('E')->setWidth(20);
+		$hoja->setCellValue("F1", "PROVEEDOR")->getColumnDimension('F')->setWidth(25);
+		$hoja->setCellValue("G1", "PRECIO MÁXIMO")->getColumnDimension('G')->setWidth(20);
+		$hoja->setCellValue("H1", "PRECIO PROMEDIO")->getColumnDimension('H')->setWidth(20);
+		$hoja->setCellValue("I1", "2DO PRECIO")->getColumnDimension('I')->setWidth(20);
+		$hoja->setCellValue("J1", "2DO PROVEEDOR")->getColumnDimension('J')->setWidth(25);
+		$hoja->setCellValue("K1", "PROMOCIÓN")->getColumnDimension('K')->setWidth(50);
 
-		$week=["WEEKOFYEAR(ctz_first.fecha_registro) >=" => ($this->weekNumber()-1)];//Semana actual
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($week);
+		$where=["WEEKOFYEAR(ctz_first.fecha_registro) >=" => $this->weekNumber()];//Semana actual
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where);
 
 		$row_print =3; $merge =3;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->setCellValue("A{$row_print}", $value['familia'])->getStyle("A{$row_print}")->getAlignment()->setWrapText(true);
-				$begin = $row_print;
-				$merge = 0;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
-						$hoja->setCellValue("B{$row_print}", htmlspecialchars($row['codigo'], ENT_QUOTES,'UTF-8'))->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("C{$row_print}", $row['producto'])->getStyle("C{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("D{$row_print}", number_format($row['precio_sistema'],2,'.',','))->getStyle("D{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("E{$row_print}", number_format($row['precio_four'],2,'.',','))->getStyle("E{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("F{$row_print}", number_format($row['precio_first'], 2, '.', ','))->getStyle("F{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("G{$row_print}", $row['proveedor_first'])->getStyle("G{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("H{$row_print}", number_format($row['precio_maximo'], 2, '.', ','))->getStyle("H{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("I{$row_print}", number_format($row['precio_promedio'], 2, '.', ','))->getStyle("I{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("J{$row_print}", number_format($row['precio_next'], 2, '.', ','))->getStyle("J{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("K{$row_print}", $row['proveedor_next'])->getStyle("K{$row_print}")->getAlignment()->setWrapText(true);
-						$hoja->setCellValue("L{$row_print}", $row['promocion_first'])->getStyle("L{$row_print}")->getAlignment()->setWrapText(true);
+						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle("B{$row_print}:K{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
+						$hoja->setCellValue("C{$row_print}", $row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
+						$hoja->setCellValue("D{$row_print}", $row['precio_four'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("E{$row_print}", $row['precio_first'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("F{$row_print}", $row['proveedor_first'])->getStyle("F{$row_print}");
+						$hoja->setCellValue("G{$row_print}", $row['precio_maximo'])->getStyle("G{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("H{$row_print}", $row['precio_promedio'])->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("I{$row_print}", $row['precio_next'])->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("J{$row_print}", $row['proveedor_next'])->getStyle("J{$row_print}");
+						$hoja->setCellValue("K{$row_print}", $row['promocion_first'])->getStyle("K{$row_print}");
 						$row_print ++;
-						$merge ++;
 					}
-					$merge +=($begin -1);
+					$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+					$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$row_print += 1;
 				}
-				$hoja->mergeCells("A{$begin}:A".$merge)->getStyle("A{$begin}")->getAlignment()->setWrapText(true);
 			}
 		}
-		$row_print +=1;
+
 		$file_name = "Cotizaciones.xls"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);

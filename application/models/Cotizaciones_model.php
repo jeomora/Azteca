@@ -84,8 +84,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("users proveedor_max", "ctz_maxima.id_proveedor = proveedor_max.id", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("ctz_first.id_producto")
-		->order_by("ctz_first.id_producto", "DESC")
-		->order_by("ctz_first.precio", "ASC");
+		->order_by("prod.id_producto", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
