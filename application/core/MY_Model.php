@@ -15,7 +15,7 @@ class MY_Model extends CI_Model {
 		}
 	}
 
-	public function get($columns='', $where=[], $joins=[],  $like=[], $limit=FALSE, $start=FALSE, $order=''){
+	public function get($columns=NULL, $where=[], $joins=[],  $like=[], $limit=FALSE, $start=FALSE, $order=''){
 		if(! empty($columns)) {
 			$this->db->select($columns);
 		}
@@ -183,17 +183,8 @@ class MY_Model extends CI_Model {
 		return $query->result();
 	}
 
-	public function count_filtered($wheres=[], $search=[], $joins=[]){
-		$this->get_pagination_query("COUNT(*) as rows", $joins, $wheres, $search, NULL, NULL);
-		if($wheres !== NULL){
-			if(! empty($wheres)){
-				foreach($wheres as $key => $where){
-					$this->db->where($where['clausula'], $where['valor']);
-				}
-			}else{
-				$this->db->where($this->PRI_INDEX, $wheres);
-			}
-		}
+	public function count_filtered($column_count=NULL, $wheres=[], $search=[], $joins=[]){
+		$this->get_pagination_query("COUNT(DISTINCT {$column_count}) AS rows", $joins, $wheres, $search, NULL, NULL);
 		$query = $this->db->get();
 		return $query->row()->rows;
 	}

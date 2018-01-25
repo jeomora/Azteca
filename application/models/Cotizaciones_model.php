@@ -68,19 +68,18 @@ class Cotizaciones_model extends MY_Model {
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
-		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
-		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
+		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "INNER")
+		->join("familias fam", "prod.id_familia = fam.id_familia", "INNER")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
 			AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto) LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
 			AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 			AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion ORDER BY cotizaciones.precio ASC LIMIT 1)", "LEFT")
-		->join("users proveedor_first", "ctz_first.id_proveedor = proveedor_first.id", "LEFT")
-		->join("users proveedor_next", "ctz_next.id_proveedor = proveedor_next.id", "LEFT")
-		->join("users proveedor_max", "ctz_maxima.id_proveedor = proveedor_max.id", "LEFT")
+		->join("users proveedor_first", "ctz_first.id_proveedor = proveedor_first.id", "INNER")
+		->join("users proveedor_next", "ctz_next.id_proveedor = proveedor_next.id", "INNER")
 		->where($this->TABLE_NAME.".estatus", 1)
-		->group_by("ctz_first.id_producto")
+		->group_by("cotizaciones.id_producto")
 		->order_by("prod.id_producto", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){

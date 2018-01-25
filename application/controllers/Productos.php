@@ -7,7 +7,6 @@ class Productos extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Productos_model", "pro_md");
 		$this->load->model("Familias_model", "fam_md");
-		$this->load->library("pagination");
 	}
 
 	public function index(){
@@ -33,40 +32,57 @@ class Productos extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["productos"] = $this->pro_md->getProductos();
 		$this->estructura("Productos/table_productos", $data);
 	}
 
-	// Esta función es de ejemplo para paginación
-	// public function productos_view(){
-	// 	$columns = "productos.id_producto,
-	// 		productos.nombre AS producto,
-	// 		productos.precio,
-	// 		productos.codigo,
-	// 		f.nombre AS familia";
+	public function productos_dataTable(){
+		$search = ["productos.codigo", "productos.nombre", "fam.nombre"];
 
-	// 	$joins =  [
-	// 			["table"	=>	"familias f",	"ON"	=>	"productos.id_familia = f.id_familia",	"clausula"	=>	"LEFT"]
-	// 	];
+		$columns = "productos.id_producto, productos.nombre AS producto, productos.codigo, fam.nombre AS familia";
 
-	// 	$limit_per_page = 50;
-	// 	$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-	// 	$total_rows = $this->pro_md->count_all();
-	// 	if($total_rows > 0){
-	// 		$data["productos"] = $this->pro_md->get_pagination($columns, NULL, $joins, "", $limit_per_page, $start_index, 'id_producto');
-	// 		$config =[
-	// 			"base_url"			=>	site_url().'/Productos/productos_view/',
-	// 			"total_rows"		=>	$total_rows,
-	// 			"per_page"			=>	$limit_per_page,
-	// 			"uri_segment"		=>	3,
+		$joins = [
+			["table"	=>	"familias fam",	"ON"	=>	"productos.id_familia = fam.id_familia",	"clausula"	=>	"INNER"]
+		];
 
-	// 			"reuse_query_string"=> TRUE
-	// 		];
-	// 		$this->pagination->initialize($config);
-	// 		$data["links"] = $this->pagination->create_links();
-	// 	}
-	// 	$this->load->view("Productos/productos_table", $data, FALSE);
-	// }
+		$group ="productos.id_producto";
+		$order="productos.id_producto";
+
+		$where = [["clausula"	=>	"productos.estatus",		"valor"	=>	1]];
+
+		$productos = $this->pro_md->get_pagination($columns, $joins, $where, $search, $group, $order);
+
+		$data =[];
+		$no = $_POST["start"];
+		if ($productos) {
+			foreach ($productos as $key => $value) {
+				$no ++;
+				$row = [];
+				$row[] = $value->id_producto;
+				$row[] = $value->codigo;
+				$row[] = $value->producto;
+				$row[] = $value->familia;
+				$row[] = $this->column_buttons($value->id_producto);
+				$data[] = $row;
+			}
+		}
+		$salida = [
+			"draw"				=>	$_POST['draw'],
+			"recordsTotal"		=>	$this->pro_md->count_filtered("productos.id_producto", $where, $search, $joins),
+			"recordsFiltered"	=>	$this->pro_md->count_filtered("productos.id_producto", $where, $search, $joins),
+			"data" => $data];
+		$this->jsonResponse($salida);
+	}
+
+	private function column_buttons($id_producto){
+		$botones = "";
+		$botones.='<button id="update_producto" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-producto="'.$id_producto.'">
+						<i class="fa fa-pencil"></i>
+					</button>';
+		$botones.='&nbsp;<button id="delete_producto" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-producto="'.$id_producto.'">
+							<i class="fa fa-trash"></i>
+						</button>';
+		return $botones;
+	}
 
 	public function add_producto(){
 		$data["title"]="REGISTRAR PRODUCTOS";

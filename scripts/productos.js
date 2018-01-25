@@ -1,8 +1,28 @@
 $(function($) {
+	$("#table_productos").dataTable({
+		ajax: {
+			url: site_url +"Productos/productos_dataTable",
+			type: "POST"
+		},
+		processing: true,
+		serverSide: true,
+		responsive: true,
+		pageLength: 50,
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
+		buttons: [
+			{ extend: 'pageLength' },
+		]
+	});
+});
+
+$(window).on("load", function (event) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	fillDataTable("table_productos", 50);
 });
 
 $(document).off("click", "#new_producto").on("click", "#new_producto", function(event) {

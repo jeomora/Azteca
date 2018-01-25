@@ -3,7 +3,7 @@ $(function($) {
 		placement:'top'
 	});
 
-	$("#table_cot_admin").DataTable({
+	$("#table_cot_admin").dataTable({
 		ajax: {
 			url: site_url +"Cotizaciones/cotizaciones_dataTable",
 			type: "POST"
@@ -23,6 +23,12 @@ $(function($) {
 	});
 
 	fillDataTable("table_cot_proveedores", 50);
+});
+
+$(window).on("load", function (event) {
+	$("[data-toggle='tooltip']").tooltip({
+		placement:'top'
+	});
 });
 
 $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", function(event) {
