@@ -258,12 +258,7 @@ class Cotizaciones extends MY_Controller {
 	public function cotizaciones_dataTable(){
 		ini_set("memory_limit", "-1");
 
-		$search = [
-			"cotizaciones.id_cotizacion", "cotizaciones.precio", "cotizaciones.precio_sistema", "cotizaciones.precio_four",
-			"fam.nombre", "prod.codigo", "prod.nombre", 
-			"ctz_first.precio", "ctz_first.precio_promocion", "ctz_first.nombre", "ctz_first.observaciones", "ctz_first.precio_sistema", "ctz_first.precio_four", 
-			"proveedor_first.first_name", "proveedor_first.last_name",
-			"ctz_next.precio",
+		$search = ["fam.nombre", "prod.codigo", "prod.nombre", "ctz_first.nombre", "ctz_first.observaciones", "proveedor_first.first_name", "proveedor_first.last_name",
 			"proveedor_next.first_name", "proveedor_next.last_name"];
 
 		$columns = "cotizaciones.id_cotizacion, cotizaciones.fecha_registro, cotizaciones.precio_sistema, cotizaciones.precio_four,
@@ -326,7 +321,7 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 		$salida = [
-			"query"				=>	$this->db->last_query(),
+			// "query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
 			"recordsTotal"		=>	$this->ct_mdl->count_filtered($where, $search, $joins, $group),
 			"recordsFiltered"	=>	$this->ct_mdl->count_filtered($where, $search, $joins, $group),
