@@ -25,7 +25,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- <?php if ($productos): ?>
+								<!-- 
+								<?php if ($productos): ?>
 									<?php foreach ($productos as $key => $value): ?>
 										<tr>
 											<th><?php echo $value->id_producto ?></th>
@@ -42,7 +43,8 @@
 											</td>
 										</tr>
 									<?php endforeach ?>
-								<?php endif ?> -->
+								<?php endif ?> 
+								-->
 							</tbody>
 						</table>
 				</div>

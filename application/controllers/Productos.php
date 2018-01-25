@@ -32,6 +32,7 @@ class Productos extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
+		// $data["productos"]=$this->pro_md->getProductos();
 		$this->estructura("Productos/table_productos", $data);
 	}
 
