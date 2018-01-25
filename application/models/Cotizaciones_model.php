@@ -52,7 +52,7 @@ class Cotizaciones_model extends MY_Model {
 
 	public function comparaCotizaciones($where=[]){
 		$this->db->select("cotizaciones.id_cotizacion, 
-			ctz_first.fecha_registro fecha_befor,
+			ctz_first.fecha_registro,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
@@ -65,9 +65,6 @@ class Cotizaciones_model extends MY_Model {
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
 			ctz_next.fecha_registro AS fecha_next,
 			ctz_next.precio AS precio_next,
-			ctz_next.precio_promocion AS precio_promocion_next,
-			ctz_next.nombre AS promocion_next,
-			ctz_next.observaciones AS observaciones_next,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
