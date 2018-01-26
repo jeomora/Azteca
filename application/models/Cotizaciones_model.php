@@ -28,6 +28,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
+		->group_by($this->TABLE_NAME.".id_producto")
 		->order_by($this->TABLE_NAME.".precio_promocion", "ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {

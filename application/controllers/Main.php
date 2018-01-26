@@ -19,10 +19,11 @@ class Main extends MY_Controller {
 		$data["familias"]=$this->fam_md->get();
 		$where = [];
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cotizados cuando es proveedor
-			$where = [
-				"cotizaciones.id_proveedor" => $user->id,
-				"WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()
-			];
+			$where = [	"cotizaciones.id_proveedor"						=>	$user->id,
+						"WEEKOFYEAR(cotizaciones.fecha_registro) >="	=>	$this->weekNumber()
+					];
+		}else{
+			$where = ["WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()];
 		}
 		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
 		$this->estructura("Admin/welcome", $data);
