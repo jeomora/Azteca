@@ -39,7 +39,7 @@ $(function($) {
 		]
 	});
 
-	$("#table_compara_precios").dataTable({
+	$().dataTable({
 		responsive: true,
 		pageLength: 50,
 		dom: 'Bfrtip',

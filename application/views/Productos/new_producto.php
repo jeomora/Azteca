@@ -26,7 +26,7 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="id_familia">Familias</label>
-					<select name="id_familia" class="form-control">
+					<select name="id_familia" class="form-control chosen-select">
 						<option value="-1">Seleccionar...</option>
 						<?php if ($familias):foreach ($familias as $key => $value): ?>
 						<option value="<?php echo $value->id_familia ?>"><?php echo $value->nombre ?></option>

@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>Listado de Sucursales</h5>
+					<h5>LISTADO DE SUCURSALES</h5>
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">

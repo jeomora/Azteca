@@ -62,7 +62,3 @@
 		<div id="notifications">
 			<!-- Para mostra las notificaciones -->
 		</div>
-
-		<div id="main_container">
-			<!-- Contenedor principal para cargar las vistas -->
-		</div>

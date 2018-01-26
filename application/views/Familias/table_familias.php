@@ -6,7 +6,7 @@
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>Listado de Familias</h5>
+					<h5>LISTADO DE FAMILIAS</h5>
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">

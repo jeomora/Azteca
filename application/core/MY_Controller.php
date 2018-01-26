@@ -25,7 +25,8 @@ class MY_Controller extends CI_Controller {
 		$where = [];
 		
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
-			@$where = ["cotizaciones.id_proveedor" => $data['usuario']->id];
+			@$where = [	"cotizaciones.id_proveedor"					=>	$data['usuario']->id,
+						"WEEKOFYEAR(cotizaciones.fecha_registro) >="	=>	$this->weekNumber()	];
 		}
 		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 		
