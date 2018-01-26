@@ -21,15 +21,13 @@ class MY_Controller extends CI_Controller {
 		$this->ASSETS = "./assets/";
 		$this->UPLOADS = "uploads/";
 
-		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
 		$where = [];
-		
 		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
 			@$where = [	"cotizaciones.id_proveedor"					=>	$data['usuario']->id,
-						"WEEKOFYEAR(cotizaciones.fecha_registro) >="	=>	$this->weekNumber()	];
+						"WEEKOFYEAR(cotizaciones.fecha_registro) >="=>	$this->weekNumber()	];
 		}
 		$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
-		
+
 		$this->load->vars($data);
 		$this->header = "Structure/header";
 		$this->top_menu  = "Structure/top_menu";

@@ -9,7 +9,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Productos_model", "prod_mdl");
 	}
 
-	public function index($pagina = FALSE){
+	public function index(){
 		ini_set("memory_limit", "-1");
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
@@ -154,7 +154,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("J1", "2DO PROVEEDOR")->getColumnDimension('J')->setWidth(25);
 		$hoja->setCellValue("K1", "PROMOCIÓN")->getColumnDimension('K')->setWidth(50);
 
-		$where=["WEEKOFYEAR(ctz_first.fecha_registro) >=" => $this->weekNumber()];//Semana actual
+		$where=["WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()];//Semana actual
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where);
 
 		$row_print =3; $merge =3;
@@ -275,16 +275,16 @@ class Cotizaciones extends MY_Controller {
 			AVG(cotizaciones.precio) AS precio_promedio";
 
 		$joins = [
-			["table"	=>	"productos prod",			"ON"	=>	"cotizaciones.id_producto = prod.id_producto",	"clausula"	=>	"INNER"],
+			["table"	=>	"productos prod",			"ON"	=>	"cotizaciones.id_producto = prod.id_producto",	"clausula"	=>	"LEFT"],
 			["table"	=>	"familias fam",				"ON"	=>	"prod.id_familia = fam.id_familia",				"clausula"	=>	"INNER"],
 			["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
-				AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto) LIMIT 1)",	"clausula"				=>	""],
+				AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto) LIMIT 1)",	"clausula"				=>	"LEFT"],
 			["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
-				AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)",	"clausula"			=>	""],
+				AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)",	"clausula"			=>	"INNER"],
 			["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
-				AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion LIMIT 1)",	"clausula"						=>	""],
+				AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion LIMIT 1)",	"clausula"						=>	"LEFT"],
 			["table"	=>	"users proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id",	"clausula"	=>	"INNER"],
-			["table"	=>	"users proveedor_next",		"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id",	"clausula"	=>	"INNER"],
+			["table"	=>	"users proveedor_next",		"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id",	"clausula"	=>	"LEFT"],
 		];
 
 		$group ="cotizaciones.id_producto";
@@ -320,7 +320,7 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 		$salida = [
-			// "query"				=>	$this->db->last_query(),
+			"query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
 			"recordsTotal"		=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
 			"recordsFiltered"	=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
