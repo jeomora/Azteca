@@ -42,7 +42,7 @@ class Cotizaciones extends MY_Controller {
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
-			//El administrador usar una paginación
+			//El administrador usa una paginación
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
 		}
 	}
@@ -200,14 +200,31 @@ class Cotizaciones extends MY_Controller {
 		$sheet->setActiveSheetIndex(0);
 		$num_rows = $sheet->setActiveSheetIndex(0)->getHighestDataRow();
 		for ($i=3; $i<=$num_rows; $i++) { 
-			if($sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue() !=''){
-				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getActiveSheet()->getCell('A'.$i)->getCalculatedValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if($sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue() != 0){
+				$productos = $this->prod_mdl->get("id_producto, nombre",['nombre'=> htmlspecialchars($sheet->getActiveSheet()->getCell('A'.$i)->getCalculatedValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
+					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue()));
+					$column_one = $sheet->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
+					$column_two = $sheet->getActiveSheet()->getCell('E'.$i)->getCalculatedValue();
+					$descuento = $sheet->getActiveSheet()->getCell('F'.$i)->getCalculatedValue();
+
+					if ($column_one ==1 && $column_two ==1) {
+						$precio_promocion = $precio_promocion;
+					}elseif ($column_one >=1 && $column_two >1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($descuento >0) {
+						$precio_promocion = ($precio - ($precio * ($descuento/100)));
+					}
 					$new_cotizacion[$i]=[
 						"id_producto"		=>	$productos->id_producto,
+						"nombre"			=>	$productos->nombre,
 						"id_proveedor"		=>	$this->ion_auth->user()->row()->id,
-						"precio"			=>	str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue())),
-						"precio_promocion"	=>	($sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue() == '') ? NULL : str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue())),
+						"precio"			=>	$precio,
+						"num_one"			=>	$column_one,
+						"num_two"			=>	$column_two,
+						"descuento"			=>	$descuento,
+						"precio_promocion"	=>	$precio_promocion,
 						"fecha_registro"	=>	date('Y-m-d H:i:s'),
 						"observaciones"		=>	$sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue()
 					];
@@ -265,12 +282,11 @@ class Cotizaciones extends MY_Controller {
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
-			ctz_first.precio AS precio_first,
-			ctz_first.precio_promocion AS precio_promocion_first,
+			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
-			ctz_next.precio AS precio_next,
+			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio";
 
@@ -280,7 +296,7 @@ class Cotizaciones extends MY_Controller {
 			["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
 				AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto) LIMIT 1)",	"clausula"				=>	"LEFT"],
 			["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
-				AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)",	"clausula"			=>	"INNER"],
+				AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)",	"clausula"			=>	"INNER"],
 			["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 				AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion LIMIT 1)",	"clausula"						=>	"LEFT"],
 			["table"	=>	"users proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id",	"clausula"	=>	"INNER"],

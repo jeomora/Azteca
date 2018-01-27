@@ -58,15 +58,14 @@ class Cotizaciones_model extends MY_Model {
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
-			ctz_first.precio AS precio_first,
-			ctz_first.precio_promocion AS precio_promocion_first,
+			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
 			ctz_first.precio_sistema,
 			ctz_first.precio_four,
 			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
 			ctz_next.fecha_registro AS fecha_next,
-			ctz_next.precio AS precio_next,
+			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
@@ -95,6 +94,7 @@ class Cotizaciones_model extends MY_Model {
 			}
 		}
 		$comparativa = $this->db->get()->result();
+		// echo $this->db->last_query();
 		$comparativaIndexada = [];
 		for ($i=0; $i<sizeof($comparativa); $i++) { 
 			if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
