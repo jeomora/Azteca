@@ -14,7 +14,7 @@ class Main extends MY_Controller {
 	//Primera función que carga el dashboard
 	public function index(){
 		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
-		$data["proveedores"]=$this->prov_md->getProveedores();
+		$data["proveedores"]=$this->prov_md->getProveedores(['group_id'=>2]);//Son proveedores
 		$data["productos"]=$this->pr_md->get();
 		$data["familias"]=$this->fam_md->get();
 		$where = [];

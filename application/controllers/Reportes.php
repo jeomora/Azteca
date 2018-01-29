@@ -6,6 +6,7 @@ class Reportes extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Cotizaciones_model", "ct_mdl");
+		$this->load->model("Proveedores_model", "pro_mdl");
 	}
 
 	public function precios_bajos(){
@@ -65,29 +66,61 @@ class Reportes extends MY_Controller {
 		$this->estructura("Reportes/table_precios_iguales", $data);
 	}
 
+	public function cotizaciones(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
 
-	public function fillExcel(){
-		$promociones = $this->prom_mdl->getPromociones();
+		$data['scripts'] = [
+			'/scripts/reportes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["proveedores"] = $this->pro_mdl->getProveedores(['group_id'=>2]);//Son proveedores;
+		$this->estructura("Reportes/filter_cotizaciones", $data);
+	}
 
-		$rows ='';
-		echo "<table>
-				<thead>
-					<tr>
-						<th>header</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>data</td>
-					</tr>
-				</tbody>
-			</table>";
-			
-		$filename = 'Ejemplo_tabla.xlsx';
-		header("Content-Type: application/vnd.ms-excel");
-		header("Content-Disposition: attachment; filename=".$filename);
-		header("Pragma: no-cache");
-		header("Expires: 0");
+	public function fill_table(){
+		$fecha = NULL;
+		if ($this->input->post('fecha_registro') != '') {
+			$fecha = date('Y-m-d', strtotime($this->input->post('fecha_registro')));
+		}else{
+			$fecha = 'Y-m-d';
+		}
+		$where=["WEEKOFYEAR(cotizaciones.fecha_registro) " => $this->weekNumber($fecha)];
+		$data['cotizacionesProveedor'] = $this->ct_mdl->comparaCotizaciones($where);
+		$data["fecha"]=$this->input->post('fecha_registro');
+		$data["semana"]=$this->weekNumber($fecha);
+		$data["user"]=$this->ion_auth->user()->row();
+		$this->load->view("Reportes/table_cotizaciones", $data, FALSE);
+	}
+
+	public function fill_reporte(){
+		if (isset($_POST['excel']))
+			$this->excelCotizaciones();
+		else
+			$this->pdfCotizaciones();
+	}
+
+	public function pdfCotizaciones(){
+		# code...
+	}
+
+	public function excelCotizaciones(){
+		# code...
 	}
 
 	public function comparar_precios(){

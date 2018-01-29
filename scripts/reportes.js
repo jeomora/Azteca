@@ -1,4 +1,8 @@
 $(function($) {
+	$("[data-toggle='tooltip']").tooltip({
+		placement:'top'
+	});
+
 	$("#table_precios_bajos").dataTable({
 		responsive: true,
 		pageLength: 50,
@@ -58,7 +62,28 @@ $(function($) {
 			},
 		]
 	});
-	
+
+	datePicker();
 
 });
+
+
+$(document).off("click", "#filter_show").on("click", "#filter_show", function(event) {
+	event.preventDefault();
+	var formData = $("#consultar_cotizaciones").serializeArray();
+	get_reporte(formData).done(function(response) {
+		$("#respuesta_show").html(response);
+			toastr.success("Resultados de la busqueda", $("#name_user").val());
+		});
+});
+
+function get_reporte(formData) {
+	return $.ajax({
+		url: site_url+"Reportes/fill_table",
+		type: "POST",
+		cache: false,
+		dataType:"HTML",
+		data: formData,
+	});
+}
 

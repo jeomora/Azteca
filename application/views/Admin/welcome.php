@@ -28,9 +28,9 @@
 		<div class="col-lg-4">
 			<div class="ibox">
 				<div class="ibox-content">
-					<h5 class="m-b-md">COTIZACIONES</h5>
+					<h5 class="m-b-md">PROVEEDORES</h5>
 					<h2 class="text-navy">
-						<i class="fa fa-play fa-rotate-45"></i> <?php echo empty($cotizaciones) ? 0 : number_format(sizeof($cotizaciones),2,'.',',') ?>
+						<i class="fa fa-play fa-rotate-45"></i> <?php echo empty($proveedores) ? 0 : number_format(sizeof($proveedores),2,'.',',') ?>
 					</h2>
 					<small>EN EL SISTEMA</small>
 				</div>
