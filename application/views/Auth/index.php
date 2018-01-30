@@ -10,9 +10,9 @@
 				</div>
 				<div class="ibox-content">
 					<div class="btn-group">
-						<a data-toggle="modal" data-tooltip="tooltip" title="Registrar" class="btn tool btn-primary btn-modal" href="<?php echo site_url('Auth/create_user'); ?>" data-target="#myModal" >
+						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_usuario">
 							<i class="fa fa-plus"></i>
-						</a>
+						</button>
 					</div>
 					<!-- Por el momento no se ocupa crear grupos
 					<div class="btn-group">
@@ -49,15 +49,21 @@
 											<?php endforeach; endif; ?>
 										</td>
 										<td>
-											<a data-toggle="modal" data-tooltip="tooltip" title="Editar"  class="btn tool btn-info btn-modal" href="<?php echo site_url('Auth/edit_user/'.$user->id) ?>" data-target="#myModal" ><i class="fa fa-pencil"></i></a>
-											<!-- <?php echo anchor("Auth/edit_user/".$user->id, 'Edit') ;?> -->
-											<!-- <?php echo ($user->active) ? anchor("Auth/deactivate/".$user->id, lang('index_active_link')) : anchor("Auth/activate/". $user->id, lang('index_inactive_link'));?> -->
+											<button id="update_usuario" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-user="<?php echo $user->id ?>">
+												<i class="fa fa-pencil"></i>
+											</button>
 											<?php if ($user->active == 1): ?>
-												<a data-toggle="modal" data-tooltip="tooltip" title="Desactivar"  class="btn tool btn-success btn-modal" href="<?php echo site_url('Auth/deactivate/'.$user->id) ?>" data-target="#myModal" ><i class="fa fa-thumbs-o-down"></i></a>
+												<button id="desactivar_usuario" class="btn btn-success" data-toggle="tooltip" title="Desactivar" data-id-user="<?php echo $user->id ?>">
+													<i class="fa fa-thumbs-o-down"></i>
+												</button>
 											<?php else: ?>
-												<a data-tooltip="tooltip" title="Activar" class="btn tool btn-danger" href="<?php echo site_url('Auth/activate/'.$user->id) ?>"><i class="fa fa-thumbs-o-up"></i></a>
+												<button id="activar_usuario" class="btn btn-danger" data-toggle="tooltip" title="Activar" data-id-user="<?php echo $user->id ?>">
+													<i class="fa fa-thumbs-o-up"></i>
+												</button>
 											<?php endif ?>
-											<a data-toggle="modal" data-tooltip="tooltip" title="Cambiar contraseña"  class="btn tool btn-warning btn-modal" href="<?php echo site_url('Auth/change_password/'.$usuario->id) ?>" data-target="#myModal" ><i class="fa fa-key"></i></a>
+											<button id="change_password" class="btn btn-warning" data-toggle="tooltip" title="Cambiar contraña" data-id-user="<?php echo $user->id ?>">
+												<i class="fa fa-key"></i>
+											</button>
 										</td>
 									</tr>
 								<?php endforeach; endif ?>

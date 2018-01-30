@@ -115,8 +115,7 @@ class Auth extends MY_Controller {
 
 	// change password
 	public function change_password(){
-		$data["title"]="Cambiar contraseña";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="CAMBIAR CONTRASEÑA";
 		$this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
 		$this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
 		$this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
@@ -156,8 +155,8 @@ class Auth extends MY_Controller {
 				'type'  => 'hidden',
 				'value' => $user->id,
 			);
-			// $this->_render_page('Auth/change_password', $this->data);
-			$this->load->view("Auth/change_password", $this->data);
+			$data["view"]=$this->load->view("Auth/change_password", $this->data, TRUE);
+			$this->jsonResponse($data);
 		}else{
 			$identity = $this->session->userdata('identity');
 			$change = $this->ion_auth->change_password($identity, $this->input->post('old'), $this->input->post('new'));
@@ -323,8 +322,7 @@ class Auth extends MY_Controller {
 
 	// deactivate the user
 	public function deactivate($id = NULL){
-		$data["title"]="Desactivar usuario";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="DESACTIVAR USUARIO";
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 			// redirect them to the home page because they must be an administrator to view this
 			return show_error('You must be an administrator to view this page.');
@@ -340,7 +338,8 @@ class Auth extends MY_Controller {
 			// insert csrf check
 			$this->data['csrf'] = $this->_get_csrf_nonce();
 			$this->data['user'] = $this->ion_auth->user($id)->row();
-			$this->_render_page('Auth/deactivate_user', $this->data);
+			$data["view"] = $this->load->view("Auth/deactivate_user", $this->data, TRUE);
+			$this->jsonResponse($data);
 		}else{
 			// do we really want to deactivate?
 			if ($this->input->post('confirm') == 'yes'){
@@ -360,8 +359,7 @@ class Auth extends MY_Controller {
 
 	// create a new user
 	public function create_user(){
-		$data["title"]="Registrar usuarios";
-		$this->load->view("Structure/header_modal", $data);
+		$data["title"]="REGISTRAR USUARIOS";
 		$this->data['title'] = $this->lang->line('create_user_heading');
 		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()){
 			redirect('Auth', 'refresh');
@@ -458,17 +456,14 @@ class Auth extends MY_Controller {
 				'type'  => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			);
-			// $this->_render_page('Auth/create_user', $this->data);
-			// $this->estructura("Auth/create_user",  $this->data);
-			$this->load->view("Auth/create_user", $this->data);
+			$data["view"] = $this->load->view("Auth/create_user", $this->data, TRUE);
+			$this->jsonResponse($data);
 		}
 	}
 
 	// edit a user
 	public function edit_user($id){
-		$data["title"]="Modificar usuario";
-		$this->load->view("Structure/header_modal", $data);
-
+		$data["title"]="MODIFICAR USUARIO";
 		$this->data['title'] = $this->lang->line('edit_user_heading');
 
 		if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id))){
@@ -590,8 +585,8 @@ class Auth extends MY_Controller {
 			'id'   => 'password_confirm',
 			'type' => 'password'
 		);
-		// $this->_render_page('Auth/edit_user', $this->data);
-		$this->load->view("Auth/edit_user", $this->data);
+		$data["view"] = $this->load->view("Auth/edit_user", $this->data, TRUE);
+		$this->jsonResponse($data);
 	}
 
 	// create a new group

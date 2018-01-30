@@ -35,7 +35,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="company">Compañia</label>
-					<input type="text" name="company" value="" required="" class="form-control" placeholder="Compañia">
+					<input type="text" name="company" value="" class="form-control" placeholder="Compañia">
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -47,7 +47,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="phone">Teléfono</label>
-					<input type="text" name="phone" value="" required="" class="form-control" placeholder="0000000000">
+					<input type="text" name="phone" value="" class="form-control" placeholder="0000000000">
 				</div>
 			</div>
 		</div>
@@ -89,9 +89,4 @@
 
 		<?php echo form_close(); ?>
 	</div>
-</div>
-
-</div> <!-- Cierra el cuerpo de la modal-->
-<div class="modal-footer">
-	<br>	<br>
 </div>

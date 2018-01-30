@@ -38,8 +38,3 @@
 		<?php echo form_close();?>
 	</div>
 </div>
-
-</div> <!-- Cierra el cuerpo de la modal-->
-<div class="modal-footer">
-	<br>	<br>
-</div>

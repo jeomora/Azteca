@@ -33,10 +33,9 @@
 				<?php if ($cotizacionesProveedor): ?>
 					<?php foreach ($cotizacionesProveedor as $key => $value): ?>
 						<tr>
-							<td colspan="12" bgcolor="AQUA"> <b><?php echo $value['familia'] ?> </b> </td>
+							<td rowspan="<?php echo sizeof($value['articulos']) +1 ?>" bgcolor="SILVER"> <b><?php echo $value['familia'] ?> </b> </td>
 							<?php if ($value['articulos']): foreach ($value['articulos'] as $key => $val): ?>
 								<tr>
-									<td></td>
 									<td><?php echo $val['codigo'] ?></td>
 									<td><?php echo $val['producto'] ?></td>
 									<td><?php echo '$ '.number_format($val['precio_sistema'],2,'.',',') ?></td>
@@ -50,6 +49,9 @@
 									<td><?php echo $val['promocion_first'] ?></td>
 								</tr>
 							<?php endforeach; endif ?>
+						</tr>
+						<tr>
+							<td colspan="12"></td>
 						</tr>
 					<?php endforeach ?>
 				<?php endif ?>
