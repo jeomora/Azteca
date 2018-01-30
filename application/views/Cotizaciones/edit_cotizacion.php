@@ -17,7 +17,7 @@
 				<div class="form-group">
 					<label for="fecha_caducidad">Fecha caducidad</label>
 					<div class="input-group">
-						<input type="text" name="fecha_caducidad" id="fecha_caducidad" class="form-control datepicker" value="<?php echo date('d-m-Y', strtotime($cotizacion->fecha_caduca)) ?>" placeholder="00-00-0000">
+						<input type="text" name="fecha_caducidad" id="fecha_caducidad" class="form-control datepicker" value="<?php echo ($cotizacion->fecha_caduca != NULL) ? date('d-m-Y', strtotime($cotizacion->fecha_caduca)) : '' ?>" placeholder="00-00-0000">
 					</div>
 				</div>
 			</div>

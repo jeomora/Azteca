@@ -20,8 +20,7 @@
 									<th>PRECIO FACTURA</th>
 									<th>PROMOCIÓN</th>
 									<th>OBSERVACIONES</th>
-									<th>DESCUENTO 1</th>
-									<th>DESCUENTO 2</th>
+									<th></th>
 									<th>DESCUENTO</th>
 								</tr>
 							</thead>
@@ -36,9 +35,8 @@
 											<td><?php echo ($value->precio_promocion > 0) ? '$ '.number_format($value->precio_promocion,2,'.',',') : '' ?></td>
 											<td><?php echo $value->promocion ?></td>
 											<td><?php echo $value->observaciones ?></td>
-											<td><?php echo ($value->num_one > 0) ? number_format($value->num_one,2,'.',',') : '' ?></td>
-											<td><?php echo ($value->num_two > 0) ? number_format($value->num_two,2,'.',',') : '' ?></td>
-											<td><?php echo ($value->descuento > 0) ? $value->descuento.' %' : '' ?></td>
+											<td><?php echo ($value->num_one >0) ? $value->num_one.' EN '.$value->num_two : '' ?></td>
+											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,0,'.',',').' %' : '' ?></td>
 										</tr>
 									<?php endforeach ?>
 								<?php endif ?>

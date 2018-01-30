@@ -140,7 +140,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->library("excelfile");
 
 		$hoja = $this->excelfile->getActiveSheet();
-		
+
 		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
@@ -154,12 +154,15 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("J1", "2DO PROVEEDOR")->getColumnDimension('J')->setWidth(25);
 		$hoja->setCellValue("K1", "PROMOCIÓN")->getColumnDimension('K')->setWidth(50);
 
-		$where=["WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()];//Semana actual
+		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where);
 
-		$row_print =3; $merge =3;
+		$row_print =3;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -177,9 +180,6 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("K{$row_print}", $row['promocion_first'])->getStyle("K{$row_print}");
 						$row_print ++;
 					}
-					$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
-					$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$row_print += 1;
 				}
 			}
 		}

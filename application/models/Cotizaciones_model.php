@@ -157,65 +157,6 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
-	//Creo que no se usará
-	public function comparaPrecios($where=[]){
-		$this->db->select("
-			cotizaciones.id_cotizacion,
-			pro.id, UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
-			WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_cambio, INTERVAL 1 WEEK)) AS week_befor,
-			ctz_befor.nombre AS promocion_befor,
-			ctz_befor.precio AS precio_befor,
-			prod.codigo AS codigo,
-			prod.nombre AS producto,
-			fam.id_familia, fam.nombre AS familia,
-			WEEKOFYEAR(cotizaciones.fecha_cambio) AS week_now,
-			cotizaciones.nombre AS promocion_now,
-			cotizaciones.precio_promocion AS precio_now")
-		->from($this->TABLE_NAME)
-		->join("cotizaciones ctz_befor", $this->TABLE_NAME.".id_producto = ctz_befor.id_producto", "LEFT")
-		->join("users pro", $this->TABLE_NAME.".id_proveedor = pro.id", "LEFT")
-		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
-		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
-		->where($this->TABLE_NAME.".estatus", 1)
-		->where("ctz_befor.fecha_cambio !=", NULL)
-		->where("WEEKOFYEAR(DATE_ADD(ctz_befor.fecha_registro, INTERVAL 1 WEEK)) = WEEKOFYEAR({$this->TABLE_NAME}.fecha_cambio)")
-		->group_by($this->TABLE_NAME.".id_cotizacion");
-		if($where !== NULL){
-			if (is_array($where)) {
-				foreach ($where as $field=>$value) {
-					$this->db->where($field, $value);
-				}
-			} else {
-				$this->db->where($this->PRI_INDEX, $where);
-			}
-		}
-		$comparativa = $this->db->get()->result();
-		$comparativaIndexada = [];
-		for ($i=0; $i<sizeof($comparativa); $i++) { 
-			if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
-				# code...
-			}else{
-				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
-				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
-			}
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["codigo"]			=	$comparativa[$i]->codigo;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_befor"]	=	$comparativa[$i]->precio_befor;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_befor"]	=	$comparativa[$i]->promocion_befor;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_now"]		=	$comparativa[$i]->precio_now;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_now"]	=	$comparativa[$i]->promocion_now;
-		}
-		if ($comparativaIndexada) {
-			if (is_array($where)) {
-				return $comparativaIndexada;
-			} else {
-				return array_shift($comparativaIndexada);
-			}
-		} else {
-			return false;
-		}
-	}
 
 	public function preciosBajos($where=[]){
 		$this->db->select("cotizaciones.id_cotizacion,
@@ -224,6 +165,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.precio AS precio_first,
 			ctz_first.precio_promocion AS precio_promocion_first,
 			ctz_first.nombre AS promocion_first,
+			ctz_first.descuento AS descuento_first,
 			ctz_first.observaciones AS observaciones_first,
 			ctz_first.precio_sistema,
 			ctz_first.precio_four,
@@ -231,6 +173,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_next.precio AS precio_next,
 			ctz_next.precio_promocion AS precio_promocion_next,
 			ctz_next.nombre AS promocion_next,
+			ctz_next.descuento AS descuento_next,
 			ctz_next.observaciones AS observaciones_next,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio")
@@ -246,9 +189,9 @@ class Cotizaciones_model extends MY_Model {
 		->join("users proveedor_next", "ctz_next.id_proveedor = proveedor_next.id", "LEFT")
 		->join("users proveedor_max", "ctz_maxima.id_proveedor = proveedor_max.id", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
-		->group_by("ctz_first.id_producto")
-		->order_by("ctz_first.id_producto", "DESC")
-		->order_by("ctz_first.precio", "ASC");
+		->where($this->TABLE_NAME.".estatus", 1)
+		->group_by("cotizaciones.id_producto")
+		->order_by("prod.id_producto", "ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {

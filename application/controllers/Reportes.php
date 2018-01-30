@@ -10,9 +10,7 @@ class Reportes extends MY_Controller {
 	}
 
 	public function precios_bajos(){
-		ini_get("memory_limit");
-		ini_set("memory_limit","512M");
-		ini_get("memory_limit");
+		ini_set("memory_limit", "-1");
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',
@@ -35,7 +33,8 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["preciosBajos"] = $this->ct_mdl->preciosBajos();
+		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
+		$data["preciosBajos"] = $this->ct_mdl->preciosBajos($where);
 		$this->estructura("Reportes/table_precios_bajos", $data);
 	}
 
@@ -62,7 +61,8 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["promociones_igual"] = $this->ct_mdl->getCotizaciones();
+		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
+		$data["promociones_igual"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Reportes/table_precios_iguales", $data);
 	}
 
@@ -115,42 +115,12 @@ class Reportes extends MY_Controller {
 			$this->pdfCotizaciones();
 	}
 
-	public function pdfCotizaciones(){
+	private function pdfCotizaciones(){
 		# code...
 	}
 
-	public function excelCotizaciones(){
+	private function excelCotizaciones(){
 		# code...
-	}
-
-	public function comparar_precios(){
-		ini_get("memory_limit");
-		ini_set("memory_limit","512M");
-		ini_get("memory_limit");
-		$data['links'] = [
-			'/assets/css/plugins/dataTables/dataTables.bootstrap',
-			'/assets/css/plugins/dataTables/dataTables.responsive',
-			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
-			'/assets/css/plugins/dataTables/buttons.dataTables.min',
-		];
-
-		$data['scripts'] = [
-			'/scripts/reportes',
-			'/assets/js/plugins/dataTables/jquery.dataTables.min',
-			'/assets/js/plugins/dataTables/jquery.dataTables',
-			'/assets/js/plugins/dataTables/dataTables.buttons.min',
-			'/assets/js/plugins/dataTables/buttons.flash.min',
-			'/assets/js/plugins/dataTables/jszip.min',
-			'/assets/js/plugins/dataTables/pdfmake.min',
-			'/assets/js/plugins/dataTables/vfs_fonts',
-			'/assets/js/plugins/dataTables/buttons.html5.min',
-			'/assets/js/plugins/dataTables/buttons.print.min',
-			'/assets/js/plugins/dataTables/dataTables.bootstrap',
-			'/assets/js/plugins/dataTables/dataTables.responsive',
-			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
-		];
-		$data["comparaPrecios"] = $this->ct_mdl->comparaPrecios();
-		$this->estructura("Reportes/table_comparar_precios", $data);
 	}
 
 }
