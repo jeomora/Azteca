@@ -22,6 +22,9 @@
 
 	<div class="loginColumns animated flipInY">
 		<div class="row">
+			<h3 class="col-md-6 col-md-offset-6" style="color:#990000"> <?php echo isset($mensaje) ? $mensaje : '' ?> </h3>
+		</div>
+		<div class="row">
 			<div class="col-md-6">
 				<div class="logo_img">
 					<img  src="<?php echo base_url('/assets/img/logo_abarrotes.jpg') ?>" />

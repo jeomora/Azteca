@@ -38,32 +38,31 @@ class Welcome extends MY_Controller {
 
 	public function login(){
 		if($this->session->userdata("username")){
-			redirect('Main/','refresh');
+			redirect('Main/','');
 		}
-		$data["login"]='Vista login';
+		$data["mensaje"] = '';
+		if (isset($_POST['email']) && isset($_POST['password'])) {
+			$where=[
+				"email"		=>	$this->input->post('email'),
+				"password"	=>	$this->encryptPassword($this->input->post('password'))];
+			$validar = $this->user_md->login($where)[0];
+			if($validar > 0){
+				$values=[	"id_usuario"=>	$validar->id_usuario,
+							"id_grupo"	=>	$validar->id_grupo,
+							"nombre"	=>	$validar->nombre,
+							"apellido"	=>	$validar->apellido,
+							"telefono"	=>	$validar->telefono,
+							"email"		=>	$validar->email,
+							"password"	=>	$validar->password,
+							"estatus"	=>	$validar->estatus ];
+				$this->session->set_userdata("username", $values['nombre']);
+				$this->session->set_userdata($values);
+				redirect('Main/', '');
+			}else{
+				$data["mensaje"]='Usuario y/o contraseña incorrectos';
+			}
+		}
 		$this->load->view("Admin/login", $data, FALSE);
-
-		$where=[
-			"email"		=>	$this->input->post('email'),
-			"password"	=>	$this->encryptPassword($this->input->post('password'))
-		];
-
-		$validar = $this->user_md->login($where)[0];
-
-		if(! empty($validar)){
-			$values=[	"id_usuario"=>	$validar->id_usuario,
-						"id_grupo"	=>	$validar->id_grupo,
-						"nombre"	=>	$validar->nombre,
-						"apellido"	=>	$validar->apellido,
-						"telefono"	=>	$validar->telefono,
-						"email"		=>	$validar->email,
-						"password"	=>	$validar->password,
-						"estatus"	=>	$validar->estatus
-			];
-			$this->session->set_userdata("username", $values['nombre']);
-			$this->session->set_userdata($values);
-			redirect('Main/', ''); 
-		}
 	}
 
 	public function logout(){
