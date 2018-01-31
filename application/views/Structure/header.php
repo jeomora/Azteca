@@ -9,33 +9,9 @@
 	<meta name="robots" content="all,follow">
 
 	<script type="text/javascript">
-		/*window.onload =	function(){
-			if(typeof history.pushState === "function"){
-				history.pushState("jibberish", null, null);
-				window.onpopstate = function () {
-					history.pushState("newjibberish", null, null);
-					//location.href="";
-					console.log("Click atrás \n");
-				};
-			
-				}else{
-					var ignoreHashChange = true;
-					window.onhashchange = function () {
-						if (!ignoreHashChange) {
-							ignoreHashChange = true;
-							window.location.hash = Math.random();
-							console.log("Aqui otra acción \n");
-						}else{
-							ignoreHashChange = false;
-						}
-					};
-				}
-			}*/
-
 		var base_url = "<?php echo base_url("/") ?>";//No carga el archivo index
 		var site_url = "<?php echo site_url("/") ?>";//Si carga el index 
-		var user_name = "<?php echo strtoupper($usuario->username) ?>";//
-
+		var user_name = "<?php echo strtoupper($usuario['username']) ?>";//
 	</script>
 
 	<!-- Bootstrap CSS-->
@@ -77,7 +53,7 @@
 	<div id="cover" hidden="true">
 		<div class="sk-spinner sk-spinner-cube-grid loader_cover"> </div>
 		<span class="loaderText">
-			<p style="font-size: 30px; font-weight: bold;"> <?php echo strtoupper($usuario->username) ?> </p>
+			<p style="font-size: 30px; font-weight: bold;"> <?php echo strtoupper($usuario['username']) ?> </p>
 			<p style="font-size: 30px "> Espere mientras se carga la información...</p>
 		</span>
 	</div>

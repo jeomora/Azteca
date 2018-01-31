@@ -27,7 +27,7 @@
 								<select name="id_proveedor" id="id_proveedor" class="form-control chosen-select">
 									<option value="">Seleccionar...</option>
 									<?php if ($proveedores): foreach ($proveedores as $key => $value): ?>
-										<option value="<?php echo $value->id ?>"><?php echo strtoupper($value->username) ?></option>
+										<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre.' '.$value->apellido ?></option>
 									<?php endforeach; endif ?>
 								</select>
 							</div>
@@ -43,8 +43,6 @@
 								</button>
 							</div>
 						</div> -->
-
-						<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
 
 						<?php echo form_close(); ?>
 						<div class="col-sm-2">

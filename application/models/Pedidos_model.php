@@ -14,13 +14,13 @@ class Pedidos_model extends MY_Model {
 			pedidos.id_pedido,
 			DATE_FORMAT(pedidos.fecha_registro,'%d-%m-%Y') AS fecha, 
 			pedidos.total,
-			UPPER(CONCAT(pro.first_name,' ',pro.last_name)) AS proveedor,
-			UPPER(CONCAT(us.first_name,' ',us.last_name)) AS user_registra,
+			UPPER(CONCAT(pro.nombre,' ',pro.apellido)) AS proveedor,
+			UPPER(CONCAT(us.nombre,' ',us.apellido)) AS user_registra,
 			s.nombre AS sucursal")
 		->from($this->TABLE_NAME)
 		->join("sucursales s", $this->TABLE_NAME.".id_sucursal = s.id_sucursal", "LEFT")
-		->join("users pro", $this->TABLE_NAME.".id_proveedor = pro.id", "LEFT")
-		->join("users us", $this->TABLE_NAME.".id_user_registra = us.id", "LEFT")
+		->join("usuarios pro", $this->TABLE_NAME.".id_proveedor = pro.id_usuario", "LEFT")
+		->join("usuarios us", $this->TABLE_NAME.".id_user_registra = us.id_usuario", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1);
 		if ($where !== NULL) {
 			if (is_array($where)) {

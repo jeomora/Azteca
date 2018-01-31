@@ -67,7 +67,7 @@ $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", funct
 	if($("#id_producto").val() !== ''){
 		sendForm("Cotizaciones/save", $("#form_cotizacion_new"), "");
 	}else{
-		toastr.warning("Seleccione un artículo de la lista", $("#name_user").val());
+		toastr.warning("Seleccione un artículo de la lista", user_name);
 	}
 });
 
@@ -119,10 +119,10 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 	uploadCotizaciones(fdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
-				toastr.error(resp.desc, $("#name_user").val());
+				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
 			}
 		});
 });
@@ -146,10 +146,10 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 	uploadPrecios(formdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
-				toastr.error(resp.desc, $("#name_user").val());
+				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, $("#name_user").val()), "");
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
 			}
 		});
 });

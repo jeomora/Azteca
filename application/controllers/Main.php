@@ -8,22 +8,22 @@ class Main extends MY_Controller {
 		$this->load->model("Familias_model", "fam_md");
 		$this->load->model("Productos_model", "pr_md");
 		$this->load->model("Cotizaciones_model", "cot_md");
-		$this->load->model("Proveedores_model", "prov_md");
+		$this->load->model("Usuarios_model", "user_md");
 	}
 
 	//Primera función que carga el dashboard
 	public function index(){
-		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
-		$data["proveedores"]=$this->prov_md->getProveedores(['group_id'=>2]);//Son proveedores
+		$user = $this->session->userdata();//Trae los datos del usuario
+		$data["proveedores"]=$this->user_md->getUsuarios(['usuarios.id_grupo'=>2]);//Son proveedores
 		$data["productos"]=$this->pr_md->get();
 		$data["familias"]=$this->fam_md->get();
 		$where = [];
-		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cotizados cuando es proveedor
-			$where = [	"cotizaciones.id_proveedor"						=>	$user->id,
-						"WEEKOFYEAR(cotizaciones.fecha_registro) >="	=>	$this->weekNumber()
+		if($user['id_grupo'] ==2){//El grupo 2 es proveedor
+			$where = [	"cotizaciones.id_proveedor"					=>	$user['id_usuario'],
+						"WEEKOFYEAR(cotizaciones.fecha_registro)"	=>	$this->weekNumber()
 					];
 		}else{
-			$where = ["WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()];
+			$where = ["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 		}
 		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
 		$this->estructura("Admin/welcome", $data);

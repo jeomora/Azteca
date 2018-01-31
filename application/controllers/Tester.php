@@ -43,9 +43,14 @@ class Tester extends CI_Controller {
 	}
 
 	public function pruebas(){
-		
-		
+		$key = 'APGoyQGOKAR5iXQ1wiO6i4jNczeMV7Sg';
+		$cadena = 'ochoa25';
+		$encrypted = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $cadena, MCRYPT_MODE_CBC, md5(md5($key))));
+		$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+		echo "Encriptado: {$encrypted} <br>";
+		echo "Desencriptar: {$decrypted} <br>";
 	}
+
 
 }
 

@@ -9,7 +9,7 @@
 						<option value="">Seleccionar...</option>
 						<?php if ($proveedores): ?>
 							<?php foreach ($proveedores as $key => $value): ?>
-								<option value="<?php echo $value->id ?>"><?php echo strtoupper($value->first_name.'	'.$value->last_name) ?></option>
+								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre.' '.$value->apellido ?></option>
 							<?php endforeach ?>
 						<?php endif ?>
 					</select>
@@ -22,7 +22,7 @@
 						<option value="">Seleccionar...</option>
 						<?php if ($sucursales): ?>
 							<?php foreach ($sucursales as $key => $value): ?>
-								<option value="<?php echo $value->id_sucursal ?>"><?php echo strtoupper($value->nombre) ?></option>
+								<option value="<?php echo $value->id_sucursal ?>"><?php echo $value->nombre ?></option>
 							<?php endforeach ?>
 						<?php endif ?>
 					</select>

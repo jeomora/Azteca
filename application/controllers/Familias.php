@@ -33,7 +33,6 @@ class Familias extends MY_Controller {
 		];
 		$data["familias"] = $this->fam_md->get();
 		$this->estructura("Familias/table_familias", $data);
-		// $this->load->view("Familias/table_familias", $data, FALSE);
 	}
 
 	public function table_familias(){

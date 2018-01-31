@@ -23,10 +23,10 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.fecha_caduca,
 			cotizaciones.existencias,
 			cotizaciones.observaciones,
-			UPPER(CONCAT(u.first_name,' ',u.last_name)) AS proveedor,
+			UPPER(CONCAT(u.nombre,' ',u.apellido)) AS proveedor,
 			p.nombre AS producto")
 		->from($this->TABLE_NAME)
-		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
+		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "LEFT")
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by($this->TABLE_NAME.".id_producto")
@@ -57,13 +57,13 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.fecha_registro,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
-			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
+			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
 			ctz_first.precio_sistema,
 			ctz_first.precio_four,
-			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
+			UPPER(CONCAT(proveedor_next.nombre,' ',proveedor_next.apellido)) AS proveedor_next,
 			ctz_next.fecha_registro AS fecha_next,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
@@ -77,8 +77,8 @@ class Cotizaciones_model extends MY_Model {
 			AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)", "")
 		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 			AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion LIMIT 1)", "LEFT")
-		->join("users proveedor_first", "ctz_first.id_proveedor = proveedor_first.id", "INNER")
-		->join("users proveedor_next", "ctz_next.id_proveedor = proveedor_next.id", "LEFT")
+		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "INNER")
+		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")
 		->order_by("prod.id_producto", "ASC");
@@ -132,10 +132,10 @@ class Cotizaciones_model extends MY_Model {
 		$this->db->select("
 			cotizaciones.id_cotizacion, cotizaciones.precio,
 			p.id_producto, UPPER(p.nombre) AS producto,
-			u.id, UPPER(CONCAT(u.first_name,' ',u.last_name)) AS proveedor")
+			u.id_usuario, UPPER(CONCAT(u.nombre,' ',u.apellido)) AS proveedor")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
-		->join("users u", $this->TABLE_NAME.".id_proveedor = u.id", "LEFT")
+		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1);
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -161,7 +161,7 @@ class Cotizaciones_model extends MY_Model {
 	public function preciosBajos($where=[]){
 		$this->db->select("cotizaciones.id_cotizacion,
 			prod.codigo, prod.nombre AS producto,
-			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
+			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
 			ctz_first.precio AS precio_first,
 			ctz_first.precio_promocion AS precio_promocion_first,
 			ctz_first.nombre AS promocion_first,
@@ -169,7 +169,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.observaciones AS observaciones_first,
 			ctz_first.precio_sistema,
 			ctz_first.precio_four,
-			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
+			UPPER(CONCAT(proveedor_next.nombre,' ',proveedor_next.apellido)) AS proveedor_next,
 			ctz_next.precio AS precio_next,
 			ctz_next.precio_promocion AS precio_promocion_next,
 			ctz_next.nombre AS promocion_next,
@@ -185,9 +185,9 @@ class Cotizaciones_model extends MY_Model {
 			AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 			AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion ORDER BY cotizaciones.precio ASC LIMIT 1)", "LEFT")
-		->join("users proveedor_first", "ctz_first.id_proveedor = proveedor_first.id", "LEFT")
-		->join("users proveedor_next", "ctz_next.id_proveedor = proveedor_next.id", "LEFT")
-		->join("users proveedor_max", "ctz_maxima.id_proveedor = proveedor_max.id", "LEFT")
+		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
+		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
+		->join("usuarios proveedor_max", "ctz_maxima.id_proveedor = proveedor_max.id_usuario", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")

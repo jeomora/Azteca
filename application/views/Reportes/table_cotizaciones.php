@@ -6,7 +6,7 @@
 		}
 </style>
 <div class="row col-sm-12">
-	<label>USUARIO: </label> <?php echo strtoupper($user->username) ?> <br>
+	<label>USUARIO: </label> <?php echo $user['username'] ?> <br>
 	<label>FECHA: </label> <?php echo $fecha ?> <br>
 	<label>SEMANA: </label> <?php echo $semana ?>
 </div>

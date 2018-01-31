@@ -6,7 +6,7 @@ class Reportes extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Cotizaciones_model", "ct_mdl");
-		$this->load->model("Proveedores_model", "pro_mdl");
+		$this->load->model("Usuarios_model", "user_mdl");
 	}
 
 	public function precios_bajos(){
@@ -89,7 +89,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["proveedores"] = $this->pro_mdl->getProveedores(['group_id'=>2]);//Son proveedores;
+		$data["proveedores"] = $this->user_mdl->getUsuarios(['usuarios.id_grupo'=>2]);//Son proveedores;
 		$this->estructura("Reportes/filter_cotizaciones", $data);
 	}
 
@@ -104,7 +104,7 @@ class Reportes extends MY_Controller {
 		$data['cotizacionesProveedor'] = $this->ct_mdl->comparaCotizaciones($where);
 		$data["fecha"]=$this->input->post('fecha_registro');
 		$data["semana"]=$this->weekNumber($fecha);
-		$data["user"]=$this->ion_auth->user()->row();
+		$data["user"]=$this->session->userdata();
 		$this->load->view("Reportes/table_cotizaciones", $data, FALSE);
 	}
 

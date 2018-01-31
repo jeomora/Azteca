@@ -11,15 +11,14 @@
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 						<i class="fa fa-reorder"></i>
 					</button>
-					<a href="#" class="navbar-brand"><?php echo strtoupper($usuario->username) ?></a>
+					<a href="#" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
 						<li class="active">
 							<a href="#" id="progress" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
 						</li>
-					
-					<?php if ($this->ion_auth->is_admin()): ?><!--Solo los Administradores pueden ver -->
+					<?php if ($usuario['id_grupo'] == 1): ?><!--El grupo 1 es Administrador -->
 						<?php if ($main_menu):?>
 							<?php foreach ($main_menu as $key => $value): ?>
 								<?php if ($value->nivel == 1): ?>
@@ -38,7 +37,7 @@
 						<?php endif ?>
 
 					</ul>
-					<?php else: ?> <!--Solo Usuario proveedor -->
+					<?php else: ?> <!--El grupo 2 son Proveedores -->
 						<li class="dropdown">
 							<a href="<?php echo site_url('Cotizaciones') ?>" >COTIZACIONES </a>
 						</li>
@@ -50,7 +49,7 @@
 					<?php endif ?>
 					<ul class="nav navbar-top-links navbar-right">
 						<li>
-							<a href="<?php echo site_url('Auth/logout'); ?>" class="close-session">
+							<a href="<?php echo site_url('Welcome/logout'); ?>" class="close-session">
 								<i class="fa fa-sign-out"></i> Salir
 							</a>
 						</li>

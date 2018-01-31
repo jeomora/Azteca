@@ -10,15 +10,17 @@ class MY_Controller extends CI_Controller {
 	protected $main = ""; //Archivo principal
 	protected $ASSETS;
 	protected $UPLOADS;
+	protected $KEY;
 
 	function __construct() {
 		parent::__construct();
 		$this->load->model("Menus_model", "m_md");
 		$data["main_menu"] = $this->m_md->getMenus();
-		$data["usuario"] = $this->ion_auth->user()->row();
+		$data["usuario"] = $this->session->userdata();//Trae los datos del usuario;
 		//Asignamos el valor a las variables"!
 		$this->ASSETS = "./assets/";
 		$this->UPLOADS = "uploads/";
+		$this->KEY='APGoyQGOKAR5iXQ1wiO6i4jNczeMV7Sg';//Para encriptar las contraseñas
 
 		$this->load->vars($data);
 		$this->header = "Structure/header";
@@ -73,6 +75,16 @@ class MY_Controller extends CI_Controller {
 											"size"			=>	$font_size,
 											"name"			=>	$font_family))
 		);
+	}
+
+	public function encryptPassword($password=NULL){
+		$encrypted = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($this->KEY), $password, MCRYPT_MODE_CBC, md5(md5($this->KEY))));
+		return $encrypted;
+	}
+
+	public function showPassword($password=NULL){
+		$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($this->KEY), base64_decode($password), MCRYPT_MODE_CBC, md5(md5($this->KEY))), "\0");
+		return $decrypted;
 	}
 
 

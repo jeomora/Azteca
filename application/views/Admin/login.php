@@ -22,18 +22,16 @@
 
 	<div class="loginColumns animated flipInY">
 		<div class="row">
-
 			<div class="col-md-6">
 				<div class="logo_img">
 					<img  src="<?php echo base_url('/assets/img/logo_abarrotes.jpg') ?>" />
 				</div>
 			</div>
-
 			<div class="col-md-6">
 				<div class="ibox-content">
-					<?php echo form_open("Auth/login",'class="m-t" role="form"');?>
+					<?php echo form_open("Welcome/login",'class="m-t" role="form"');?>
 						<div class="form-group">
-							<input type="email" class="form-control" placeholder="ejemplo@email.com" name="identity" required="">
+							<input type="email" class="form-control" placeholder="ejemplo@email.com" name="email" required="">
 						</div>
 						<div class="form-group">
 							<input type="password" class="form-control" placeholder="********" name="password" required="">
@@ -42,7 +40,6 @@
 					<?php echo form_close();?>
 				</div>
 			</div>
-	
 		</div>
 	</div>
 

@@ -10,7 +10,7 @@
 						<option value="">Seleccionar...</option>
 						<?php if ($proveedores): ?>
 							<?php foreach ($proveedores as $key => $value): ?>
-								<option value="<?php echo $value->id ?>" <?php echo $pedido->id_proveedor == $value->id ? 'selected' : '' ?> ><?php echo strtoupper($value->first_name.'	'.$value->last_name) ?></option>
+								<option value="<?php echo $value->id_usuario ?>" <?php echo $pedido->id_proveedor == $value->id_usuario ? 'selected' : '' ?> ><?php echo $value->nombre.'	'.$value->apellido ?></option>
 							<?php endforeach ?>
 						<?php endif ?>
 					</select>
@@ -23,7 +23,7 @@
 						<option value="">Seleccionar...</option>
 						<?php if ($sucursales): ?>
 							<?php foreach ($sucursales as $key => $value): ?>
-								<option value="<?php echo $value->id_sucursal ?>" <?php echo $pedido->id_sucursal == $value->id_sucursal ? 'selected' : '' ?> ><?php echo strtoupper($value->nombre) ?></option>
+								<option value="<?php echo $value->id_sucursal ?>" <?php echo $pedido->id_sucursal == $value->id_sucursal ? 'selected' : '' ?> ><?php echo $value->nombre ?></option>
 							<?php endforeach ?>
 						<?php endif ?>
 					</select>

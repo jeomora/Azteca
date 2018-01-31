@@ -8,16 +8,17 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Pedidos_model", "ped_mdl");
 		$this->load->model("Detalles_pedidos_model", "det_ped_mdl");
 		$this->load->model("Sucursales_model", "suc_mdl");
-		$this->load->model("Proveedores_model", "pro_mdl");
+		$this->load->model("Usuarios_model", "user_mdl");
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 	}
 
 	public function index(){
-		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
+		$user = $this->session->userdata();//Trae los datos del usuario
+
 		$where = [];
 
-		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cuando es proveedor
-			$where = ["promociones.id_proveedor" => $user->id];
+		if($user['id_grupo'] ==2){//El grupo 2 es proveedor
+			$where = ["promociones.id_proveedor" => $user['id_usuario']];
 		}
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
@@ -47,7 +48,7 @@ class Pedidos extends MY_Controller {
 
 	public function add_pedido(){
 		$data["title"]="REGISTRAR PEDIDOS";
-		$data["proveedores"] = $this->pro_mdl->getProveedores();
+		$data["proveedores"] = $this->user_mdl->getUsuarios();
 		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
 		$data["view"]=$this->load->view("Pedidos/new_pedido", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_pedido' type='button'>
@@ -60,7 +61,7 @@ class Pedidos extends MY_Controller {
 		$data["title"]="ACTUALIZAR DATOS DEL PEDIDO";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
 		$data["sucursales"] = $this->suc_mdl->get('id_sucursal, nombre');
-		$data["proveedores"] = $this->pro_mdl->getProveedores();
+		$data["proveedores"] = $this->user_mdl->getUsuarios();
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
 		$data["view"]=$this->load->view("Pedidos/edit_pedido", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_pedido' type='button'>
@@ -72,7 +73,7 @@ class Pedidos extends MY_Controller {
 	public function get_delete($id){
 		$data["title"]="PEDIDO A ELIMINAR";
 		$data["pedido"] = $this->ped_mdl->get(NULL, ['id_pedido'=>$id])[0];
-		$data["proveedor"] = $this->pro_mdl->getProveedores(['users.id' => $data['pedido']->id_proveedor])[0];
+		$data["proveedor"] = $this->user_mdl->getUsuarios(['users.id' => $data['pedido']->id_proveedor])[0];
 		$data["view"]=$this->load->view("Pedidos/delete_pedido", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_pedido' type='button'>
 							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar

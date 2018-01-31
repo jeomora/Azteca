@@ -32,11 +32,13 @@ class Cotizaciones extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$user = $this->ion_auth->user()->row();//Obtenemos el usuario logeado 
+
+		$user = $this->session->userdata();//Trae los datos del usuario;
+
 		$where = [];
-		if(! $this->ion_auth->is_admin()){//Solo mostrar sus Productos cotizados cuando es proveedor
+		if($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
 			$where = [
-				"cotizaciones.id_proveedor" => $user->id,
+				"cotizaciones.id_proveedor" => $user['id_usuario'],
 				"WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()
 			];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
@@ -61,7 +63,7 @@ class Cotizaciones extends MY_Controller {
 		$cotizacion = [
 			'nombre'			=>	strtoupper($this->input->post('nombre')),
 			'id_producto'		=>	$this->input->post('id_producto'),
-			'id_proveedor'		=>	$this->ion_auth->user()->row()->id,
+			'id_proveedor'		=>	$this->session->userdata('id_usuario'),
 			'num_one'			=>	str_replace(',', '', $this->input->post('num_one')),
 			'num_two'			=>	str_replace(',', '', $this->input->post('num_two')),
 			'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
@@ -219,7 +221,7 @@ class Cotizaciones extends MY_Controller {
 					$new_cotizacion[$i]=[
 						"id_producto"		=>	$productos->id_producto,
 						"nombre"			=>	$productos->nombre,
-						"id_proveedor"		=>	$this->ion_auth->user()->row()->id,
+						"id_proveedor"		=>	$this->session->userdata('id_usuario'),//Recupera el id_usuario activo
 						"precio"			=>	$precio,
 						"num_one"			=>	$column_one,
 						"num_two"			=>	$column_two,
@@ -276,16 +278,16 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 
 		$search = ["fam.nombre", "prod.codigo", "prod.nombre", "ctz_first.nombre", "ctz_first.observaciones", "proveedor_first.first_name", "proveedor_first.last_name",
-			"proveedor_next.first_name", "proveedor_next.last_name"];
+			"proveedor_next.nombre", "proveedor_next.apellido"];
 
 		$columns = "cotizaciones.id_cotizacion, cotizaciones.fecha_registro, cotizaciones.precio_sistema, cotizaciones.precio_four,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
-			UPPER(CONCAT(proveedor_first.first_name,' ',proveedor_first.last_name)) AS proveedor_first,
+			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
-			UPPER(CONCAT(proveedor_next.first_name,' ',proveedor_next.last_name)) AS proveedor_next,
+			UPPER(CONCAT(proveedor_next.nombre,' ',proveedor_next.apellido)) AS proveedor_next,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio";
@@ -299,8 +301,8 @@ class Cotizaciones extends MY_Controller {
 				AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto) LIMIT 1)",	"clausula"			=>	"INNER"],
 			["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 				AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion LIMIT 1)",	"clausula"						=>	"LEFT"],
-			["table"	=>	"users proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id",	"clausula"	=>	"INNER"],
-			["table"	=>	"users proveedor_next",		"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id",	"clausula"	=>	"LEFT"],
+			["table"	=>	"usuarios proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id_usuario",	"clausula"	=>	"INNER"],
+			["table"	=>	"usuarios proveedor_next",	"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id_usuario",	"clausula"	=>	"LEFT"],
 		];
 
 		$group ="cotizaciones.id_producto";
@@ -336,7 +338,7 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 		$salida = [
-			"query"				=>	$this->db->last_query(),
+			// "query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
 			"recordsTotal"		=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
 			"recordsFiltered"	=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
