@@ -84,6 +84,7 @@ class Welcome extends MY_Controller {
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR DATOS DEL USUARIO";
 		$data["usuario"] = $this->user_md->get(NULL, ['id_usuario'=>$id])[0];
+		$data["password"]= $this->showPassword($data["usuario"]->password);//Para mostrar la contraseña
 		$data["grupos"] = $this->gr_md->get();
 		$data["view"] =$this->load->view("Admin/edit_usuario", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_usuario' type='button'>
@@ -102,55 +103,64 @@ class Welcome extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
-	public function accion($param){
+	public function save_user(){
 		$usuario = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
 			"apellido"	=>	strtoupper($this->input->post('apellido')),
 			"telefono"	=>	$this->input->post('telefono'),
 			"email"		=>	$this->input->post('correo'),
 			"password"	=>	$this->encryptPassword($this->input->post('password')),
-			"id_grupo"	=>	$this->input->post('id_grupo')
-			];
+			"id_grupo"	=>	$this->input->post('id_grupo')];
 
-		$getUsuario = $this->user_md->get(NULL, ['nombre'=>$usuario['nombre']])[0];
+		$getUsuario = $this->user_md->get(NULL, ['email'=>$usuario['email']])[0];
 
-		switch ($param) {
-			case (substr($param, 0, 1) === 'I'):
-				if(sizeof($getUsuario) == 0){
-					$data ['id_usuario'] = $this->user_md->insert($usuario);
-					$mensaje = [
-						"id" 	=> 'Éxito',
+		if(sizeof($getUsuario) == 0){
+			$data ['id_usuario'] = $this->user_md->insert($usuario);
+			$mensaje = ["id" 	=> 'Éxito',
 						"desc"	=> 'Usuario registrado correctamente',
-						"type"	=> 'success'
-					];
-				}else{
-					$mensaje = [
-						"id" 	=> 'Alerta',
-						"desc"	=> 'El Usuario ya esta registrado en el Sistema',
-						"type"	=> 'warning'
-					];
-				}
-				break;
-
-			case (substr($param, 0, 1) === 'U'):
-				$data ['id_usuario'] = $this->user_md->update($usuario, $this->input->post('id_usuario'));
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Usuario actualizado correctamente',
-					"type"	=> 'success'
-				];
-				break;
-
-			default:
-				$data ['id_usuario'] = $this->user_md->update(["estatus" => 0], $this->input->post('id_usuario'));
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Usuario eliminado correctamente',
-					"type"	=> 'success'
-				];
-				break;
+						"type"	=> 'success'];
+		}else{
+			$mensaje = [
+				"id" 	=> 'Alerta',
+				"desc"	=> 'El correo ['.$usuario['email'].'] está registrado en el Sistema',
+				"type"	=> 'warning'
+			];
 		}
 		$this->jsonResponse($mensaje);
 	}
+
+	public function update_user(){
+		$usuario = [
+			"nombre"	=>	strtoupper($this->input->post('nombre')),
+			"apellido"	=>	strtoupper($this->input->post('apellido')),
+			"telefono"	=>	$this->input->post('telefono'),
+			"email"		=>	$this->input->post('correo'),
+			"password"	=>	$this->encryptPassword($this->input->post('password')),
+			"id_grupo"	=>	$this->input->post('id_grupo')];
+
+		$data ['id_usuario'] = $this->user_md->update($usuario, $this->input->post('id_usuario'));
+		$mensaje = ["id" 	=> 'Éxito',
+					"desc"	=> 'Usuario actualizado correctamente',
+					"type"	=> 'success'];
+		$this->jsonResponse($mensaje);
+	}
+
+	public function delete_user(){
+		$data ['id_usuario'] = $this->user_md->update(["estatus" => 0], $this->input->post('id_usuario'));
+		$mensaje = ["id" 	=> 'Éxito',
+					"desc"	=> 'Usuario eliminado correctamente',
+					"type"	=> 'success'];
+		$this->jsonResponse($mensaje);
+	}
+
+	public function get_usuario($id){
+		$data["title"]="INFORMACIÓN DEL USUARIO";
+		$data["usuario"] = $this->user_md->get(NULL, ['id_usuario'=>$id])[0];
+		$data["password"]= $this->showPassword($data["usuario"]->password);//Para mostrar la contraseña
+		$data["grupo"] = $this->gr_md->get(NULL,['id_grupo'=>$data["usuario"]->id_grupo])[0];
+		$data["view"] =$this->load->view("Admin/show_usuario", $data, TRUE);
+		$this->jsonResponse($data);
+	}
+
 
 }

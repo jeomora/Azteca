@@ -1,13 +1,6 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
-
-	function show_password($password){
-		$key='APGoyQGOKAR5iXQ1wiO6i4jNczeMV7Sg';//Clave de encriptación
-		$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($password), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-		return $decrypted;
-	}
 ?>
-
 <div class="ibox-content">
 	<div class="row">
 		<?php echo form_open("", array("id"=>'form_usuario_edit')); ?>
@@ -39,8 +32,8 @@
 			</div>
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="password">Contraseña</label>
-					<input type="text" name="password" value="<?php echo show_password($usuario->password) ?>" class="form-control" placeholder="*********">
+					<label for="password">Contraseña</label> <!-- $password trae la contraseña desencritada -->
+					<input type="text" name="password" value="<?php echo $password ?>" class="form-control" placeholder="*********">
 				</div>
 			</div>
 

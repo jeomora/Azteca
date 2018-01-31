@@ -24,7 +24,6 @@
 							<div class="col-sm-4">
 								<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
 							</div>
-							<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario['username']) ?>"/>
 						<?php echo form_close(); ?>
 					</div>
 					<div class="table-responsive">
