@@ -37,10 +37,8 @@ class Cotizaciones extends MY_Controller {
 
 		$where = [];
 		if($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
-			$where = [
-				"cotizaciones.id_proveedor" => $user['id_usuario'],
-				"WEEKOFYEAR(cotizaciones.fecha_registro) >=" => $this->weekNumber()
-			];
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
+					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
@@ -64,8 +62,8 @@ class Cotizaciones extends MY_Controller {
 			'nombre'			=>	strtoupper($this->input->post('nombre')),
 			'id_producto'		=>	$this->input->post('id_producto'),
 			'id_proveedor'		=>	$this->session->userdata('id_usuario'),
-			'num_one'			=>	str_replace(',', '', $this->input->post('num_one')),
-			'num_two'			=>	str_replace(',', '', $this->input->post('num_two')),
+			'num_one'			=>	$this->input->post('num_one'),
+			'num_two'			=>	$this->input->post('num_two'),
 			'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
 			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),

@@ -85,9 +85,6 @@
 				</div>
 			</div>
 		</div>
-
-		<input type="hidden" id="name_user" value="<?php echo strtoupper($usuario->username) ?>"/>
-
 		<?php echo form_close(); ?>
 	</div>
 </div>

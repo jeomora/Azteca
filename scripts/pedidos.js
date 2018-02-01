@@ -32,16 +32,16 @@ $(document).off("click", ".new_pedido").on("click", ".new_pedido", function(even
 				savePedido($("#form_pedido_new").serializeArray())
 				.done(function (res) {
 					if(res.type == 'error') {
-						toastr.error(res.desc, $("#name_user").val());
+						toastr.error(res.desc, user_name);
 					}else{
-						toastr.success(res.desc, $("#name_user").val());
+						toastr.success(res.desc, user_name);
 						location.reload();
 					}
 				})
 				.fail(function(res) { });
 			}
 		}else{
-			toastr.warning("Marque 1 producto como mínimo", $("#name_user").val());
+			toastr.warning("Marque 1 producto como mínimo", user_name);
 		}
 	}
 });
@@ -54,7 +54,7 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 			var size = response.length;
 			$("#body_response").empty();
 			if (jQuery.isEmptyObject(response)) {
-				toastr.warning("El Proveedor "+proveedor+" no tiene Productos cotizados", $("#name_user").val());
+				toastr.warning("El Proveedor "+proveedor+" no tiene Productos cotizados", user_name);
 			}else{
 				$.each(response, function(index, val) {
 					rows += "<tr>"
@@ -82,7 +82,7 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 				});
 				$("#body_response").append(rows);
 				$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
-				toastr.success("El Proveedor "+proveedor+" tiene "+size+" Productos cotizados", $("#name_user").val());
+				toastr.success("El Proveedor "+proveedor+" tiene "+size+" Productos cotizados", user_name);
 			}
 		})
 		.fail(function (response) {
@@ -161,7 +161,7 @@ function validar(){
 		}
 	});
 	if(errors > 0 ){
-		toastr.warning("Faltan algunos precios por llenar", $("#name_user").val());
+		toastr.warning("Faltan algunos precios por llenar", user_name);
 		return false;
 	}
 	return true;
