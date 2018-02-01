@@ -7,6 +7,7 @@ class Welcome extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Grupos_model", "gr_md");
+		$this->load->library("form_validation");
 	}
 
 	public function index(){
@@ -38,15 +39,14 @@ class Welcome extends MY_Controller {
 
 	public function login(){
 		if($this->session->userdata("username")){
-			redirect('Main/','');
+			redirect("Main/", "");
 		}
-		$data["mensaje"] = '';
+		$this->data["message"] =NULL;
 		if (isset($_POST['email']) && isset($_POST['password'])) {
-			$where=[
-				"email"		=>	$this->input->post('email'),
-				"password"	=>	$this->encryptPassword($this->input->post('password'))];
+			$where=["email"		=>	$this->input->post('email'),
+					"password"	=>	$this->encryptPassword($this->input->post('password'))];
 			$validar = $this->user_md->login($where)[0];
-			if($validar > 0){
+			if(sizeof($validar) > 0){
 				$values=[	"id_usuario"=>	$validar->id_usuario,
 							"id_grupo"	=>	$validar->id_grupo,
 							"nombre"	=>	$validar->nombre,
@@ -57,17 +57,17 @@ class Welcome extends MY_Controller {
 							"estatus"	=>	$validar->estatus ];
 				$this->session->set_userdata("username", $values['nombre']);
 				$this->session->set_userdata($values);
-				redirect('Main/', '');
+				redirect("Main/", "refresh");
 			}else{
-				$data["mensaje"]='Usuario y/o contraseña incorrectos';
+				$this->data['message']='Usuario y/o contraseña incorrectos';
 			}
 		}
-		$this->load->view("Admin/login", $data, FALSE);
+		$this->estructura_login("Admin/login", $this->data, FALSE);
 	}
 
 	public function logout(){
 		$this->session->sess_destroy();
-		redirect("Welcome/login", "refresh");
+		redirect("Welcome/login/", "refresh");
 	}
 
 	public function new_usuario(){
@@ -161,5 +161,14 @@ class Welcome extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	private function estructura_login($view, $data=array()){
+		$this->_render_page($view, $data);
+	}
+
+	private function _render_page($view, $data=null, $returnhtml=false){//I think this makes more sense
+		$this->viewdata = (empty($data)) ? $this->data: $data;
+		$view_html = $this->load->view($view, $this->viewdata, $returnhtml);
+		if ($returnhtml) return $view_html;//This will return html on 3rd argument being true
+	}
 
 }

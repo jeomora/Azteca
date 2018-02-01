@@ -22,7 +22,7 @@
 
 	<div class="loginColumns animated flipInY">
 		<div class="row">
-			<h3 class="col-md-6 col-md-offset-6" style="color:#990000"> <?php echo isset($mensaje) ? $mensaje : '' ?> </h3>
+			<h3 class="col-md-6 col-md-offset-6" style="color:#990000"> <?php echo isset($message) ? $message : '' ?> </h3>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
@@ -32,9 +32,9 @@
 			</div>
 			<div class="col-md-6">
 				<div class="ibox-content">
-					<?php echo form_open("Welcome/login",'class="m-t" role="form"');?>
+					<?php echo form_open("Welcome/login/",'class="m-t" role="form"');?>
 						<div class="form-group">
-							<input type="email" class="form-control" placeholder="ejemplo@email.com" name="email" required="">
+							<input type="email" class="form-control" placeholder="ejemplo@email.com" name="email" required="" value="<?php echo set_value('email')?>" >
 						</div>
 						<div class="form-group">
 							<input type="password" class="form-control" placeholder="********" name="password" required="">

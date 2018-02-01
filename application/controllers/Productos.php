@@ -58,7 +58,7 @@ class Productos extends MY_Controller {
 			foreach ($productos as $key => $value) {
 				$no ++;
 				$row = [];
-				$row[] = $value->id_producto;
+				$row[] = '<b>'.$value->id_producto.'</b>';
 				$row[] = $value->codigo;
 				$row[] = $value->producto;
 				$row[] = $value->familia;
@@ -117,20 +117,24 @@ class Productos extends MY_Controller {
 	}
 
 	public function accion($param){
-		$producto = [
-				'codigo'	=>	$this->input->post('codigo'),
-				'nombre'	=>	strtoupper($this->input->post('nombre')),
-				// 'precio'	=>	$this->input->post('precio'),
-				'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
-			];
+		$producto = ['codigo'	=>	$this->input->post('codigo'),
+					'nombre'	=>	strtoupper($this->input->post('nombre')),
+					// 'precio'	=>	$this->input->post('precio'),
+					'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
+		];
+		$getProducto = $this->pro_md->get(NULL, ['codigo'=>$producto['codigo']])[0];
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):
-				$data ['id_producto']=$this->pro_md->insert($producto);
-				$mensaje = [
-					"id" 	=> 'Éxito',
-					"desc"	=> 'Producto registrado correctamente',
-					"type"	=> 'success'
-				];
+				if (sizeof($getProducto) == 0) {
+					$data ['id_producto']=$this->pro_md->insert($producto);
+					$mensaje = ["id" 	=> 'Éxito',
+								"desc"	=> 'Producto registrado correctamente',
+								"type"	=> 'success'];
+				}else{
+					$mensaje = ["id" 	=> 'Alerta',
+								"desc"	=> 'El código ya esta registrada en el Sistema',
+								"type"	=> 'warning'];
+				}
 				break;
 
 			case (substr($param, 0, 1) === 'U'):

@@ -199,17 +199,18 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
-		$sheet->setActiveSheetIndex(0);
-		$num_rows = $sheet->setActiveSheetIndex(0)->getHighestDataRow();
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0); 
+		$num_rows = $sheet->getHighestDataRow();
 		for ($i=3; $i<=$num_rows; $i++) { 
-			if($sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue() != 0){
-				$productos = $this->prod_mdl->get("id_producto, nombre",['nombre'=> htmlspecialchars($sheet->getActiveSheet()->getCell('A'.$i)->getCalculatedValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if($sheet->getCell('B'.$i)->getValue() != 0){
+				$productos = $this->prod_mdl->get("id_producto, nombre",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue()));
-					$column_one = $sheet->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
-					$column_two = $sheet->getActiveSheet()->getCell('E'.$i)->getCalculatedValue();
-					$descuento = $sheet->getActiveSheet()->getCell('F'.$i)->getCalculatedValue();
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
+					$column_one = $sheet->getCell('D'.$i)->getValue();
+					$column_two = $sheet->getCell('E'.$i)->getValue();
+					$descuento = $sheet->getCell('F'.$i)->getValue();
 
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = $precio_promocion;
@@ -228,7 +229,7 @@ class Cotizaciones extends MY_Controller {
 						"descuento"			=>	$descuento,
 						"precio_promocion"	=>	$precio_promocion,
 						"fecha_registro"	=>	date('Y-m-d H:i:s'),
-						"observaciones"		=>	$sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue()
+						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
 					];
 				}
 			}
@@ -250,21 +251,21 @@ class Cotizaciones extends MY_Controller {
 		$this->load->library("excelfile");
 		ini_set("memory_limit", "-1");
 		$file = $_FILES["file_precios"]["tmp_name"];
-		$sheet = PHPExcel_IOFactory::load($file);
-		$sheet->setActiveSheetIndex(0);
-		$num_rows = $sheet->setActiveSheetIndex(0)->getHighestDataRow();
-		for ($i=3; $i<=$num_rows; $i++) { 
-			if($sheet->getActiveSheet()->getCell('B'.$i)->getCalculatedValue() !=''){
-				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getActiveSheet()->getCell('A'.$i)->getCalculatedValue(), ENT_QUOTES, 'UTF-8')])[0];
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0); 
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) {
+			if($sheet->getCell('B'.$i)->getValue() !=''){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$new_precios=[
 						"id_producto"		=>	$productos->id_producto,
-						"precio_sistema"	=>	str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('C'.$i)->getCalculatedValue())),
-						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getActiveSheet()->getCell('D'.$i)->getCalculatedValue())),
+						"precio_sistema"	=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue())),
+						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue())),
 						"fecha_cambio"		=>	date('Y-m-d H:i:s')
 					];
 					$data['cotizacion']=$this->ct_mdl->update($new_precios,
-						['WEEKOFYEAR(fecha_registro) >=' =>$this->weekNumber(),'id_producto'=>$productos->id_producto]);
+						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber(),'id_producto'=>$productos->id_producto]);
 				}
 			}
 		}
@@ -277,7 +278,7 @@ class Cotizaciones extends MY_Controller {
 	public function cotizaciones_dataTable(){
 		ini_set("memory_limit", "-1");
 
-		$search = ["fam.nombre", "prod.codigo", "prod.nombre", "ctz_first.nombre", "ctz_first.observaciones", "proveedor_first.first_name", "proveedor_first.last_name",
+		$search = ["fam.nombre", "prod.codigo", "prod.nombre", "ctz_first.nombre", "ctz_first.observaciones", "proveedor_first.nombre", "proveedor_first.apellido",
 			"proveedor_next.nombre", "proveedor_next.apellido"];
 
 		$columns = "cotizaciones.id_cotizacion, cotizaciones.fecha_registro, cotizaciones.precio_sistema, cotizaciones.precio_four,

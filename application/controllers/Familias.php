@@ -70,12 +70,8 @@ class Familias extends MY_Controller {
 	}
 
 	public function accion($param){
-		$familia = [
-			'nombre'	=>	strtoupper($this->input->post('nombre'))
-			];
-		
+		$familia = ['nombre'	=>	strtoupper($this->input->post('nombre'))];
 		$getFamilia = $this->fam_md->get(NULL, ['nombre'=>$familia['nombre']])[0];
-		
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):
 				if(sizeof($getFamilia) == 0){
