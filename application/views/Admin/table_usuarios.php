@@ -37,6 +37,9 @@
 										<td><?php echo $value->password ?></td>
 										<td><?php echo $value->grupo ?></td>
 										<td>
+										<?php if ($value->nombre=='MASTER' && $value->grupo=='ADMINISTRADOR'): ?>
+											<!--Le ocultamos las opciones por ser el Usuario Master -->
+										<?php else: ?>
 											<button id="update_usuario" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-usuario="<?php echo $value->id_usuario ?>">
 												<i class="fa fa-pencil"></i>
 											</button>
@@ -46,6 +49,7 @@
 											<button id="delete_usuario" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-usuario="<?php echo $value->id_usuario ?>">
 												<i class="fa fa-trash"></i>
 											</button>
+										<?php endif ?>
 										</td>
 									</tr>
 								<?php endforeach ?>
