@@ -56,6 +56,15 @@ class MY_Model extends CI_Model {
 			return false;
 		}
 	}
+	public function weekNumber($date=NULL){
+		if (empty($date)) {
+			$date = date("Y-m-d");
+		}
+		$day	=	substr(date($date),8,2);//Día actual
+		$month	=	substr(date($date),5,2);//Mes actual
+		$year	=	substr(date($date),0,4);//Año actul
+		return date("W", mktime(0,0,0,$month,$day,$year));//El número de la semana
+	}
 
 	public function update(Array $data, $where = array()){
 		if (!is_array($where)){
