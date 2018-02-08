@@ -60,7 +60,7 @@ class MY_Controller extends CI_Controller {
 		}
 		$day	=	substr(date($date),8,2);//Día actual
 		$month	=	substr(date($date),5,2);//Mes actual
-		$year	=	substr(date($date),0,4);//Año actul
+		$year	=	substr(date($date),0,4);//Año actual
 		return date("W", mktime(0,0,0,$month,$day,$year));//El número de la semana
 	}
 
