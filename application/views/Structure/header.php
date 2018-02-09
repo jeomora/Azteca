@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="all,follow">
-
+	
 	<script type="text/javascript">
 		var base_url = "<?php echo base_url("/") ?>";//No carga el archivo index
 		var site_url = "<?php echo site_url("/") ?>";//Si carga el index 
