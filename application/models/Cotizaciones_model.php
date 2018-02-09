@@ -52,7 +52,7 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
-	public function comparaCotizaciones($where=[]){
+	public function comparaCotizaciones($where=[], $fech){
 		$this->db->select("cotizaciones.id_cotizacion, 
 			ctz_first.fecha_registro,
 			fam.id_familia, fam.nombre AS familia,

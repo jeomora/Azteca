@@ -154,7 +154,8 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("J1", "2DO PROVEEDOR")->getColumnDimension('J')->setWidth(25);
 		$hoja->setCellValue("K1", "2DO PRECIO")->getColumnDimension('K')->setWidth(20);
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where);
+		$fecha = date('Y-m-d');
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
 
 		$row_print =3;
 		if ($cotizacionesProveedor){
