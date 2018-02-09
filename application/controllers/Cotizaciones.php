@@ -141,7 +141,7 @@ class Cotizaciones extends MY_Controller {
 
 		$hoja = $this->excelfile->getActiveSheet();
 
-		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:L2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
 		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(15);
@@ -153,6 +153,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("I1", "OBSERVACIÓN")->getColumnDimension('I')->setWidth(50);
 		$hoja->setCellValue("J1", "2DO PROVEEDOR")->getColumnDimension('J')->setWidth(25);
 		$hoja->setCellValue("K1", "2DO PRECIO")->getColumnDimension('K')->setWidth(20);
+		$hoja->setCellValue("L1", "2DA OBSERVACIÓN")->getColumnDimension('L')->setWidth(50);
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$fecha = date('Y-m-d');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
@@ -166,7 +167,7 @@ class Cotizaciones extends MY_Controller {
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("B{$row_print}:K{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
 						$hoja->setCellValue("C{$row_print}", $row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
@@ -178,6 +179,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("I{$row_print}", $row['promocion_first'])->getStyle("I{$row_print}");
 						$hoja->setCellValue("J{$row_print}", $row['proveedor_next'])->getStyle("J{$row_print}");
 						$hoja->setCellValue("K{$row_print}", $row['precio_next'])->getStyle("K{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("L{$row_print}", $row['promocion_next'])->getStyle("L{$row_print}");
 						$row_print ++;
 					}
 				}
