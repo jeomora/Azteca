@@ -37,13 +37,13 @@
 									<th>DESCRIPCIÓN</th>
 									<th>SISTEMA</th>
 									<th>PRECIO 4</th>
-									<th>PRECIO MENOR</th>
-									<th>PROVEEDOR</th>
 									<th>PRECIO MAXIMO</th>
 									<th>PRECIO PROMEDIO</th>
-									<th>PRECIO 2</th>
+									<th>PROVEEDOR</th>
+									<th>PRECIO MENOR</th>
+									<th>OBSERVACIÓN</th>
 									<th>2DO PROVEEDOR</th>
-									<th>PROMOCIÓN</th>
+									<th>PRECIO 2</th>
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>

@@ -141,21 +141,22 @@ class Cotizaciones extends MY_Controller {
 
 		$hoja = $this->excelfile->getActiveSheet();
 
-		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:L2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
 		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(15);
 		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(15);
-		$hoja->setCellValue("E1", "PRECIO MENOR")->getColumnDimension('E')->setWidth(20);
-		$hoja->setCellValue("F1", "PROVEEDOR")->getColumnDimension('F')->setWidth(25);
-		$hoja->setCellValue("G1", "PRECIO MÁXIMO")->getColumnDimension('G')->setWidth(20);
-		$hoja->setCellValue("H1", "PRECIO PROMEDIO")->getColumnDimension('H')->setWidth(20);
-		$hoja->setCellValue("I1", "2DO PRECIO")->getColumnDimension('I')->setWidth(20);
+		$hoja->setCellValue("E1", "PRECIO MÁXIMO")->getColumnDimension('E')->setWidth(20);
+		$hoja->setCellValue("F1", "PRECIO PROMEDIO")->getColumnDimension('F')->setWidth(20);
+		$hoja->setCellValue("G1", "PROVEEDOR")->getColumnDimension('G')->setWidth(25);
+		$hoja->setCellValue("H1", "PRECIO MENOR")->getColumnDimension('H')->setWidth(20);
+		$hoja->setCellValue("I1", "OBSERVACIÓN")->getColumnDimension('I')->setWidth(50);
 		$hoja->setCellValue("J1", "2DO PROVEEDOR")->getColumnDimension('J')->setWidth(25);
-		$hoja->setCellValue("K1", "PROMOCIÓN")->getColumnDimension('K')->setWidth(50);
-
+		$hoja->setCellValue("K1", "2DO PRECIO")->getColumnDimension('K')->setWidth(20);
+		$hoja->setCellValue("L1", "2DA OBSERVACIÓN")->getColumnDimension('L')->setWidth(50);
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where);
+		$fecha = date('Y-m-d');
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
 
 		$row_print =3;
 		if ($cotizacionesProveedor){
@@ -166,18 +167,19 @@ class Cotizaciones extends MY_Controller {
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("B{$row_print}:K{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
 						$hoja->setCellValue("C{$row_print}", $row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
 						$hoja->setCellValue("D{$row_print}", $row['precio_four'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("E{$row_print}", $row['precio_first'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("F{$row_print}", $row['proveedor_first'])->getStyle("F{$row_print}");
-						$hoja->setCellValue("G{$row_print}", $row['precio_maximo'])->getStyle("G{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("H{$row_print}", $row['precio_promedio'])->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("I{$row_print}", $row['precio_next'])->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("E{$row_print}", $row['precio_maximo'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("F{$row_print}", $row['precio_promedio'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("G{$row_print}", $row['proveedor_first'])->getStyle("G{$row_print}");
+						$hoja->setCellValue("H{$row_print}", $row['precio_first'])->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("I{$row_print}", $row['promocion_first'])->getStyle("I{$row_print}");
 						$hoja->setCellValue("J{$row_print}", $row['proveedor_next'])->getStyle("J{$row_print}");
-						$hoja->setCellValue("K{$row_print}", $row['promocion_first'])->getStyle("K{$row_print}");
+						$hoja->setCellValue("K{$row_print}", $row['precio_next'])->getStyle("K{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("L{$row_print}", $row['promocion_next'])->getStyle("L{$row_print}");
 						$row_print ++;
 					}
 				}
@@ -298,7 +300,7 @@ class Cotizaciones extends MY_Controller {
 			["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
 				 AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"			=>	"INNER"],
 			["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
-				AND cotizaciones.precio >= ctz_first.precio AND cotizaciones.id_cotizacion <> ctz_first.id_cotizacion  AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." LIMIT 1)",	"clausula"						=>	"LEFT"],
+				AND cotizaciones.precio >= ctz_first.precio AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor LIMIT 1)",	"clausula"						=>	"LEFT"],
 			["table"	=>	"usuarios proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id_usuario",	"clausula"	=>	"INNER"],
 			["table"	=>	"usuarios proveedor_next",	"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id_usuario",	"clausula"	=>	"LEFT"],
 		];
@@ -324,19 +326,19 @@ class Cotizaciones extends MY_Controller {
 				$row[] = $value->producto;
 				$row[] = ($value->precio_sistema > 0) ? '$ '.number_format($value->precio_sistema,2,'.',',') : '';
 				$row[] = ($value->precio_four > 0) ? '$ '.number_format($value->precio_four,2,'.',',') : '';
-				$row[] = ($value->precio_first > 0) ? '$ '.number_format($value->precio_first,2,'.',',') : '';
-				$row[] = $value->proveedor_first;
 				$row[] = '$ '.number_format($value->precio_maximo,2,'.',',');
 				$row[] = '$ '.number_format($value->precio_promedio,2,'.',',');
-				$row[] = ($value->precio_next > 0) ? '$ '.number_format($value->precio_next,2,'.',',') : '';
+				$row[] = $value->proveedor_first;
+				$row[] = ($value->precio_first > 0) ? '$ '.number_format($value->precio_first,2,'.',',') : '';
+				$row[] = $value->observaciones_first;
 				$row[] = $value->proveedor_next;
-				$row[] = $value->promocion_first;
+				$row[] = ($value->precio_next > 0) ? '$ '.number_format($value->precio_next,2,'.',',') : '';
 				$row[] = $this->column_buttons($value->id_cotizacion);
 				$data[] = $row;
 			}
 		}
 		$salida = [
-			// "query"				=>	$this->db->last_query(),
+			"query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
 			"recordsTotal"		=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
 			"recordsFiltered"	=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),

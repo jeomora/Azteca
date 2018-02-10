@@ -25,26 +25,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- 
-								<?php if ($productos): ?>
-									<?php foreach ($productos as $key => $value): ?>
-										<tr>
-											<th><?php echo $value->id_producto ?></th>
-											<td><?php echo $value->codigo ?></td>
-											<td><?php echo $value->producto ?></td>
-											<td><?php echo $value->familia ?></td>
-											<td>
-												<button id="update_producto" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-producto="<?php echo $value->id_producto ?>">
-													<i class="fa fa-pencil"></i>
-												</button>
-												<button id="delete_producto" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-producto="<?php echo $value->id_producto ?>">
-													<i class="fa fa-trash"></i>
-												</button>
-											</td>
-										</tr>
-									<?php endforeach ?>
-								<?php endif ?> 
-								-->
+
 							</tbody>
 						</table>
 				</div>
