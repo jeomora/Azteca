@@ -1,9 +1,33 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<div class="wrapper wrapper-content animated fadeInRight">
+<style type="text/css" media="screen">
+	.preciomas{
+		width: 8.2rem;
+	    height: 13.2rem;
+	    background-color: #ea9696;
+	    color: red;
+	    font-size: 1.5rem;
+	    line-height: 13.2rem;
+	    font-weight: bold;
+	    margin: -8px;
+	    text-align: center;
+	}
+	.preciomenos{
+		width: 8.2rem;
+	    height: 13.2rem;
+	    background-color: #96eaa8;
+	    color: green;
+	    font-size: 1.5rem;
+	    line-height: 13.2rem;
+	    font-weight: bold;
+	    margin: -8px;
+	    text-align: center;
+	}
+</style>
+<div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-12" style="padding: 0">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
 					<h5>LISTADO DE COTIZACIONES</h5>
@@ -44,6 +68,7 @@
 									<th>OBSERVACIÓN</th>
 									<th>2DO PROVEEDOR</th>
 									<th>PRECIO 2</th>
+									<th>OBSERVACIÓN</th>
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>

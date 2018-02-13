@@ -7,6 +7,7 @@ class Cotizaciones extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Productos_model", "prod_mdl");
+		$this->load->model("Usuarios_model", "usua_mdl");
 	}
 
 	public function index(){
@@ -130,7 +131,19 @@ class Cotizaciones extends MY_Controller {
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
-							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Aceptar
+							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;Eliminar
+						</button>";
+		$this->jsonResponse($data);
+	}
+
+	public function set_pedido($id){
+		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
+		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["proveedor"] = $this->usua_mdl->get(NULL, ['id_usuario'=>$data["cotizacion"]->id_proveedor])[0];
+		$data["title"]="HACER PEDIDO ".$data['producto']->nombre;
+		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
+							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;Eliminar
 						</button>";
 		$this->jsonResponse($data);
 	}
@@ -290,6 +303,7 @@ class Cotizaciones extends MY_Controller {
 			UPPER(CONCAT(proveedor_next.nombre,' ',proveedor_next.apellido)) AS proveedor_next,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
+			ctz_next.observaciones AS observaciones_next,
 			AVG(cotizaciones.precio) AS precio_promedio";
 
 		$joins = [
@@ -329,10 +343,19 @@ class Cotizaciones extends MY_Controller {
 				$row[] = '$ '.number_format($value->precio_maximo,2,'.',',');
 				$row[] = '$ '.number_format($value->precio_promedio,2,'.',',');
 				$row[] = $value->proveedor_first;
-				$row[] = ($value->precio_first > 0) ? '$ '.number_format($value->precio_first,2,'.',',') : '';
+				if($value->precio_first <= $value->precio_sistema){
+					$row[] = ($value->precio_first > 0) ? '<div class="preciomenos">$ '.number_format($value->precio_first,2,'.',',').'</div>' : '';
+				}else{
+					$row[] = ($value->precio_first > 0) ? '<div class="preciomas">$ '.number_format($value->precio_first,2,'.',',').'</div>' : '';
+				}
 				$row[] = $value->observaciones_first;
 				$row[] = $value->proveedor_next;
-				$row[] = ($value->precio_next > 0) ? '$ '.number_format($value->precio_next,2,'.',',') : '';
+				if($value->precio_next <= $value->precio_sistema){
+					$row[] = ($value->precio_next > 0) ? '<div class="preciomenos">$ '.number_format($value->precio_next,2,'.',',').'</div>' : '';
+				}else{
+					$row[] = ($value->precio_next > 0) ? '<div class="preciomas">$ '.number_format($value->precio_next,2,'.',',').'</div>' : '';
+				}
+				$row[] = $value->observaciones_next;
 				$row[] = $this->column_buttons($value->id_cotizacion);
 				$data[] = $row;
 			}
@@ -354,6 +377,9 @@ class Cotizaciones extends MY_Controller {
 		$botones.='&nbsp;<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'.$id_cotizacion.'">
 							<i class="fa fa-trash"></i>
 						</button>';
+		$botones.='&nbsp;<button id="new_pedido" class="btn btn-success" data-toggle="tooltip" title="Pedidos" data-id-cotizacion="'.$id_cotizacion.'">
+			<i class="fa fa-shopping-cart"></i>
+		</button>';
 		return $botones;
 	}
 

@@ -150,6 +150,17 @@ $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion",
 	sendForm("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
 });
 
+$(document).off("click", "#new_pedido").on("click", "#new_pedido", function(event){
+	event.preventDefault();
+	var id_cotizacion = $(this).closest("tr").find("#new_pedido").data("idCotizacion");
+	getModal("Cotizaciones/set_pedido/"+ id_cotizacion, function (){ });
+});
+
+$(document).off("click", ".new_pedido").on("click", ".new_pedido", function(event) {
+	event.preventDefault();
+	sendForm("Cotizaciones/get_delete", $("#form_cotizacion_delete"), "");
+});
+
 $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
 	event.preventDefault();
 	blockPage();
