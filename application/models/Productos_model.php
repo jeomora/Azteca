@@ -39,6 +39,33 @@ class Productos_model extends MY_Model {
 		}
 	}
 
+
+	public function getProducto($where = []){
+		$this->db->select("
+			productos.id_producto as ides,
+			productos.nombre AS names")
+		->from($this->TABLE_NAME)
+		->where($this->TABLE_NAME.".estatus", 1);
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
 	
 
 }

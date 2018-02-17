@@ -24,6 +24,42 @@
 	    margin: -8px;
 	    text-align: center;
 	}
+	.filts{
+	    margin-left: 10rem;
+	    background-color: #24C6C8;
+	    color: white;
+	    border-radius: 5px;
+	    padding: 1rem;
+	    margin-top: 7px;
+	}
+	.btng{
+	    display:  inline-flex;
+	    margin-left:  5rem;
+	}
+	.slct{
+		border: 2px solid #24C6C8;
+	    border-top-left-radius: 5px;
+	    border-bottom-left-radius: 5px;
+	    padding: 1rem;
+	    height: 5rem
+	}
+	.filtro{
+		padding: 2rem;
+	    border: 2px solid #24C6C8;
+	    height: 5rem
+	}
+	.btsrch{
+	    background-color: #1D84C6;
+	    color: #fff;
+	    height: 5rem;
+	    width: 7rem;
+	}
+	div#table_cot_admin_processing {
+	    position: absolute;
+	    left: 38%;
+	    top: 10%;
+	}
+	.spinns{width:35rem;height:25rem;background-color:#FFF;text-align:center;line-height:25rem;border-radius: 5px;border: 3px solid #3b467b;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">
@@ -52,30 +88,27 @@
 							</button>
 						<?php echo form_close(); ?>
 					</div>
+					<div class="btn-group btng">
+						<select class="slct" name="slct" id="slct">
+							<option value="Seleccionar...">Seleccionar...</option>
+							<option value="Bajos">Precios más bajos</option>
+							<option value="Proveedor">Proveedor</option>
+							<option value="Familia">Familia</option>
+							<option value="Producto">Producto</option>
+						</select>
+						<select class="slct" name="slct2" id="slct2" style="border-top-left-radius: 0;border-bottom-left-radius: 0;display: none">
+						</select>
+					<button class="btn btsrch" name="srch" data-toggle="tooltip" title="Comprar a este proveedor" type="submit" style="display: none">
+						<i class="fa fa-shopping-cart"></i>
+					</button>
+					</div>
+					<div class="btn-group">
+						
+					</div>
 					<div class="table-responsive">
-						<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
-							<thead>
-								<tr>
-									<th>FAMILIAS</th>
-									<th>CÓDIGO</th>
-									<th>DESCRIPCIÓN</th>
-									<th>SISTEMA</th>
-									<th>PRECIO 4</th>
-									<th>PRECIO MAXIMO</th>
-									<th>PRECIO PROMEDIO</th>
-									<th>PROVEEDOR</th>
-									<th>PRECIO MENOR</th>
-									<th>OBSERVACIÓN</th>
-									<th>2DO PROVEEDOR</th>
-									<th>PRECIO 2</th>
-									<th>OBSERVACIÓN</th>
-									<th>ACCIÓN</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- Aqui cargamos el contenido -->
-							</tbody>
-						</table>
+						
+							
+						
 					</div>
 				</div>
 			</div>

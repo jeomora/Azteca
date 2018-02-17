@@ -3,12 +3,27 @@ $(function($) {
 		placement:'top'
 	});
 
+	
+	fillDataTable("table_cot_proveedores", 50);
+});
+$(document).ready(function() {
+	fillTablaBajos();
+});
+
+function fillTablaBajos() {
+	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
+	$("#table_cot_admin").html('<thead><tr><th>FAMILIAS</th><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th>'+
+								'<th>PRECIO 4</th><th>PRECIO MAXIMO</th><th>PRECIO PROMEDIO</th><th>PROVEEDOR</th>'+
+								'<th>PRECIO MENOR</th><th>OBSERVACIÓN</th><th>2DO PROVEEDOR</th><th>PRECIO 2</th>'+
+								'<th>OBSERVACIÓN</th><th>ACCIÓN</th></tr></thead><tbody></tbody>')
 	$("#table_cot_admin").dataTable({
 		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable",
+			url: site_url +"Cotizaciones/cotizaciones_dataTable/1/1",
 			type: "POST"
 		},
 		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
 		serverSide: true,
 		responsive: true,
 		pageLength: 50,
@@ -21,9 +36,88 @@ $(function($) {
 			{ extend: 'pageLength' },
 		]
 	});
+}
+function fillTablaFamilia(param1="") {
+	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
+	$("#table_cot_admin").html('<thead><tr><th>FAMILIAS</th><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th>'+
+								'<th>PRECIO 4</th><th>PRECIO MAXIMO</th><th>PRECIO PROMEDIO</th><th>PROVEEDOR</th>'+
+								'<th>PRECIO MENOR</th><th>OBSERVACIÓN</th><th>2DO PROVEEDOR</th><th>PRECIO 2</th>'+
+								'<th>OBSERVACIÓN</th><th>ACCIÓN</th></tr></thead><tbody></tbody>')
+	$("#table_cot_admin").dataTable({
+		ajax: {
+			url: site_url +"Cotizaciones/cotizaciones_dataTable/Familia/"+param1+"",
+			type: "POST"
+		},
+		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+		serverSide: true,
+		responsive: true,
+		pageLength: 50,
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
+		buttons: [
+			{ extend: 'pageLength' },
+		]
+	});
+}
+function fillTablaProveedor(param1="") {
+	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
+	$("#table_cot_admin").html('<thead><tr><th>FAMILIAS</th><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th>'+
+								'<th>PRECIO 4</th><th>PRECIO</th><th>OBSERVACIÓN</th>'+
+								'<th>ACCIÓN</th></tr></thead><tbody></tbody>')
+	$("#table_cot_admin").dataTable({
+		ajax: {
+			url: site_url +"Cotizaciones/cotizaciones_dataTable/Proveedor/"+param1+"",
+			type: "POST"
+		},
+		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+		serverSide: true,
+		responsive: true,
+		pageLength: 50,
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
+		buttons: [
+			{ extend: 'pageLength' },
+		]
+	});
+}
 
-	fillDataTable("table_cot_proveedores", 50);
-});
+function fillTablaProducto(param1="") {
+	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
+	$("#table_cot_admin").html('<thead><tr><th>CÓDIGO</th><th>SISTEMA</th>'+
+								'<th>PRECIO 4</th><th>PROVEEDOR</th><th>PRECIO</th><th>OBSERVACIÓN</th>'+
+								'<th>ACCIÓN</th></tr></thead><tbody></tbody>')
+	$("#table_cot_admin").dataTable({
+		ajax: {
+			url: site_url +"Cotizaciones/cotizaciones_dataTable/Producto/"+param1+"",
+			type: "POST"
+		},
+		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+		serverSide: true,
+		responsive: true,
+		pageLength: 50,
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
+		buttons: [
+			{ extend: 'pageLength' },
+		]
+	});
+}
+
 
 $(window).on("load", function (event) {
 	$("[data-toggle='tooltip']").tooltip({
@@ -158,8 +252,111 @@ $(document).off("click", "#new_pedido").on("click", "#new_pedido", function(even
 
 $(document).off("click", ".new_pedido").on("click", ".new_pedido", function(event) {
 	event.preventDefault();
-	sendForm("Cotizaciones/get_delete", $("#form_cotizacion_delete"), "");
+	sendForm("Cotizaciones/hacer_pedido", $("#form_pedido_new"), "");
 });
+
+$(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
+	event.preventDefault();
+	var id_cotizacion = $("#slct2 option:selected").val();
+	var proveedor = $("#slct2 option:selected").text();
+	getModal("Cotizaciones/set_pedido_prov/"+ id_cotizacion, function (){ });
+	var rows= "";
+	getProductos(id_cotizacion)
+		.done(function (response) { 
+			var size = response.length;
+			$("#body_response").empty();
+			if (jQuery.isEmptyObject(response)) {
+				toastr.warning("El Proveedor "+proveedor+" no tiene Productos cotizados", user_name);
+			}else{
+				$.each(response, function(index, val) {
+					rows += "<tr>"
+								+"<td> <input type='checkbox' value="+val.id_producto+" class='id_producto'> </td>"
+								+"<td>"+val.producto+"</td>"
+								+"<td>"
+			 						+"<div class='input-group m-b'>"
+										+"<span class='input-group-addon'><i class='fa fa-dollar'></i></span>"
+										+"<input type='text' value="+formatNumber(parseFloat(val.precio), 2)+" class='form-control precio' readonly=''>"
+									+"</div>"
+								+"</td>"	
+								+"<td>"
+									+"<div class='input-group m-b'>"
+										+"<span class='input-group-addon'><i class='fa fa-slack'></i></span>"
+										+"<input type='text' value='' class='form-control cantidad numeric'  readonly=''> "
+									+"</div>"
+								+"</td>"
+								+"<td>"
+									+"<div class='input-group m-b'>"
+										+"<span class='input-group-addon'><i class='fa fa-dollar'></i></span>"
+										+"<input type='text' value='' class='form-control importe numeric' readonly=''>"
+									+"</div>"
+								+"</td>"
+							+"</tr>";
+				});
+				$("#body_response").append(rows);
+				$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+				toastr.success("El Proveedor "+proveedor+" tiene "+size+" Productos cotizados", user_name);
+			}
+		})
+		.fail(function (response) {
+			// body...
+		});
+});
+
+function getProductos(id_prov) {
+	return $.ajax({
+		url: site_url+"/Pedidos/get_productos",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: id_prov},
+	});
+}
+
+$(document).off("click", ".new_pedido").on("click", ".new_pedido", function(event) {
+	event.preventDefault();
+	sendForm("Cotizaciones/hacer_pedido", $("#form_pedido_new"), "");
+});
+
+var marcados =0;
+$(document).off("change", ".id_producto").on("change", ".id_producto", function() {
+	var tr = $(this).closest("tr");
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+	if($(this).is(":checked")) {
+		marcados = marcados + 1;
+		tr.find(".cantidad").removeAttr('readonly');
+		tr.find(".id_producto ").attr('name', 'id_producto[]');
+		tr.find(".precio ").attr('name', 'precio[]');
+		tr.find(".cantidad ").attr('name', 'cantidad[]');
+		tr.find(".importe ").attr('name', 'importe[]');
+	}else{
+		$(this).removeAttr("checked");
+		marcados = marcados - 1;
+		tr.find(".cantidad").attr('readonly', 'readonly');
+		tr.find(".cantidad").removeAttr('name').val('');
+		tr.find(".importe").removeAttr('name').val('');
+		tr.find(".id_producto ").removeAttr('name');
+	}
+});
+
+$(document).off("keyup", ".cantidad").on("keyup", ".cantidad", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var cantidad = tr.find(".cantidad").val().replace(/[^0-9\.]+/g,"");
+
+	if($(this).val().replace(/[^0-9\.]+/g,"") > 0){
+		tr.find(".importe").val(precio * cantidad);
+		$("#total").val((calculaTotales()));
+	}
+});
+
+function calculaTotales() {
+	var total =0;
+	$.each($(".importe"), function(index, val) {
+		if (Number($(this).val().replace(/[^0-9\.]+/g,"")) !== '') {
+			total += Number($.trim($(val).val().replace(/[^0-9\.]+/g,"")));
+		}
+	});
+	return total;
+}
 
 $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
 	event.preventDefault();
@@ -202,6 +399,56 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 			}
 		});
 });
+$(document).off("change","#slct").on("change","#slct", function (){
+	var rows = "";
+	var opcion = $("#slct option:selected").val();
+	if(opcion == "Bajos"){
+		fillTablaBajos();
+		$("#slct2").css("display","none");
+	}else if (opcion !== "Seleccionar...") {
+		$("#slct2").css("display","block");
+		getDatas(opcion)
+		.done(function(response){
+			var size = response.length;
+			if (jQuery.isEmptyObject(response)) {
+				toastr.warning("Sin Resultados", user_name);
+				$("#slct2").attr('readonly', 'readonly');
+			}else{
+				rows += '<option value="Seleccionar...">Seleccionar...</option>'
+				$.each(response, function(index, val){
+					rows += '<option value="'+val.ides+'">'+val.names+'</option>'
+				});
+				$("#slct2").removeAttr('readonly');
+				$("#slct2").html(rows);
+			}
+		});
+	}else{
+		$("#slct2").css("display","none");
+	}
+});
+
+$(document).off("change","#slct2").on("change","#slct2", function (){
+	var rows = "";
+	var opcion = $("#slct option:selected").val();
+	var ides = $("#slct2 option:selected").val();
+	if(opcion == "Familia"){
+		fillTablaFamilia(ides);
+	}else if (opcion == "Proveedor") {
+		fillTablaProveedor(ides);
+		$(".btsrch").css("display","block")
+	}else if (opcion == "Producto") {
+		fillTablaProducto(ides);
+	}
+
+});
+
+function getDatas(searchs) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/get"+searchs+"",
+		type: "POST",
+		dataType: "JSON"
+	});
+}
 
 function uploadPrecios(formData) {
 	return $.ajax({

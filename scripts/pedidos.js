@@ -50,7 +50,7 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 	var rows = "";
 	var proveedor = $("#id_proveedor option:selected").text();
 	getProductos($(this).val())
-		.done(function (response) {
+		.done(function (response) { 
 			var size = response.length;
 			$("#body_response").empty();
 			if (jQuery.isEmptyObject(response)) {
@@ -61,7 +61,7 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 								+"<td> <input type='checkbox' value="+val.id_producto+" class='id_producto'> </td>"
 								+"<td>"+val.producto+"</td>"
 								+"<td>"
-									+"<div class='input-group m-b'>"
+			 						+"<div class='input-group m-b'>"
 										+"<span class='input-group-addon'><i class='fa fa-dollar'></i></span>"
 										+"<input type='text' value="+formatNumber(parseFloat(val.precio), 2)+" class='form-control precio' readonly=''>"
 									+"</div>"

@@ -95,6 +95,8 @@ class Productos extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	
+
 	public function get_update($id){
 		$data["title"]="ACTUALIZAR DATOS DEL PRODUCTO";
 		$data["producto"] = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
