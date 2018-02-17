@@ -179,18 +179,6 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
-	public function set_pedido_prov($id){
-		$data["proveedor"] = $this->usua_mdl->getHim(NULL,$id);
-		$where = ["cotizaciones.id_proveedor" => $id];
-		$data["productos"] = $this->ct_mdl->productos_proveedor($where);
-		$data["title"]="PEDIDOS A  ".$data["proveedor"]->names;
-		$data["view"]=$this->load->view("Cotizaciones/pedidos_proveedor", $data, TRUE);
-		$data["button"]="<button class='btn btn-success new_pedido' type='button'>
-							<span class='bold'><i class='fa fa-shopping-cart'></i></span> &nbsp;Hacer Pedido
-						</button>";
-		$this->jsonResponse($data);
-	}
-
 	public function fill_excel(){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
@@ -345,9 +333,68 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function set_pedido_prov($id){
+		$data["proveedor"] = $this->usua_mdl->getHim(NULL,$id);
+		$where = ["cotizaciones.id_proveedor" => $id];
+		$data["productos"] = $this->ct_mdl->productos_proveedor($where);
+		$data["title"]="PEDIDOS A  ".$data["proveedor"]->names;
+		$data["view"]=$this->load->view("Cotizaciones/pedidos_proveedor", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_pedido' type='button'>
+							<span class='bold'><i class='fa fa-shopping-cart'></i></span> &nbsp;Hacer Pedido
+						</button>";
+		$this->jsonResponse($data);
+	}
+
+	public function set_pedido_provs($id){
+
+		ini_set("memory_limit", "-1");
+		$search = ["productos.nombre", "cotizaciones.precio", "cotizaciones.observaciones"];
+		$columns = "usuarios.id_usuario, productos.id_producto, productos.nombre AS producto, cotizaciones.precio AS precio, cotizaciones.observaciones";
+		$joins = [
+			["table"	=>	"usuarios",			"ON"	=>	"cotizaciones.id_proveedor = usuarios.id_usuario",	"clausula"	=>	"INNER"],
+			["table"	=>	"productos",		"ON"	=>	"cotizaciones.id_producto = productos.id_producto",	"clausula"	=>	"INNER"]
+		];
+		$where = [
+				["clausula"	=>	"WEEKOFYEAR(cotizaciones.fecha_registro)",	"valor"	=>	$this->weekNumber()],
+				["clausula"	=>	"cotizaciones.id_proveedor",	"valor"	=>	$id],
+				["clausula"	=>	"cotizaciones.estatus",	"valor"	=>	1]
+		];
+		$order="productos.nombre";
+		$group ="productos.id_producto";
+		$cotizacionesProveedor = $this->ct_mdl->get_pagination($columns, $joins, $where, $search, $group, $order);
+
+		$data =[];
+		$no = $_POST["start"];
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value) {
+				$no ++;
+				$row = [];
+				$row[] = "<td> <input type='checkbox' value=".$value->id_producto." class='id_producto'> </td>";
+				$row[] = $value->producto;
+				$row[] = ($value->precio > 0) ? '$ '.number_format($value->precio,2,'.',',') : '';
+				$row[] = $value->observaciones;
+				$row[] = "<div class='input-group m-b'>
+						 <span class='input-group-addon'><i class='fa fa-slack'></i></span>
+						 <input type='text' value='' class='form-control cantidad numeric'  readonly=''> 
+						 </div>";
+				$row[] = "<div class='input-group m-b'>
+						 <span class='input-group-addon'><i class='fa fa-dollar'></i></span>
+						 <input type='text' value='' class='form-control importe numeric' readonly=''>
+						 </div>";
+				$data[] = $row;
+			}
+		}	
+		$salida = [
+			"query"				=>	$this->db->last_query(),
+			"draw"				=>	$_POST['draw'],
+			"recordsTotal"		=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
+			"recordsFiltered"	=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
+			"data" => $data];
+		$this->jsonResponse($salida);
+	}
+
 	public function cotizaciones_dataTable($param1="",$param2=""){
 		ini_set("memory_limit", "-1");
-
 		if($param1 == "Proveedor"){
 			$search = ["familias.nombre", "productos.codigo","cotizaciones.precio_sistema", "cotizaciones.precio",
 			 "cotizaciones.observaciones", "cotizaciones.precio_four","usuarios.nombre"];
@@ -401,14 +448,6 @@ class Cotizaciones extends MY_Controller {
 				["table"	=>	"usuarios proveedor_next",	"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id_usuario",	"clausula"	=>	"LEFT"],
 			];
 		}
-
-		
-
-		
-
-		
-		
-
 		if($param1 == "Familia"){
 			$where = [
 				["clausula"	=>	"cotizaciones.estatus",	"valor"	=>	1],

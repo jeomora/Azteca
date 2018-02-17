@@ -259,47 +259,29 @@ $(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
 	event.preventDefault();
 	var id_cotizacion = $("#slct2 option:selected").val();
 	var proveedor = $("#slct2 option:selected").text();
-	getModal("Cotizaciones/set_pedido_prov/"+ id_cotizacion, function (){ });
-	var rows= "";
-	getProductos(id_cotizacion)
-		.done(function (response) { 
-			var size = response.length;
-			$("#body_response").empty();
-			if (jQuery.isEmptyObject(response)) {
-				toastr.warning("El Proveedor "+proveedor+" no tiene Productos cotizados", user_name);
-			}else{
-				$.each(response, function(index, val) {
-					rows += "<tr>"
-								+"<td> <input type='checkbox' value="+val.id_producto+" class='id_producto'> </td>"
-								+"<td>"+val.producto+"</td>"
-								+"<td>"
-			 						+"<div class='input-group m-b'>"
-										+"<span class='input-group-addon'><i class='fa fa-dollar'></i></span>"
-										+"<input type='text' value="+formatNumber(parseFloat(val.precio), 2)+" class='form-control precio' readonly=''>"
-									+"</div>"
-								+"</td>"	
-								+"<td>"
-									+"<div class='input-group m-b'>"
-										+"<span class='input-group-addon'><i class='fa fa-slack'></i></span>"
-										+"<input type='text' value='' class='form-control cantidad numeric'  readonly=''> "
-									+"</div>"
-								+"</td>"
-								+"<td>"
-									+"<div class='input-group m-b'>"
-										+"<span class='input-group-addon'><i class='fa fa-dollar'></i></span>"
-										+"<input type='text' value='' class='form-control importe numeric' readonly=''>"
-									+"</div>"
-								+"</td>"
-							+"</tr>";
-				});
-				$("#body_response").append(rows);
-				$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
-				toastr.success("El Proveedor "+proveedor+" tiene "+size+" Productos cotizados", user_name);
-			}
-		})
-		.fail(function (response) {
-			// body...
-		});
+	getModal("Cotizaciones/set_pedido_prov/"+ id_cotizacion, function (){
+		$("#table_provs").dataTable({
+		ajax: {
+			url: site_url +"Cotizaciones/set_pedido_provs/"+id_cotizacion+"",
+			type: "POST"
+		},
+		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+		serverSide: true,
+		responsive: true,
+		pageLength: 50,
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
+		buttons: [
+			{ extend: 'pageLength' },
+		]
+	});
+	});
+	
 });
 
 function getProductos(id_prov) {

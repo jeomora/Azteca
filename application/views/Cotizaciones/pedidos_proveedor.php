@@ -1,3 +1,8 @@
+<style type="text/css" media="screen">
+.modal-lg {
+    width: 1200px;
+}
+</style>
 <div class="ibox-content">
 	<div class="row">
 		
@@ -8,14 +13,15 @@
 
 		<div class="row">
 			<div class="col-sm-12">
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="table_provs">
 					<thead>
 						<tr>
-							<th>NO</th>
-							<th>NOMBRE</th>
-							<th>PRECIO</th>
-							<th>CANTIDAD</th>
-							<th>IMPORTE</th>
+							<th style="width: 20px !important;">NO</th>
+							<th style="width: 250px !important">NOMBRE</th>
+							<th style="width: 250px !important">PRECIO</th>
+							<th style="width: 250px !important">OBSERVACIÓN</th>
+							<th style="width: 250px !important">CANTIDAD</th>
+							<th style="width: 250px !important">IMPORTE</th>
 						</tr>
 					</thead>
 					<tbody id="body_response">
