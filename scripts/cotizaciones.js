@@ -6,9 +6,7 @@ $(function($) {
 	
 	fillDataTable("table_cot_proveedores", 50);
 });
-$(document).ready(function() {
-	fillTablaBajos();
-});
+
 
 function fillTablaBajos() {
 	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
@@ -270,16 +268,17 @@ $(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
             processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
 		serverSide: true,
 		responsive: true,
-		pageLength: 50,
+		pageLength: -1,
+		stateSave: true,
+		searching: false,
+		order: [],
 		dom: 'Bfrtip',
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
+		lengthMenu: [],
 		buttons: [
-			{ extend: 'pageLength' },
+			{  },
 		]
 	});
+	$("th").removeClass('sorting');
 	});
 	
 });
@@ -387,8 +386,10 @@ $(document).off("change","#slct").on("change","#slct", function (){
 	if(opcion == "Bajos"){
 		fillTablaBajos();
 		$("#slct2").css("display","none");
+		$(".btsrch").css("display","none");
 	}else if (opcion !== "Seleccionar...") {
 		$("#slct2").css("display","block");
+		$(".btsrch").css("display","none")
 		getDatas(opcion)
 		.done(function(response){
 			var size = response.length;
@@ -406,6 +407,7 @@ $(document).off("change","#slct").on("change","#slct", function (){
 		});
 	}else{
 		$("#slct2").css("display","none");
+		$(".btsrch").css("display","none");
 	}
 });
 

@@ -371,7 +371,10 @@ class Cotizaciones extends MY_Controller {
 				$row = [];
 				$row[] = "<td> <input type='checkbox' value=".$value->id_producto." class='id_producto'> </td>";
 				$row[] = $value->producto;
-				$row[] = ($value->precio > 0) ? '$ '.number_format($value->precio,2,'.',',') : '';
+				$row[] = "<div class='input-group m-b'>
+						 <span class='input-group-addon'><i class='fa fa-dollar'></i></span>
+						 <input type='text' value='$ ".number_format($value->precio,2,'.',',')."' class='form-control precio numeric' readonly=''>
+						 </div>";
 				$row[] = $value->observaciones;
 				$row[] = "<div class='input-group m-b'>
 						 <span class='input-group-addon'><i class='fa fa-slack'></i></span>

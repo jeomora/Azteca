@@ -1,6 +1,18 @@
 <style type="text/css" media="screen">
 .modal-lg {
-    width: 1200px;
+    width: 100%;
+}
+.modal-dialog{
+	margin: 0px auto !important;
+}
+table#table_provs {
+    width: 112rem !important;
+}
+th.sorting {
+    width: 110px !important;
+}
+th.sorting_asc {
+    width: 20px !important;
 }
 </style>
 <div class="ibox-content">
@@ -34,16 +46,6 @@
 			<div class="col-sm-12">
 				<table>
 					<tfoot>
-						<tr>
-							<td colspan="3"></td>
-							<th>IVA</th>
-							<td>
-								<div class="input-group m-b">
-									<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-									<input type="text" id="iva" value="" class="form-control numeric" placeholder="0.00" readonly="">
-								</div>
-							</td>
-						</tr>
 						<tr>
 							<td colspan="3"></td>
 							<th>Total</th>
