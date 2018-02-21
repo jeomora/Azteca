@@ -265,17 +265,22 @@ $(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
 		},
 		processing: true,
 		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '
+        },
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '
+        },
+        bSort : false,
 		serverSide: true,
 		responsive: true,
-		pageLength: -1,
-		stateSave: true,
-		searching: false,
-		order: [],
+		pageLength: 50,
 		dom: 'Bfrtip',
-		lengthMenu: [],
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
 		buttons: [
-			{  },
+			{ extend: 'pageLength' },
 		]
 	});
 	$("th").removeClass('sorting');

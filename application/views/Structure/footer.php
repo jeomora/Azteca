@@ -50,7 +50,7 @@
 		<div class="modal-content animated flipInY">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">
-					<i class="fa fa-times-circle-o"></i>
+					<i class="fa fa-close"></i>
 				</button>
 				<h4 class="modal-title">TÍTULO</h4>
 			</div>

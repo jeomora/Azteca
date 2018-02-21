@@ -375,7 +375,6 @@ class Cotizaciones extends MY_Controller {
 						 <span class='input-group-addon'><i class='fa fa-dollar'></i></span>
 						 <input type='text' value='$ ".number_format($value->precio,2,'.',',')."' class='form-control precio numeric' readonly=''>
 						 </div>";
-				$row[] = $value->observaciones;
 				$row[] = "<div class='input-group m-b'>
 						 <span class='input-group-addon'><i class='fa fa-slack'></i></span>
 						 <input type='text' value='' class='form-control cantidad numeric'  readonly=''> 
