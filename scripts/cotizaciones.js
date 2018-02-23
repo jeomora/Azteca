@@ -267,9 +267,6 @@ $(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
 		language: {
             processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '
         },
-		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '
-        },
         bSort : false,
 		serverSide: true,
 		responsive: true,
@@ -285,7 +282,7 @@ $(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
 	});
 	$("th").removeClass('sorting');
 	});
-	
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
 });
 
 function getProductos(id_prov) {
@@ -302,7 +299,29 @@ $(document).off("click", ".new_pedido").on("click", ".new_pedido", function(even
 	sendForm("Cotizaciones/hacer_pedido", $("#form_pedido_new"), "");
 });
 
-var marcados =0;
+$(document).off("click", "#add_me").on("click", "#add_me", function() {
+	var tr = $(this).closest("tr");
+	if(tr.find(".cantidad").val() !== ""){
+		var table = $('#table_provss').DataTable();
+		var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+		table.row.add( [ tr.children('td:first').text(),tr.find(".precio").val(), tr.find(".cantidad").val(),"$ "+(tr.find(".cantidad").val() * precio).toFixed(2)] ).draw();
+		var total = $("#totals").val();
+		console.log(jQuery.type(total));
+		total = parseFloat(total) + (tr.find(".cantidad").val() * precio);
+		console.log(tr.find(".cantidad").val() * precio);
+		$("#totals").val((total*1).toFixed(2));
+		tr.remove();
+	}
+
+});
+
+$(document).off("click", "#remove_me").on("click", "#remove_me", function() {
+	var tr = $(this).closest("tr");
+	if (confirm("¿Estas seguro de eliminar "+tr.children('td:first').text()+"?") == true) {
+         tr.remove();
+     }
+});
+
 $(document).off("change", ".id_producto").on("change", ".id_producto", function() {
 	var tr = $(this).closest("tr");
 	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});

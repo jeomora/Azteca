@@ -369,20 +369,18 @@ class Cotizaciones extends MY_Controller {
 			foreach ($cotizacionesProveedor as $key => $value) {
 				$no ++;
 				$row = [];
-				$row[] = "<td> <input type='checkbox' value=".$value->id_producto." class='id_producto'> </td>";
 				$row[] = $value->producto;
 				$row[] = "<div class='input-group m-b'>
 						 <span class='input-group-addon'><i class='fa fa-dollar'></i></span>
 						 <input type='text' value='$ ".number_format($value->precio,2,'.',',')."' class='form-control precio numeric' readonly=''>
 						 </div>";
+				$row[] = $value->observaciones;
 				$row[] = "<div class='input-group m-b'>
 						 <span class='input-group-addon'><i class='fa fa-slack'></i></span>
-						 <input type='text' value='' class='form-control cantidad numeric'  readonly=''> 
+						 <input type='number' min='0' value='' class='form-control cantidad'> 
 						 </div>";
-				$row[] = "<div class='input-group m-b'>
-						 <span class='input-group-addon'><i class='fa fa-dollar'></i></span>
-						 <input type='text' value='' class='form-control importe numeric' readonly=''>
-						 </div>";
+				$row[] = '<td><button type="button" id="add_me" class="btn btn-info" data-toggle="tooltip" title="Agregar" data-id-cotizacion="'.$value->id_producto.'">
+						<i class="fa fa-plus"></i></button></td>';
 				$data[] = $row;
 			}
 		}	

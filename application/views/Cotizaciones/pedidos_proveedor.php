@@ -1,7 +1,7 @@
 <style type="text/css" media="screen">
 .modal-lg {width: 100%;}
 .modal-dialog{margin: 0px auto !important;}
-table#table_provs {width: 75rem !important;}
+table#table_provs {width: 80rem !important;}
 table#table_provss {width: 35rem !important;}
 th.sorting {width: 110px !important;}
 th.sorting_asc {width: 20px !important;}
@@ -22,6 +22,7 @@ i.fa.fa-close {color: #fff !important;font-size: 4rem;}
     background: rgba(0, 82, 27, 0.8); 
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
+th.sorting_disabled {width: 12rem !important;}
 ::-webkit-scrollbar-thumb:window-inactive {background: rgba(255,0,0,0.4); }
 </style>
 <div class="ibox-content">
@@ -35,11 +36,11 @@ i.fa.fa-close {color: #fff !important;font-size: 4rem;}
 				<table class="table table-bordered" id="table_provs">
 					<thead>
 						<tr>
-							<th style="width: 20px !important;">NO</th>
 							<th style="width: 150px !important">NOMBRE</th>
 							<th style="width: 150px !important">PRECIO</th>
+							<th style="width: 150px !important">PROMOCIÓN</th>
 							<th style="width: 150px !important">CANTIDAD</th>
-							<th style="width: 150px !important">IMPORTE</th>
+							<th style="width: 20px !important;">AGREGAR</th>
 						</tr>
 					</thead>
 					<tbody id="body_response">
@@ -53,6 +54,8 @@ i.fa.fa-close {color: #fff !important;font-size: 4rem;}
 						<tr>
 							<th style="width: 150px !important">NOMBRE</th>
 							<th style="width: 150px !important">PRECIO</th>
+							<th style="width: 150px !important">CANTIDAD</th>
+							<th style="width: 150px !important">IMPORTE</th>
 						</tr>
 					</thead>
 					<tbody id="body_respons">
@@ -69,7 +72,7 @@ i.fa.fa-close {color: #fff !important;font-size: 4rem;}
 							<td>
 								<div class="input-group m-b">
 									<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-									<input type="text" id="total" name="total" value="" class="form-control numeric" placeholder="0.00" readonly="">
+									<input type="number" id="totals" name="total" value="0" class="form-control" placeholder="0.00" readonly="">
 								</div>
 							</td>
 						</tr>
