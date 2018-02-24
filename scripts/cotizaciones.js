@@ -294,11 +294,6 @@ function getProductos(id_prov) {
 	});
 }
 
-$(document).off("click", ".new_pedido").on("click", ".new_pedido", function(event) {
-	event.preventDefault();
-	sendForm("Cotizaciones/hacer_pedido", $("#form_pedido_new"), "");
-});
-
 $(document).off("click", "#add_me").on("click", "#add_me", function() {
 	var tr = $(this).closest("tr");
 	if(tr.find(".cantidad").val() !== ""){
@@ -321,7 +316,7 @@ $(document).off("click", "#remove_me").on("click", "#remove_me", function() {
          tr.remove();
      }
 });
-
+/*
 $(document).off("change", ".id_producto").on("change", ".id_producto", function() {
 	var tr = $(this).closest("tr");
 	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
@@ -335,6 +330,24 @@ $(document).off("change", ".id_producto").on("change", ".id_producto", function(
 	}else{
 		$(this).removeAttr("checked");
 		marcados = marcados - 1;
+		tr.find(".cantidad").attr('readonly', 'readonly');
+		tr.find(".cantidad").removeAttr('name').val('');
+		tr.find(".importe").removeAttr('name').val('');
+		tr.find(".id_producto ").removeAttr('name');
+	}
+});*/
+
+$(document).off("change", ".id_producto").on("change", ".id_producto", function() {
+	var tr = $(this).closest("tr");
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+	if($(this).is(":checked")) {
+		tr.find(".cantidad").removeAttr('readonly');
+		tr.find(".id_producto ").attr('name', 'id_producto[]');
+		tr.find(".precio ").attr('name', 'precio[]');
+		tr.find(".cantidad ").attr('name', 'cantidad[]');
+		tr.find(".importe ").attr('name', 'importe[]');
+	}else{
+		$(this).removeAttr("checked");
 		tr.find(".cantidad").attr('readonly', 'readonly');
 		tr.find(".cantidad").removeAttr('name').val('');
 		tr.find(".importe").removeAttr('name').val('');
