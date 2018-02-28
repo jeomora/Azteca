@@ -3,25 +3,15 @@
 ?>
 <style type="text/css" media="screen">
 	.preciomas{
-		width: 8.2rem;
-	    height: 13.2rem;
-	    background-color: #ea9696;
+		background-color: #ea9696;
 	    color: red;
-	    font-size: 1.5rem;
-	    line-height: 13.2rem;
 	    font-weight: bold;
-	    margin: -8px;
 	    text-align: center;
 	}
 	.preciomenos{
-		width: 8.2rem;
-	    height: 13.2rem;
-	    background-color: #96eaa8;
+		background-color: #96eaa8;
 	    color: green;
-	    font-size: 1.5rem;
-	    line-height: 13.2rem;
 	    font-weight: bold;
-	    margin: -8px;
 	    text-align: center;
 	}
 	.filts{
@@ -59,7 +49,24 @@
 	    left: 38%;
 	    top: 10%;
 	}
+	td{width: 13rem !important;}
+	table{width: 129rem !important}
+
 	.spinns{width:35rem;height:25rem;background-color:#FFF;text-align:center;line-height:25rem;border-radius: 5px;border: 3px solid #3b467b;}
+	@media screen and (min-width: 1500px){
+	.preciomas{
+	    background-color: #ea9696;
+	    color: red;
+	    font-weight: bold;
+	    text-align: center;
+	}
+	.preciomenos{
+	    background-color: #96eaa8;
+	    color: green;
+	    font-weight: bold;
+	    text-align: center;
+	}
+	}	
 </style>
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">
@@ -88,27 +95,32 @@
 							</button>
 						<?php echo form_close(); ?>
 					</div>
-					<div class="btn-group btng">
-						<select class="slct" name="slct" id="slct">
-							<option value="Seleccionar...">Seleccionar...</option>
-							<option value="Bajos">Precios más bajos</option>
-							<option value="Proveedor">Proveedor</option>
-							<option value="Familia">Familia</option>
-							<option value="Producto">Producto</option>
-						</select>
-						<select class="slct" name="slct2" id="slct2" style="border-top-left-radius: 0;border-bottom-left-radius: 0;display: none">
-						</select>
-					<button class="btn btsrch" name="srch" data-toggle="tooltip" title="Comprar a este proveedor" type="submit" style="display: none">
-						<i class="fa fa-shopping-cart"></i>
-					</button>
-					</div>
-					<div class="btn-group">
-						
-					</div>
-					<div class="table-responsive">
-						
-							
-						
+					<div class="table-responsive"> 
+						<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
+							<thead>
+								<tr>
+									<th>FAMILIA</th>
+									<th>CÓDIGO</th>
+									<th>DESCRIPCIÓN</th>
+									<th>SISTEMA</th>
+									<th>PRECIO 4</th>
+									<th>FACTURA</th>
+									<th>C/PROMOCIÓN</th>
+									<th>PROVEEDOR</th>
+									<th>OBSERVACIÓN</th>
+									<th>PRECIO MAXIMO</th>
+									<th>PRECIO PROMEDIO</th>
+									<th>FACTURA</th>
+									<th>C/PROMOCIÓN</th>
+									<th>2DO PROVEEDOR</th>
+									<th>OBSERVACIÓN</th>
+									<th>ACCIÓN</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>

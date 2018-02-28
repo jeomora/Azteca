@@ -6,17 +6,15 @@ $(function($) {
 	
 	fillDataTable("table_cot_proveedores", 50);
 });
+$(document).ready(function(){
+	fillTablaBajos()
+});
 
 
 function fillTablaBajos() {
-	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
-	$("#table_cot_admin").html('<thead><tr><th>FAMILIAS</th><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th>'+
-								'<th>PRECIO 4</th><th>PRECIO MAXIMO</th><th>PRECIO PROMEDIO</th><th>PROVEEDOR</th>'+
-								'<th>PRECIO MENOR</th><th>OBSERVACIÓN</th><th>2DO PROVEEDOR</th><th>PRECIO 2</th>'+
-								'<th>OBSERVACIÓN</th><th>ACCIÓN</th></tr></thead><tbody></tbody>')
 	$("#table_cot_admin").dataTable({
 		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable/1/1",
+			url: site_url +"Cotizaciones/cotizaciones_dataTable",
 			type: "POST"
 		},
 		processing: true,
@@ -26,6 +24,7 @@ function fillTablaBajos() {
 		responsive: true,
 		pageLength: 50,
 		dom: 'Bfrtip',
+		bSort : false,
 		lengthMenu: [
 			[ 10, 30, 50, -1 ],
 			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
@@ -35,87 +34,6 @@ function fillTablaBajos() {
 		]
 	});
 }
-function fillTablaFamilia(param1="") {
-	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
-	$("#table_cot_admin").html('<thead><tr><th>FAMILIAS</th><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th>'+
-								'<th>PRECIO 4</th><th>PRECIO MAXIMO</th><th>PRECIO PROMEDIO</th><th>PROVEEDOR</th>'+
-								'<th>PRECIO MENOR</th><th>OBSERVACIÓN</th><th>2DO PROVEEDOR</th><th>PRECIO 2</th>'+
-								'<th>OBSERVACIÓN</th><th>ACCIÓN</th></tr></thead><tbody></tbody>')
-	$("#table_cot_admin").dataTable({
-		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable/Familia/"+param1+"",
-			type: "POST"
-		},
-		processing: true,
-		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
-		serverSide: true,
-		responsive: true,
-		pageLength: 50,
-		dom: 'Bfrtip',
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [
-			{ extend: 'pageLength' },
-		]
-	});
-}
-function fillTablaProveedor(param1="") {
-	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
-	$("#table_cot_admin").html('<thead><tr><th>FAMILIAS</th><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th>'+
-								'<th>PRECIO 4</th><th>PRECIO</th><th>OBSERVACIÓN</th>'+
-								'<th>ACCIÓN</th></tr></thead><tbody></tbody>')
-	$("#table_cot_admin").dataTable({
-		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable/Proveedor/"+param1+"",
-			type: "POST"
-		},
-		processing: true,
-		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
-		serverSide: true,
-		responsive: true,
-		pageLength: 50,
-		dom: 'Bfrtip',
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [
-			{ extend: 'pageLength' },
-		]
-	});
-}
-
-function fillTablaProducto(param1="") {
-	$(".table-responsive").html('<table class="table table-striped table-bordered table-hover" id="table_cot_admin"></table>');
-	$("#table_cot_admin").html('<thead><tr><th>CÓDIGO</th><th>SISTEMA</th>'+
-								'<th>PRECIO 4</th><th>PROVEEDOR</th><th>PRECIO</th><th>OBSERVACIÓN</th>'+
-								'<th>ACCIÓN</th></tr></thead><tbody></tbody>')
-	$("#table_cot_admin").dataTable({
-		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable/Producto/"+param1+"",
-			type: "POST"
-		},
-		processing: true,
-		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
-		serverSide: true,
-		responsive: true,
-		pageLength: 50,
-		dom: 'Bfrtip',
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [
-			{ extend: 'pageLength' },
-		]
-	});
-}
-
 
 $(window).on("load", function (event) {
 	$("[data-toggle='tooltip']").tooltip({

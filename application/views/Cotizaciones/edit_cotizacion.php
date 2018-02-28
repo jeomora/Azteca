@@ -13,23 +13,17 @@
 					<input type="text" class="form-control" value="<?php echo $cotizacion->producto ?>" readonly="">
 				</div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-4">
 				<div class="form-group">
-					<label for="fecha_caducidad">Fecha caducidad</label>
+					<label for="precio_promocion">Precio factura C/Promoción</label>
 					<div class="input-group">
-						<input type="text" name="fecha_caducidad" id="fecha_caducidad" class="form-control datepicker" value="<?php echo ($cotizacion->fecha_caduca != NULL) ? date('d-m-Y', strtotime($cotizacion->fecha_caduca)) : '' ?>" placeholder="00-00-0000">
+						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+						<input type="text" name="precio_promocion"  id="precio_promocion" class="form-control number" value="<?php echo $cotizacion->precio_promocion ?>" placeholder="0.00" readonly="">
+						<span class="validar"></span>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-2">
-				<div class="form-group">
-					<label for="existencias">Existencias</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-slack"></i></span>
-						<input type="text" name="existencias" id="existencias" class="form-control number" value="<?php echo $cotizacion->existencias ?>" placeholder="0">
-					</div>
-				</div>
-			</div>
+
 		</div>
 
 		<div class="row">
@@ -43,9 +37,9 @@
 						<input class="form-control numeric" placeholder="0" id="num_two" name="num_two" type="text" value="<?php echo $cotizacion->num_two ?>" readonly="">
 					</div>
 				</div>
-				<div class="form-group">
-					<input class="form-control" placeholder="Nombre de la promoción" name="nombre" id="nombre" type="text" value="<?php echo $cotizacion->promocion ?>" >
-				</div>
+			</div>
+			<div class="col-sm-4">
+				<label for="precio">Porcentaje descuento</label>
 				<div class="input-group m-b">
 					<span class="input-group-addon"> <input type="radio" class="descuento"> <b>Descuento</b> </span>
 					<input type="text" id="porcentaje" name="porcentaje" class="form-control numeric" value="<?php echo $cotizacion->descuento ?>" placeholder="0" readonly="">
@@ -60,17 +54,9 @@
 					<span class="validar"></span>
 				</div>
 			</div>
+
 		
-			<div class="col-sm-4">
-				<div class="form-group">
-					<label for="precio_promocion">Precio factura C/Promoción</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-						<input type="text" name="precio_promocion"  id="precio_promocion" class="form-control number" value="<?php echo $cotizacion->precio_promocion ?>" placeholder="0.00" readonly="">
-						<span class="validar"></span>
-					</div>
-				</div>
-			</div>
+
 			
 			<div class="col-sm-8">
 				<div class="form-group">

@@ -100,7 +100,7 @@ class Pedidos extends MY_Controller {
 		];
 		$this->jsonResponse($mensaje);
 	}
-
+ 
 	public function get_productos(){
 		$id_proveedor = $this->input->post('id_proveedor');
 		$where = ["cotizaciones.id_proveedor" => $id_proveedor];

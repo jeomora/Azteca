@@ -1,4 +1,4 @@
-$(function($) {
+<$(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
@@ -56,7 +56,7 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 			if (jQuery.isEmptyObject(response)) {
 				toastr.warning("El Proveedor "+proveedor+" no tiene Productos cotizados", user_name);
 			}else{
-				$.each(response, function(index, val) {
+				$.each(response, function(index, val) { 
 					rows += "<tr>"
 								+"<td> <input type='checkbox' value="+val.id_producto+" class='id_producto'> </td>"
 								+"<td>"+val.producto+"</td>"
