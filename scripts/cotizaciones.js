@@ -2,17 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-
-	
-	fillDataTable("table_cot_proveedores", 50);
-});
-$(document).ready(function(){
-	fillTablaBajos()
-});
-
-
-function fillTablaBajos() {
-	$("#table_cot_admin").dataTable({
+	/*$("#table_cot_admin").dataTable({
 		ajax: {
 			url: site_url +"Cotizaciones/cotizaciones_dataTable",
 			type: "POST"
@@ -32,8 +22,11 @@ function fillTablaBajos() {
 		buttons: [
 			{ extend: 'pageLength' },
 		]
-	});
-}
+	});*/
+	fillDataTable("table_cot_admin", 50);
+	
+	fillDataTable("table_cot_proveedores", 50);
+});
 
 $(window).on("load", function (event) {
 	$("[data-toggle='tooltip']").tooltip({
@@ -234,26 +227,75 @@ $(document).off("click", "#remove_me").on("click", "#remove_me", function() {
          tr.remove();
      }
 });
-/*
-$(document).off("change", ".id_producto").on("change", ".id_producto", function() {
+
+//Editar cotizaciones 
+$(document).off("change", ".id_cotz").on("change", ".id_cotz", function() {
 	var tr = $(this).closest("tr");
 	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
 	if($(this).is(":checked")) {
-		marcados = marcados + 1;
-		tr.find(".cantidad").removeAttr('readonly');
-		tr.find(".id_producto ").attr('name', 'id_producto[]');
-		tr.find(".precio ").attr('name', 'precio[]');
-		tr.find(".cantidad ").attr('name', 'cantidad[]');
-		tr.find(".importe ").attr('name', 'importe[]');
+		tr.find(".id_cotz ").removeAttr('readonly');
+		tr.find(".precio").removeAttr('readonly');
+		tr.find(".num_one").removeAttr('readonly');
+		tr.find(".num_two").removeAttr('readonly');
+		tr.find(".descuento").removeAttr('readonly');
+		tr.find(".observaciones").removeAttr('readonly');
+		tr.find(".id_cotz ").attr('name', 'id_cotz[]');
+		tr.find(".precio").attr('name', 'precio[]');
+		tr.find(".precio_promocion").attr('name', 'precio_promocion[]');
+		tr.find(".num_one").attr('name', 'num_one[]');
+		tr.find(".num_two").attr('name', 'num_two[]');
+		tr.find(".descuento").attr('name', 'descuento[]');
+		tr.find(".observaciones").attr('name', 'observaciones[]');
 	}else{
 		$(this).removeAttr("checked");
-		marcados = marcados - 1;
-		tr.find(".cantidad").attr('readonly', 'readonly');
-		tr.find(".cantidad").removeAttr('name').val('');
-		tr.find(".importe").removeAttr('name').val('');
-		tr.find(".id_producto ").removeAttr('name');
+		tr.find(".precio").attr('readonly', 'readonly');
+		tr.find(".num_one").attr('readonly', 'readonly');
+		tr.find(".num_two").attr('readonly', 'readonly');
+		tr.find(".descuento").attr('readonly', 'readonly');
+		tr.find(".observaciones").attr('readonly', 'readonly');
+
+		tr.find(".id_cotz ").removeAttr('name');
+		tr.find(".precio").removeAttr('name');
+		tr.find(".precio_promocion").removeAttr('name');
+		tr.find(".num_one").removeAttr('name');
+		tr.find(".num_two").removeAttr('name');
+		tr.find(".descuento").removeAttr('name');
+		tr.find(".observaciones").removeAttr('name');
 	}
-});*/
+});
+
+$(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
+	if($(this).val().replace(/[^0-9\.]+/g,"") > 0){
+		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+	}
+});
+$(document).off("keyup", ".num_one").on("keyup", ".num_one", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		tr.find(".precio_promocion").val(total);
+	}else{
+		tr.find(".precio_promocion").val(precio);
+	}
+});
+$(document).off("keyup", ".num_two").on("keyup", ".num_two", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		tr.find(".precio_promocion").val(total);
+	}else{
+		tr.find(".precio_promocion").val(precio);
+	}
+});
 
 $(document).off("change", ".id_producto").on("change", ".id_producto", function() {
 	var tr = $(this).closest("tr");

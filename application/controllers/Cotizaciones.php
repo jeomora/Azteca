@@ -45,7 +45,7 @@ class Cotizaciones extends MY_Controller {
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
-			//El administrador usa una paginación
+			$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL);
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
 		}
 	}
@@ -85,19 +85,24 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function update(){
-		$cotizacion = [
-			'nombre'			=>	strtoupper($this->input->post('nombre')),
-			'num_one'			=>	str_replace(',', '', $this->input->post('num_one')),
-			'num_two'			=>	str_replace(',', '', $this->input->post('num_two')),
-			'precio'			=>	str_replace(',', '', $this->input->post('precio')),
-			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),
-			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
-			'fecha_cambio'		=>	date('Y-m-d H:i:s'),
-			'fecha_caduca'		=>	date('Y-m-d', strtotime($this->input->post('fecha_caducidad'))),
-			'existencias'		=>	str_replace(',', '',$this->input->post('existencias')),
-			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
-		];
-		$data ['id_cotizacion'] = $this->ct_mdl->update($cotizacion, $this->input->post('id_cotizacion'));
+		$size = sizeof($this->input->post('id_cotz[]'));
+		$cotz = $this->input->post('id_cotz[]');
+		$precio = $this->input->post('precio[]');
+		$precio_promocion = $this->input->post('precio_promocion[]');
+		$num_one = $this->input->post('num_one[]');
+		$num_two = $this->input->post('num_two[]');
+		$descuento = $this->input->post('descuento[]');
+		$observaciones = $this->input->post('observaciones[]');
+		for($i = 0; $i < $size; $i++){
+			$data ['id_cotizacion'] = $this->ct_mdl->update([
+				"precio" => $precio[$i],
+				"precio_promocion" => $precio_promocion[$i],
+				"num_one" => $num_one[$i],
+				"num_two" => $num_two[$i],
+				"descuento" => $descuento[$i],
+				"observaciones" => $observaciones[$i]
+			], $cotz[$i]);
+		}
 		$mensaje = [
 			"id" 	=> 'Éxito',
 			"desc"	=> 'Cotización actualizada correctamente',
@@ -107,7 +112,11 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function delete(){
-		$data ['id_cotizacion'] = $this->ct_mdl->update(["estatus" => 0], $this->input->post('id_cotizacion'));
+		$size = sizeof($this->input->post('id_producto[]'));
+		$productos = $this->input->post('id_producto[]');
+		for($i = 0; $i < $size; $i++){
+			$data ['id_cotizacion'] = $this->ct_mdl->update(["estatus" => 0], $productos[$i]);
+		}
 		$mensaje = [
 			"id" 	=> 'Éxito',
 			"desc"	=> 'Cotización eliminada correctamente',
@@ -145,9 +154,10 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function get_update($id){
-		$data["cotizacion"] = $this->ct_mdl->getCotizaciones(['id_cotizacion'=>$id])[0];
-		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
-		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["cotizacion"]->producto;
+		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
+		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["producto"]->nombre;
+		$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
 		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
@@ -293,11 +303,13 @@ class Cotizaciones extends MY_Controller {
 					$descuento = $sheet->getCell('F'.$i)->getValue();
 
 					if ($column_one ==1 && $column_two ==1) {
-						$precio_promocion = $precio_promocion;
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($column_one >=1 && $column_two >1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($descuento >0) {
 						$precio_promocion = ($precio - ($precio * ($descuento/100)));
+					}else{
+						$precio_promocion = $precio;
 					}
 					$new_cotizacion[$i]=[
 						"id_producto"		=>	$productos->id_producto,
@@ -325,6 +337,63 @@ class Cotizaciones extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
+
+	public function upload_allcotizaciones(){
+		$this->load->library("excelfile");
+		ini_set("memory_limit", "-1");
+		$file = $_FILES["file_cotizaciones"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0); 
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) { 
+			if($sheet->getCell('B'.$i)->getValue() > 0){
+				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				$proveedor = $this->usua_mdl->get("id_usuario",['CONCAT(nombre," ",apellido)'=> htmlspecialchars($sheet->getCell('G'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
+					$column_one = $sheet->getCell('D'.$i)->getValue();
+					$column_two = $sheet->getCell('E'.$i)->getValue();
+					$descuento = $sheet->getCell('F'.$i)->getValue();
+
+					if ($column_one ==1 && $column_two ==1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($column_one >=1 && $column_two >1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($descuento >0) {
+						$precio_promocion = ($precio - ($precio * ($descuento/100)));
+					}else{
+						$precio_promocion = $precio;
+					}
+					$new_cotizacion[$i]=[
+						"id_producto"		=>	$productos->id_producto,
+						"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+						"precio"			=>	$precio,
+						"num_one"			=>	$column_one,
+						"num_two"			=>	$column_two,
+						"descuento"			=>	$descuento,
+						"precio_promocion"	=>	$precio_promocion,
+						"fecha_registro"	=>	date('Y-m-d H:i:s'),
+						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
+					];
+				}
+			}
+		}
+		if (sizeof($new_cotizacion) > 0) {
+			$data['cotizacion']=$this->ct_mdl->insert_batch($new_cotizacion);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+
 	public function getProducto(){
 		$where = ["productos.estatus" => 1];
 		$productosProveedor = $this->prod_mdl->getProducto($where);
@@ -433,7 +502,7 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 			$search = ["fam.nombre", "prod.codigo", "prod.nombre", "ctz_first.nombre", "ctz_first.observaciones", "proveedor_first.nombre", "proveedor_first.apellido",
 				"proveedor_next.nombre", "proveedor_next.apellido","ctz_first.precio","ctz_next.precio"];
-			$columns = "cotizaciones.id_cotizacion, cotizaciones.fecha_registro, ctz_first.precio_sistema, ctz_first.precio_four,
+			$columns = "ctz_first.estatus,cotizaciones.id_cotizacion, cotizaciones.fecha_registro, ctz_first.precio_sistema, ctz_first.precio_four,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
@@ -451,16 +520,16 @@ class Cotizaciones extends MY_Controller {
 				["table"	=>	"productos prod",			"ON"	=>	"cotizaciones.id_producto = prod.id_producto",	"clausula"	=>	"LEFT"],
 				["table"	=>	"familias fam",				"ON"	=>	"prod.id_familia = fam.id_familia",				"clausula"	=>	"INNER"],
 				["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
-					 AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber()." AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"				=>	"LEFT"],
+					 AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber()." AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"				=>	"LEFT"],
 				["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
 					 AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"			=>	"INNER"],
 				["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
-					AND cotizaciones.precio >= ctz_first.precio AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor ORDER BY cotizaciones.precio ASC LIMIT 1)",	"clausula"						=>	"LEFT"],
+					AND cotizaciones.estatus = 1 AND cotizaciones.precio >= ctz_first.precio AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor ORDER BY cotizaciones.precio ASC LIMIT 1)",	"clausula"						=>	"LEFT"],
 				["table"	=>	"usuarios proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id_usuario",	"clausula"	=>	"INNER"],
 				["table"	=>	"usuarios proveedor_next",	"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id_usuario",	"clausula"	=>	"LEFT"],
 			];
 		$where = [
-				["clausula"	=>	"cotizaciones.estatus",	"valor"	=>	1]
+				["clausula"	=>	"ctz_first.estatus",	"valor"	=>	1]
 			];
 			$order="prod.id_producto";
 			$group ="cotizaciones.id_producto";

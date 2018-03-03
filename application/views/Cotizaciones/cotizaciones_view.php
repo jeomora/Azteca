@@ -1,4 +1,4 @@
-<?php
+ <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <style type="text/css" media="screen">
@@ -49,24 +49,8 @@
 	    left: 38%;
 	    top: 10%;
 	}
-	td{width: 13rem !important;}
-	table{width: 129rem !important}
 
 	.spinns{width:35rem;height:25rem;background-color:#FFF;text-align:center;line-height:25rem;border-radius: 5px;border: 3px solid #3b467b;}
-	@media screen and (min-width: 1500px){
-	.preciomas{
-	    background-color: #ea9696;
-	    color: red;
-	    font-weight: bold;
-	    text-align: center;
-	}
-	.preciomenos{
-	    background-color: #96eaa8;
-	    color: green;
-	    font-weight: bold;
-	    text-align: center;
-	}
-	}	
 </style>
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">
@@ -118,7 +102,41 @@
 								</tr>
 							</thead>
 							<tbody>
-								
+								<?php if ($cotizaciones): foreach ($cotizaciones as $key => $value): ?>
+										<tr>
+											<td><?php echo strtoupper($value->familia) ?></td>
+											<td><?php echo strtoupper($value->codigo) ?></td>
+											<td><?php echo strtoupper($value->producto) ?></td>
+											<td><?php echo '$ '.number_format($value->precio_sistema,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio_four,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio_firsto,2,'.',',') ?></td>
+											<?php if($value->precio_first >= $value->precio_four): ?>
+												<td><?php echo '<div class="preciomas">$ '.number_format($value->precio_first,2,'.',',').'</div>' ?></td>
+											<?php else: ?>
+												<td><?php echo '<div class="preciomenos">$ '.number_format($value->precio_first,2,'.',',').'</div>' ?></td>
+											<?php endif ?>
+											<td><?php echo strtoupper($value->proveedor_first) ?></td>
+											<td><?php echo strtoupper($value->promocion_first) ?></td>
+											<td><?php echo '$ '.number_format($value->precio_maximo,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio_promedio,2,'.',',') ?></td>
+											<td><?php echo '$ '.number_format($value->precio_nexto,2,'.',',') ?></td>
+											<?php if($value->precio_next >= $value->precio_four): ?>
+												<td><?php echo ($value->precio_next >0) ? '<div class="preciomas">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
+											<?php else: ?>
+												<td><?php echo ($value->precio_next >0) ? '<div class="preciomenos">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
+											<?php endif ?>
+											<td><?php echo strtoupper($value->proveedor_next) ?></td>
+											<td><?php echo strtoupper($value->promocion_next) ?></td>
+											<td>
+												<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
+													<i class="fa fa-pencil"></i>
+												</button>
+												<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
+													<i class="fa fa-trash"></i>
+												</button>
+											</td>
+										</tr>
+								<?php endforeach; endif ?>
 							</tbody>
 						</table>
 					</div>

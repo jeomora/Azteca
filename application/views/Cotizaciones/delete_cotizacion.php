@@ -21,10 +21,14 @@
 							<tbody>
 								<?php foreach ($cots as $key => $value): ?>
 									<tr>
-										<td><input type="checkbox" value="<?php echo $value->id_cotizacion ?>"></td>
+										<td><input type="checkbox" value="<?php echo $value->id_cotizacion ?>" class='id_producto'></td>
 										<td><?php echo $value->nomb ?></td>
 										<td><?php echo $value->precio ?></td>
-										<td><?php echo $value->precio_promocion ?></td>
+										<?php if($value->precio_promocion > 0): ?>
+											<td><?php echo $value->precio_promocion ?></td>
+										<?php else: ?>
+											<td><?php echo $value->precio ?></td>
+										<?php endif ?>
 										<td><?php echo $value->observaciones ?></td>
 									</tr>
 								<?php endforeach ?>
