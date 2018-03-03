@@ -350,10 +350,35 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 			}
 		});
 });
+$(document).off("change", ".file_cotizaciones").on("change", ".file_cotizaciones", function(event) {
+	event.preventDefault();
+	blockPage();
+	var formdata = new FormData($("#upload_allcotizaciones")[0]);
+	uploadallCotizaciones(formdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, user_name);
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
 
 function uploadCotizaciones(formData) {
 	return $.ajax({
 		url: site_url+"Cotizaciones/upload_cotizaciones",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
+function uploadallCotizaciones(formData) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/upload_allcotizaciones",
 		type: "POST",
 		cache: false,
 		contentType: false,
@@ -377,6 +402,9 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 			}
 		});
 });
+
+
+
 $(document).off("change","#slct").on("change","#slct", function (){
 	var rows = "";
 	var opcion = $("#slct option:selected").val();

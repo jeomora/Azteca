@@ -59,13 +59,16 @@
 				<div class="ibox-title">
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
-				<div class="ibox-content">
+				<div class="ibox-content" style="padding-top: 4rem;">
 					<div class="btn-group">
 						<div class="col-sm-2">
 							<a href="<?php echo base_url('./assets/uploads/Formato_precios.xlsx'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Precios" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir Precios Sistema y Precio 4
+						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_precios')); ?>
 							<div class="col-sm-4">
 								<input class="btn btn-info" type="file" id="file_precios" name="file_precios" value=""/>
@@ -77,6 +80,16 @@
 							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i>
 							</button>
+						<?php echo form_close(); ?>
+					</div>
+					<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir cotizaciones de varios proveedores
+						</div>
+						<?php echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value=""/>
+							</div>
 						<?php echo form_close(); ?>
 					</div>
 					<div class="table-responsive"> 

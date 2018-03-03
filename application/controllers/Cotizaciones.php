@@ -292,6 +292,7 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0); 
 		$num_rows = $sheet->getHighestDataRow();
+		$proveedor = $this->session->userdata('id_usuario');
 		for ($i=3; $i<=$num_rows; $i++) { 
 			if($sheet->getCell('B'.$i)->getValue() > 0){
 				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
@@ -313,7 +314,7 @@ class Cotizaciones extends MY_Controller {
 					}
 					$new_cotizacion[$i]=[
 						"id_producto"		=>	$productos->id_producto,
-						"id_proveedor"		=>	$this->session->userdata('id_usuario'),//Recupera el id_usuario activo
+						"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
 						"precio"			=>	$precio,
 						"num_one"			=>	$column_one,
 						"num_two"			=>	$column_two,
@@ -349,7 +350,7 @@ class Cotizaciones extends MY_Controller {
 		for ($i=3; $i<=$num_rows; $i++) { 
 			if($sheet->getCell('B'.$i)->getValue() > 0){
 				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
-				$proveedor = $this->usua_mdl->get("id_usuario",['CONCAT(nombre," ",apellido)'=> htmlspecialchars($sheet->getCell('G'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				$proveedor = $this->usua_mdl->get("id_usuario",['nombre'=> $sheet->getCell('G'.$i)->getValue()])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
 					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
@@ -368,7 +369,7 @@ class Cotizaciones extends MY_Controller {
 					}
 					$new_cotizacion[$i]=[
 						"id_producto"		=>	$productos->id_producto,
-						"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+						"id_proveedor"		=>	$proveedor->id_usuario,//Recupera el id_usuario activo
 						"precio"			=>	$precio,
 						"num_one"			=>	$column_one,
 						"num_two"			=>	$column_two,
