@@ -164,6 +164,20 @@ $(document).off("click", ".new_pedido").on("click", ".new_pedido", function(even
 	sendForm("Cotizaciones/hacer_pedido", $("#form_pedido_new"), "");
 });
 
+
+
+$(document).off("change", "#id_proves").on("change", "#id_proves", function() {
+	event.preventDefault();
+	var id_cotizacion = $("#id_proves option:selected").val();
+	var proveedor = $("#id_proves option:selected").text();
+	if(id_cotizacion != "nope"){
+		$(".fill_form").css("display","block");
+		$("#id_proves2").val(proveedor);
+	}else{
+		$(".fill_form").css("display","none");
+	}
+});
+
 $(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
 	event.preventDefault();
 	var id_cotizacion = $("#slct2 option:selected").val();

@@ -46,6 +46,7 @@ class Cotizaciones extends MY_Controller {
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
 			$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL);
+			$data["proveedores"] = $this->usua_mdl->getUsuarios();
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
 		}
 	}
@@ -190,9 +191,241 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	public function fill_formato(){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		
+		$style_header = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'000000'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => 'FFFFFF')
+		    ),
+
+		);
+
+		$style_menos = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'FDB2B2'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => 'E21111')
+		    ),
+
+		);
+
+		$style_mas = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'96EAA8'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => '0C800C')
+		    ),
+
+		);
+
+		$style_blue = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'80b9f5'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => '000000')
+		    ),
+
+		);
+
+		$id_proves = $this->input->post('id_proves');
+		$proves = $this->input->post('id_proves2');
+		$inputFileName = 'assets/uploads/formproveedor.xlsx';
+		$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+		$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+		$objPHPExcel = $objReader->load($inputFileName);
+
+
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		$hoja = $objPHPExcel->getActiveSheet();
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$hoja->setCellValue("A2", 'PEDIDO A "'.$proves.'" '.date("d-m-Y"));
+		$where=["ctz_first.id_proveedor" => $id_proves];
+		$fecha = date('Y-m-d');
+		$row_print =4;
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray( $style_header );
+				$hoja->setCellValue("E{$row_print}", $value['familia'])->getStyle("E{$row_print}")->getAlignment()->setWrapText(true);
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$this->cellStyle("D{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle("D{$row_print}:E{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("D{$row_print}", $row['codigo'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("E{$row_print}", $row['producto'])->getStyle("E{$row_print}");
+						$row_print ++;
+					}
+				}
+			}
+		}
+
+
+		$objPHPExcel->setActiveSheetIndex(1);
+
+		$hoja = $objPHPExcel->getActiveSheet();
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$row_print =4;
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->getStyle("B{$row_print}:B{$row_print}")->applyFromArray( $style_header );
+				$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$this->cellStyle("D{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle("D{$row_print}:E{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
+						if($row['precio_sistema'] < $row['precio_first']){
+							$hoja->getStyle("C{$row_print}:C{$row_print}")->applyFromArray( $style_menos );
+							$hoja->setCellValue("C{$row_print}", $row['precio_first'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}else{
+							$hoja->getStyle("C{$row_print}:C{$row_print}")->applyFromArray( $style_mas );
+							$hoja->setCellValue("C{$row_print}", $row['precio_first'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}
+						$hoja->setCellValue("D{$row_print}", $row['precio_sistema'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
+						$hoja->setCellValue("E{$row_print}", $row['precio_four'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						if($row['precio_sistema'] < $row['precio_next']){
+							$hoja->getStyle("F{$row_print}:F{$row_print}")->applyFromArray( $style_menos );
+							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}else if($row['precio_next'] !== NULL){
+							$hoja->getStyle("F{$row_print}:F{$row_print}")->applyFromArray( $style_mas );
+							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}else{
+							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("F{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						$hoja->setCellValue("G{$row_print}", $row['proveedor_next'])->getStyle("G{$row_print}");
+						$hoja->setCellValue("AC{$row_print}", $row['promocion_first'])->getStyle("AC{$row_print}");
+						$hoja->getStyle("J{$row_print}:J{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("M{$row_print}:M{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("P{$row_print}:P{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("S{$row_print}:S{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("V{$row_print}:V{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("Y{$row_print}:Y{$row_print}")->applyFromArray( $style_blue );
+
+						$hoja->setCellValue("AD{$row_print}", "=J{$row_print}*C{$row_print}")->getStyle("AD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AE{$row_print}", "=M{$row_print}*C{$row_print}")->getStyle("AE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AF{$row_print}", "=P{$row_print}*C{$row_print}")->getStyle("AF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AG{$row_print}", "=S{$row_print}*C{$row_print}")->getStyle("AG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AH{$row_print}", "=V{$row_print}*C{$row_print}")->getStyle("AH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AI{$row_print}", "=Y{$row_print}*C{$row_print}")->getStyle("AI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AJ{$row_print}", "=C{$row_print}+AB{$row_print}")->getStyle("AJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+
+						$hoja->getStyle("AB{$row_print}:AB{$row_print}")->applyFromArray( $style_blue );
+
+						$row_print ++;
+					}
+				}
+			}
+			/*$row_print2 = $row_print + 8;
+			$row_print4 = $row_print - 1;
+			$hoja->setCellValue("AD{$row_print}", "=SUMA(AD5:AD{$row_print4})")->getStyle("AD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AE{$row_print}", "=SUMA(AE5:AE{$row_print4})")->getStyle("AE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AF{$row_print}", "=SUMA(AF5:AF{$row_print4})")->getStyle("AF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AG{$row_print}", "=SUMA(AG5:AG{$row_print4})")->getStyle("AG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AH{$row_print}", "=SUMA(AH5:AH{$row_print4})")->getStyle("AH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AI{$row_print}", "=SUMA(AI5:AI{$row_print4})")->getStyle("AI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AJ{$row_print}", "=SUMA(AJ5:AJ{$row_print4})")->getStyle("AJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+
+			$hoja->setCellValue("B{$row_print2}", "ABARROTES")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AD{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TIENDA")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AE{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "ULTRAMARINOS")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AF{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TRINCHERAS")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AG{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "MERCADO")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AH{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TENENCIA")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AI{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TIJERAS")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "AJ{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			*/
+		}
+
+
+
+
+		$file_name = "FORMS ".$proves.".xls"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel5");
+		$excel_Writer->save("php://output");
+		
+
+
+
+	}
+
+
+
+
+
 	public function fill_excel(){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
+
 
 		$hoja = $this->excelfile->getActiveSheet();
 		$hoja->getDefaultStyle()
@@ -521,11 +754,11 @@ class Cotizaciones extends MY_Controller {
 				["table"	=>	"productos prod",			"ON"	=>	"cotizaciones.id_producto = prod.id_producto",	"clausula"	=>	"LEFT"],
 				["table"	=>	"familias fam",				"ON"	=>	"prod.id_familia = fam.id_familia",				"clausula"	=>	"INNER"],
 				["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
-					 AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber()." AND ctz_min.precio = (SELECT MIN(ctz_min_precio.precio) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"				=>	"LEFT"],
+					 AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber()." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"				=>	"LEFT"],
 				["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
 					 AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"			=>	"INNER"],
 				["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
-					AND cotizaciones.estatus = 1 AND cotizaciones.precio >= ctz_first.precio AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor ORDER BY cotizaciones.precio ASC LIMIT 1)",	"clausula"						=>	"LEFT"],
+					AND cotizaciones.estatus = 1 AND cotizaciones.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor ORDER BY cotizaciones.precio_promocion ASC LIMIT 1)",	"clausula"						=>	"LEFT"],
 				["table"	=>	"usuarios proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id_usuario",	"clausula"	=>	"INNER"],
 				["table"	=>	"usuarios proveedor_next",	"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id_usuario",	"clausula"	=>	"LEFT"],
 			];

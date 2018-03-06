@@ -49,6 +49,25 @@
 	    left: 38%;
 	    top: 10%;
 	}
+	.btng1{
+		display: inline-flex;
+	    background-color: #23c6c8;
+	    border-radius: 5px;
+	    color: #FFF;
+	    margin-left: 3rem;
+    	padding: 0;
+    	padding-top: 4px;
+    	padding-right: 5px;
+	}
+	.lblget{
+		font-family: inherit;
+	    font-weight: normal;
+	    font-size: 14px;
+	    padding: 7px;
+	}
+	select#id_proves2{display: none}
+	.fill_form{display: none}
+	select#id_proves {color: #000;}
 
 	.spinns{width:35rem;height:25rem;background-color:#FFF;text-align:center;line-height:25rem;border-radius: 5px;border: 3px solid #3b467b;}
 </style>
@@ -82,16 +101,48 @@
 							</button>
 						<?php echo form_close(); ?>
 					</div>
-					<div class="btn-group">
+					<!--<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir cotizaciones de varios proveedores
 						</div>
-						<?php echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
+						<?php //echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
 							<div class="col-sm-4">
 								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value=""/>
 							</div>
-						<?php echo form_close(); ?>
+						<?php //echo form_close(); ?>
+					</div> -->
+					<?php echo form_open("Cotizaciones/fill_formato", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
+					<div class="btn-group btng1">
+						
+						<label for="id_proveedor" class="lblget">Proveedor</label>
+						<select name="id_proves2" id="id_proves2" class="form-control">
+							<option value="nope">Seleccionar...</option>
+							<?php if ($proveedores): ?>
+								<?php foreach ($proveedores as $key => $value): ?>
+									<?php if ($value->nombre != "MASTER"): ?>
+										<option value="<?php echo $value->nombre.' '.$value->apellido ?>"></option>
+									<?php endif ?>
+								<?php endforeach ?>
+							<?php endif ?>
+						</select>
+						<select name="id_proves" id="id_proves" class="form-control">
+							<option value="nope">Seleccionar...</option>
+							<?php if ($proveedores): ?>
+								<?php foreach ($proveedores as $key => $value): ?>
+									<?php if ($value->nombre != "MASTER"): ?>
+										<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre.' '.$value->apellido ?></option>
+									<?php endif ?>
+								<?php endforeach ?>
+							<?php endif ?>
+						</select>
+						<div class="btn-group">
+							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+								<i class="fa fa-file-excel-o"></i>
+							</button>
+						
 					</div>
+					</div>
+					<?php echo form_close(); ?>
 					<div class="table-responsive"> 
 						<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
 							<thead>
@@ -123,7 +174,7 @@
 											<td><?php echo '$ '.number_format($value->precio_sistema,2,'.',',') ?></td>
 											<td><?php echo '$ '.number_format($value->precio_four,2,'.',',') ?></td>
 											<td><?php echo '$ '.number_format($value->precio_firsto,2,'.',',') ?></td>
-											<?php if($value->precio_first >= $value->precio_four): ?>
+											<?php if($value->precio_first >= $value->precio_sistema): ?>
 												<td><?php echo '<div class="preciomas">$ '.number_format($value->precio_first,2,'.',',').'</div>' ?></td>
 											<?php else: ?>
 												<td><?php echo '<div class="preciomenos">$ '.number_format($value->precio_first,2,'.',',').'</div>' ?></td>
@@ -133,7 +184,7 @@
 											<td><?php echo '$ '.number_format($value->precio_maximo,2,'.',',') ?></td>
 											<td><?php echo '$ '.number_format($value->precio_promedio,2,'.',',') ?></td>
 											<td><?php echo '$ '.number_format($value->precio_nexto,2,'.',',') ?></td>
-											<?php if($value->precio_next >= $value->precio_four): ?>
+											<?php if($value->precio_next >= $value->precio_sistema): ?>
 												<td><?php echo ($value->precio_next >0) ? '<div class="preciomas">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
 											<?php else: ?>
 												<td><?php echo ($value->precio_next >0) ? '<div class="preciomenos">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
