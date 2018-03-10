@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>404 Page Not Found</title>
+<title>Página no encontrada</title>
 <style type="text/css">
 
 ::selection { background-color: #E13300; color: white; }
@@ -24,13 +24,15 @@ a {
 }
 
 h1 {
-	color: #444;
-	background-color: transparent;
+	color: #FFF;
+	background-color: #49B7E0;
 	border-bottom: 1px solid #D0D0D0;
-	font-size: 19px;
+	font-size: 29px;
 	font-weight: normal;
 	margin: 0 0 14px 0;
-	padding: 14px 15px 10px 15px;
+	padding: 24px 15px 20px 15px;
+	border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px;
 }
 
 code {
@@ -45,20 +47,26 @@ code {
 }
 
 #container {
-	margin: 10px;
 	border: 1px solid #D0D0D0;
 	box-shadow: 0 0 8px #D0D0D0;
+	text-align: center;
+	border-radius: 10px;
+}
+html {
+    background-color: #E0FFF0;
 }
 
 p {
-	margin: 12px 15px 12px 15px;
+	margin: 25px 15px 12px 15px;
+	font-size: 19px;
 }
 </style>
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<h1>Página no encontrada</h1>
+		<p>Sí esta seguro que es la url correcta contacte a soporte técnico</p>
+		<p>Ir a <a href="Welcome/Login">inicio</a> para empezar a navegar en el sitio.</p>
 	</div>
 </body>
 </html>

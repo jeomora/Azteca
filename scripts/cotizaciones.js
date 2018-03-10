@@ -2,17 +2,19 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-
-	$("#table_cot_admin").dataTable({
+	/*$("#table_cot_admin").dataTable({
 		ajax: {
 			url: site_url +"Cotizaciones/cotizaciones_dataTable",
 			type: "POST"
 		},
 		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
 		serverSide: true,
 		responsive: true,
 		pageLength: 50,
 		dom: 'Bfrtip',
+		bSort : false,
 		lengthMenu: [
 			[ 10, 30, 50, -1 ],
 			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
@@ -20,8 +22,9 @@ $(function($) {
 		buttons: [
 			{ extend: 'pageLength' },
 		]
-	});
-
+	});*/
+	fillDataTable("table_cot_admin", 50);
+	
 	fillDataTable("table_cot_proveedores", 50);
 });
 
@@ -150,6 +153,203 @@ $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion",
 	sendForm("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
 });
 
+$(document).off("click", "#new_pedido").on("click", "#new_pedido", function(event){
+	event.preventDefault();
+	var id_cotizacion = $(this).closest("tr").find("#new_pedido").data("idCotizacion");
+	getModal("Cotizaciones/set_pedido/"+ id_cotizacion, function (){ });
+});
+
+$(document).off("click", ".new_pedido").on("click", ".new_pedido", function(event) {
+	event.preventDefault();
+	sendForm("Cotizaciones/hacer_pedido", $("#form_pedido_new"), "");
+});
+
+
+
+$(document).off("change", "#id_proves").on("change", "#id_proves", function() {
+	event.preventDefault();
+	var id_cotizacion = $("#id_proves option:selected").val();
+	var proveedor = $("#id_proves option:selected").text();
+	if(id_cotizacion != "nope"){
+		$(".fill_form").css("display","block");
+		$("#id_proves2").val(proveedor);
+	}else{
+		$(".fill_form").css("display","none");
+	}
+});
+
+$(document).off("click", ".btsrch").on("click", ".btsrch", function(event){
+	event.preventDefault();
+	var id_cotizacion = $("#slct2 option:selected").val();
+	var proveedor = $("#slct2 option:selected").text();
+	getModal("Cotizaciones/set_pedido_prov/"+ id_cotizacion, function (){
+		$("#table_provs").dataTable({
+		ajax: {
+			url: site_url +"Cotizaciones/set_pedido_provs/"+id_cotizacion+"",
+			type: "POST"
+		},
+		processing: true,
+		language: {
+            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '
+        },
+        bSort : false,
+		serverSide: true,
+		responsive: true,
+		pageLength: 50,
+		dom: 'Bfrtip',
+		lengthMenu: [
+			[ 10, 30, 50, -1 ],
+			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+		],
+		buttons: [
+			{ extend: 'pageLength' },
+		]
+	});
+	$("th").removeClass('sorting');
+	});
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+});
+
+function getProductos(id_prov) {
+	return $.ajax({
+		url: site_url+"/Pedidos/get_productos",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: id_prov},
+	});
+}
+
+$(document).off("click", "#add_me").on("click", "#add_me", function() {
+	var tr = $(this).closest("tr");
+	if(tr.find(".cantidad").val() !== ""){
+		var table = $('#table_provss').DataTable();
+		var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+		table.row.add( [ tr.children('td:first').text(),tr.find(".precio").val(), tr.find(".cantidad").val(),"$ "+(tr.find(".cantidad").val() * precio).toFixed(2)] ).draw();
+		var total = $("#totals").val();
+		console.log(jQuery.type(total));
+		total = parseFloat(total) + (tr.find(".cantidad").val() * precio);
+		console.log(tr.find(".cantidad").val() * precio);
+		$("#totals").val((total*1).toFixed(2));
+		tr.remove();
+	}
+
+});
+
+$(document).off("click", "#remove_me").on("click", "#remove_me", function() {
+	var tr = $(this).closest("tr");
+	if (confirm("¿Estas seguro de eliminar "+tr.children('td:first').text()+"?") == true) {
+         tr.remove();
+     }
+});
+
+//Editar cotizaciones 
+$(document).off("change", ".id_cotz").on("change", ".id_cotz", function() {
+	var tr = $(this).closest("tr");
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+	if($(this).is(":checked")) {
+		tr.find(".id_cotz ").removeAttr('readonly');
+		tr.find(".precio").removeAttr('readonly');
+		tr.find(".num_one").removeAttr('readonly');
+		tr.find(".num_two").removeAttr('readonly');
+		tr.find(".descuento").removeAttr('readonly');
+		tr.find(".observaciones").removeAttr('readonly');
+		tr.find(".id_cotz ").attr('name', 'id_cotz[]');
+		tr.find(".precio").attr('name', 'precio[]');
+		tr.find(".precio_promocion").attr('name', 'precio_promocion[]');
+		tr.find(".num_one").attr('name', 'num_one[]');
+		tr.find(".num_two").attr('name', 'num_two[]');
+		tr.find(".descuento").attr('name', 'descuento[]');
+		tr.find(".observaciones").attr('name', 'observaciones[]');
+	}else{
+		$(this).removeAttr("checked");
+		tr.find(".precio").attr('readonly', 'readonly');
+		tr.find(".num_one").attr('readonly', 'readonly');
+		tr.find(".num_two").attr('readonly', 'readonly');
+		tr.find(".descuento").attr('readonly', 'readonly');
+		tr.find(".observaciones").attr('readonly', 'readonly');
+
+		tr.find(".id_cotz ").removeAttr('name');
+		tr.find(".precio").removeAttr('name');
+		tr.find(".precio_promocion").removeAttr('name');
+		tr.find(".num_one").removeAttr('name');
+		tr.find(".num_two").removeAttr('name');
+		tr.find(".descuento").removeAttr('name');
+		tr.find(".observaciones").removeAttr('name');
+	}
+});
+
+$(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
+	if($(this).val().replace(/[^0-9\.]+/g,"") > 0){
+		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+	}
+});
+$(document).off("keyup", ".num_one").on("keyup", ".num_one", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		tr.find(".precio_promocion").val(total);
+	}else{
+		tr.find(".precio_promocion").val(precio);
+	}
+});
+$(document).off("keyup", ".num_two").on("keyup", ".num_two", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		tr.find(".precio_promocion").val(total);
+	}else{
+		tr.find(".precio_promocion").val(precio);
+	}
+});
+
+$(document).off("change", ".id_producto").on("change", ".id_producto", function() {
+	var tr = $(this).closest("tr");
+	$(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""});
+	if($(this).is(":checked")) {
+		tr.find(".cantidad").removeAttr('readonly');
+		tr.find(".id_producto ").attr('name', 'id_producto[]');
+		tr.find(".precio ").attr('name', 'precio[]');
+		tr.find(".cantidad ").attr('name', 'cantidad[]');
+		tr.find(".importe ").attr('name', 'importe[]');
+	}else{
+		$(this).removeAttr("checked");
+		tr.find(".cantidad").attr('readonly', 'readonly');
+		tr.find(".cantidad").removeAttr('name').val('');
+		tr.find(".importe").removeAttr('name').val('');
+		tr.find(".id_producto ").removeAttr('name');
+	}
+});
+
+$(document).off("keyup", ".cantidad").on("keyup", ".cantidad", function () {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var cantidad = tr.find(".cantidad").val().replace(/[^0-9\.]+/g,"");
+
+	if($(this).val().replace(/[^0-9\.]+/g,"") > 0){
+		tr.find(".importe").val(precio * cantidad);
+		$("#total").val((calculaTotales()));
+	}
+});
+
+function calculaTotales() {
+	var total =0;
+	$.each($(".importe"), function(index, val) {
+		if (Number($(this).val().replace(/[^0-9\.]+/g,"")) !== '') {
+			total += Number($.trim($(val).val().replace(/[^0-9\.]+/g,"")));
+		}
+	});
+	return total;
+}
+
 $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
 	event.preventDefault();
 	blockPage();
@@ -164,10 +364,35 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 			}
 		});
 });
+$(document).off("change", ".file_cotizaciones").on("change", ".file_cotizaciones", function(event) {
+	event.preventDefault();
+	blockPage();
+	var formdata = new FormData($("#upload_allcotizaciones")[0]);
+	uploadallCotizaciones(formdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, user_name);
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
 
 function uploadCotizaciones(formData) {
 	return $.ajax({
 		url: site_url+"Cotizaciones/upload_cotizaciones",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
+function uploadallCotizaciones(formData) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/upload_allcotizaciones",
 		type: "POST",
 		cache: false,
 		contentType: false,
@@ -191,6 +416,62 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 			}
 		});
 });
+
+
+
+$(document).off("change","#slct").on("change","#slct", function (){
+	var rows = "";
+	var opcion = $("#slct option:selected").val();
+	if(opcion == "Bajos"){
+		fillTablaBajos();
+		$("#slct2").css("display","none");
+		$(".btsrch").css("display","none");
+	}else if (opcion !== "Seleccionar...") {
+		$("#slct2").css("display","block");
+		$(".btsrch").css("display","none")
+		getDatas(opcion)
+		.done(function(response){
+			var size = response.length;
+			if (jQuery.isEmptyObject(response)) {
+				toastr.warning("Sin Resultados", user_name);
+				$("#slct2").attr('readonly', 'readonly');
+			}else{
+				rows += '<option value="Seleccionar...">Seleccionar...</option>'
+				$.each(response, function(index, val){
+					rows += '<option value="'+val.ides+'">'+val.names+'</option>'
+				});
+				$("#slct2").removeAttr('readonly');
+				$("#slct2").html(rows);
+			}
+		});
+	}else{
+		$("#slct2").css("display","none");
+		$(".btsrch").css("display","none");
+	}
+});
+
+$(document).off("change","#slct2").on("change","#slct2", function (){
+	var rows = "";
+	var opcion = $("#slct option:selected").val();
+	var ides = $("#slct2 option:selected").val();
+	if(opcion == "Familia"){
+		fillTablaFamilia(ides);
+	}else if (opcion == "Proveedor") {
+		fillTablaProveedor(ides);
+		$(".btsrch").css("display","block")
+	}else if (opcion == "Producto") {
+		fillTablaProducto(ides);
+	}
+
+});
+
+function getDatas(searchs) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/get"+searchs+"",
+		type: "POST",
+		dataType: "JSON"
+	});
+}
 
 function uploadPrecios(formData) {
 	return $.ajax({

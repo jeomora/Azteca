@@ -1,7 +1,8 @@
 <div class="ibox-content">
 	<div class="row">
 		<?php echo form_open("", array("id"=>'form_pedido_new')); ?>
-		<div class="row">
+
+		<div class="row"> 
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="id_proveedor">Proveedores</label>

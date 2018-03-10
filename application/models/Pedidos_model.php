@@ -43,6 +43,36 @@ class Pedidos_model extends MY_Model {
 		}
 	}
 
+	public function getWeekPedidos($where=[],$provee="",$fech=""){
+		$this->db->select("
+			pedidos.id_pedido,
+			WEEKOFYEAR(pedidos.fecha_registro) AS fechaw, 
+			DATE_FORMAT(pedidos.fecha_registro,'%d-%m-%Y') AS fecha, 
+			pedidos.total")
+		->from($this->TABLE_NAME)
+		->where($this->TABLE_NAME.".id_proveedor", $provee)
+		->where($this->TABLE_NAME.".WEEKOFYEAR(pedidos.fecha_registro)", $fech);
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Pedidos_model.php */

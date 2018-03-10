@@ -43,6 +43,7 @@ class Pedidos extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
 		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
+		$data["proveedores"] = $this->user_mdl->getUsuarios();
 		$this->estructura("Pedidos/table_pedidos", $data, FALSE);
 	}
 
@@ -100,12 +101,73 @@ class Pedidos extends MY_Controller {
 		];
 		$this->jsonResponse($mensaje);
 	}
-
+ 
 	public function get_productos(){
 		$id_proveedor = $this->input->post('id_proveedor');
 		$where = ["cotizaciones.id_proveedor" => $id_proveedor];
 		$productosProveedor = $this->ct_mdl->productos_proveedor($where);
 		$this->jsonResponse($productosProveedor);
+	}
+	public function get_cotizaciones(){
+		$where=["ctz_first.id_proveedor" => $this->input->post('id_proves')];
+		$fecha = date('Y-m-d');
+		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$this->jsonResponse($productosProveedor);
+	}
+
+	public function upload_pedidos(){
+		$this->load->library("excelfile");
+		ini_set("memory_limit", "-1");
+		$file = $_FILES["file_cotizaciones"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0); 
+		$num_rows = $sheet->getHighestDataRow();
+		
+		for ($i=3; $i<=$num_rows; $i++) { 
+			if($sheet->getCell('B'.$i)->getValue() > 0){
+				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
+					$column_one = $sheet->getCell('D'.$i)->getValue();
+					$column_two = $sheet->getCell('E'.$i)->getValue();
+					$descuento = $sheet->getCell('F'.$i)->getValue();
+
+					if ($column_one ==1 && $column_two ==1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($column_one >=1 && $column_two >1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($descuento >0) {
+						$precio_promocion = ($precio - ($precio * ($descuento/100)));
+					}else{
+						$precio_promocion = $precio;
+					}
+					$new_cotizacion[$i]=[
+						"id_producto"		=>	$productos->id_producto,
+						"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+						"precio"			=>	$precio,
+						"num_one"			=>	$column_one,
+						"num_two"			=>	$column_two,
+						"descuento"			=>	$descuento,
+						"precio_promocion"	=>	$precio_promocion,
+						"fecha_registro"	=>	date('Y-m-d H:i:s'),
+						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
+					];
+				}
+			}
+		}
+		if (sizeof($new_cotizacion) > 0) {
+			$data['cotizacion']=$this->ct_mdl->insert_batch($new_cotizacion);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
 	}
 
 	public function save_pedido(){
