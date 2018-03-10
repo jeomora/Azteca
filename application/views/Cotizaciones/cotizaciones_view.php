@@ -65,6 +65,7 @@
 	    font-size: 14px;
 	    padding: 7px;
 	}
+	tr:hover {background-color: #cfffc3 !important;}
 	select#id_proves2{display: none}
 	.fill_form{display: none}
 	select#id_proves {color: #000;}
@@ -111,38 +112,7 @@
 							</div>
 						<?php //echo form_close(); ?>
 					</div> -->
-					<?php echo form_open("Cotizaciones/fill_formato", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
-					<div class="btn-group btng1">
-						
-						<label for="id_proveedor" class="lblget">Proveedor</label>
-						<select name="id_proves2" id="id_proves2" class="form-control">
-							<option value="nope">Seleccionar...</option>
-							<?php if ($proveedores): ?>
-								<?php foreach ($proveedores as $key => $value): ?>
-									<?php if ($value->nombre != "MASTER"): ?>
-										<option value="<?php echo $value->nombre.' '.$value->apellido ?>"></option>
-									<?php endif ?>
-								<?php endforeach ?>
-							<?php endif ?>
-						</select>
-						<select name="id_proves" id="id_proves" class="form-control">
-							<option value="nope">Seleccionar...</option>
-							<?php if ($proveedores): ?>
-								<?php foreach ($proveedores as $key => $value): ?>
-									<?php if ($value->nombre != "MASTER"): ?>
-										<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre.' '.$value->apellido ?></option>
-									<?php endif ?>
-								<?php endforeach ?>
-							<?php endif ?>
-						</select>
-						<div class="btn-group">
-							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-file-excel-o"></i>
-							</button>
-						
-					</div>
-					</div>
-					<?php echo form_close(); ?>
+
 					<div class="table-responsive"> 
 						<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
 							<thead>

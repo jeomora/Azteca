@@ -192,230 +192,13 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function fill_formato(){
-		ini_set("memory_limit", "-1");
-		$this->load->library("excelfile");
-		
-		$style_header = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'000000'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => 'FFFFFF')
-		    ),
-
-		);
-
-		$style_menos = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'FDB2B2'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => 'E21111')
-		    ),
-
-		);
-
-		$style_mas = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'96EAA8'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => '0C800C')
-		    ),
-
-		);
-
-		$style_blue = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'80b9f5'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => '000000')
-		    ),
-
-		);
-
 		$id_proves = $this->input->post('id_proves');
 		$proves = $this->input->post('id_proves2');
-		$inputFileName = 'assets/uploads/formproveedor.xlsx';
-		$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
-		$objReader = PHPExcel_IOFactory::createReader($inputFileType);
-		$objPHPExcel = $objReader->load($inputFileName);
-
-
-		$objPHPExcel->setActiveSheetIndex(0);
-
-		$hoja = $objPHPExcel->getActiveSheet();
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getTop()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getBottom()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getLeft()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getRight()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-		$hoja->setCellValue("A2", 'PEDIDO A "'.$proves.'" '.date("d-m-Y"));
-		$where=["ctz_first.id_proveedor" => $id_proves];
-		$fecha = date('Y-m-d');
-		$row_print =4;
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
-		if ($cotizacionesProveedor){
-			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray( $style_header );
-				$hoja->setCellValue("E{$row_print}", $value['familia'])->getStyle("E{$row_print}")->getAlignment()->setWrapText(true);
-				$row_print +=1;
-				if ($value['articulos']) {
-					foreach ($value['articulos'] as $key => $row){
-						$this->cellStyle("D{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("D{$row_print}:E{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						$hoja->setCellValue("D{$row_print}", $row['codigo'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');
-						$hoja->setCellValue("E{$row_print}", $row['producto'])->getStyle("E{$row_print}");
-						$row_print ++;
-					}
-				}
-			}
+		if($proves != "nope"){
+			$this->fill_formato1($proves, $id_proves);
+		}else{
+			$this->fill_formatoAll($proves, $id_proves);
 		}
-
-
-		$objPHPExcel->setActiveSheetIndex(1);
-
-		$hoja = $objPHPExcel->getActiveSheet();
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getTop()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getBottom()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getLeft()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getRight()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-		$row_print =4;
-		if ($cotizacionesProveedor){
-			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->getStyle("B{$row_print}:B{$row_print}")->applyFromArray( $style_header );
-				$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
-				$row_print +=1;
-				if ($value['articulos']) {
-					foreach ($value['articulos'] as $key => $row){
-						$this->cellStyle("D{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("D{$row_print}:E{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');
-						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
-						if($row['precio_sistema'] < $row['precio_first']){
-							$hoja->getStyle("C{$row_print}:C{$row_print}")->applyFromArray( $style_menos );
-							$hoja->setCellValue("C{$row_print}", $row['precio_first'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						}else{
-							$hoja->getStyle("C{$row_print}:C{$row_print}")->applyFromArray( $style_mas );
-							$hoja->setCellValue("C{$row_print}", $row['precio_first'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						}
-						$hoja->setCellValue("D{$row_print}", $row['precio_sistema'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
-						$hoja->setCellValue("E{$row_print}", $row['precio_four'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						if($row['precio_sistema'] < $row['precio_next']){
-							$hoja->getStyle("F{$row_print}:F{$row_print}")->applyFromArray( $style_menos );
-							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						}else if($row['precio_next'] !== NULL){
-							$hoja->getStyle("F{$row_print}:F{$row_print}")->applyFromArray( $style_mas );
-							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						}else{
-							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("F{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						$hoja->setCellValue("G{$row_print}", $row['proveedor_next'])->getStyle("G{$row_print}");
-						$hoja->setCellValue("AC{$row_print}", $row['promocion_first'])->getStyle("AC{$row_print}");
-						$hoja->getStyle("J{$row_print}:J{$row_print}")->applyFromArray( $style_blue );
-						$hoja->getStyle("M{$row_print}:M{$row_print}")->applyFromArray( $style_blue );
-						$hoja->getStyle("P{$row_print}:P{$row_print}")->applyFromArray( $style_blue );
-						$hoja->getStyle("S{$row_print}:S{$row_print}")->applyFromArray( $style_blue );
-						$hoja->getStyle("V{$row_print}:V{$row_print}")->applyFromArray( $style_blue );
-						$hoja->getStyle("Y{$row_print}:Y{$row_print}")->applyFromArray( $style_blue );
-
-						$hoja->setCellValue("AD{$row_print}", "=J{$row_print}*C{$row_print}")->getStyle("AD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AE{$row_print}", "=M{$row_print}*C{$row_print}")->getStyle("AE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AF{$row_print}", "=P{$row_print}*C{$row_print}")->getStyle("AF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AG{$row_print}", "=S{$row_print}*C{$row_print}")->getStyle("AG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AH{$row_print}", "=V{$row_print}*C{$row_print}")->getStyle("AH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AI{$row_print}", "=Y{$row_print}*C{$row_print}")->getStyle("AI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AJ{$row_print}", "=C{$row_print}+AB{$row_print}")->getStyle("AJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-
-
-						$hoja->getStyle("AB{$row_print}:AB{$row_print}")->applyFromArray( $style_blue );
-
-						$row_print ++;
-					}
-				}
-			}
-			/*$row_print2 = $row_print + 8;
-			$row_print4 = $row_print - 1;
-			$hoja->setCellValue("AD{$row_print}", "=SUMA(AD5:AD{$row_print4})")->getStyle("AD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$hoja->setCellValue("AE{$row_print}", "=SUMA(AE5:AE{$row_print4})")->getStyle("AE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$hoja->setCellValue("AF{$row_print}", "=SUMA(AF5:AF{$row_print4})")->getStyle("AF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$hoja->setCellValue("AG{$row_print}", "=SUMA(AG5:AG{$row_print4})")->getStyle("AG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$hoja->setCellValue("AH{$row_print}", "=SUMA(AH5:AH{$row_print4})")->getStyle("AH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$hoja->setCellValue("AI{$row_print}", "=SUMA(AI5:AI{$row_print4})")->getStyle("AI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$hoja->setCellValue("AJ{$row_print}", "=SUMA(AJ5:AJ{$row_print4})")->getStyle("AJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-
-
-			$hoja->setCellValue("B{$row_print2}", "ABARROTES")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AD{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$row_print2 += 1;
-			$hoja->setCellValue("B{$row_print2}", "TIENDA")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AE{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$row_print2 += 1;
-			$hoja->setCellValue("B{$row_print2}", "ULTRAMARINOS")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AF{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$row_print2 += 1;
-			$hoja->setCellValue("B{$row_print2}", "TRINCHERAS")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AG{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$row_print2 += 1;
-			$hoja->setCellValue("B{$row_print2}", "MERCADO")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AH{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$row_print2 += 1;
-			$hoja->setCellValue("B{$row_print2}", "TENENCIA")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AI{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			$row_print2 += 1;
-			$hoja->setCellValue("B{$row_print2}", "TIJERAS")->getStyle("B{$row_print2}");
-			$hoja->setCellValue("C{$row_print2}", "AJ{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-			*/
-		}
-
-
-
-
-		$file_name = "FORMS ".$proves.".xls"; //Nombre del documento con extención
-		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
-		header("Content-Disposition: attachment;filename=".$file_name);
-		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel5");
-		$excel_Writer->save("php://output");
-		
-
-
-
 	}
 
 
@@ -821,6 +604,277 @@ class Cotizaciones extends MY_Controller {
 		
 		
 		return $botones;
+	}
+
+	public function fill_formato1($proves, $id_proves){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		
+		$default_border = array(
+		    'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    'color' => array('rgb'=>'000000')
+		);
+		$style_header = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'000000'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => 'FFFFFF')
+		    ),
+		    'borders' => array(
+		        'bottom' => $default_border,
+		        'left' => $default_border,
+		        'top' => $default_border,
+		        'right' => $default_border,
+		    ),
+		);
+
+		$style_menos = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'FDB2B2'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => 'E21111')
+		    ),
+		    'borders' => array(
+		        'bottom' => $default_border,
+		        'left' => $default_border,
+		        'top' => $default_border,
+		        'right' => $default_border,
+		    ),
+		);
+
+		$style_mas = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'96EAA8'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => '0C800C')
+		    ),
+		    'borders' => array(
+		        'bottom' => $default_border,
+		        'left' => $default_border,
+		        'top' => $default_border,
+		        'right' => $default_border,
+		    ),
+		);
+
+		$style_blue = array(
+		    'fill' => array(
+		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+		        'color' => array('rgb'=>'80b9f5'),
+		    ),
+		    'font' => array(
+		        'bold' => true,
+		        'color' => array('rgb' => '000000')
+		    ),
+		    'borders' => array(
+		        'bottom' => $default_border,
+		        'left' => $default_border,
+		        'top' => $default_border,
+		        'right' => $default_border,
+		    ),
+		);
+		$style_them = array(
+		    'borders' => array(
+		        'bottom' => $default_border,
+		        'left' => $default_border,
+		        'top' => $default_border,
+		        'right' => $default_border,
+		    ),
+		);
+		
+
+		
+		$inputFileName = 'assets/uploads/formproveedor.xlsx';
+		$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+		$objReader = PHPExcel_IOFactory::createReader($inputFileType);
+		$objPHPExcel = $objReader->load($inputFileName);
+
+		$objPHPExcel->setActiveSheetIndex(0);
+		$hoja = $objPHPExcel->getActiveSheet();
+
+		$hoja->setCellValue("A2", 'PEDIDO A "'.$proves.'" '.date("d-m-Y"));
+		$where=["ctz_first.id_proveedor" => $id_proves];
+		$fecha = date('Y-m-d');
+		$row_print =4;
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray( $style_header );
+				$hoja->setCellValue("E{$row_print}", $value['familia'])->getStyle("E{$row_print}")->getAlignment()->setWrapText(true);
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$this->cellStyle("D{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle("D{$row_print}:E{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("D{$row_print}", $row['codigo'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("E{$row_print}", $row['producto'])->getStyle("E{$row_print}");
+						$row_print ++;
+					}
+				}
+			}
+		}
+		for($i = 5; $i < $row_print; $i++){
+			$hoja->getStyle("A{$i}:A{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("B{$i}:B{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("C{$i}:C{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("D{$i}:D{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("E{$i}:E{$i}")->applyFromArray( $style_them );
+		}
+		$hoja->getStyle("A5:E{$row_print}")->applyFromArray( $style_them );
+
+
+		$objPHPExcel->setActiveSheetIndex(1);
+
+		$hoja = $objPHPExcel->getActiveSheet();
+		$hoja->setCellValue("B2", 'PEDIDO A "'.$proves.'" '.date("d-m-Y"));
+		$row_print =4;
+		
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->getStyle("B{$row_print}:B{$row_print}")->applyFromArray( $style_header );
+				$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$this->cellStyle("D{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle("D{$row_print}:E{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
+						if($row['precio_sistema'] < $row['precio_first']){
+							$hoja->getStyle("C{$row_print}:C{$row_print}")->applyFromArray( $style_menos );
+							$hoja->setCellValue("C{$row_print}", $row['precio_first'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}else{
+							$hoja->getStyle("C{$row_print}:C{$row_print}")->applyFromArray( $style_mas );
+							$hoja->setCellValue("C{$row_print}", $row['precio_first'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}
+						$hoja->setCellValue("D{$row_print}", $row['precio_sistema'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
+						$hoja->setCellValue("E{$row_print}", $row['precio_four'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						if($row['precio_sistema'] < $row['precio_next']){
+							$hoja->getStyle("F{$row_print}:F{$row_print}")->applyFromArray( $style_menos );
+							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}else if($row['precio_next'] !== NULL){
+							$hoja->getStyle("F{$row_print}:F{$row_print}")->applyFromArray( $style_mas );
+							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						}else{
+							$hoja->setCellValue("F{$row_print}", $row['precio_next'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("F{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						$hoja->setCellValue("G{$row_print}", $row['proveedor_next'])->getStyle("G{$row_print}");
+						$hoja->setCellValue("AC{$row_print}", $row['promocion_first'])->getStyle("AC{$row_print}");
+						$hoja->getStyle("J{$row_print}:J{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("M{$row_print}:M{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("P{$row_print}:P{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("S{$row_print}:S{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("V{$row_print}:V{$row_print}")->applyFromArray( $style_blue );
+						$hoja->getStyle("Y{$row_print}:Y{$row_print}")->applyFromArray( $style_blue );
+
+												
+						$hoja->setCellValue("AD{$row_print}", "=J{$row_print}*C{$row_print}")->getStyle("AD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');						
+						$hoja->setCellValue("AE{$row_print}", "=M{$row_print}*C{$row_print}")->getStyle("AE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AF{$row_print}", "=P{$row_print}*C{$row_print}")->getStyle("AF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AG{$row_print}", "=S{$row_print}*C{$row_print}")->getStyle("AG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AH{$row_print}", "=V{$row_print}*C{$row_print}")->getStyle("AH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AI{$row_print}", "=Y{$row_print}*C{$row_print}")->getStyle("AI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AJ{$row_print}", "=C{$row_print}*AB{$row_print}")->getStyle("AJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+
+						$hoja->getStyle("AB{$row_print}:AB{$row_print}")->applyFromArray( $style_blue );
+
+						$row_print ++;
+					}
+					
+				}
+				
+
+			}
+			$row_print4 =  $row_print - 1;
+			$hoja->setCellValue("AD{$row_print}", "=SUM(AE5:AE{$row_print4})")->getStyle("AD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AE{$row_print}", "=SUM(AE5:AE{$row_print4})")->getStyle("AE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AF{$row_print}", "=SUM(AF5:AF{$row_print4})")->getStyle("AF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AG{$row_print}", "=SUM(AG5:AG{$row_print4})")->getStyle("AG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AH{$row_print}", "=SUM(AH5:AH{$row_print4})")->getStyle("AH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AI{$row_print}", "=SUM(AI5:AI{$row_print4})")->getStyle("AI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("AJ{$row_print}", "=SUM(AJ5:AJ{$row_print4})")->getStyle("AJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+			$row_print2 = $row_print + 8;
+
+			$hoja->setCellValue("B{$row_print2}", "ABARROTES")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AD{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TIENDA")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AE{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "ULTRAMARINOS")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AF{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TRINCHERAS")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AG{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "MERCADO")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AH{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TENENCIA")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AI{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$row_print2 += 1;
+			$hoja->setCellValue("B{$row_print2}", "TIJERAS")->getStyle("B{$row_print2}");
+			$hoja->setCellValue("C{$row_print2}", "=AJ{$row_print}")->getStyle("C{$row_print2}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+		}
+		
+		for($i = 5; $i < $row_print; $i++){
+			$hoja->getStyle("A{$i}:A{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("B{$i}:B{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("C{$i}:C{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("D{$i}:D{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("E{$i}:E{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("F{$i}:F{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("G{$i}:G{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("H{$i}:H{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("I{$i}:I{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("J{$i}:J{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("K{$i}:K{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("L{$i}:L{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("M{$i}:M{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("N{$i}:N{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("O{$i}:O{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("P{$i}:P{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("Q{$i}:Q{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("R{$i}:R{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("S{$i}:S{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("T{$i}:T{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("U{$i}:U{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("V{$i}:V{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("W{$i}:W{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("X{$i}:X{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("Y{$i}:Y{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("Z{$i}:Z{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AA{$i}:AA{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AB{$i}:AB{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AC{$i}:AC{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AD{$i}:AD{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AE{$i}:AE{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AF{$i}:AF{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AG{$i}:AG{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AH{$i}:AH{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AI{$i}:AI{$i}")->applyFromArray( $style_them );
+			$hoja->getStyle("AJ{$i}:AJ{$i}")->applyFromArray( $style_them );
+		}
+		$hoja->getStyle("A1:AJ{$row_print}")->applyFromArray( $style_them );
+		$file_name = "FORMS ".$proves.".xls"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel5");
+		$excel_Writer->save("php://output");
+		
 	}
 
 }
