@@ -17,6 +17,11 @@
 		box-shadow: 0 0 15px #E0FFF0
 		background: #E0FFF0;
 	}
+	@media screen and (max-width: 600px){
+		.loginColumns{width: 100%;margin: 0px;}
+		img{border-radius: 0px;width: 100%;height: 50%}
+	}
+
 </style>
 <body class="blue-bg">
 

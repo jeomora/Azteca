@@ -11,7 +11,7 @@
 						<i class="fa fa-play fa-rotate-45"></i> <?php echo empty($productos) ? 0 : number_format(sizeof($productos),2,'.',',') ?>
 					</h2>
 					<small>EN EL SISTEMA</small>
-				</div>
+				</div> 
 			</div>
 		</div>
 		<div class="col-lg-4">

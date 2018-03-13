@@ -292,6 +292,15 @@ class Cotizaciones_model extends MY_Model {
 		->where($this->TABLE_NAME.".id_producto",$producto)
 		->where("WEEKOFYEAR(".$this->TABLE_NAME.".fecha_registro)", $this->weekNumber());
 
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
 		$result = $this->db->get()->result();
 		if ($result) {
 			return $result;

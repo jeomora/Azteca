@@ -161,7 +161,13 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["producto"]->nombre;
-		$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		$user = $this->session->userdata();
+		if($user['id_grupo'] ==2){//Proveedor
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+		}else{
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		}
 		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
@@ -173,7 +179,13 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="Seleccione una opción para eliminar la Cotización del producto:<br>".$data["producto"]->nombre;
-		$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		$user = $this->session->userdata();
+		if($user['id_grupo'] ==2){//Proveedor
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+		}else{
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		}
 		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;Eliminar
