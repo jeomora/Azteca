@@ -260,7 +260,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$fecha = date('Y-m-d');
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 
 		$row_print =3;
 		if ($cotizacionesProveedor){
@@ -616,8 +616,6 @@ class Cotizaciones extends MY_Controller {
 		$botones.='&nbsp;<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'.$id_cotizacion.'">
 							<i class="fa fa-trash"></i>
 						</button>';
-		
-		
 		return $botones;
 	}
 
@@ -719,7 +717,7 @@ class Cotizaciones extends MY_Controller {
 		$where=["ctz_first.id_proveedor" => $id_proves];
 		$fecha = date('Y-m-d');
 		$row_print =4;
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
 				$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray( $style_header );

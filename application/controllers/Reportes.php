@@ -101,7 +101,7 @@ class Reportes extends MY_Controller {
 			$fecha = 'Y-m-d';
 		}
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro) " => $this->weekNumber($fecha)];
-		$data['cotizacionesProveedor'] = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$data['cotizacionesProveedor'] = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		$data["fecha"]=$this->input->post('fecha_registro');
 		$data["semana"]=$this->weekNumber($fecha);
 		$data["user"]=$this->session->userdata();

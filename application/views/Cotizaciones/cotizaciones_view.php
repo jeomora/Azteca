@@ -156,8 +156,8 @@
 											<td><?php echo '$ '.number_format($value->precio_nexto,2,'.',',') ?></td>
 											<?php if($value->precio_next >= $value->precio_sistema): ?>
 												<td><?php echo ($value->precio_next >0) ? '<div class="preciomas">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
-											<?php else: ?>
-												<td><?php echo ($value->precio_next >0) ? '<div class="preciomenos">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
+											<?php 												<td><?php echo ($value->precio_next >else: ?>
+0) ? '<div class="preciomenos">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
 											<?php endif ?>
 											<td><?php echo strtoupper($value->proveedor_next) ?></td>
 											<td><?php echo strtoupper($value->promocion_next) ?></td>

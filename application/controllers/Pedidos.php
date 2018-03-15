@@ -44,7 +44,12 @@ class Pedidos extends MY_Controller {
 		];
 		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
 		$data["proveedores"] = $this->user_mdl->getUsuarios();
-		$this->estructura("Pedidos/table_pedidos", $data, FALSE);
+		if($user['id_grupo'] ==3){
+			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
+		}else{
+			$this->estructura("Pedidos/table_pedidos", $data, FALSE);
+		}
+		
 	}
 
 	public function add_pedido(){
@@ -108,10 +113,20 @@ class Pedidos extends MY_Controller {
 		$productosProveedor = $this->ct_mdl->productos_proveedor($where);
 		$this->jsonResponse($productosProveedor);
 	}
+
+	public function get_pedidos(){
+		$id_proveedor = $this->input->post('id_proveedor');
+		$user = $this->session->userdata();
+		$where = ["ctz_first.id_proveedor" => $id_proveedor];
+		$fecha = date('Y-m-d');
+		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
+		$this->jsonResponse($productosProveedor);
+	}
+
 	public function get_cotizaciones(){
 		$where=["ctz_first.id_proveedor" => $this->input->post('id_proves')];
 		$fecha = date('Y-m-d');
-		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		$this->jsonResponse($productosProveedor);
 	}
 

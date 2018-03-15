@@ -37,9 +37,18 @@
 						<?php endif ?>
 
 					</ul>
-					<?php else: ?> <!--El grupo 2 son Proveedores -->
+					<?php elseif($usuario['id_grupo'] == 2): ?> <!--El grupo 2 son Proveedores -->
 						<li class="dropdown">
 							<a href="<?php echo site_url('Cotizaciones') ?>" >COTIZACIONES </a>
+						</li>
+						<li class="dropdown">
+							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
+						</li>
+					</ul>
+
+					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 2 son Proveedores -->
+						<li class="dropdown">
+							<a href="<?php echo site_url('Pedidos') ?>" >PEDIDOS </a>
 						</li>
 						<li class="dropdown">
 							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
