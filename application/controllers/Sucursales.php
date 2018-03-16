@@ -40,6 +40,11 @@ class Sucursales extends MY_Controller {
 		$this->load->view("Sucursales/table_sucursales", $data, FALSE);
 	}
 
+	public function getSucursal(){
+		$user = $this->session->userdata();
+		$sucursal = $this->suc_md->get(NULL,['id_sucursal'=>$user["id_usuario"]])[0];
+		$this->jsonResponse($sucursal);
+	}
 
 	public function add_sucursal(){
 		$data["title"]="REGISTRAR SUCURSALES";

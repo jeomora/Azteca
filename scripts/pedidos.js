@@ -64,8 +64,11 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 	if(id_cotizacion != "nope"){
 		$(".fill_form").css("display","block");
 		$("#id_proves2").val(proveedor);
-
-		var stringArray = id_cotizacion.split(",");
+		var sucur = "";
+		getSucursal()
+			.done(function (response){
+				sucur = response.nombre;
+				var stringArray = id_cotizacion.split(",");
 		$(".wonder").html("");
 		var flag = "";
 		for (var i = 0; i < stringArray.length; i++) {
@@ -102,7 +105,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 				});
 				table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
 							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
-							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: #01B0F0" colspan="3">ABARROTES</th></tr></thead>'+
+							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: #01B0F0" colspan="3">'+sucur+'</th></tr></thead>'+
 							'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
 							'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
 							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
@@ -111,7 +114,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 					table_contain = "";
 			});
 		}
-
+			});
 	}else{
 		$(".fill_form").css("display","none");
 	}
@@ -209,6 +212,15 @@ function getProductos(id_prov) {
 		type: "POST",
 		dataType: "JSON",
 		data: {id_proveedor: id_prov},
+	});
+}
+
+function getSucursal(){
+	return $.ajax({
+		url: site_url+"/Sucursales/getSucursal",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: "id_prov"},
 	});
 }
 
