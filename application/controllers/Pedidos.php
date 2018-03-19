@@ -10,6 +10,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Sucursales_model", "suc_mdl");
 		$this->load->model("Usuarios_model", "user_mdl");
 		$this->load->model("Cotizaciones_model", "ct_mdl");
+		$this->load->model("Existencias_model", "ex_mdl");
 	}
 
 	public function index(){
@@ -181,6 +182,46 @@ class Pedidos extends MY_Controller {
 			$mensaje=[	"id"	=>	'Error',
 						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
 						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function guardaPedido(){
+		$user = $this->session->userdata();
+		$values = $this->input->post();
+
+		if($this->input->post('idpedido') !== null){
+			$pedido = [
+				"id_pedido"=>	$this->input->post('idpedido'),
+				"id_producto"=>	$this->input->post('producto'),
+				"id_tienda"=>	$user['id_usuario'], 
+				"cajas"=>	$this->input->post('cajas'),
+				"piezas"=>	$this->input->post('piezas'),
+				"pedido"=>$this->input->post('pedido'),
+				"fecha_registro"=>date("Y-m-d H:i:s")
+			];	
+		}else{
+			$pedido = [
+				"id_producto"=>	$this->input->post('producto'),
+				"id_tienda"=>	$user['id_usuario'], 
+				"cajas"=>	$this->input->post('cajas'),
+				"piezas"=>	$values['piezas'],
+				"pedido"=>$this->input->post('pedido'),
+				"fecha_registro"=>date("Y-m-d H:i:s")
+			];
+		}
+		if($this->ex_mdl->insert($pedido)){
+			$mensaje = [
+				"id" 	=> 'Éxito',
+				"desc"	=> 'Pedido registrado correctamente',
+				"type"	=> 'success'
+			];
+		}else{
+			$mensaje = [
+				"id" 	=> 'Error',
+				"desc"	=> 'No se registro el Pedido',
+				"type"	=> 'error'
+			];
 		}
 		$this->jsonResponse($mensaje);
 	}

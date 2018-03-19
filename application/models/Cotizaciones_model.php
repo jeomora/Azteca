@@ -168,7 +168,7 @@ class Cotizaciones_model extends MY_Model {
 	public function comparaCotizaciones($where=[], $fech, $tienda){
 		$this->db->select("ctz_first.id_cotizacion, 
 			ctz_first.fecha_registro,
-			cajas,piezas,pedido,
+			cajas,piezas,pedido,prod.id_producto,id_pedido,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
@@ -197,7 +197,7 @@ class Cotizaciones_model extends MY_Model {
 
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "INNER")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
-		->join("existencias","existencias.id_pedido = (SELECT existencias.id_pedido FROM existencias WHERE id_tienda = ".$tienda." AND existencias.id_cotizacion = ctz_first.id_cotizacion)","LEFT")
+		->join("existencias","existencias.id_pedido = (SELECT existencias.id_pedido FROM existencias WHERE id_tienda = ".$tienda." AND existencias.id_producto = ctz_first.id_producto and WEEKOFYEAR(existencias.fecha_registro) = ".$this->weekNumber($fech).")","LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")
 		->order_by("prod.id_producto", "ASC");
@@ -225,6 +225,8 @@ class Cotizaciones_model extends MY_Model {
 			}
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["id_cotizacion"]	=	$comparativa[$i]->id_cotizacion;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["id_pedido"]		=	$comparativa[$i]->id_pedido;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["id_producto"]		=	$comparativa[$i]->id_producto;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["cajas"]		=	$comparativa[$i]->cajas;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["piezas"]		=	$comparativa[$i]->piezas;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["pedido"]		=	$comparativa[$i]->pedido;

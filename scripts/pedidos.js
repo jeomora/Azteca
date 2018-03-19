@@ -2,6 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
+
 	
 });
 
@@ -45,14 +46,42 @@ $(document).off("change", "#id_proves").on("change", "#id_proves", function() {
 	}
 });
 
-$(document).off("keyup", ".cajas").on("keyup", ".cajas", function () {
+$(document).off("focusout", ".cajas").on("focusout", ".cajas", function () {
 	var tr = $(this).closest("tr");
-	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
-	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
-	if($(this).val().replace(/[^0-9\.]+/g,"") > 0){
-		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
-	}
+	var producto = tr.find(".producto").val();
+	var idpedido = tr.find(".idpedido").val();
+	var cajas = $(this).val($(this).val().replace(/[^0-9\.]+/g,""));
+	var pedido = tr.find(".pedido").val();
+	var piezas = tr.find(".piezas").val();
+	guardaPedidos(producto, idpedido, cajas, pedido, piezas);
 });
+$(document).off("focusout", ".piezas").on("focusout", ".piezas", function () {
+	var tr = $(this).closest("tr");
+	var producto = tr.find(".producto").val();
+	var idpedido = tr.find(".idpedido").val();
+	var piezas = $(this).val($(this).val().replace(/[^0-9\.]+/g,""));
+	var pedido = tr.find(".pedido").val();
+	var cajas = tr.find(".cajas").val();
+	guardaPedidos(producto, idpedido, cajas, pedido, piezas);
+});
+$(document).off("focusout", ".pedido").on("focusout", ".pedido", function () {
+	var tr = $(this).closest("tr");
+	var producto = tr.find(".producto").val();
+	var idpedido = tr.find(".idpedido").val();
+	var pedido = $(this).val($(this).val().replace(/[^0-9\.]+/g,""));
+	var cajas = tr.find(".cajas").val();
+	var piezas = tr.find(".piezas").val();
+	guardaPedidos(producto, idpedido, cajas, pedido, piezas);
+});
+
+function guardaPedidos(producto, idpedido, cajas, pedido, piezas){
+	var values = [{'id_producto': producto,'pedido': pedido,'piezas': piezas,'idpedido': idpedido,'cajas': cajas}];
+	return $.ajax({
+		url: site_url+"Pedidos/guardaPedido",
+		type: "POST",
+		data: values
+	});
+}
 
 $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
 	event.preventDefault();
@@ -68,6 +97,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 		getSucursal()
 			.done(function (response){
 				sucur = response.nombre;
+				colors = response.color;
 				var stringArray = id_cotizacion.split(",");
 		$(".wonder").html("");
 		var flag = "";
@@ -77,7 +107,6 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 				$.each(response, function(index, value){
 					table_contain += '<tr></td><td colspan="1"></td><td colspan="1" class="td2Form">'+value.familia+'<td colspan="9"></td></tr>'
 					$.each(value.articulos, function(inex, vl) {
-
 						vl.precio_next = vl.precio_next == null ? 0 : vl.precio_next;
 						vl.precio_four = vl.precio_four == null ? 0 : vl.precio_four;
 						vl.precio_sistema = vl.precio_sistema == null ? 0 : vl.precio_sistema;
@@ -98,14 +127,20 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 								+'<input type="text" value='+vl.piezas+' class="form-control piezas numeric"></div>'+
 						'</td><td>'+
 							'<div class="input-group m-b">'
-								+'<input type="text" value='+vl.pedido+' class="form-control cajas numeric"></div>'+
+								+'<input type="text" value='+vl.pedido+' class="form-control pedido numeric"></div>'+
+						'</td><td style="display:none">'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.id_producto+' class="form-control producto numeric"></div>'+
+						'</td><td style="display:none">'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.id_pedido+' class="form-control idpedido numeric"></div>'+
 						'</td></tr>'
 
 					});
 				});
 				table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
 							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
-							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: #01B0F0" colspan="3">'+sucur+'</th></tr></thead>'+
+							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: '+colors+'" colspan="3">'+sucur+'</th></tr></thead>'+
 							'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
 							'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
 							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+

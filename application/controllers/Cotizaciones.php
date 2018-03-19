@@ -325,14 +325,14 @@ class Cotizaciones extends MY_Controller {
 		$num_rows = $sheet->getHighestDataRow();
 		$proveedor = $this->session->userdata('id_usuario');
 		for ($i=3; $i<=$num_rows; $i++) { 
-			if($sheet->getCell('B'.$i)->getValue() > 0){
-				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if($sheet->getCell('C'.$i)->getValue() > 0){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
-					$column_one = $sheet->getCell('D'.$i)->getValue();
-					$column_two = $sheet->getCell('E'.$i)->getValue();
-					$descuento = $sheet->getCell('F'.$i)->getValue();
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue()));
+					$column_one = $sheet->getCell('E'.$i)->getValue();
+					$column_two = $sheet->getCell('F'.$i)->getValue();
+					$descuento = $sheet->getCell('G'.$i)->getValue();
 
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
@@ -352,7 +352,7 @@ class Cotizaciones extends MY_Controller {
 						"descuento"			=>	$descuento,
 						"precio_promocion"	=>	$precio_promocion,
 						"fecha_registro"	=>	date('Y-m-d H:i:s'),
-						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
+						"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
 					];
 				}
 			}
