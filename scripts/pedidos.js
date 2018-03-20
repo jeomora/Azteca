@@ -48,38 +48,35 @@ $(document).off("change", "#id_proves").on("change", "#id_proves", function() {
 
 $(document).off("focusout", ".cajas").on("focusout", ".cajas", function () {
 	var tr = $(this).closest("tr");
-	var producto = tr.find(".producto").val();
-	var idpedido = tr.find(".idpedido").val();
-	var cajas = $(this).val($(this).val().replace(/[^0-9\.]+/g,""));
-	var pedido = tr.find(".pedido").val();
-	var piezas = tr.find(".piezas").val();
-	guardaPedidos(producto, idpedido, cajas, pedido, piezas);
+	var cantidad = $(this).val();
+	guardaPedidos(tr,"cajas",cantidad);
 });
 $(document).off("focusout", ".piezas").on("focusout", ".piezas", function () {
 	var tr = $(this).closest("tr");
-	var producto = tr.find(".producto").val();
-	var idpedido = tr.find(".idpedido").val();
-	var piezas = $(this).val($(this).val().replace(/[^0-9\.]+/g,""));
-	var pedido = tr.find(".pedido").val();
-	var cajas = tr.find(".cajas").val();
-	guardaPedidos(producto, idpedido, cajas, pedido, piezas);
+	var cantidad = $(this).val();
+	guardaPedidos(tr,"piezas",cantidad);
 });
 $(document).off("focusout", ".pedido").on("focusout", ".pedido", function () {
 	var tr = $(this).closest("tr");
-	var producto = tr.find(".producto").val();
-	var idpedido = tr.find(".idpedido").val();
-	var pedido = $(this).val($(this).val().replace(/[^0-9\.]+/g,""));
-	var cajas = tr.find(".cajas").val();
-	var piezas = tr.find(".piezas").val();
-	guardaPedidos(producto, idpedido, cajas, pedido, piezas);
+	var cantidad = $(this).val();
+	guardaPedidos(tr,"pedido",cantidad);
 });
 
-function guardaPedidos(producto, idpedido, cajas, pedido, piezas){
-	var values = [{'id_producto': producto,'pedido': pedido,'piezas': piezas,'idpedido': idpedido,'cajas': cajas}];
+function guardaPedidos(tr, tipo,cantidad){
+	var producto = tr.find(".producto").val();
+	var idpedido = tr.find(".idpedido").val();
+	var cajas = tipo == "cajas" ? cantidad : tr.find(".cajas").val();
+	var piezas = tipo == "piezas" ? cantidad : tr.find(".piezas").val();
+	var pedido = tipo == "pedido" ? cantidad : tr.find(".pedido").val();
+	cajas = cajas == "" ? 0 : cajas;
+	piezas = piezas == "" ? 0 : piezas;
+	pedido = pedido == "" ? 0 : pedido;
+	var values = {'id_producto': producto,'pedido': pedido,'piezas': piezas,'id_pedido': idpedido,'cajas': cajas};
 	return $.ajax({
 		url: site_url+"Pedidos/guardaPedido",
 		type: "POST",
-		data: values
+		dataType: 'JSON',
+		data: {values : JSON.stringify(values)}
 	});
 }
 

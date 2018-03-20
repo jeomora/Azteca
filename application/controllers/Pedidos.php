@@ -188,29 +188,23 @@ class Pedidos extends MY_Controller {
 
 	public function guardaPedido(){
 		$user = $this->session->userdata();
-		$values = $this->input->post();
+		$values = json_decode($this->input->post('values'), true);
 
-		if($this->input->post('idpedido') !== null){
-			$pedido = [
-				"id_pedido"=>	$this->input->post('idpedido'),
-				"id_producto"=>	$this->input->post('producto'),
+		$pedido = [
+				"id_producto"=>	$values["id_producto"],
 				"id_tienda"=>	$user['id_usuario'], 
-				"cajas"=>	$this->input->post('cajas'),
-				"piezas"=>	$this->input->post('piezas'),
-				"pedido"=>$this->input->post('pedido'),
-				"fecha_registro"=>date("Y-m-d H:i:s")
-			];	
-		}else{
-			$pedido = [
-				"id_producto"=>	$this->input->post('producto'),
-				"id_tienda"=>	$user['id_usuario'], 
-				"cajas"=>	$this->input->post('cajas'),
-				"piezas"=>	$values['piezas'],
-				"pedido"=>$this->input->post('pedido'),
+				"cajas"=>	$values["cajas"],
+				"piezas"=>	$values["piezas"],
+				"pedido"=>$values["pedido"],
 				"fecha_registro"=>date("Y-m-d H:i:s")
 			];
+		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber()])[0];
+		if($ides == NULL){
+			$respuesta = $this->ex_mdl->insert($pedido);
+		}else{
+			$respuesta = $this->ex_mdl->update($pedido,["id_pedido" => $ides->{'id_pedido'}]);
 		}
-		if($this->ex_mdl->insert($pedido)){
+		if($respuesta){
 			$mensaje = [
 				"id" 	=> 'Éxito',
 				"desc"	=> 'Pedido registrado correctamente',
@@ -220,7 +214,7 @@ class Pedidos extends MY_Controller {
 			$mensaje = [
 				"id" 	=> 'Error',
 				"desc"	=> 'No se registro el Pedido',
-				"type"	=> 'error'
+				"type"	=> $respuesta
 			];
 		}
 		$this->jsonResponse($mensaje);

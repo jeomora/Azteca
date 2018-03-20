@@ -36,7 +36,6 @@ class MY_Model extends CI_Model {
 		if($limit > 0){
 			$this->db->limit($limit, $start);
 		}
-		$this->db->where($this->TABLE_NAME.".estatus", 1);
 		$query = $this->db->get($this->TABLE_NAME);
 		return $query->num_rows() > 0 ? $query->result() : 0;
 	}
