@@ -31,10 +31,17 @@ h1 {
 	font-weight: normal;
 	margin: 0 0 14px 0;
 	padding: 24px 15px 20px 15px;
-	border-top-right-radius: 10px !important;
+	
+}
+.logo_img {
+    background-color: #49B7E0;
+    border-top-right-radius: 10px !important;
     border-top-left-radius: 10px;
 }
-
+.logo_img > img {
+    max-width: 100%;
+    height: 8rem;
+}
 code {
 	font-family: Consolas, Monaco, Courier New, Courier, monospace;
 	font-size: 12px;
@@ -64,6 +71,9 @@ p {
 </head>
 <body>
 	<div id="container">
+		<div class="logo_img">
+			<img  src="assets/img/abarrotes.png" />
+		</div>
 		<h1>Página no encontrada</h1>
 		<p>Sí esta seguro que es la url correcta contacte a soporte técnico</p>
 		<p>Ir a <a href="Welcome/Login">inicio</a> para empezar a navegar en el sitio.</p>

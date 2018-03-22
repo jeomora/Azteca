@@ -2,6 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
+
 	
 });
 
@@ -44,6 +45,123 @@ $(document).off("change", "#id_proves").on("change", "#id_proves", function() {
 		$(".fill_form").css("display","none");
 	}
 });
+
+$(document).off("focusout", ".cajas").on("focusout", ".cajas", function () {
+	var tr = $(this).closest("tr");
+	var cantidad = $(this).val();
+	guardaPedidos(tr,"cajas",cantidad);
+});
+$(document).off("focusout", ".piezas").on("focusout", ".piezas", function () {
+	var tr = $(this).closest("tr");
+	var cantidad = $(this).val();
+	guardaPedidos(tr,"piezas",cantidad);
+});
+$(document).off("focusout", ".pedido").on("focusout", ".pedido", function () {
+	var tr = $(this).closest("tr");
+	var cantidad = $(this).val();
+	guardaPedidos(tr,"pedido",cantidad);
+});
+
+function guardaPedidos(tr, tipo,cantidad){
+	var producto = tr.find(".producto").val();
+	var idpedido = tr.find(".idpedido").val();
+	var cajas = tipo == "cajas" ? cantidad : tr.find(".cajas").val();
+	var piezas = tipo == "piezas" ? cantidad : tr.find(".piezas").val();
+	var pedido = tipo == "pedido" ? cantidad : tr.find(".pedido").val();
+	cajas = cajas == "" ? 0 : cajas;
+	piezas = piezas == "" ? 0 : piezas;
+	pedido = pedido == "" ? 0 : pedido;
+	var values = {'id_producto': producto,'pedido': pedido,'piezas': piezas,'id_pedido': idpedido,'cajas': cajas};
+	return $.ajax({
+		url: site_url+"Pedidos/guardaPedido",
+		type: "POST",
+		dataType: 'JSON',
+		data: {values : JSON.stringify(values)}
+	});
+}
+
+$(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
+	event.preventDefault();
+	var id_cotizacion = $("#id_proves4 option:selected").val();
+	var proveedor = $("#id_proves4 option:selected").text();
+	var table_contain = "";
+
+
+	if(id_cotizacion != "nope"){
+		$(".fill_form").css("display","block");
+		$("#id_proves2").val(proveedor);
+		var sucur = "";
+		getSucursal()
+			.done(function (response){
+				sucur = response.nombre;
+				colors = response.color;
+				var stringArray = id_cotizacion.split(",");
+		$(".wonder").html("");
+		var flag = "";
+		for (var i = 0; i < stringArray.length; i++) {
+			getPedidos(stringArray[i])
+			.done(function (response){
+				$.each(response, function(index, value){
+					table_contain += '<tr></td><td colspan="1"></td><td colspan="1" class="td2Form">'+value.familia+'<td colspan="9"></td></tr>'
+					$.each(value.articulos, function(inex, vl) {
+						vl.precio_next = vl.precio_next == null ? 0 : vl.precio_next;
+						vl.precio_four = vl.precio_four == null ? 0 : vl.precio_four;
+						vl.precio_sistema = vl.precio_sistema == null ? 0 : vl.precio_sistema;
+						vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
+						vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
+						vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
+						vl.cajas = vl.cajas == null ? '""' : vl.cajas;
+						vl.piezas = vl.piezas == null ? '""' : vl.piezas;
+						vl.pedido = vl.pedido == null ? '""' : vl.pedido;
+						flag = vl.proveedor_first;
+						table_contain += '<tr><td>'+vl.codigo+'</td><td>'+vl.producto+'</td><td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
+						'<td>$ '+formatNumber(parseFloat(vl.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_next), 2)+'</td>'+
+						'<td>'+vl.proveedor_next+'</td><td>'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.cajas+' class="form-control cajas numeric"></div>'+
+						'</td><td>'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.piezas+' class="form-control piezas numeric"></div>'+
+						'</td><td>'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.pedido+' class="form-control pedido numeric"></div>'+
+						'</td><td style="display:none">'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.id_producto+' class="form-control producto numeric"></div>'+
+						'</td><td style="display:none">'+
+							'<div class="input-group m-b">'
+								+'<input type="text" value='+vl.id_pedido+' class="form-control idpedido numeric"></div>'+
+						'</td></tr>'
+
+					});
+				});
+				table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
+							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
+							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: '+colors+'" colspan="3">'+sucur+'</th></tr></thead>'+
+							'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
+							'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
+							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
+							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
+					$(".wonder").append(table_contain);
+					table_contain = "";
+			});
+		}
+			});
+	}else{
+		$(".fill_form").css("display","none");
+	}
+});
+
+function getFech(){
+	var d = new Date();
+	var month = d.getMonth();
+	var day = d.getDate();
+	var mes = ['ENERO','FEBRERO', 'MARZO', 'ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','NOVIEMBRE','DICIEMBRE'];
+	var output = ((''+day).length<2 ? '0' : '') + day + ' DE ' +
+	     mes[month] + ' DEL ' +
+	    d.getFullYear();
+	return output;
+}
 
 function get_cotizaciones(id_prov) {
 	return $.ajax({
@@ -123,6 +241,24 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 function getProductos(id_prov) {
 	return $.ajax({
 		url: site_url+"/Pedidos/get_productos",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: id_prov},
+	});
+}
+
+function getSucursal(){
+	return $.ajax({
+		url: site_url+"/Sucursales/getSucursal",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: "id_prov"},
+	});
+}
+
+function getPedidos(id_prov) {
+	return $.ajax({
+		url: site_url+"/Pedidos/get_pedidos",
 		type: "POST",
 		dataType: "JSON",
 		data: {id_proveedor: id_prov},

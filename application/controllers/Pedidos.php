@@ -10,6 +10,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Sucursales_model", "suc_mdl");
 		$this->load->model("Usuarios_model", "user_mdl");
 		$this->load->model("Cotizaciones_model", "ct_mdl");
+		$this->load->model("Existencias_model", "ex_mdl");
 	}
 
 	public function index(){
@@ -44,7 +45,12 @@ class Pedidos extends MY_Controller {
 		];
 		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
 		$data["proveedores"] = $this->user_mdl->getUsuarios();
-		$this->estructura("Pedidos/table_pedidos", $data, FALSE);
+		if($user['id_grupo'] ==3){
+			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
+		}else{
+			$this->estructura("Pedidos/table_pedidos", $data, FALSE);
+		}
+		
 	}
 
 	public function add_pedido(){
@@ -108,10 +114,20 @@ class Pedidos extends MY_Controller {
 		$productosProveedor = $this->ct_mdl->productos_proveedor($where);
 		$this->jsonResponse($productosProveedor);
 	}
+
+	public function get_pedidos(){
+		$id_proveedor = $this->input->post('id_proveedor');
+		$user = $this->session->userdata();
+		$where = ["ctz_first.id_proveedor" => $id_proveedor];
+		$fecha = date('Y-m-d');
+		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
+		$this->jsonResponse($productosProveedor);
+	}
+
 	public function get_cotizaciones(){
 		$where=["ctz_first.id_proveedor" => $this->input->post('id_proves')];
 		$fecha = date('Y-m-d');
-		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		$this->jsonResponse($productosProveedor);
 	}
 
@@ -166,6 +182,40 @@ class Pedidos extends MY_Controller {
 			$mensaje=[	"id"	=>	'Error',
 						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
 						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function guardaPedido(){
+		$user = $this->session->userdata();
+		$values = json_decode($this->input->post('values'), true);
+
+		$pedido = [
+				"id_producto"=>	$values["id_producto"],
+				"id_tienda"=>	$user['id_usuario'], 
+				"cajas"=>	$values["cajas"],
+				"piezas"=>	$values["piezas"],
+				"pedido"=>$values["pedido"],
+				"fecha_registro"=>date("Y-m-d H:i:s")
+			];
+		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber()])[0];
+		if($ides == NULL){
+			$respuesta = $this->ex_mdl->insert($pedido);
+		}else{
+			$respuesta = $this->ex_mdl->update($pedido,["id_pedido" => $ides->{'id_pedido'}]);
+		}
+		if($respuesta){
+			$mensaje = [
+				"id" 	=> 'Éxito',
+				"desc"	=> 'Pedido registrado correctamente',
+				"type"	=> 'success'
+			];
+		}else{
+			$mensaje = [
+				"id" 	=> 'Error',
+				"desc"	=> 'No se registro el Pedido',
+				"type"	=> $respuesta
+			];
 		}
 		$this->jsonResponse($mensaje);
 	}

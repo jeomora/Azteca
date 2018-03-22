@@ -53,7 +53,8 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 	var formData = $("#consultar_cotizaciones").serializeArray();
 	get_reporte(formData).done(function(response) {
 		$("#respuesta_show").html(response);
-			toastr.success("Resultados de la busqueda", user_name);
+			
+			toastr.success("Resultados de la squeda", user_name);}
 		});
 });
 

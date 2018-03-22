@@ -417,7 +417,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 }
 .white-bg .navbar-fixed-top,
 .white-bg .navbar-static-top {
-  background: #49B7E0;
+  background: #FF6805;
 }
 .top-navigation .navbar {
   margin-bottom: 0;
@@ -425,7 +425,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 .top-navigation .nav > li > a {
   padding: 15px 20px;
   color: #FFF;
-  background: #49B7E0;
+  background: #FF6805;
   
 }
 .top-navigation .nav > li a:hover,
@@ -439,7 +439,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 }
 .top-navigation .nav > li.active > a {
   color: #49B7E0;
-  background: #0000FF;
+  background: #3F47CC;
 
 }
 .top-navigation .navbar-right {
@@ -459,7 +459,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
   margin-top: 0px;
 }
 .top-navigation .navbar-brand {
-  background: #49B7E0;
+  background: #FF6805;
   color: #fff;
   padding: 15px 25px;
 }
@@ -3123,13 +3123,13 @@ code {
   height: 48px;
 }
 .ibox-content {
-  background-color: #ffffff;
+  background-color: #FFF;
   color: inherit;
   padding: 15px 20px 20px 20px;
-  border-color: #e7eaec;
+  border-color: #FF6805;
   border-image: none;
-  border-style: solid solid none;
-  border-width: 1px 0px;
+  border-style: solid;
+  border-width: 1px;
 }
 table.table-mail tr td {
   padding: 12px;
@@ -3215,7 +3215,7 @@ table.table-mail tr td {
   color: #ffffff;
 }
 .blue-bg {
-  background-color: #E0FFF0;
+  background-color: #FFF;
   color: #000000;
 }
 .lazur-bg {
@@ -3315,7 +3315,7 @@ table.table-mail tr td {
 }
 /* COLORS */
 .text-navy {
-  color: #1ab394;
+  color: #FF6805;
 }
 .text-primary {
   color: inherit;

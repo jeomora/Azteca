@@ -32,13 +32,10 @@
 								<tr>
 									<th>DESCRIPCIÓN</th>
 									<th>FECHA REGISTRO</th>
-									<th>FECHA CADUCIDAD</th>
-									<th>EXISTENCIAS</th>
 									<th>PRECIO FACTURA</th>
 									<th>PRECIO FACTURA C/PROMOCIÓN</th>
 									<th>DESCUENTO ADICIONAL</th>
-									<th>PROMOCIÓN</th>
-									<th></th>
+									<th colspan="2">PROMOCIÓN</th>
 									<th>OBSERVACIONES</th>
 									<th>ACCIÓN</th>
 								</tr>
@@ -48,8 +45,6 @@
 										<tr>
 											<td><?php echo strtoupper($value->producto) ?></td>
 											<td><?php echo date('d-m-Y', strtotime($value->fecha_registro)) ?></td>
-											<td><?php echo ($value->fecha_caduca != '') ? date('d-m-Y', strtotime($value->fecha_caduca)) : '' ?></td>
-											<td><?php echo ($value->existencias > 0) ? number_format($value->existencias,2,'.',',') : '' ?></td>
 											<td><?php echo ($value->precio >0) ? '$ '.number_format($value->precio,2,'.',',') : '' ?></td>
 											<td><?php echo ($value->precio_promocion >0) ? '$ '.number_format($value->precio_promocion,2,'.',',') : ''?></td>
 											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,0,'.',',').' %' : ''  ?></td>

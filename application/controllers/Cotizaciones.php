@@ -39,7 +39,10 @@ class Cotizaciones extends MY_Controller {
 		$user = $this->session->userdata();//Trae los datos del usuario;
 
 		$where = [];
-		if($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
+		$this->data["message"] =NULL;
+		if(!$this->session->userdata("username")){
+			redirect("Welcome/Login", "");
+		}elseif($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
 					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
@@ -158,7 +161,13 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["producto"]->nombre;
-		$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		$user = $this->session->userdata();
+		if($user['id_grupo'] ==2){//Proveedor
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+		}else{
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		}
 		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
@@ -170,7 +179,13 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="Seleccione una opción para eliminar la Cotización del producto:<br>".$data["producto"]->nombre;
-		$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		$user = $this->session->userdata();
+		if($user['id_grupo'] ==2){//Proveedor
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+		}else{
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+		}
 		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;Eliminar
@@ -245,7 +260,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$fecha = date('Y-m-d');
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 
 		$row_print =3;
 		if ($cotizacionesProveedor){
@@ -310,14 +325,14 @@ class Cotizaciones extends MY_Controller {
 		$num_rows = $sheet->getHighestDataRow();
 		$proveedor = $this->session->userdata('id_usuario');
 		for ($i=3; $i<=$num_rows; $i++) { 
-			if($sheet->getCell('B'.$i)->getValue() > 0){
-				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if($sheet->getCell('C'.$i)->getValue() > 0){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
-					$column_one = $sheet->getCell('D'.$i)->getValue();
-					$column_two = $sheet->getCell('E'.$i)->getValue();
-					$descuento = $sheet->getCell('F'.$i)->getValue();
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue()));
+					$column_one = $sheet->getCell('E'.$i)->getValue();
+					$column_two = $sheet->getCell('F'.$i)->getValue();
+					$descuento = $sheet->getCell('G'.$i)->getValue();
 
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
@@ -337,7 +352,7 @@ class Cotizaciones extends MY_Controller {
 						"descuento"			=>	$descuento,
 						"precio_promocion"	=>	$precio_promocion,
 						"fecha_registro"	=>	date('Y-m-d H:i:s'),
-						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
+						"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
 					];
 				}
 			}
@@ -601,8 +616,6 @@ class Cotizaciones extends MY_Controller {
 		$botones.='&nbsp;<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'.$id_cotizacion.'">
 							<i class="fa fa-trash"></i>
 						</button>';
-		
-		
 		return $botones;
 	}
 
@@ -704,7 +717,7 @@ class Cotizaciones extends MY_Controller {
 		$where=["ctz_first.id_proveedor" => $id_proves];
 		$fecha = date('Y-m-d');
 		$row_print =4;
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha);
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
 				$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray( $style_header );

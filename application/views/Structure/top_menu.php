@@ -1,3 +1,10 @@
+<style type="text/css" media="screen">
+	.logo_img > img {
+		max-width: 100%;
+		height: 50px;
+	}
+	.navbar-header {display: inline-flex;}
+</style>
 <div id="wrapper">
 	<div id="page-wrapper" class="blue-bg">
 		<div class="row border-bottom white-bg">
@@ -8,6 +15,9 @@
 				</div>
 				-->
 				<div class="navbar-header">
+					<div class="logo_img">
+						<img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" />
+					</div>
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 						<i class="fa fa-reorder"></i>
 					</button>
@@ -37,9 +47,18 @@
 						<?php endif ?>
 
 					</ul>
-					<?php else: ?> <!--El grupo 2 son Proveedores -->
+					<?php elseif($usuario['id_grupo'] == 2): ?> <!--El grupo 2 son Proveedores -->
 						<li class="dropdown">
 							<a href="<?php echo site_url('Cotizaciones') ?>" >COTIZACIONES </a>
+						</li>
+						<li class="dropdown">
+							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
+						</li>
+					</ul>
+
+					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 2 son Proveedores -->
+						<li class="dropdown">
+							<a href="<?php echo site_url('Pedidos') ?>" >PEDIDOS </a>
 						</li>
 						<li class="dropdown">
 							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
