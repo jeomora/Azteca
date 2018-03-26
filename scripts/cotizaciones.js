@@ -360,24 +360,11 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
 			}
 		});
 });
-$(document).off("change", ".file_cotizaciones").on("change", ".file_cotizaciones", function(event) {
-	event.preventDefault();
-	blockPage();
-	var formdata = new FormData($("#upload_allcotizaciones")[0]);
-	uploadallCotizaciones(formdata)
-		.done(function (resp) {
-			if (resp.type == 'error'){
-				toastr.error(resp.desc, user_name);
-			}else{
-				unblockPage();
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
-			}
-		});
-});
+
 
 function uploadCotizaciones(formData) {
 	return $.ajax({

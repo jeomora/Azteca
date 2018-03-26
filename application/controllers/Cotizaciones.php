@@ -165,8 +165,12 @@ class Cotizaciones extends MY_Controller {
 		if($user['id_grupo'] ==2){//Proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
 			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
 		}else{
 			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+			$where=["cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
 		}
 		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
@@ -183,8 +187,12 @@ class Cotizaciones extends MY_Controller {
 		if($user['id_grupo'] ==2){//Proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
 			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
 		}else{
 			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+			$where=["cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
 		}
 		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
@@ -317,7 +325,7 @@ class Cotizaciones extends MY_Controller {
 
 	public function upload_cotizaciones(){
 		$this->load->library("excelfile");
-		ini_set("memory_limit", "-1");
+		ini_set("memory_limit", -1);
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
