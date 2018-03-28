@@ -256,7 +256,7 @@ class Cotizaciones_model extends MY_Model {
 				  fecha_registro ')
 				->from('existencias')
 				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber())
-				->where('id_producto',31)
+				->where('id_producto',$comparativa[$i]->id_producto)
 				->where('id_tienda',$stores[$d])
 				->order_by("id_tienda", "ASC");
 				$resu = $this->db->get()->result();

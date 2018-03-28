@@ -62,11 +62,14 @@
 						</div>
 					</div>
 					<?php echo form_close(); ?>
-
-			<div class="ibox float-e-margins">
+					<div class="col-md-12 wonder" style="padding: 0">
+						
+					</div>
+			<!--<div class="ibox float-e-margins">
 				<div class="ibox-title">
 					<h5>LISTADO DE PEDIDOS</h5>
 				</div>
+
 				<div class="ibox-content">
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">
@@ -140,11 +143,11 @@
 										</tr>
 									<?php //endforeach ?>
 								<?php //endif ?>-->
-							</tbody>
+							<!--</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 	</div>
 </div>
