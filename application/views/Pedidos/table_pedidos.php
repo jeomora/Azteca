@@ -23,8 +23,9 @@
 	    font-family: inherit;
 	    font-weight: normal;
 	    font-size: 14px;
-	    padding: 7px;
+	    padding: 7px; 
 	}
+	select#id_proves4 {color: black;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -34,23 +35,25 @@
 						<label for="id_proveedor" class="lblget">Proveedor</label>
 						<select name="id_proves2" id="id_proves2" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<?php if ($proveedores): ?>
-								<?php foreach ($proveedores as $key => $value): ?>
-									<?php if ($value->nombre != "MASTER"): ?>
-										<option value="<?php echo $value->nombre.' '.$value->apellido ?>"></option>
-									<?php endif ?>
-								<?php endforeach ?>
-							<?php endif ?>
+							<option value="27">TACAMBA</option>
+							<option value="4">SAHUAYO</option>
+							<option value="2">DECASA</option>
+							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
+							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
+							<option value="45,25,34,32,68,69,10,40,70,44,71,39,64,15,47,42,65">VARIOS 3RO</option>
+							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
+							<option value="3">DUERO</option>
 						</select>
-						<select name="id_proves" id="id_proves" class="form-control">
+						<select name="id_proves4" id="id_proves4" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<?php if ($proveedores): ?>
-								<?php foreach ($proveedores as $key => $value): ?>
-									<?php if ($value->nombre != "MASTER"): ?>
-										<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre.' '.$value->apellido ?></option>
-									<?php endif ?>
-								<?php endforeach ?>
-							<?php endif ?>
+							<option value="27">TACAMBA</option>
+							<option value="4">SAHUAYO</option>
+							<option value="2">DECASA</option>
+							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
+							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
+							<option value="45,25,34,32,68,69,10,40,70,44,71,39,64,15,47,42,65">VARIOS 3RO</option>
+							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
+							<option value="3">DUERO</option>
 						</select>
 						<div class="btn-group">
 							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">

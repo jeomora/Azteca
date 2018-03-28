@@ -213,6 +213,8 @@ class Cotizaciones_model extends MY_Model {
 			}
 		}
 		$comparativa = $this->db->get()->result();
+
+
 		// echo $this->db->last_query();
 		$comparativaIndexada = [];
 		for ($i=0; $i<sizeof($comparativa); $i++) { 
@@ -243,7 +245,36 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_maximo"]	=	$comparativa[$i]->precio_maximo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_promedio"]	=	$comparativa[$i]->precio_promedio;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_next"]	=	$comparativa[$i]->promocion_next;
-
+			$stores = array(57, 58, 59, 60, 61, 62, 63);
+			for ($d=0; $d < sizeof($stores); $d++) { 
+				$pedidos = $this->db->select('id_pedido,
+				  id_producto,
+				  id_tienda,
+				  cajas,
+				  piezas,
+				  pedido,
+				  fecha_registro ')
+				->from('existencias')
+				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber())
+				->where('id_producto',31)
+				->where('id_tienda',$stores[$d])
+				->order_by("id_tienda", "ASC");
+				$resu = $this->db->get()->result();
+				if($resu){
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["caja".$d]		=	$resu[0]->cajas;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["pz".$d]	=	$resu[0]->piezas;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["ped".$d]	=	$resu[0]->pedido;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["tienda".$d]	=	$resu[0]->id_tienda;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["idped".$d]	=	$resu[0]->id_pedido;
+				}else{
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["caja".$d]		=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["pz".$d]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["ped".$d]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["tienda".$d]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["idped".$d]	=	0;
+				}
+				
+			}
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {

@@ -198,7 +198,7 @@ class Pedidos extends MY_Controller {
 				"pedido"=>$values["pedido"],
 				"fecha_registro"=>date("Y-m-d H:i:s")
 			];
-		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber()])[0];
+		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber(), 'id_tienda'=>$user['id_usuario']])[0];
 		if($ides == NULL){
 			$respuesta = $this->ex_mdl->insert($pedido);
 		}else{
