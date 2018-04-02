@@ -8,6 +8,18 @@
 	select#id_proves2{display: none}
 	.fill_form{display: none}
 	select#id_proves {color: #000;}
+	.preciomas{
+		background-color: #ea9696;
+	    color: red;
+	    font-weight: bold;
+	    text-align: center;
+	}
+	.preciomenos{
+		background-color: #96eaa8;
+	    color: green;
+	    font-weight: bold;
+	    text-align: center;
+	}
 	.btng1{
 		display: inline-flex;
 	    background-color: #23c6c8;
@@ -30,7 +42,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
-					<?php echo form_open("Cotizaciones/fill_formato", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
+					<?php echo form_open("Cotizaciones/fill_formato1", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
 					<div class="btn-group btng1">
 						<label for="id_proveedor" class="lblget">Proveedor</label>
 						<select name="id_proves2" id="id_proves2" class="form-control">
@@ -40,7 +52,7 @@
 							<option value="2">DECASA</option>
 							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
 							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,32,68,69,10,40,70,44,71,39,64,15,47,42,65">VARIOS 3RO</option>
+							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
 							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
 						</select>
@@ -51,7 +63,7 @@
 							<option value="2">DECASA</option>
 							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
 							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,32,68,69,10,40,70,44,71,39,64,15,47,42,65">VARIOS 3RO</option>
+							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
 							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
 						</select>
@@ -63,7 +75,7 @@
 					</div>
 					<?php echo form_close(); ?>
 					<div class="col-md-12 wonder" style="padding: 0">
-						
+
 					</div>
 			<!--<div class="ibox float-e-margins">
 				<div class="ibox-title">

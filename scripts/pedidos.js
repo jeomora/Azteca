@@ -146,13 +146,13 @@ function tablePedidoAll(response,colors,sucur){
 			flag = vl.proveedor_first;
 			table_contain += '<tr><td>'+vl.codigo+'</td><td>'+vl.producto+'</td><td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
 						'<td>$ '+formatNumber(parseFloat(vl.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_next), 2)+'</td>'+
-						'<td>'+vl.proveedor_next+'</td><td>'+vl.caja0+'</td><td>'+vl.pz0+'</td><td>'+vl.ped0+'</td>'+
-						'<td>'+vl.caja1+'</td><td>'+vl.pz1+'</td><td>'+vl.ped1+'</td>'+
-						'<td>'+vl.caja2+'</td><td>'+vl.pz2+'</td><td>'+vl.ped2+'</td>'+
-						'<td>'+vl.caja3+'</td><td>'+vl.pz3+'</td><td>'+vl.ped3+'</td>'+
-						'<td>'+vl.caja4+'</td><td>'+vl.pz4+'</td><td>'+vl.ped4+'</td>'+
-						'<td>'+vl.caja5+'</td><td>'+vl.pz5+'</td><td>'+vl.ped5+'</td>'+
-						'<td>'+vl.caja6+'</td><td>'+vl.pz6+'</td><td>'+vl.ped6+'</td>'+
+						'<td>'+vl.proveedor_next+'</td><td>'+vl.caja0+'</td><td>'+vl.pz0+'</td><td style="background-color: #afafff;">'+vl.ped0+'</td>'+
+						'<td>'+vl.caja1+'</td><td>'+vl.pz1+'</td><td style="background-color: #afafff;">'+vl.ped1+'</td>'+
+						'<td>'+vl.caja2+'</td><td>'+vl.pz2+'</td><td style="background-color: #afafff;">'+vl.ped2+'</td>'+
+						'<td>'+vl.caja3+'</td><td>'+vl.pz3+'</td><td style="background-color: #afafff;">'+vl.ped3+'</td>'+
+						'<td>'+vl.caja4+'</td><td>'+vl.pz4+'</td><td style="background-color: #afafff;">'+vl.ped4+'</td>'+
+						'<td>'+vl.caja5+'</td><td>'+vl.pz5+'</td><td style="background-color: #afafff;">'+vl.ped5+'</td>'+
+						'<td>'+vl.caja6+'</td><td>'+vl.pz6+'</td><td style="background-color: #afafff;">'+vl.ped6+'</td>'+
 						'</tr>'
 
 		});

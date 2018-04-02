@@ -53,7 +53,7 @@ class Cotizaciones_model extends MY_Model {
 	}
 	public function getCotz($where = []){
 		$this->db->select("cotizaciones.id_cotizacion, 
-			ctz_first.fecha_registro,
+			ctz_first.fecha_registro,prod.estatus,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,

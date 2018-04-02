@@ -53,7 +53,7 @@
 							<option value="2">DECASA</option>
 							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
 							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,32,68,69,10,40,70,44,71,39,64,15,47,42,65">VARIOS 3RO</option>
+							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
 							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
 						</select>
@@ -64,7 +64,7 @@
 							<option value="2">DECASA</option>
 							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
 							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,32,68,69,10,40,70,44,71,39,64,15,47,42,65">VARIOS 3RO</option>
+							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
 							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
 						</select>

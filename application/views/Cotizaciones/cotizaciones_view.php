@@ -139,8 +139,13 @@
 								<?php if ($cotizaciones): foreach ($cotizaciones as $key => $value): ?>
 										<tr>
 											<td><?php echo strtoupper($value->familia) ?></td>
-											<td><?php echo strtoupper($value->codigo) ?></td>
-											<td><?php echo strtoupper($value->producto) ?></td>
+											<?php if($value->estatus == 2): ?>
+												<td style="background-color: #00b0f0"><?php echo strtoupper($value->codigo) ?></td>
+												<td style="background-color: #00b0f0"><?php echo strtoupper($value->producto) ?></td>
+											<?php else: ?>
+												<td><?php echo strtoupper($value->codigo) ?></td>
+												<td><?php echo strtoupper($value->producto) ?></td>
+											<?php endif ?>
 											<td><?php echo '$ '.number_format($value->precio_sistema,2,'.',',') ?></td>
 											<td><?php echo '$ '.number_format($value->precio_four,2,'.',',') ?></td>
 											<td><?php echo '$ '.number_format($value->precio_firsto,2,'.',',') ?></td>

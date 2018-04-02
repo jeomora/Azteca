@@ -48,7 +48,7 @@ class Productos extends MY_Controller {
 		$group ="productos.id_producto";
 		$order="productos.id_producto";
 
-		$where = [["clausula"	=>	"productos.estatus",		"valor"	=>	1]];
+		$where = [["clausula"	=>	"productos.estatus","valor"	=>	1]];
 
 		$productos = $this->pro_md->get_pagination($columns, $joins, $where, $search, $group, $order);
 
