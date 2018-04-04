@@ -137,14 +137,27 @@ function tablePedidoAll(response,colors,sucur){
 			vl.precio_next = vl.precio_next == null ? 0 : vl.precio_next;
 			vl.precio_four = vl.precio_four == null ? 0 : vl.precio_four;
 			vl.precio_sistema = vl.precio_sistema == null ? 0 : vl.precio_sistema;
+			if(vl.estatus == 2){
+				vl.codigo = '<td style="background-color: #00b0f0">'+vl.codigo+'</td>';
+				vl.producto = '<td style="background-color: #00b0f0">'+vl.producto+'</td>';
+				flag = "VOLÚMENES";
+			}else if(vl.estatus == 3){
+				vl.codigo = '<td style="background-color:  #fff900">'+vl.codigo+'</td>';
+				vl.producto = '<td style="background-color: #fff900">'+vl.producto+'</td>';
+				flag = "AMARILLOS";
+			}else{
+				vl.codigo = '<td>'+vl.codigo+'</td>';
+				vl.producto = '<td>'+vl.producto+'</td>';
+				flag = 'PEDIDOS A '+vl.proveedor_first;
+			}
+			
 			vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
 			vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
 			vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
 			vl.cajas = vl.cajas == null ? '0' : vl.cajas;
 			vl.piezas = vl.piezas == null ? '0' : vl.piezas;
 			vl.pedido = vl.pedido == null ? '0' : vl.pedido;
-			flag = vl.proveedor_first;
-			table_contain += '<tr><td>'+vl.codigo+'</td><td>'+vl.producto+'</td><td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
+			table_contain += '<tr>'+vl.codigo+''+vl.producto+'<td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
 						'<td>$ '+formatNumber(parseFloat(vl.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_next), 2)+'</td>'+
 						'<td>'+vl.proveedor_next+'</td><td>'+vl.caja0+'</td><td>'+vl.pz0+'</td><td style="background-color: #afafff;">'+vl.ped0+'</td>'+
 						'<td>'+vl.caja1+'</td><td>'+vl.pz1+'</td><td style="background-color: #afafff;">'+vl.ped1+'</td>'+
@@ -157,7 +170,7 @@ function tablePedidoAll(response,colors,sucur){
 
 		});
 	});
-	table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
+	table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>'+flag+' '+getFech()+'</h5></div>'+
 							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
 							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: #01B0F0" colspan="3">ABARROTES</th><th style="background-color: #E26C0B" colspan="3">TIENDA</th>'+
 							'<th style="background-color: #C5C5C5" colspan="3">ULTRAMARINOS</th><th style="background-color: #92D051" colspan="3">TRINCHERAS</th><th style="background-color: #B1A0C7" colspan="3">AZT MERCADO</th>'+

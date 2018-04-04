@@ -55,6 +55,8 @@
 							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
 							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
+							<option value="VOLUMEN">VOLUMEN</option>
+							<option value="AMARILLOS">AMARILLOS</option>
 						</select>
 						<select name="id_proves4" id="id_proves4" class="form-control">
 							<option value="nope">Seleccionar...</option>
@@ -66,6 +68,8 @@
 							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
 							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
+							<option value="VOLUMEN">VOLUMEN</option>
+							<option value="AMARILLOS">AMARILLOS</option>
 						</select>
 						<div class="btn-group">
 							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">

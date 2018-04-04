@@ -142,6 +142,9 @@
 											<?php if($value->estatus == 2): ?>
 												<td style="background-color: #00b0f0"><?php echo strtoupper($value->codigo) ?></td>
 												<td style="background-color: #00b0f0"><?php echo strtoupper($value->producto) ?></td>
+											<?php elseif($value->estatus == 3): ?>
+												<td style="background-color: #fff900"><?php echo strtoupper($value->codigo) ?></td>
+												<td style="background-color: #fff900"><?php echo strtoupper($value->producto) ?></td>
 											<?php else: ?>
 												<td><?php echo strtoupper($value->codigo) ?></td>
 												<td><?php echo strtoupper($value->producto) ?></td>

@@ -674,6 +674,16 @@ class Cotizaciones extends MY_Controller {
 				$array2 = array("DUERO");
 				$filenam = "DUERO";
 				break;
+			case "VOLUMEN":
+				$array = array("VOLUMEN");
+				$array2 = array("VOLÚMENES");
+				$filenam = "VOLUMEN";
+				break;
+			case "AMARILLOS":
+				$array = array("AMARILLOS");
+				$array2 = array("AMARILLOS");
+				$filenam = "AMARILLOS";
+				break;
 			default:
 				$array = array($id_proves);
 				$array2 = array($proves);
@@ -880,7 +890,13 @@ class Cotizaciones extends MY_Controller {
 			$hoja->setCellValue("AA".$flag, "PZAS");
 			$hoja->setCellValue("AB".$flag, "PEDIDO");
 			$hoja->setCellValue("AC".$flag, "PROMOCION");
-			$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"ctz_first.id_proveedor" => $array[$i]];//Semana actual
+			if ($array[$i] === "AMARILLOS") {
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"prod.estatus" => 3];//Semana actual
+			}elseif ($array[$i] === "VOLUMEN" ) {
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"prod.estatus" => 2];//Semana actual
+			}else{
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"ctz_first.id_proveedor" => $array[$i],"prod.estatus" => 1];//Semana actual
+			}
 			$fecha = date('Y-m-d');
 			$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 
@@ -905,6 +921,9 @@ class Cotizaciones extends MY_Controller {
 								$this->cellStyle("C{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
 								$this->cellStyle("B{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
+							if($array[0] == 2 || $array == 3){
+								$this->cellStyle("B{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
 							$hoja->setCellValue("D{$flag}", $row['precio_sistema'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
 							$this->cellStyle("D".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("E{$flag}", $row['precio_four'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -919,6 +938,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("F{$flag}", $row['precio_next'])->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("F{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
+							
 							$hoja->setCellValue("G{$flag}", $row['proveedor_next']);
 							$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("H{$flag}", $row['caja0']);
