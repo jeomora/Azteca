@@ -39,7 +39,7 @@ class Welcome extends MY_Controller {
 
 	public function login(){
 		if($this->session->userdata("username")){
-			redirect("Main/", "");
+			redirect("Main/", $data);
 		}
 		$this->data["message"] =NULL;
 		if (isset($_POST['email']) && isset($_POST['password'])) {

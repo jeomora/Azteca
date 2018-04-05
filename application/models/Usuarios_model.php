@@ -42,6 +42,35 @@ class Usuarios_model extends MY_Model {
 		}
 	}
 
+	public function getCotizados($where = []){
+		$this->db->select("usuarios.id_usuario as ides, CONCAT(usuarios.nombre,' ',usuarios.apellido) as proveedor")
+		->from($this->TABLE_NAME)
+		->where("usuarios.id_usuario NOT IN (SELECT cotizaciones.id_proveedor FROM cotizaciones WHERE 
+WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.estatus = 1 GROUP BY 
+cotizaciones.id_proveedor)")
+		->where($this->TABLE_NAME.".id_grupo", 2)
+		->where($this->TABLE_NAME.".estatus", 1);
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public function login($where=[]){
 		if($where !== NULL){
 			if(is_array($where)){

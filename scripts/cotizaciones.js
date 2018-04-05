@@ -2,30 +2,35 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	/*$("#table_cot_admin").dataTable({
-		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable",
-			type: "POST"
-		},
-		processing: true,
-		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
-		serverSide: true,
-		responsive: true,
-		pageLength: 50,
-		dom: 'Bfrtip',
-		bSort : false,
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [
-			{ extend: 'pageLength' },
-		]
-	});*/
+		/*$("#table_cot_admin").dataTable({
+			ajax: {
+				url: site_url +"Cotizaciones/cotizaciones_dataTable",
+				type: "POST"
+			},
+			processing: true,
+			language: {
+	            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+			serverSide: true,
+			responsive: true,
+			pageLength: 50,
+			dom: 'Bfrtip',
+			bSort : false,
+			lengthMenu: [
+				[ 10, 30, 50, -1 ],
+				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+			],
+			buttons: [
+				{ extend: 'pageLength' },
+			]
+		});*/
 	fillDataTable("table_cot_admin", 50);
 	
 	fillDataTable("table_cot_proveedores", 50);
+});
+
+$(document).off("click", "#no_cotizados").on("click", "#no_cotizados", function(event){
+	event.preventDefault();
+	getModal("Main/getNotCotizados/", function (){ });
 });
 
 $(window).on("load", function (event) {

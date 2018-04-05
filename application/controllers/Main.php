@@ -26,7 +26,23 @@ class Main extends MY_Controller {
 			$where = ["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 		}
 		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
+		
 		$this->estructura("Admin/welcome", $data);
+	}
+
+	public function getNotCotizados(){
+		$data["title"]="PRODUCTOS NO COTIZADOS";
+		$data["cotizados"] = $this->pr_md->getCotizados();
+		$data["view"] = $this->load->view("Cotizaciones/no_cotizados", $data,TRUE);
+		$this->jsonResponse($data);
+	}
+
+	public function getNotCotizo(){
+		$data["title"]="PROVEEDORES SIN COTIZAR";
+		$data["cotizados"] = $this->user_md->getCotizados();
+		$data["view"] = $this->load->view("Cotizaciones/no_cotizo", $data,TRUE);
+
+		$this->jsonResponse($data);
 	}
 
 

@@ -1,6 +1,7 @@
  <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <style type="text/css" media="screen">
 	.preciomas{
 		background-color: #ea9696;
