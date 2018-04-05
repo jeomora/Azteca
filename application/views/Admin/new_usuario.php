@@ -32,14 +32,19 @@
 					<input type="text" name="password" value="" class="form-control" placeholder="*********">
 				</div>
 			</div>
-
+ 
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="id_grupo">Grupos</label>
 					<select name="id_grupo" class="form-control chosen-select">
 						<option value="-1">Seleccionar...</option>
 						<?php if ($grupos):foreach ($grupos as $key => $value): ?>
-						<option value="<?php echo $value->id_grupo ?>"><?php echo $value->nombre ?></option>
+							<?php if ($grupo == 4 && $value->nombre <> 'ADMINISTRADOR'): ?>
+								<option value="<?php echo $value->id_grupo ?>"><?php echo $value->nombre ?></option>
+							<?php endif; ?>
+							<?php if ($grupo == 1): ?>
+								<option value="<?php echo $value->id_grupo ?>"><?php echo $value->nombre ?></option>
+							<?php endif; ?>
 						<?php endforeach; endif ?>
 					</select>
 				</div>

@@ -73,6 +73,8 @@ class Welcome extends MY_Controller {
 	public function new_usuario(){
 		$data["title"]="REGISTRAR USUARIOS";
 		$data["grupos"] = $this->gr_md->get();
+		$user = $this->session->userdata();
+		$data["grupo"] = $user['id_grupo'];
 		$data["view"] = $this->load->view("Admin/new_usuario", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_usuario' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
@@ -85,6 +87,8 @@ class Welcome extends MY_Controller {
 		$data["usuario"] = $this->user_md->get(NULL, ['id_usuario'=>$id])[0];
 		$data["password"]= $this->showPassword($data["usuario"]->password);//Para mostrar la contraseña
 		$data["grupos"] = $this->gr_md->get();
+		$user = $this->session->userdata();
+		$data["grupo"] = $user['id_grupo'];
 		$data["view"] =$this->load->view("Admin/edit_usuario", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_usuario' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios

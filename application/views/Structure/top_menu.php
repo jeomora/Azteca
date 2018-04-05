@@ -28,7 +28,7 @@
 						<li class="active">
 							<a href="#" id="progress" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
 						</li>
-					<?php if ($usuario['id_grupo'] == 1): ?><!--El grupo 1 es Administrador -->
+					<?php if ($usuario['id_grupo'] == 1 || $usuario['id_grupo'] == 4): ?><!--El grupo 1 es Administrador -->
 						<?php if ($main_menu):?>
 							<?php foreach ($main_menu as $key => $value): ?>
 								<?php if ($value->nivel == 1): ?>
@@ -56,7 +56,7 @@
 						</li>
 					</ul>
 
-					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 2 son Proveedores -->
+					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 3 son Sucursales -->
 						<li class="dropdown">
 							<a href="<?php echo site_url('Pedidos') ?>" >PEDIDOS </a>
 						</li>

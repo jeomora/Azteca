@@ -26,6 +26,7 @@ class Main extends MY_Controller {
 			$where = ["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 		}
 		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
+		$data["ides"] = $user['id_grupo'];
 		
 		$this->estructura("Admin/welcome", $data);
 	}
