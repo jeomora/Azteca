@@ -133,6 +133,7 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function() {
 	}
 });
 
+
 $(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion", function(event){
 	event.preventDefault();
 	var id_cotizacion = $(this).closest("tr").find("#update_cotizacion").data("idCotizacion");

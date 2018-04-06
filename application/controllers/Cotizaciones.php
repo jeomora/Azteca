@@ -11,6 +11,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Pedidos_model", "ped_mdl");
 		$this->load->model("Familias_model", "fam_mdl");
 		$this->load->model("Cambios_model", "cambio_md");
+		$this->load->model("Usuarios_model", "user_md");
 	}
 
 	public function index(){
@@ -47,10 +48,12 @@ class Cotizaciones extends MY_Controller {
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
 					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
+			$data["usuarios"] = $this->user_md->getUsuarios();	
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
 			$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL);
 			$data["proveedores"] = $this->usua_mdl->getUsuarios();
+			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
 		}
 	}
