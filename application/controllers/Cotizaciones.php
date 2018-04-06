@@ -51,7 +51,6 @@ class Cotizaciones extends MY_Controller {
 			$data["usuarios"] = $this->user_md->getUsuarios();	
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
-			$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL);
 			$data["proveedores"] = $this->usua_mdl->getUsuarios();
 			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
@@ -224,6 +223,17 @@ class Cotizaciones extends MY_Controller {
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;Eliminar
 						</button>";
+		$this->jsonResponse($data);
+	}
+
+	public function getAdminTable(){
+		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL);
+		$this->jsonResponse($data);
+	}
+
+	public function getGrupo(){
+		$user = $this->session->userdata();
+		$data["ides"] = $user['id_grupo'];
 		$this->jsonResponse($data);
 	}
 

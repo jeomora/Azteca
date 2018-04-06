@@ -1,9 +1,21 @@
-
+<style type="text/css">
+	.spinns {
+	    position: absolute;
+	    top: 25rem;
+	    left: 45rem;
+	    background-color: rgba(255,255,255,0.5);
+	    padding: 10rem;
+	    color: #FF6805;
+	    border: 2px solid #FF6805;
+	    border-radius: 5px;
+	    display: none;
+	}
+</style>		
 				<!-- Page Footer-->
-						<div class="footer">
-							<div class="pull-right">
-								<strong>AUTOR: </strong>
-							</div>
+						<div class="footer" style="color: white">
+							<a href="http://jeomora.com" style="color:white" target="_blank"><div class="pull-right">
+								<strong>AUTOR: Jeovany Mora Vieyra</strong>
+							</div></a>
 							<div>
 								<strong>ABARROTES AZTECA AUTOSERVICIOS S.A DE CV &copy; 2017-2018 </strong> 
 							</div>
@@ -44,7 +56,7 @@
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/colorpicker/bootstrap-colorpicker.min.js') ?>"></script>
 </body>
 </html>
-
+<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>
 <div class="modal inmodal" id="mainModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content animated flipInY">

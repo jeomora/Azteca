@@ -37,7 +37,7 @@
 										<?php if (isset($value->submenu) && count($value->submenu) > 0 ): ?>
 											<ul role="menu" class="dropdown-menu">
 											<?php foreach ($value->submenu as $key => $val): ?>
-												<li><a href="<?php echo site_url($val->ruta2) ?>"><?php echo $val->nombre2 ?></a></li>
+												<li class="gotocot"><a href="<?php echo site_url($val->ruta2) ?>"><?php echo $val->nombre2 ?></a></li>
 											<?php endforeach ?>
 											</ul>
 										<?php endif ?>

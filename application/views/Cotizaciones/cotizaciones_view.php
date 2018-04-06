@@ -136,50 +136,8 @@
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
-							<tbody>
-								<?php if ($cotizaciones): foreach ($cotizaciones as $key => $value): ?>
-										<tr>
-											<td><?php echo strtoupper($value->familia) ?></td>
-											<?php if($value->estatus == 2): ?>
-												<td style="background-color: #00b0f0"><?php echo strtoupper($value->codigo) ?></td>
-												<td style="background-color: #00b0f0"><?php echo strtoupper($value->producto) ?></td>
-											<?php elseif($value->estatus == 3): ?>
-												<td style="background-color: #fff900"><?php echo strtoupper($value->codigo) ?></td>
-												<td style="background-color: #fff900"><?php echo strtoupper($value->producto) ?></td>
-											<?php else: ?>
-												<td><?php echo strtoupper($value->codigo) ?></td>
-												<td><?php echo strtoupper($value->producto) ?></td>
-											<?php endif ?>
-											<td><?php echo '$ '.number_format($value->precio_sistema,2,'.',',') ?></td>
-											<td><?php echo '$ '.number_format($value->precio_four,2,'.',',') ?></td>
-											<td><?php echo '$ '.number_format($value->precio_firsto,2,'.',',') ?></td>
-											<?php if($value->precio_first >= $value->precio_sistema): ?>
-												<td><?php echo '<div class="preciomas">$ '.number_format($value->precio_first,2,'.',',').'</div>' ?></td>
-											<?php else: ?>
-												<td><?php echo '<div class="preciomenos">$ '.number_format($value->precio_first,2,'.',',').'</div>' ?></td>
-											<?php endif ?>
-											<td><?php echo strtoupper($value->proveedor_first) ?></td>
-											<td><?php echo strtoupper($value->promocion_first) ?></td>
-											<td><?php echo '$ '.number_format($value->precio_maximo,2,'.',',') ?></td>
-											<td><?php echo '$ '.number_format($value->precio_promedio,2,'.',',') ?></td>
-											<td><?php echo '$ '.number_format($value->precio_nexto,2,'.',',') ?></td>
-											<?php if($value->precio_next >= $value->precio_sistema): ?>
-												<td><?php echo ($value->precio_next >0) ? '<div class="preciomas">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
-											<?php else: ?>
-												<td><?php echo ($value->precio_next >0) ? '<div class="preciomenos">$ '.number_format($value->precio_next,2,'.',',').'</div>' : ''?></td>
-											<?php endif ?>
-											<td><?php echo strtoupper($value->proveedor_next) ?></td>
-											<td><?php echo strtoupper($value->promocion_next) ?></td>
-											<td>
-												<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
-													<i class="fa fa-pencil"></i>
-												</button>
-												<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
-													<i class="fa fa-trash"></i>
-												</button>
-											</td>
-										</tr>
-								<?php endforeach; endif ?>
+							<tbody class="tableAdmin">
+
 							</tbody>
 						</table>
 					</div>
