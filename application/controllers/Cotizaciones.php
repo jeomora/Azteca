@@ -10,6 +10,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Usuarios_model", "usua_mdl");
 		$this->load->model("Pedidos_model", "ped_mdl");
 		$this->load->model("Familias_model", "fam_mdl");
+		$this->load->model("Cambios_model", "cambio_md");
 	}
 
 	public function index(){
@@ -89,6 +90,7 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function update(){
+		$user = $this->session->userdata();
 		$size = sizeof($this->input->post('id_cotz[]'));
 		$cotz = $this->input->post('id_cotz[]');
 		$precio = $this->input->post('precio[]');
@@ -98,6 +100,17 @@ class Cotizaciones extends MY_Controller {
 		$descuento = $this->input->post('descuento[]');
 		$observaciones = $this->input->post('observaciones[]');
 		for($i = 0; $i < $size; $i++){
+			$antes =  $this->ct_mdl->get(NULL, ['id_cotizacion'=>$cotz[$i]])[0];
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "id : ".$antes->id_cotizacion." /Proveedor: ".$antes->id_proveedor." /Producto:".$antes->id_producto." /Precio: ".
+							$antes->precio." /Precio promoción: ".$antes->precio_promocion." /".$antes->num_one." en ".$antes->num_two.
+							" /%Descuento: ".$antes->descuento." /Registrado: ".$antes->fecha_registro." /Observaciones: ".$antes->observaciones,
+				"despues" => "id : ".$cotz[$i]." /Proveedor: ".$antes->id_proveedor." /Producto:".$antes->id_producto." /Precio: ".
+							$precio[$i]." /Precio promoción: ".$precio_promocion[$i]." /".$num_one[$i]." en ".$num_two[$i].
+							" /%Descuento: ".$descuento[$i]." /Observaciones: ".$observaciones[$i]];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$data ['id_cotizacion'] = $this->ct_mdl->update([
 				"precio" => $precio[$i],
 				"precio_promocion" => $precio_promocion[$i],
@@ -117,8 +130,18 @@ class Cotizaciones extends MY_Controller {
 
 	public function delete(){
 		$size = sizeof($this->input->post('id_producto[]'));
+		$user = $this->session->userdata();
 		$productos = $this->input->post('id_producto[]');
 		for($i = 0; $i < $size; $i++){
+			$antes =  $this->ct_mdl->get(NULL, ['id_cotizacion'=>$productos[$i]])[0];
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "id : ".$antes->id_cotizacion." /Proveedor: ".$antes->id_proveedor." /Producto:".$antes->id_producto." /Precio: ".
+							$antes->precio." /Precio promoción: ".$antes->precio_promocion." /".$antes->num_one." en ".$antes->num_two.
+							" /%Descuento: ".$antes->descuento." /Registrado: ".$antes->fecha_registro." /Observaciones: ".$antes->observaciones,
+				"despues" => "Cotización eliminada"];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$data ['id_cotizacion'] = $this->ct_mdl->update(["estatus" => 0], $productos[$i]);
 		}
 		$mensaje = [
@@ -449,6 +472,7 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function upload_precios(){
+		$user = $this->session->userdata();
 		$this->load->library("excelfile");
 		ini_set("memory_limit", "-1");
 		$file = $_FILES["file_precios"]["tmp_name"];
@@ -470,6 +494,12 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => getHostByName(getHostName()),
+				"despues" => "El usuario subio precios de sistema y precio 4"];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
 		$mensaje=[	"id"	=>	'Éxito',
 					"desc"	=>	'Precios cargados correctamente en el Sistema',
 					"type"	=>	'success'];

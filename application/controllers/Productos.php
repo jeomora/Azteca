@@ -7,6 +7,7 @@ class Productos extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Productos_model", "pro_md");
 		$this->load->model("Familias_model", "fam_md");
+		$this->load->model("Cambios_model", "cambio_md");
 	}
 
 	public function index(){
@@ -119,6 +120,7 @@ class Productos extends MY_Controller {
 	}
 
 	public function accion($param){
+		$user = $this->session->userdata();
 		$producto = ['codigo'	=>	$this->input->post('codigo'),
 					'nombre'	=>	strtoupper($this->input->post('nombre')),
 					// 'precio'	=>	$this->input->post('precio'),
@@ -128,6 +130,12 @@ class Productos extends MY_Controller {
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):
 				if (sizeof($getProducto) == 0) {
+					$cambios = [
+							"id_usuario" => $user["id_usuario"],
+							"fecha_cambio" => date('Y-m-d H:i:s'),
+							"antes" => "Registro de nuevo producto",
+							"despues" => "Código: ".$producto['codigo']." /Nombre: ".$producto['nombre']." /Familia: ".$producto['id_familia']];
+					$data['cambios'] = $this->cambio_md->insert($cambios);
 					$data ['id_producto']=$this->pro_md->insert($producto);
 					$mensaje = ["id" 	=> 'Éxito',
 								"desc"	=> 'Producto registrado correctamente',
@@ -140,7 +148,14 @@ class Productos extends MY_Controller {
 				break;
 
 			case (substr($param, 0, 1) === 'U'):
+				$antes = $this->pro_md->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
 				$data ['id_producto'] = $this->pro_md->update($producto, $this->input->post('id_producto'));
+				$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"antes" => "id: ".$antes->id_producto." /Código: ".$antes->codigo." /Nombre: ".$antes->nombre." /Familia: ".$antes->id_familia,
+						"despues" => "Nuevos datos -> Código: ".$producto['codigo']." /Nombre: ".$producto['nombre']." /Familia: ".$producto['id_familia']];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Producto actualizado correctamente',
@@ -149,7 +164,14 @@ class Productos extends MY_Controller {
 				break;
 
 			default:
+				$antes = $this->pro_md->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
 				$data ['id_producto'] = $this->pro_md->update(["estatus" => 0], $this->input->post('id_producto'));
+				$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"antes" => "id: ".$antes->id_producto." /Código: ".$antes->codigo." /Nombre: ".$antes->nombre." /Familia: ".$antes->id_familia,
+						"despues" => "Producto eliminado"];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Producto eliminado correctamente',
