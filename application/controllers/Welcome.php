@@ -6,6 +6,7 @@ class Welcome extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Usuarios_model", "user_md");
+		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Grupos_model", "gr_md");
 		$this->load->library("form_validation");
 	}
@@ -122,6 +123,13 @@ class Welcome extends MY_Controller {
 			$mensaje = ["id" 	=> 'Éxito',
 						"desc"	=> 'Usuario registrado correctamente',
 						"type"	=> 'success'];
+			$user = $this->session->userdata();
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Usuario es nuevo",
+				"despues" => "Nombre : ".$usuario['nombre']." /Apellido: ".$usuario['apellido']." /Teléfono:".$usuario['telefono']." /Email: ".$usuario['email']." /Password: ".$this->input->post('password')." /Grupo: ".$usuario['id_grupo']];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 		}else{
 			$mensaje = [
 				"id" 	=> 'Alerta',
@@ -133,6 +141,8 @@ class Welcome extends MY_Controller {
 	}
 
 	public function update_user(){
+		$user = $this->session->userdata();
+		$antes = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_usuario')])[0];
 		$usuario = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
 			"apellido"	=>	strtoupper($this->input->post('apellido')),
@@ -142,6 +152,12 @@ class Welcome extends MY_Controller {
 			"id_grupo"	=>	$this->input->post('id_grupo')];
 
 		$data ['id_usuario'] = $this->user_md->update($usuario, $this->input->post('id_usuario'));
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Nombre : ".$antes->nombre." /Apellido: ".$antes->apellido." /Teléfono:".$antes->telefono." /Email: ".$antes->email." /Password: ".$antes->password." /Grupo: ".$antes->id_grupo,
+				"despues" => "Nombre : ".$usuario['nombre']." /Apellido: ".$usuario['apellido']." /Teléfono:".$usuario['telefono']." /Email: ".$usuario['email']." /Password: ".$this->input->post('password')." /Grupo: ".$usuario['id_grupo']];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
 		$mensaje = ["id" 	=> 'Éxito',
 					"desc"	=> 'Usuario actualizado correctamente',
 					"type"	=> 'success'];
@@ -149,6 +165,14 @@ class Welcome extends MY_Controller {
 	}
 
 	public function delete_user(){
+		$user = $this->session->userdata();
+		$antes = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_usuario')])[0];
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Nombre : ".$antes->nombre." /Apellido: ".$antes->apellido." /Teléfono:".$antes->telefono." /Email: ".$antes->email." /Password: ".$antes->password." /Grupo: ".$antes->id_grupo,
+				"despues" => "El usuario fue eliminado, se puede recuperar desde la BD"];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
 		$data ['id_usuario'] = $this->user_md->update(["estatus" => 0], $this->input->post('id_usuario'));
 		$mensaje = ["id" 	=> 'Éxito',
 					"desc"	=> 'Usuario eliminado correctamente',
