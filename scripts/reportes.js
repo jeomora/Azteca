@@ -53,10 +53,11 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 	var formData = $("#consultar_cotizaciones").serializeArray();
 	get_reporte(formData).done(function(response) {
 		$("#respuesta_show").html(response);
-			
-			toastr.success("Resultados de la squeda", user_name);}
+			fillDataTable("table table-bordered table-striped table-bordered table-hover font",50);
+			toastr.success("Resultados de la busqueda", user_name);
 		});
 });
+
 
 function get_reporte(formData) {
 	return $.ajax({

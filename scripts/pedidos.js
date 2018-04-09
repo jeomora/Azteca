@@ -194,6 +194,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 
 
 	if(id_cotizacion != "nope"){
+		$(".wonder").html("")
 		$(".fill_form").css("display","block");
 		$("#id_proves2").val(proveedor);
 		var sucur = "";
