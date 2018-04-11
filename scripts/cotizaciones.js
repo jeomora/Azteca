@@ -70,7 +70,7 @@ function setAdminTable(){
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
-			$.each(resp, function(indx, vals){
+			$.each(resp.cotizaciones, function(indx, vals){
 				$.each(vals, function(index, value){
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
 					value.precio_four = value.precio_four == null ? 0 : value.precio_four;

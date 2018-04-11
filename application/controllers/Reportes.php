@@ -94,18 +94,21 @@ class Reportes extends MY_Controller {
 	}
 
 	public function fill_table(){
-		$fecha = NULL;
-		if ($this->input->post('fecha_registro') != '') {
-			$fecha = date('Y-m-d', strtotime($this->input->post('fecha_registro')));
-		}else{
-			$fecha = 'Y-m-d';
-		}
-		$where=["WEEKOFYEAR(cotizaciones.fecha_registro) " => $this->weekNumber($fecha)];
-		$data['cotizacionesProveedor'] = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		$data["fecha"]=$this->input->post('fecha_registro');
 		$data["semana"]=$this->weekNumber($fecha);
 		$data["user"]=$this->session->userdata();
+		$this->jsonResponse($data);
 		$this->load->view("Reportes/table_cotizaciones", $data, FALSE);
+	}
+	public function fill_anterior(){
+		$fecha = NULL;
+		if ($this->input->post('fecha') != '') {
+			$fecha = date('Y-m-d', strtotime($this->input->post('fecha')));
+		}else{
+			$fecha = date("Y-m-d");
+		}
+		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
+		$this->jsonResponse($data);
 	}
 
 	public function fill_reporte(){

@@ -226,8 +226,29 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	public function ver_cotizacion($id){
+		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
+		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["title"]="Cotizaciones del producto :<br>".$data["producto"]->nombre;
+		$user = $this->session->userdata();
+		if($user['id_grupo'] ==2){//Proveedor
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+		}else{
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+			$where=["cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+		}
+		$data["view"]=$this->load->view("Cotizaciones/ver_cotizacion", $data, TRUE);
+		$data["button"]="";
+		$this->jsonResponse($data);
+	}
+
 	public function getAdminTable(){
-		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL);
+		$fecha = date("Y-m-d");
+		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
 		$this->jsonResponse($data);
 	}
 
@@ -307,7 +328,7 @@ class Cotizaciones extends MY_Controller {
 		$row_print =3;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
 				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$row_print +=1;
 				if ($value['articulos']) {
@@ -315,10 +336,16 @@ class Cotizaciones extends MY_Controller {
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
+						$hoja->setCellValue("B{$row_print}", $row['producto']);
 						$hoja->setCellValue("C{$row_print}", $row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
 						$hoja->setCellValue("D{$row_print}", $row['precio_four'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$hoja->setCellValue("E{$row_print}", $row['precio_firsto'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						if($row['estatus'] == 2){
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						if($row['estatus'] == 3){
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
 						if($row['precio_sistema'] < $row['precio_first']){
 							$hoja->setCellValue("F{$row_print}", $row['precio_first'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$this->cellStyle("F{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
@@ -670,6 +697,7 @@ class Cotizaciones extends MY_Controller {
 
 	public function fill_formato1(){
 		$flag = 1;
+		$flag1 = 1;
 		$array = "";
 		$array2 = "";
 		$filenam = "";
@@ -733,7 +761,31 @@ class Cotizaciones extends MY_Controller {
 		}
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
-		$hoja = $this->excelfile->getActiveSheet();
+		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
+
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
+		$hoja1->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja1->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja1->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja1->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		
+
+		$this->excelfile->createSheet();
+        $hoja = $this->excelfile->setActiveSheetIndex(1);
+        $hoja->setTitle("PEDIDO");
+
 		$hoja->getDefaultStyle()
 		    ->getBorders()
 		    ->getTop()
@@ -857,6 +909,18 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('G')->setWidth("20");
 		$hoja->getColumnDimension('AC')->setWidth("70");
 		for ($i=0; $i < sizeof($array) ; $i++) { 
+			//HOJA EXISTENCIAS
+			$hoja1->mergeCells('A'.$flag1.':E'.$flag1);
+			$this->cellStyle("A".$flag1, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag1."", "GRUPO ABARROTES AZTECA");
+			$flag1++;
+			$hoja1->mergeCells('A'.$flag1.':B'.$flag1);
+			$this->cellStyle("A".$flag1.":D".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("B".$flag1, "PEDIDOS A '".$array2[$i]."' ".date("d-m-Y"));
+			$this->cellStyle("E".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$flag1++;
+
+			//HOJA PEDIDOS
 			$hoja->mergeCells('A'.$flag.':AC'.$flag);
 			$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 			$hoja->setCellValue("A".$flag."", "ABARROTES Y TIENDA, ULTRAMARINOS AZTECA AUTOSERVICIOS SA. DE CV.");
@@ -963,9 +1027,6 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("C{$flag}", $row['precio_first'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("C{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
 								$this->cellStyle("B{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
-							}
-							if($array[0] == 2 || $array == 3){
-								$this->cellStyle("B{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
 							$hoja->setCellValue("D{$flag}", $row['precio_sistema'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
 							$this->cellStyle("D".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
