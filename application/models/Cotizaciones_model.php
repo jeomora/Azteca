@@ -200,7 +200,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("existencias","existencias.id_pedido = (SELECT existencias.id_pedido FROM existencias WHERE id_tienda = ".$tienda." AND existencias.id_producto = ctz_first.id_producto and WEEKOFYEAR(existencias.fecha_registro) = ".$this->weekNumber($fech).")","LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")
-		->order_by("prod.id_producto", "ASC");
+		->order_by("fam.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
