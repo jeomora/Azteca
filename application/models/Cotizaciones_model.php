@@ -53,7 +53,7 @@ class Cotizaciones_model extends MY_Model {
 	}
 	public function getCotz($where = []){
 		$this->db->select("cotizaciones.id_cotizacion, 
-			ctz_first.fecha_registro,
+			ctz_first.fecha_registro,prod.estatus,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
@@ -170,7 +170,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.fecha_registro,
 			cajas,piezas,pedido,prod.id_producto,id_pedido,
 			fam.id_familia, fam.nombre AS familia,
-			prod.codigo, prod.nombre AS producto,
+			prod.codigo,prod.estatus, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
 			ctz_first.precio AS precio_firsto,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
@@ -200,7 +200,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("existencias","existencias.id_pedido = (SELECT existencias.id_pedido FROM existencias WHERE id_tienda = ".$tienda." AND existencias.id_producto = ctz_first.id_producto and WEEKOFYEAR(existencias.fecha_registro) = ".$this->weekNumber($fech).")","LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")
-		->order_by("prod.id_producto", "ASC");
+		->order_by("fam.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -213,6 +213,8 @@ class Cotizaciones_model extends MY_Model {
 			}
 		}
 		$comparativa = $this->db->get()->result();
+
+
 		// echo $this->db->last_query();
 		$comparativaIndexada = [];
 		for ($i=0; $i<sizeof($comparativa); $i++) { 
@@ -225,6 +227,7 @@ class Cotizaciones_model extends MY_Model {
 			}
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["id_cotizacion"]	=	$comparativa[$i]->id_cotizacion;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["estatus"]		=	$comparativa[$i]->estatus;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["id_pedido"]		=	$comparativa[$i]->id_pedido;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["id_producto"]		=	$comparativa[$i]->id_producto;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["cajas"]		=	$comparativa[$i]->cajas;
@@ -243,7 +246,36 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_maximo"]	=	$comparativa[$i]->precio_maximo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_promedio"]	=	$comparativa[$i]->precio_promedio;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_next"]	=	$comparativa[$i]->promocion_next;
-
+			$stores = array(57, 58, 59, 60, 61, 62, 63);
+			for ($d=0; $d < sizeof($stores); $d++) { 
+				$pedidos = $this->db->select('id_pedido,
+				  id_producto,
+				  id_tienda,
+				  cajas,
+				  piezas,
+				  pedido,
+				  fecha_registro ')
+				->from('existencias')
+				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber())
+				->where('id_producto',$comparativa[$i]->id_producto)
+				->where('id_tienda',$stores[$d])
+				->order_by("id_tienda", "ASC");
+				$resu = $this->db->get()->result();
+				if($resu){
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["caja".$d]		=	$resu[0]->cajas;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["pz".$d]	=	$resu[0]->piezas;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["ped".$d]	=	$resu[0]->pedido;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["tienda".$d]	=	$resu[0]->id_tienda;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["idped".$d]	=	$resu[0]->id_pedido;
+				}else{
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["caja".$d]		=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["pz".$d]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["ped".$d]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["tienda".$d]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["idped".$d]	=	0;
+				}
+				
+			}
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {

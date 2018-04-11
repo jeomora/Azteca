@@ -16,7 +16,7 @@
 					</div>
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" download="<?php echo ''.date('Y-m-d').' '.$usuario['username'].'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">

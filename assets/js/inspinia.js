@@ -149,3 +149,11 @@ window.WinMove = function() {
 };
 
 
+$(document).off("click", ".gotocot").on("click", ".gotocot", function(event){
+    event.preventDefault();
+    $(".spinns").css("display","block");
+    var li = $(this).closest("li");
+    var a = li.find("a");
+    var href = $(a).attr('href');
+    location.href = href;
+});

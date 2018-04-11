@@ -48,25 +48,25 @@
 						<label for="id_proveedor" class="lblget">Proveedor</label>
 						<select name="id_proves2" id="id_proves2" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<option value="2">DECASA</option>
-							<option value="3">DUERO</option>
-							<option value="4">SAHUAYO</option>
 							<option value="27">TACAMBA</option>
-							<option value="varios1">VARIOS 1ER</option>
-							<option value="varios2">VARIOS 2DO</option>
-							<option value="varios3">VARIOS 3RO</option>
-							<option value="varios4">VARIOS 4TO</option>
+							<option value="4">SAHUAYO</option>
+							<option value="2">DECASA</option>
+							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
+							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
+							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
+							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
+							<option value="3">DUERO</option>
 						</select>
 						<select name="id_proves4" id="id_proves4" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<option value="2">DECASA</option>
-							<option value="3">DUERO</option>
-							<option value="4">SAHUAYO</option>
 							<option value="27">TACAMBA</option>
-							<option value="5,6,24,17">VARIOS 1ER</option>
-							<option value="20,18,7,9,49,53">VARIOS 2DO</option>
-							<option value="45,25,34,32,10,39,64,15,47,42,65">VARIOS 3RO</option>
-							<option value="13,46,66,19,22,35,26,23,12,11,52">VARIOS 4TO</option>
+							<option value="4">SAHUAYO</option>
+							<option value="2">DECASA</option>
+							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
+							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
+							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
+							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
+							<option value="3">DUERO</option>
 						</select>
 						<div class="btn-group">
 							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">

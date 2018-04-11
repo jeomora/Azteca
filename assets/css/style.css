@@ -2881,7 +2881,7 @@ ol.unstyled {
 }
 /* FOOTER */
 .footer {
-  background: none repeat scroll 0 0 white;
+  background: none repeat scroll 0 0 #FF6805;
   border-top: 1px solid #e7eaec;
   bottom: 0;
   left: 0;
@@ -4944,7 +4944,7 @@ body.skin-3 {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 220px;
-    min-height: 1200px;
+    min-height: 100vh;
   }
   .navbar-static-side {
     z-index: 101;
@@ -4961,7 +4961,7 @@ body.skin-3 {
   #page-wrapper {
     position: inherit;
     margin: 0 0 0 0px;
-    min-height: 1000px;
+    min-height: 100vh;
   }
   .body-small .navbar-static-side {
     display: none;

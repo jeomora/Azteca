@@ -118,7 +118,14 @@ class Pedidos extends MY_Controller {
 	public function get_pedidos(){
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
-		$where = ["ctz_first.id_proveedor" => $id_proveedor];
+		if ($id_proveedor == "VOLUMEN") {
+			$where = ["prod.estatus" => 2];
+		}elseif ($id_proveedor == "AMARILLOS") {
+			$where = ["prod.estatus" => 3];
+		}else{
+			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
+		}
+		
 		$fecha = date('Y-m-d');
 		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
 		$this->jsonResponse($productosProveedor);
@@ -198,7 +205,7 @@ class Pedidos extends MY_Controller {
 				"pedido"=>$values["pedido"],
 				"fecha_registro"=>date("Y-m-d H:i:s")
 			];
-		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber()])[0];
+		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber(), 'id_tienda'=>$user['id_usuario']])[0];
 		if($ides == NULL){
 			$respuesta = $this->ex_mdl->insert($pedido);
 		}else{

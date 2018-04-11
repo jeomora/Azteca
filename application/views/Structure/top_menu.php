@@ -16,19 +16,19 @@
 				-->
 				<div class="navbar-header">
 					<div class="logo_img">
-						<img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" />
+						<a href="/Azteca/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
 					</div>
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 						<i class="fa fa-reorder"></i>
 					</button>
-					<a href="#" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+					<a href="/Azteca/Main/" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
 						<li class="active">
 							<a href="#" id="progress" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
 						</li>
-					<?php if ($usuario['id_grupo'] == 1): ?><!--El grupo 1 es Administrador -->
+					<?php if ($usuario['id_grupo'] == 1 || $usuario['id_grupo'] == 4): ?><!--El grupo 1 es Administrador -->
 						<?php if ($main_menu):?>
 							<?php foreach ($main_menu as $key => $value): ?>
 								<?php if ($value->nivel == 1): ?>
@@ -37,7 +37,7 @@
 										<?php if (isset($value->submenu) && count($value->submenu) > 0 ): ?>
 											<ul role="menu" class="dropdown-menu">
 											<?php foreach ($value->submenu as $key => $val): ?>
-												<li><a href="<?php echo site_url($val->ruta2) ?>"><?php echo $val->nombre2 ?></a></li>
+												<li class="gotocot"><a href="<?php echo site_url($val->ruta2) ?>"><?php echo $val->nombre2 ?></a></li>
 											<?php endforeach ?>
 											</ul>
 										<?php endif ?>
@@ -56,7 +56,7 @@
 						</li>
 					</ul>
 
-					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 2 son Proveedores -->
+					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 3 son Sucursales -->
 						<li class="dropdown">
 							<a href="<?php echo site_url('Pedidos') ?>" >PEDIDOS </a>
 						</li>

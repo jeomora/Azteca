@@ -2,30 +2,124 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-	/*$("#table_cot_admin").dataTable({
-		ajax: {
-			url: site_url +"Cotizaciones/cotizaciones_dataTable",
-			type: "POST"
-		},
-		processing: true,
-		language: {
-            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
-		serverSide: true,
-		responsive: true,
-		pageLength: 50,
-		dom: 'Bfrtip',
-		bSort : false,
-		lengthMenu: [
-			[ 10, 30, 50, -1 ],
-			[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-		],
-		buttons: [
-			{ extend: 'pageLength' },
-		]
-	});*/
-	fillDataTable("table_cot_admin", 50);
+		/*$("#table_cot_admin").dataTable({
+			ajax: {
+				url: site_url +"Cotizaciones/cotizaciones_dataTable",
+				type: "POST"
+			},
+			processing: true,
+			language: {
+	            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+			serverSide: true,
+			responsive: true,
+			pageLength: 50,
+			dom: 'Bfrtip',
+			bSort : false,
+			lengthMenu: [
+				[ 10, 30, 50, -1 ],
+				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
+			],
+			buttons: [
+				{ extend: 'pageLength' },
+			]
+		});*/
+		
+	
+	getGrupo()
+	.done(function (resp){
+		console.log(resp)
+		if(resp.ides != 2){
+			setAdminTable();
+		}
+	});
 	
 	fillDataTable("table_cot_proveedores", 50);
+});
+
+function getAdminTable() {
+	return $.ajax({
+		url: site_url+"/Cotizaciones/getAdminTable",
+		type: "POST",
+		dataType: "JSON"
+	});
+}
+
+function getGrupo() {
+	return $.ajax({
+		url: site_url+"/Cotizaciones/getGrupo",
+		type: "POST",
+		dataType: "JSON"
+	});
+}
+
+function setAdminTable(){
+	event.preventDefault();
+	$("html").block({
+		centerY: 0,
+		message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
+		overlayCSS: { backgroundColor: '#DDFF33' },
+		css: { position: 'absolute',
+	    top: '25rem',
+	    left: '45rem',
+	    background: 'rgba(255,255,255,0.5)',
+	    padding: '10rem',
+	    color: '#FF6805',
+	    border: '2px solid #FF6805'},
+	});
+	setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
+	var tableAdmin = "";
+	getAdminTable()
+		.done(function (resp) {
+			$.each(resp, function(indx, vals){
+				$.each(vals, function(index, value){
+					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
+					value.precio_four = value.precio_four == null ? 0 : value.precio_four;
+					value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
+					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
+					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
+					value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
+					value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
+					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
+					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
+					tableAdmin += '<tr><td>'+value.familia+'</td>';
+					if(value.estatus == 2){
+						tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.producto+'</td>';
+					}else if(value.status == 3){
+						tableAdmin += '<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.producto+'</td>';
+					}else{
+						tableAdmin += '<td>'+value.codigo+'</td><td>'+value.producto+'</td>';
+					}
+					tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td>'+
+								'<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>';
+					if(value.precio_first >= value.precio_sistema){
+						tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>';
+					}else{
+						tableAdmin += '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>'
+					}
+					tableAdmin += '<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>'+
+								'<td>$ '+formatNumber(parseFloat(value.precio_maximo), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_promedio), 2)+'</td>';
+					tableAdmin += value.precio_nexto == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nexto), 2)+'</td>'					
+					if(value.precio_next >= value.precio_sistema){
+						tableAdmin += value.precio_next > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
+					}else{
+						tableAdmin += value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
+					}
+					tableAdmin += '<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td><td>'+
+								'<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-trash"></i></button></td></tr>';
+				});
+			});	
+			$(".tableAdmin").html(tableAdmin);
+			fillDataTable("table_cot_admin", 50);
+		});
+	
+
+}
+
+$(document).off("click", "#no_cotizados").on("click", "#no_cotizados", function(event){
+	event.preventDefault();
+	getModal("Main/getNotCotizados/", function (){ });
 });
 
 $(window).on("load", function (event) {
@@ -127,6 +221,7 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function() {
 		$("#precio_promocion").val(total);
 	}
 });
+
 
 $(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion", function(event){
 	event.preventDefault();
@@ -360,24 +455,11 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
 			}
 		});
 });
-$(document).off("change", ".file_cotizaciones").on("change", ".file_cotizaciones", function(event) {
-	event.preventDefault();
-	blockPage();
-	var formdata = new FormData($("#upload_allcotizaciones")[0]);
-	uploadallCotizaciones(formdata)
-		.done(function (resp) {
-			if (resp.type == 'error'){
-				toastr.error(resp.desc, user_name);
-			}else{
-				unblockPage();
-				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
-			}
-		});
-});
+
 
 function uploadCotizaciones(formData) {
 	return $.ajax({

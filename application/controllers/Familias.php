@@ -6,6 +6,7 @@ class Familias extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Familias_model", "fam_md");
+		$this->load->model("Cambios_model", "cambio_md");
 	}
 
 	public function index(){
@@ -70,11 +71,18 @@ class Familias extends MY_Controller {
 	}
 
 	public function accion($param){
+		$user = $this->session->userdata();
 		$familia = ['nombre'	=>	strtoupper($this->input->post('nombre'))];
 		$getFamilia = $this->fam_md->get(NULL, ['nombre'=>$familia['nombre']])[0];
 		switch ($param) {
 			case (substr($param, 0, 1) === 'I'):
 				if(sizeof($getFamilia) == 0){
+					$cambios = [
+							"id_usuario" => $user["id_usuario"],
+							"fecha_cambio" => date('Y-m-d H:i:s'),
+							"antes" => "Registro de Familia nueva",
+							"despues" => $this->input->post('nombre')];
+					$data['cambios'] = $this->cambio_md->insert($cambios);
 					$data ['id_familia'] = $this->fam_md->insert($familia);
 					$mensaje = [
 						"id" 	=> 'Éxito',
@@ -92,6 +100,13 @@ class Familias extends MY_Controller {
 
 			case (substr($param, 0, 1) === 'U'):
 				$data ['id_familia'] = $this->fam_md->update($familia, $this->input->post('id_familia'));
+				$antes = $this->fam_md->get(NULL, ['id_familia'=>$this->input->post('id_familia')])[0];
+				$cambios = [
+							"id_usuario" => $user["id_usuario"],
+							"fecha_cambio" => date('Y-m-d H:i:s'),
+							"antes" => "id: ".$this->input->post('id_familia')." /Nombre :".$antes->nombre,
+							"despues" => "Familia actualizada Nombre: ".$this->input->post('nombre')];
+					$data['cambios'] = $this->cambio_md->insert($cambios);
 				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Familia actualizada correctamente',
@@ -101,6 +116,13 @@ class Familias extends MY_Controller {
 
 			default:
 				$data ['id_familia'] = $this->fam_md->update(["estatus" => 0], $this->input->post('id_familia'));
+				$antes = $this->fam_md->get(NULL, ['id_familia'=>$this->input->post('id_familia')])[0];
+				$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"antes" => "id: ".$antes->id_familia." /Nombre :".$antes->nombre,
+						"despues" => "Familia eliminada"];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$mensaje = [
 					"id" 	=> 'Éxito',
 					"desc"	=> 'Familia eliminada correctamente',

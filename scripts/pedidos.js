@@ -80,41 +80,23 @@ function guardaPedidos(tr, tipo,cantidad){
 	});
 }
 
-$(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
-	event.preventDefault();
-	var id_cotizacion = $("#id_proves4 option:selected").val();
-	var proveedor = $("#id_proves4 option:selected").text();
+function tablePedidoTienda(response,colors,sucur){
 	var table_contain = "";
-
-
-	if(id_cotizacion != "nope"){
-		$(".fill_form").css("display","block");
-		$("#id_proves2").val(proveedor);
-		var sucur = "";
-		getSucursal()
-			.done(function (response){
-				sucur = response.nombre;
-				colors = response.color;
-				var stringArray = id_cotizacion.split(",");
-		$(".wonder").html("");
-		var flag = "";
-		for (var i = 0; i < stringArray.length; i++) {
-			getPedidos(stringArray[i])
-			.done(function (response){
-				$.each(response, function(index, value){
-					table_contain += '<tr></td><td colspan="1"></td><td colspan="1" class="td2Form">'+value.familia+'<td colspan="9"></td></tr>'
-					$.each(value.articulos, function(inex, vl) {
-						vl.precio_next = vl.precio_next == null ? 0 : vl.precio_next;
-						vl.precio_four = vl.precio_four == null ? 0 : vl.precio_four;
-						vl.precio_sistema = vl.precio_sistema == null ? 0 : vl.precio_sistema;
-						vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
-						vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
-						vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
-						vl.cajas = vl.cajas == null ? '""' : vl.cajas;
-						vl.piezas = vl.piezas == null ? '""' : vl.piezas;
-						vl.pedido = vl.pedido == null ? '""' : vl.pedido;
-						flag = vl.proveedor_first;
-						table_contain += '<tr><td>'+vl.codigo+'</td><td>'+vl.producto+'</td><td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
+	var flag = "";
+	$.each(response, function(index, value){
+		table_contain += '<tr></td><td colspan="1"></td><td colspan="1" class="td2Form">'+value.familia+'<td colspan="9"></td></tr>';
+		$.each(value.articulos, function(inex, vl) {
+			vl.precio_next = vl.precio_next == null ? 0 : vl.precio_next;
+			vl.precio_four = vl.precio_four == null ? 0 : vl.precio_four;
+			vl.precio_sistema = vl.precio_sistema == null ? 0 : vl.precio_sistema;
+			vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
+			vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
+			vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
+			vl.cajas = vl.cajas == null ? '""' : vl.cajas;
+			vl.piezas = vl.piezas == null ? '""' : vl.piezas;
+			vl.pedido = vl.pedido == null ? '""' : vl.pedido;
+			flag = vl.proveedor_first;
+			table_contain += '<tr><td>'+vl.codigo+'</td><td>'+vl.producto+'</td><td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
 						'<td>$ '+formatNumber(parseFloat(vl.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_next), 2)+'</td>'+
 						'<td>'+vl.proveedor_next+'</td><td>'+
 							'<div class="input-group m-b">'
@@ -133,17 +115,104 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 								+'<input type="text" value='+vl.id_pedido+' class="form-control idpedido numeric"></div>'+
 						'</td></tr>'
 
-					});
-				});
-				table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
+		});
+	});
+	table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
 							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
 							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: '+colors+'" colspan="3">'+sucur+'</th></tr></thead>'+
 							'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
 							'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
 							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
 							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
-					$(".wonder").append(table_contain);
-					table_contain = "";
+					
+	return table_contain;
+}
+
+function tablePedidoAll(response,colors,sucur){
+	var table_contain = "";
+	var flag = "";
+	$.each(response, function(index, value){
+		table_contain += '<tr></td><td colspan="1"></td><td colspan="1" class="td2Form">'+value.familia+'<td colspan="27"></td></tr>';
+		$.each(value.articulos, function(inex, vl) {
+			vl.precio_next = vl.precio_next == null ? 0 : vl.precio_next;
+			vl.precio_four = vl.precio_four == null ? 0 : vl.precio_four;
+			vl.precio_sistema = vl.precio_sistema == null ? 0 : vl.precio_sistema;
+			if(vl.estatus == 2){
+				vl.codigo = '<td style="background-color: #00b0f0">'+vl.codigo+'</td>';
+				vl.producto = '<td style="background-color: #00b0f0">'+vl.producto+'</td>';
+				flag = "VOLÚMENES";
+			}else if(vl.estatus == 3){
+				vl.codigo = '<td style="background-color:  #fff900">'+vl.codigo+'</td>';
+				vl.producto = '<td style="background-color: #fff900">'+vl.producto+'</td>';
+				flag = "AMARILLOS";
+			}else{
+				vl.codigo = '<td>'+vl.codigo+'</td>';
+				vl.producto = '<td>'+vl.producto+'</td>';
+				flag = 'PEDIDOS A '+vl.proveedor_first;
+			}
+			
+			vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
+			vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
+			vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
+			vl.cajas = vl.cajas == null ? '0' : vl.cajas;
+			vl.piezas = vl.piezas == null ? '0' : vl.piezas;
+			vl.pedido = vl.pedido == null ? '0' : vl.pedido;
+			table_contain += '<tr>'+vl.codigo+''+vl.producto+'<td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
+						'<td>$ '+formatNumber(parseFloat(vl.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_next), 2)+'</td>'+
+						'<td>'+vl.proveedor_next+'</td><td>'+vl.caja0+'</td><td>'+vl.pz0+'</td><td style="background-color: #afafff;">'+vl.ped0+'</td>'+
+						'<td>'+vl.caja1+'</td><td>'+vl.pz1+'</td><td style="background-color: #afafff;">'+vl.ped1+'</td>'+
+						'<td>'+vl.caja2+'</td><td>'+vl.pz2+'</td><td style="background-color: #afafff;">'+vl.ped2+'</td>'+
+						'<td>'+vl.caja3+'</td><td>'+vl.pz3+'</td><td style="background-color: #afafff;">'+vl.ped3+'</td>'+
+						'<td>'+vl.caja4+'</td><td>'+vl.pz4+'</td><td style="background-color: #afafff;">'+vl.ped4+'</td>'+
+						'<td>'+vl.caja5+'</td><td>'+vl.pz5+'</td><td style="background-color: #afafff;">'+vl.ped5+'</td>'+
+						'<td>'+vl.caja6+'</td><td>'+vl.pz6+'</td><td style="background-color: #afafff;">'+vl.ped6+'</td>'+
+						'</tr>'
+
+		});
+	});
+	table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>'+flag+' '+getFech()+'</h5></div>'+
+							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
+							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: #01B0F0" colspan="3">ABARROTES</th><th style="background-color: #E26C0B" colspan="3">TIENDA</th>'+
+							'<th style="background-color: #C5C5C5" colspan="3">ULTRAMARINOS</th><th style="background-color: #92D051" colspan="3">TRINCHERAS</th><th style="background-color: #B1A0C7" colspan="3">AZT MERCADO</th>'+
+							'<th style="background-color: #DA9694" colspan="3">TENENCIA</th><th style="background-color: #4CACC6" colspan="3">TIJERAS</th></tr></thead>'+
+							'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
+							'<td class="td2Form" colspan="3">EXISTENCIAS</td><td class="td2Form" colspan="3">EXISTENCIAS</td><td class="td2Form" colspan="3">EXISTENCIAS</td><td class="td2Form" colspan="3">EXISTENCIAS</td>'+
+							'<td class="td2Form" colspan="3">EXISTENCIAS</td><td class="td2Form" colspan="3">EXISTENCIAS</td><td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
+							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
+							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td>'+
+							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td>'+
+							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
+					
+	return table_contain;
+}
+
+$(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
+	event.preventDefault();
+	var id_cotizacion = $("#id_proves4 option:selected").val();
+	var proveedor = $("#id_proves4 option:selected").text();
+	var table_contain = "";
+
+
+	if(id_cotizacion != "nope"){
+		$(".wonder").html("")
+		$(".fill_form").css("display","block");
+		$("#id_proves2").val(proveedor);
+		var sucur = "";
+		getSucursal()
+			.done(function (response){
+				sucur = response == null ? 0 : response.nombre;
+				colors = response == null ? 0 : response.color;
+				var stringArray = id_cotizacion.split(",");
+		$(".wonder").html("");
+		var flag = "";
+		for (var i = 0; i < stringArray.length; i++) {
+			getPedidos(stringArray[i])
+			.done(function (response){
+				if(sucur == 0){
+					$(".wonder").append(tablePedidoAll(response,colors,sucur));
+				}else{
+					$(".wonder").append(tablePedidoTienda(response,colors,sucur));
+				}
 			});
 		}
 			});

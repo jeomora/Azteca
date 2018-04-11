@@ -23,8 +23,8 @@
 				<tbody>
 					<?php foreach ($cots as $key => $value): ?>
 						<tr>
-							<td> <input type='checkbox' value="<?php echo $value->id_cotizacion ?>" class='id_cotz'> </td>
-							<td><?php echo $value->nomb ?></td>
+							<td><input type='checkbox' value="<?php echo $value->id_cotizacion ?>" class='id_cotz'></td>
+							<td style="text-align: center;"><?php echo $value->nomb ?></td>
 							<td>
 								<div class='input-group m-b'>
 									<span class='input-group-addon'><i class='fa fa-dollar'></i></span>
@@ -60,6 +60,7 @@
 								</div>
 							</td>
 							<td><input type='text' value='<?php echo $value->observaciones ?>' class='form-control observaciones' readonly=''></td>
+
 						</tr>
 					<?php endforeach ?>
 				</tbody>
@@ -68,4 +69,7 @@
 		<input type="hidden" name="id_cotizacion" id="id_cotizacion" value="<?php echo $cotizacion->id_cotizacion ?>">
 		<?php echo form_close(); ?>
 	</div>
+
+
+	
 </div>
