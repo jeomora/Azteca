@@ -42,10 +42,20 @@ class Main extends MY_Controller {
 		$data["title"]="PROVEEDORES SIN COTIZAR";
 		$data["cotizados"] = $this->user_md->getCotizados();
 		$data["view"] = $this->load->view("Cotizaciones/no_cotizo", $data,TRUE);
-
 		$this->jsonResponse($data);
 	}
 
+	public function getCotzUsuario($ides){
+		$semana = $this->weekNumber() -1;
+		$data["prueba"] = $semana;
+		$data["title"]="PRODUCTOS COTIZADOS EN LA ANTERIOR SEMANA";
+		$data["cotizaciones"] =  $this->cot_md->get(NULL, ['id_proveedor'=>$ides,'WEEKOFYEAR(fecha_registro)' => $semana])[0];
+		$data["view"] = $this->load->view("Cotizaciones/get_cotz", $data,TRUE);
+		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Agregar precios
+						</button>";
+		$this->jsonResponse($data);
+	}
 
 	public function uploadFoto(){
 		$this->load->library("upload");

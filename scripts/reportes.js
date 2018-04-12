@@ -23,7 +23,8 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 	    border: '2px solid #FF6805'},
 	});
 	setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
-	var tableAdmin = ""
+	var tableAdmin = "";
+	var fech = $("#fecha_registro").val();
 	$(".tblm").html('<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">'+
 						'<thead><tr><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th><th>PRECIO 4</th>'+
 						'<th>1ER PRECIO</th><th>PROVEEDOR</th><th>OBSERVACIÓN</th>'+
@@ -64,7 +65,7 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 								tableAdmin += value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
 							}
 							tableAdmin += '<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td><td><button id="ver_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Ver más" data-id-cotizacion="'+
-										value.id_cotizacion+'"><i class="fa fa-eye"></i></button></td></tr>';
+										value.id_cotizacion+'"><i class="fa fa-eye"></i></button><input type="text" name="fecha_registro" id="fecha_registro" value="'+fech+'" hidden="true"></td></tr>';
 						});
 					});	
 					$(".body_anteriores").html(tableAdmin);
@@ -95,7 +96,18 @@ function get_rpts(fecha) {
 
 $(document).off("click", "#ver_cotizacion").on("click", "#ver_cotizacion", function(event){
 	event.preventDefault();
+	var d = new Date();
+	var f = d.getMonth()+1+"";
+	if( f.length == 1){
+		f = "0"+f;
+	}
+	var fecha = d.getFullYear() + "-" + f + "-" + d.getDate();
+	if ($("#fecha_registro").val().length !== 0) {
+		fecha = $("#fecha_registro").val();
+		fecha = fecha.split("-").reverse().join("-");
+		console.log(fecha)
+	}
 	var id_cotizacion = $(this).closest("tr").find("#ver_cotizacion").data("idCotizacion");
-	getModal("Cotizaciones/ver_cotizacion/"+ id_cotizacion, function (){ });
+	getModal("Cotizaciones/ver_cotizacion/"+id_cotizacion+"/"+fecha+"/", function (){ });
 });
 

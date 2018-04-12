@@ -12,6 +12,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Familias_model", "fam_mdl");
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Usuarios_model", "user_md");
+		$this->load->model("Existencias_model", "ex_mdl");
 	}
 
 	public function index(){
@@ -55,6 +56,34 @@ class Cotizaciones extends MY_Controller {
 			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
 		}
+	}
+
+	public function anteriores(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/admin',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["cotizados"] = $this->usua_mdl->getCotizados();
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Cotizaciones/anteriores", $data);
 	}
 
 	public function add_cotizacion(){
@@ -226,20 +255,20 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
-	public function ver_cotizacion($id){
+	public function ver_cotizacion($id,$fech){
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="Cotizaciones del producto :<br>".$data["producto"]->nombre;
 		$user = $this->session->userdata();
 		if($user['id_grupo'] ==2){//Proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
-			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fech);
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
-			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fech);
 		}else{
-			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto,$fech);
 			$where=["cotizaciones.estatus" => 0];
-			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fech);
 		}
 		$data["view"]=$this->load->view("Cotizaciones/ver_cotizacion", $data, TRUE);
 		$data["button"]="";
@@ -438,6 +467,48 @@ class Cotizaciones extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
+
+	public function upload_pedidos(){
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_cotizaciones"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0); 
+		$num_rows = $sheet->getHighestDataRow();
+		$tienda = $this->session->userdata('id_usuario');
+		for ($i=3; $i<=$num_rows; $i++) { 
+			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if (sizeof($productos) > 0) {
+				$column_one=0; $column_two=0; $column_three=0;
+				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();
+				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
+				$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
+
+				$new_existencias[$i]=[
+					"id_producto"			=>	$productos->id_producto,
+					"id_tienda"			=>	$tienda,
+					"cajas"			=>	$column_one,
+					"piezas"			=>	$column_two,
+					"pedido"	=>	$column_three,
+					"fecha_registro"	=>	date('Y-m-d H:i:s')
+				];
+			}
+		}
+		if (sizeof($new_existencias) > 0) {
+			$data['cotizacion']=$this->ex_mdl->insert_batch($new_existencias);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Pedidos cargados correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Los Pedidos no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+
 
 	public function upload_allcotizaciones(){
 		$this->load->library("excelfile");
@@ -764,142 +835,21 @@ class Cotizaciones extends MY_Controller {
 		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
 
 		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
-		$hoja1->getDefaultStyle()
-		    ->getBorders()
-		    ->getTop()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja1->getDefaultStyle()
-		    ->getBorders()
-		    ->getBottom()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja1->getDefaultStyle()
-		    ->getBorders()
-		    ->getLeft()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja1->getDefaultStyle()
-		    ->getBorders()
-		    ->getRight()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
 		
 
 		$this->excelfile->createSheet();
         $hoja = $this->excelfile->setActiveSheetIndex(1);
         $hoja->setTitle("PEDIDO");
 
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getTop()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getBottom()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getLeft()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getRight()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-		$default_border = array(
-		    'style' => PHPExcel_Style_Border::BORDER_THIN,
-		    'color' => array('rgb'=>'000000')
-		);
-		$style_header = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'000000'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => 'FFFFFF')
-		    ),
-		    'borders' => array(
-		        'bottom' => $default_border,
-		        'left' => $default_border,
-		        'top' => $default_border,
-		        'right' => $default_border,
-		    ),
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
 		);
 
-		$style_menos = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'FDB2B2'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => 'E21111')
-		    ),
-		    'borders' => array(
-		        'bottom' => $default_border,
-		        'left' => $default_border,
-		        'top' => $default_border,
-		        'right' => $default_border,
-		    ),
-		);
-
-		$style_mas = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'96EAA8'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => '0C800C')
-		    ),
-		    'borders' => array(
-		        'bottom' => $default_border,
-		        'left' => $default_border,
-		        'top' => $default_border,
-		        'right' => $default_border,
-		    ),
-		);
-
-		$style_blue = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'80b9f5'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => '000000')
-		    ),
-		    'borders' => array(
-		        'bottom' => $default_border,
-		        'left' => $default_border,
-		        'top' => $default_border,
-		        'right' => $default_border,
-		    ),
-		);
-		$style_abarrotes = array(
-		    'fill' => array(
-		        'type' => PHPExcel_Style_Fill::FILL_SOLID,
-		        'color' => array('rgb'=>'01B0F0'),
-		    ),
-		    'font' => array(
-		        'bold' => true,
-		        'color' => array('rgb' => '000000')
-		    ),
-		    'borders' => array(
-		        'bottom' => $default_border,
-		        'left' => $default_border,
-		        'top' => $default_border,
-		        'right' => $default_border,
-		    ),
-		);
-		$style_them = array(
-		    'borders' => array(
-		        'bottom' => $default_border,
-		        'left' => $default_border,
-		        'top' => $default_border,
-		        'right' => $default_border,
-		    ),
-		);
-		
-		
 		$hoja->getColumnDimension('A')->setWidth("20");
 		$hoja->getColumnDimension('B')->setWidth("70");
 		$hoja->getColumnDimension('C')->setWidth("15");
@@ -908,18 +858,48 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('F')->setWidth("15");
 		$hoja->getColumnDimension('G')->setWidth("20");
 		$hoja->getColumnDimension('AC')->setWidth("70");
-		for ($i=0; $i < sizeof($array) ; $i++) { 
+
+		$hoja1->getColumnDimension('A')->setWidth("6");
+		$hoja1->getColumnDimension('B')->setWidth("6");
+		$hoja1->getColumnDimension('C')->setWidth("6");
+		$hoja1->getColumnDimension('D')->setWidth("25");
+		$hoja1->getColumnDimension('E')->setWidth("47");
+		$flagBorder = 0;
+		$flagBorder1 = 1;
+		$flagBorder2 = 0;
+		$flagBorder3 = 1;
+		for ($i=0; $i < sizeof($array) ; $i++) {
 			//HOJA EXISTENCIAS
+			$this->excelfile->setActiveSheetIndex(0);
+			if($i > 0){
+				$flagBorder = $flag1 - 4;
+				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder1.':E'.$flagBorder)->applyFromArray($styleArray);
+				$flagBorder1 = $flag1;
+			}
 			$hoja1->mergeCells('A'.$flag1.':E'.$flag1);
 			$this->cellStyle("A".$flag1, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->setCellValue("A".$flag1."", "GRUPO ABARROTES AZTECA");
 			$flag1++;
-			$hoja1->mergeCells('A'.$flag1.':B'.$flag1);
 			$this->cellStyle("A".$flag1.":D".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-			$hoja1->setCellValue("B".$flag1, "PEDIDOS A '".$array2[$i]."' ".date("d-m-Y"));
-			$this->cellStyle("E".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->mergeCells('A'.$flag1.':B'.$flag1);
+			$hoja1->setCellValue("A".$flag1, "EXISTENCIAS");
+			$hoja1->setCellValue("E".$flag1, "PEDIDOS A '".$array2[$i]."' ".date("d-m-Y"));
+			$this->cellStyle("E".$flag1, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$flag1++;
+			$this->cellStyle("A".$flag1.":E".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag1, "CAJAS");
+			$hoja1->setCellValue("B".$flag1, "PZAS");
+			$hoja1->setCellValue("C".$flag1, "PEDIDO");
+			$hoja1->setCellValue("D".$flag1, "COD");
+			$hoja1->setCellValue("E".$flag1, "DESCRIPCIÓN");
 			$flag1++;
 
+			$this->excelfile->setActiveSheetIndex(1);
+			if($i > 0){
+				$flagBorder2 = $flag - 4;
+				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder3.':AC'.$flagBorder2)->applyFromArray($styleArray);
+				$flagBorder3 = $flag;
+			}
 			//HOJA PEDIDOS
 			$hoja->mergeCells('A'.$flag.':AC'.$flag);
 			$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -1010,11 +990,28 @@ class Cotizaciones extends MY_Controller {
 			
 			if ($cotizacionesProveedor){
 				foreach ($cotizacionesProveedor as $key => $value){
+					//Existencias
+					$this->excelfile->setActiveSheetIndex(0);
+					$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+					$hoja1->setCellValue("E".$flag1, $value['familia']);
+					$flag1 +=1;
+					
+
+
+					//Pedidos
+					$this->excelfile->setActiveSheetIndex(1);
 					$this->cellStyle("B".$flag, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("B{$flag}", $value['familia']);
 					$flag +=1;
 					if ($value['articulos']) {
 						foreach ($value['articulos'] as $key => $row){
+							//Existencias
+							$this->excelfile->setActiveSheetIndex(0);
+							$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+							$hoja1->setCellValue("D{$flag}", $row['codigo'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							$hoja1->setCellValue("E{$flag}", $row['producto']);
+							//Pedidos
+							$this->excelfile->setActiveSheetIndex(1);
 							$this->cellStyle("A".$flag.":AC".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("A{$flag}", $row['codigo'])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 							$hoja->setCellValue("B{$flag}", $row['producto']);
@@ -1074,15 +1071,39 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AB{$flag}", $row['ped6']);
 							$this->cellStyle("AB{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("AC{$flag}", $row['promocion_first']);
+							$hoja->setCellValue("AD{$flag}", "=C".$flag."*J".$flag)->getStyle("AD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("AE{$flag}", "=C".$flag."*M".$flag)->getStyle("AE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("AF{$flag}", "=C".$flag."*P".$flag)->getStyle("AF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("AG{$flag}", "=C".$flag."*S".$flag)->getStyle("AG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("AH{$flag}", "=C".$flag."*V".$flag)->getStyle("AH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("AI{$flag}", "=C".$flag."*Y".$flag)->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("AJ{$flag}", "=C".$flag."*AB".$flag)->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$flag ++;
+							$flag1 ++;
 						}
 					}
 				}
 			}
 			$flag++;
+			$flag1++;
+			$flag1++;
+			$flag1++;
+			$flag++;
 			$flag++;
 		}
-		$file_name = "FORMS ".$filenam.".xls"; //Nombre del documento con extención
+		$this->excelfile->setActiveSheetIndex(1);
+			if($flagBorder2 == 0){
+				$flagBorder2 = $flag - 4;
+				$this->excelfile->getActiveSheet()->getStyle('A1:AC'.$flagBorder2)->applyFromArray($styleArray);
+				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder3.':AC'.$flagBorder2)->applyFromArray($styleArray);
+			}
+		$this->excelfile->setActiveSheetIndex(0);
+			if($flagBorder == 0){
+				$flagBorder = $flag1 - 4;
+				$this->excelfile->getActiveSheet()->getStyle('A1:E'.$flagBorder)->applyFromArray($styleArray);
+				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder1.':E'.$flagBorder)->applyFromArray($styleArray);
+			}
+		$file_name = "PEDIDO ".$filenam." ".date('d-m-Y').".xls"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");

@@ -321,7 +321,7 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
-	public function get_cots($where=[],$producto=0){
+	public function get_cots($where=[],$producto=0,$fechas){
 		$this->db->select("cotizaciones.id_cotizacion,cotizaciones.num_one, cotizaciones.num_two, cotizaciones.descuento, cotizaciones.id_proveedor, cotizaciones.precio_sistema, 
 			cotizaciones.precio_four, cotizaciones.precio, cotizaciones.precio_promocion, cotizaciones.observaciones, 
 			CONCAT(u.nombre,' ',u.apellido) as nomb")
@@ -329,7 +329,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "INNER")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->where($this->TABLE_NAME.".id_producto",$producto)
-		->where("WEEKOFYEAR(".$this->TABLE_NAME.".fecha_registro)", $this->weekNumber())
+		->where("WEEKOFYEAR(".$this->TABLE_NAME.".fecha_registro)", $this->weekNumber($fechas))
 		->group_by("nomb");
 
 		if ($where !== NULL) {

@@ -1,6 +1,13 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<style type="text/css" media="screen">
+	.ibox-content {
+    padding-top: 3rem;
+ }
+ tr:hover {background-color: #21b9bb !important;}
+ tr:hover > td{color: white !important;}
+</style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
@@ -16,10 +23,13 @@
 					</div>
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" download="<?php echo ''.date('Y-m-d').' '.$usuario['username'].'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" download="<?php echo 'Cotización '.date('Y-m-d').' '.$usuario['username'].'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir formato de cotizaciones
+						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 							<div class="col-sm-4">
 								<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>

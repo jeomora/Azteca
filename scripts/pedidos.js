@@ -466,3 +466,31 @@ $(document).off("click", "#show_pedido").on("click", "#show_pedido", function(ev
 	var id_pedido = $(this).closest("tr").find("#show_pedido").data("idPedido");
 	getModal("Pedidos/get_detalle/"+ id_pedido, function (){ });
 });
+
+$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_pedidos")[0]);
+	uploadPedidos(fdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, user_name);
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
+
+
+function uploadPedidos(formData) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/upload_pedidos",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

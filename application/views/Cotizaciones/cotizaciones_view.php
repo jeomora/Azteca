@@ -66,7 +66,8 @@
 	    font-size: 14px;
 	    padding: 7px;
 	}
-	tr:hover {background-color: #cfffc3 !important;}
+	tr:hover {background-color: #21b9bb !important;}
+	 tr:hover > td{color: white !important;}
 	select#id_proves2{display: none}
 	.fill_form{display: none}
 	select#id_proves {color: #000;}

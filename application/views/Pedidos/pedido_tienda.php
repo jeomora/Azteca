@@ -78,6 +78,16 @@
 			<div class="col-md-12 wonder" style="padding: 0">
 
 			</div>
+			<div class="btn-group" style="margin-left: 5rem;margin-top: -1rem;">
+				<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+					Subir formato de pedidos
+				</div>
+				<?php echo form_open_multipart("", array('id' => 'upload_pedidos')); ?>
+					<div class="col-sm-4">
+						<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
+					</div>
+				<?php echo form_close(); ?>
+			</div>
 
 
 

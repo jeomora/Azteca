@@ -70,8 +70,7 @@ function setAdminTable(){
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
-			$.each(resp.cotizaciones, function(indx, vals){
-				$.each(vals, function(index, value){
+			$.each(resp.cotizaciones, function(indx, value){
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
 					value.precio_four = value.precio_four == null ? 0 : value.precio_four;
 					value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
@@ -108,7 +107,6 @@ function setAdminTable(){
 								'<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-trash"></i></button></td></tr>';
-				});
 			});	
 			$(".tableAdmin").html(tableAdmin);
 			fillDataTable("table_cot_admin", 50);
@@ -566,3 +564,8 @@ function uploadPrecios(formData) {
 		data: formData,
 	});
 }
+
+$(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event){
+	event.preventDefault();
+	getModal("Main/getNotCotizo/", function (){ });
+});
