@@ -1,3 +1,8 @@
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <style type="text/css" media="screen">
 	td {width: 8rem !important;}
 	table#table_cot_admin {width: 79rem !important;

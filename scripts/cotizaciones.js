@@ -567,5 +567,7 @@ function uploadPrecios(formData) {
 
 $(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event){
 	event.preventDefault();
-	getModal("Main/getNotCotizo/", function (){ });
+	var ides = $(this).attr("data-id-producto");
+	getModal("Main/CotzUsuario/"+ides, function (){ });
 });
+

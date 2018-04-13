@@ -1,6 +1,11 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <style type="text/css" media="screen">
 	.ibox-content {
     padding-top: 3rem;

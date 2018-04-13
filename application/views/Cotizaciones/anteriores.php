@@ -2,6 +2,11 @@
 	tr:hover {background-color: #21b9bb !important;}
 	tr:hover > td{color: white !important;}
 </style>
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <div class="col-md-12">
 	<h1>Registrar cotizaciones igual a semanas pasadas</h1>
 </div>

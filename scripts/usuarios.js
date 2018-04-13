@@ -82,3 +82,4 @@ $(document).off("click", "#show_usuario").on("click", "#show_usuario", function(
 	var id_usuario = $(this).closest("tr").find("#show_usuario").data("idUsuario");
 	getModal("Welcome/get_usuario/"+ id_usuario, function (){ });
 });
+

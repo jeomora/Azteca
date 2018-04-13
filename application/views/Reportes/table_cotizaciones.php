@@ -10,6 +10,12 @@
 		    width: 100vw;
 		}
 </style>
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
+
 <div class="row col-sm-12">
 	<label>USUARIO: </label> <?php echo $user['username'] ?> <br>
 	<label>FECHA: </label> <?php echo $fecha ?> <br>

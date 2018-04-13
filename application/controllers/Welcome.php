@@ -34,6 +34,7 @@ class Welcome extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
+		
 		$data["usuarios"] = $this->user_md->getUsuarios();
 		$this->estructura("Admin/table_usuarios", $data);
 	}
@@ -187,6 +188,51 @@ class Welcome extends MY_Controller {
 		$data["grupo"] = $this->gr_md->get(NULL,['id_grupo'=>$data["usuario"]->id_grupo])[0];
 		$data["view"] =$this->load->view("Admin/show_usuario", $data, TRUE);
 		$this->jsonResponse($data);
+	}
+
+	public function print_usuarios(){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$this->cellStyle("A1:N2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$cotizacionesProveedor = $this->user_md->getUsuarios();
+		$row_print =3;
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $row){
+						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("A{$row_print}", $row->id_usuario);//Formato de fraccion
+						$hoja->setCellValue("B{$row_print}", $row->nombre);
+						$hoja->setCellValue("C{$row_print}", $row->apellido);//Formto de moneda
+						$hoja->setCellValue("D{$row_print}", $row->email);
+						$hoja->setCellValue("E{$row_print}", $this->showPassword($row->password));
+						$row_print ++;
+			}
+		}
+
+		$file_name = "Cotizaciones.xls"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer->save("php://output");
 	}
 
 	private function estructura_login($view, $data=array()){

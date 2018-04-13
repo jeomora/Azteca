@@ -1,5 +1,8 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
+	if(!$this->session->userdata("username")){
+			redirect("Welcome/Login", "");
+		}
 ?>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">

@@ -33,6 +33,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
+		
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$data["preciosBajos"] = $this->ct_mdl->preciosBajos($where);
 		$this->estructura("Reportes/table_precios_bajos", $data);
@@ -61,6 +62,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
+		
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$data["promociones_igual"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Reportes/table_precios_iguales", $data);
@@ -89,6 +91,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
+		
 		$data["proveedores"] = $this->user_mdl->getUsuarios(['usuarios.id_grupo'=>2]);//Son proveedores;
 		$this->estructura("Reportes/filter_cotizaciones", $data);
 	}

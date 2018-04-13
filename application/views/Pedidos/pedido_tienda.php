@@ -1,6 +1,11 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <style>
 	.td2Form{background-color: #000 !important; color:#FFF !important;}
 	th {text-align: center}
