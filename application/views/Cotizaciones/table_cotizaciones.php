@@ -11,7 +11,7 @@ if(!$this->session->userdata("username")){
     padding-top: 3rem;
  }
  tr:hover {background-color: #21b9bb !important;}
- tr:hover > td{color: white !important;}
+
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">

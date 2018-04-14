@@ -9,6 +9,7 @@ class Main extends MY_Controller {
 		$this->load->model("Productos_model", "pr_md");
 		$this->load->model("Cotizaciones_model", "cot_md");
 		$this->load->model("Usuarios_model", "user_md");
+		$this->load->model("Cambios_model", "cambio_md");
 	}
 
 	//Primera función que carga el dashboard
@@ -60,7 +61,7 @@ class Main extends MY_Controller {
 	}
 
 	public function repeat_cotizacion(){
-		
+		$user = $this->session->userdata();
 		$semana = $this->weekNumber() -1;
 		$cotizaciones =  $this->cot_md->getAnterior(['id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(fecha_registro)' => $semana]);
 		$i = 0;

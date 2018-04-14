@@ -219,13 +219,13 @@ class Cotizaciones extends MY_Controller {
 		$user = $this->session->userdata();
 		if($user['id_grupo'] ==2){//Proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
-			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
-			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 		}else{
-			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 			$where=["cotizaciones.estatus" => 0];
-			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 		}
 		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
@@ -241,13 +241,13 @@ class Cotizaciones extends MY_Controller {
 		$user = $this->session->userdata();
 		if($user['id_grupo'] ==2){//Proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
-			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
-			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 		}else{
-			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto);
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 			$where=["cotizaciones.estatus" => 0];
-			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto);
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,date("Y-m-d H:i:s"));
 		}
 		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>

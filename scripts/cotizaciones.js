@@ -370,7 +370,21 @@ $(document).off("change", ".id_cotz").on("change", ".id_cotz", function() {
 		tr.find(".observaciones").removeAttr('name');
 	}
 });
-
+$(document).off("keyup", ".precio").on("keyup", ".precio", function() {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		tr.find(".precio_promocion").val(total);
+	}else if(descuento > 0){
+		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+	}else{
+		tr.find(".precio_promocion").val(precio);
+	}
+});
 $(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
 	var tr = $(this).closest("tr");
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
@@ -570,4 +584,5 @@ $(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event)
 	var ides = $(this).attr("data-id-producto");
 	getModal("Main/CotzUsuario/"+ides, function (){ });
 });
+
 
