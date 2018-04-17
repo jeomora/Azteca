@@ -415,6 +415,17 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function upload_cotizaciones(){
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+        
+
+        $this->load->library('upload', $config);
+        $this->upload->do_upload('file_cotizaciones');
+
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
@@ -586,6 +597,16 @@ class Cotizaciones extends MY_Controller {
 
 	public function upload_precios(){
 		$user = $this->session->userdata();
+		$config['upload_path']          = './assets/uploads/precios/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+        
+
+        $this->load->library('upload', $config);
+        $this->upload->do_upload('file_precios');
 		$this->load->library("excelfile");
 		ini_set("memory_limit", "-1");
 		$file = $_FILES["file_precios"]["tmp_name"];

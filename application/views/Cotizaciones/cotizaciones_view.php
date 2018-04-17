@@ -88,7 +88,7 @@ if(!$this->session->userdata("username")){
 				<div class="ibox-content" style="padding-top: 4rem;">
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_precios.xlsx'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Precios" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							<a href="<?php echo base_url('./assets/uploads/Formato_precios.xlsx'); ?>" download="<?php echo 'Precios Sistema '.date('Y-m-d H:i').'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Precios" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">
