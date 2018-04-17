@@ -30,41 +30,46 @@
 					<?php if($cotizaciones) :foreach ($cotizaciones as $key => $value): ?>
 						<tr>
 							<td><?php echo strtoupper($value->producto) ?></td>
-							<td>
+							<td><?php echo strtoupper($value->precio) ?></td>
+							<td><?php echo strtoupper($value->precio_promocion) ?></td>
+							<td><?php echo strtoupper($value->num_one) ?></td>
+							<td><?php echo strtoupper($value->num_two) ?></td>
+							<td><?php echo strtoupper($value->observaciones) ?></td>
+							<!--<td>
 								<div class='input-group m-b'>
 									<span class='input-group-addon'><i class='fa fa-dollar'></i></span>
-									<input type='text' value='<?php echo $value->precio ?>' class='form-control precio numeric'>
+									<input type='text' value='<?php //echo $value->precio ?>' class='form-control precio numeric'>
 								</div>
 							</td>
 							<td>
 								<div class='input-group m-b'>
 									<span class='input-group-addon'><i class='fa fa-dollar'></i></span>
-									<?php if($value->precio_promocion > 0): ?> 
-										<input type='text' value='<?php echo $value->precio_promocion ?>' class='form-control precio_promocion numeric' name="precio[]" readonly=''>
-									<?php else: ?>
-										<input type='text' value='<?php echo $value->precio ?>' name="precio_promocion[]" class='form-control precio_promocion numeric'>
-									<?php endif ?>
+									<?php //if($value->precio_promocion > 0): ?> 
+										<input type='text' value='<?php //echo $value->precio_promocion ?>' class='form-control precio_promocion numeric' name="precio[]" readonly=''>
+									<?php //else: ?>
+										<input type='text' value='<?php //echo $value->precio ?>' name="precio_promocion[]" class='form-control precio_promocion numeric'>
+									<?php //endif ?>
 								</div>
 							</td>
 							<td>
 								<div class='input-group m-b'>
 									<span class='input-group-addon'><i class='fa fa-slack'></i></span>
-									<input type='text' value='<?php echo $value->num_one ?>' name="num_one[]" class='form-control num_one numeric'>
+									<input type='text' value='<?php //echo $value->num_one ?>' name="num_one[]" class='form-control num_one numeric'>
 								</div>
 							</td>
 							<td>
 								<div class='input-group m-b'>
 									<span class='input-group-addon'><i class='fa fa-slack'></i></span>
-									<input type='text' value='<?php echo $value->num_two ?>' name="num_two[]" class='form-control num_two numeric'>
+									<input type='text' value='<?php //echo $value->num_two ?>' name="num_two[]" class='form-control num_two numeric'>
 								</div>
 							</td>
 							<td>
 								<div class='input-group m-b'>
-									<input type='text' value='<?php echo $value->descuento ?>' name="descuento[]" class='form-control descuento numeric'>
+									<input type='text' value='<?php //echo $value->descuento ?>' name="descuento[]" class='form-control descuento numeric'>
 									<span class='input-group-addon' style="font-weight: bold">%</i></span>
 								</div>
 							</td>
-							<td><input type='text' value='<?php echo $value->observaciones ?>' name="observaciones[]" class='form-control observaciones'></td>
+							<td><input type='text' value='<?php //echo $value->observaciones ?>' name="observaciones[]" class='form-control observaciones'></td>-->
 						</tr>
 					<?php endforeach;endif; ?>
 				</tbody>

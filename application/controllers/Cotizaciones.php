@@ -353,7 +353,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$fecha = date('Y-m-d');
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2($where, $fecha,0);
 
 		$row_print =3;
 		if ($cotizacionesProveedor){
@@ -406,11 +406,11 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 
-		$file_name = "Cotizaciones.xls"; //Nombre del documento con extención
+		$file_name = "Cotizaciones.xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 
@@ -481,8 +481,9 @@ class Cotizaciones extends MY_Controller {
 		for ($i=3; $i<=$num_rows; $i++) { 
 			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 			if (sizeof($productos) > 0) {
+				$this->prod_mdl->delete("EXISTENCIAS","WEEKOFYEAR(fecha_registro)".$this->weekNumber()."AND id_tienda = ".$tienda." AND id_producto = ".$productos->id_producto);
 				$column_one=0; $column_two=0; $column_three=0;
-				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();
+				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();	
 				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
 				$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 
@@ -787,14 +788,14 @@ class Cotizaciones extends MY_Controller {
 				$array2 = array("HUGO'S","JASPO","LOPEZ","VIOLETA","MORGAR","MAQUISA","SURTIDOR","ECODELI","PLASTIQUICK");
 				$filenam = "VARIOS 2DO";
 				break;
-			case "45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71":
-				$array = array(45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71);
+			case "45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71":
+				$array = array(45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71);
 				$array2 = array("MANTECA AKK","ALIMENTOS BALANCEADOS","CHOCOLATE MOCTEZUMA","CHOCOLATERIA DE OCCIDENTE","CAFE BEREA","COSPOR","CERILLERA LA CENTRAL","HARINERA GUADALUPE","SELLO ROJO","OSCAR JIMENEZ","ALPURA","HENSA","ALUMINIO NEZZE","LECHE LALA","AJEMEX","VAPE","CARBON GAVILAN");
 				$filenam = "VARIOS 3RO";
 				break;
-			case "13,46,66,19,22,35,26,23,12,28,67,11,29":
-				$array = array(13,46,66,19,22,35,26,23,12,28,67,11,29);
-				$array2 = array("DIKELOG","MANTECA 4 MILPAS","MANTECA EL ANGEL","PAÑALES MAURY","ORSA","LA PRATERIA","DIST. ROMAN","PRODUCMEX","PURINA","SALUDABLES","PRODUCTOS MEXICANOS","SALES Y ABARROTES","SHETTINOS");
+			case "13,46,72,19,22,35,26,23,12,28,67,11,29,52,74":
+				$array = array(46,72,19,22,35,26,23,12,28,67,11,52,74);
+				$array2 = array("MANTECA 4 MILPAS","MANTECA EL ANGEL","PAÑALES MAURY","ORSA","LA PRATERIA","DIST. ROMAN","PRODUCMEX","PURINA","SALUDABLES","PRODUCTOS MEXICANOS","SALES Y ABARROTES","SCHETTINOS","DIKELOG");
 				$filenam = "VARIOS 4TO";
 				break;
 			case "27":
@@ -987,7 +988,7 @@ class Cotizaciones extends MY_Controller {
 			}
 			$fecha = date('Y-m-d');
 			$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
-
+			$difff = 0.01;
 			
 			if ($cotizacionesProveedor){
 				foreach ($cotizacionesProveedor as $key => $value){
@@ -1079,6 +1080,9 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AH{$flag}", "=C".$flag."*V".$flag)->getStyle("AH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("AI{$flag}", "=C".$flag."*Y".$flag)->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("AJ{$flag}", "=C".$flag."*AB".$flag)->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							if ($id_proves === "VOLUMEN" ) {
+								$hoja->setCellValue("AK{$flag}", $row['proveedor_first']);
+							}
 							$flag ++;
 							$flag1 ++;
 						}
@@ -1104,12 +1108,15 @@ class Cotizaciones extends MY_Controller {
 				$this->excelfile->getActiveSheet()->getStyle('A1:E'.$flagBorder)->applyFromArray($styleArray);
 				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder1.':E'.$flagBorder)->applyFromArray($styleArray);
 			}
-		$file_name = "PEDIDO ".$filenam." ".date('d-m-Y').".xls"; //Nombre del documento con extención
+		$file_name = "PEDIDO ".$filenam." ".date('d-m-Y').".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
+		/*$excel_Writer = new PHPExcel_Writer_Excel2007($this->excelfile);
+		$excel_Writer->setOffice2003Compatibility(true);
+		$excel_Writer->save("php://output");*/
 	}
 
 }

@@ -54,7 +54,7 @@ function getGrupo() {
 
 function setAdminTable(){
 	event.preventDefault();
-	$("html").block({
+	/*$("html").block({
 		centerY: 0,
 		message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
 		overlayCSS: { backgroundColor: '#DDFF33' },
@@ -65,8 +65,8 @@ function setAdminTable(){
 	    padding: '10rem',
 	    color: '#FF6805',
 	    border: '2px solid #FF6805'},
-	});
-	setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
+	});*/
+	//setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
