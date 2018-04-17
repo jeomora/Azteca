@@ -15,7 +15,7 @@ class Pedidos extends MY_Controller {
 
 	public function index(){
 		$user = $this->session->userdata();//Trae los datos del usuario
-
+		
 		$where = [];
 
 		if($user['id_grupo'] ==2){//El grupo 2 es proveedor

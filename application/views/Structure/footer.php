@@ -10,6 +10,13 @@
 	    border-radius: 5px;
 	    display: none;
 	}
+	.modal-content.animated.flipInY {
+    background-color: rgb(255, 104, 5);
+    color: #FFF;
+}
+.modal-body {
+    color: #000;
+}
 </style>		
 				<!-- Page Footer-->
 						<div class="footer" style="color: white">

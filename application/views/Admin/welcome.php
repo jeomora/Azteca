@@ -1,6 +1,11 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <div class="wrapper wrapper-content animated fadeInRight" id="welcome_container">
 	<div class="row col-lg-12">
 		<div class="col-lg-4">
@@ -54,7 +59,7 @@
 					<h2 class="text-navy" style="color:#3f47cc">
 						<i class="fa fa-group"></i> <strong>PROVEEDORES</strong> <br> SIN COTIZAR
 					</h2>
-					<button id="no_cotizo" class="btn btn-success" data-toggle="tooltip" title="VER" data-id-producto="'.$id_producto.'">
+					<button id="no_cotiz" class="btn btn-success" data-toggle="tooltip" title="VER" data-id-producto="'.$id_producto.'">
 						<i class="fa fa-eye"></i>
 					</button>
 				</div>

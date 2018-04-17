@@ -1,6 +1,11 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <style>
 	.td2Form{background-color: #000 !important; color:#FFF !important;}
 	th {text-align: center}
@@ -53,9 +58,11 @@
 							<option value="2">DECASA</option>
 							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
 							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
-							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
+							<option value="45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71">VARIOS 3RO</option>
+							<option value="13,46,72,19,22,35,26,23,12,28,67,11,29,52,74">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
+							<option value="VOLUMEN">VOLUMEN</option>
+							<option value="AMARILLOS">AMARILLOS</option>
 						</select>
 						<select name="id_proves4" id="id_proves4" class="form-control">
 							<option value="nope">Seleccionar...</option>
@@ -64,9 +71,11 @@
 							<option value="2">DECASA</option>
 							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
 							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,68,32,10,69,39,40,64,70,15,47,44,42,65,71">VARIOS 3RO</option>
-							<option value="13,46,66,19,22,35,26,23,12,28,67,11,29">VARIOS 4TO</option>
+							<option value="45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71">VARIOS 3RO</option>
+							<option value="13,46,72,19,22,35,26,23,12,28,67,11,29,52,74">VARIOS 4TO</option>
 							<option value="3">DUERO</option>
+							<option value="VOLUMEN">VOLUMEN</option>
+							<option value="AMARILLOS">AMARILLOS</option>
 						</select>
 						<div class="btn-group">
 							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
@@ -77,6 +86,16 @@
 					<?php echo form_close(); ?>
 			<div class="col-md-12 wonder" style="padding: 0">
 
+			</div>
+			<div class="btn-group" style="margin-left: 5rem;margin-top: -1rem;">
+				<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+					Subir formato de pedidos
+				</div>
+				<?php echo form_open_multipart("", array('id' => 'upload_pedidos')); ?>
+					<div class="col-sm-4">
+						<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
+					</div>
+				<?php echo form_close(); ?>
 			</div>
 
 

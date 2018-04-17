@@ -1,7 +1,11 @@
  <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-
+<?php 
+if(!$this->session->userdata("username")){
+	redirect("Welcome/Login", "");
+}
+?>
 <style type="text/css" media="screen">
 	.preciomas{
 		background-color: #ea9696;
@@ -66,7 +70,8 @@
 	    font-size: 14px;
 	    padding: 7px;
 	}
-	tr:hover {background-color: #cfffc3 !important;}
+	tr:hover {background-color: #21b9bb !important;}
+
 	select#id_proves2{display: none}
 	.fill_form{display: none}
 	select#id_proves {color: #000;}

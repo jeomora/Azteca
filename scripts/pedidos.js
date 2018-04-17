@@ -182,7 +182,9 @@ function tablePedidoAll(response,colors,sucur){
 							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td>'+
 							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td><td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td>'+
 							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
-					
+	if(flag == ''){
+		table_contain = "";
+	}
 	return table_contain;
 }
 
@@ -205,6 +207,19 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 				var stringArray = id_cotizacion.split(",");
 		$(".wonder").html("");
 		var flag = "";
+		$("html").block({
+			centerY: 0,
+			message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
+			overlayCSS: { backgroundColor: '#DDFF33' },
+			css: { position: 'absolute',
+		    top: '25rem',
+		    left: '45rem',
+		    background: 'rgba(255,255,255,0.5)',
+		    padding: '10rem',
+		    color: '#FF6805',
+		    border: '2px solid #FF6805'},
+		});
+		setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 4000);
 		for (var i = 0; i < stringArray.length; i++) {
 			getPedidos(stringArray[i])
 			.done(function (response){
@@ -451,3 +466,31 @@ $(document).off("click", "#show_pedido").on("click", "#show_pedido", function(ev
 	var id_pedido = $(this).closest("tr").find("#show_pedido").data("idPedido");
 	getModal("Pedidos/get_detalle/"+ id_pedido, function (){ });
 });
+
+$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_pedidos")[0]);
+	uploadPedidos(fdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, user_name);
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
+
+
+function uploadPedidos(formData) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/upload_pedidos",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

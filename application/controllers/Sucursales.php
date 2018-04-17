@@ -31,6 +31,7 @@ class Sucursales extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
+		
 		$data["sucursales"] = $this->suc_md->get();
 		$this->estructura("Sucursales/table_sucursales", $data);
 	}

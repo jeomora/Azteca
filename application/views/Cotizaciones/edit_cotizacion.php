@@ -55,7 +55,7 @@
 							</td>
 							<td>
 								<div class='input-group m-b'>
-									<span class='input-group-addon'>%</i></span>
+									<span class='input-group-addon' style="font-weight: bold">%</i></span>
 									<input type='text' value='<?php echo $value->descuento ?>' class='form-control descuento numeric' readonly=''>
 								</div>
 							</td>

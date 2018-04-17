@@ -54,7 +54,7 @@ function getGrupo() {
 
 function setAdminTable(){
 	event.preventDefault();
-	$("html").block({
+	/*$("html").block({
 		centerY: 0,
 		message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
 		overlayCSS: { backgroundColor: '#DDFF33' },
@@ -65,13 +65,12 @@ function setAdminTable(){
 	    padding: '10rem',
 	    color: '#FF6805',
 	    border: '2px solid #FF6805'},
-	});
-	setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
+	});*/
+	//setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
-			$.each(resp, function(indx, vals){
-				$.each(vals, function(index, value){
+			$.each(resp.cotizaciones, function(indx, value){
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
 					value.precio_four = value.precio_four == null ? 0 : value.precio_four;
 					value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
@@ -108,7 +107,6 @@ function setAdminTable(){
 								'<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-trash"></i></button></td></tr>';
-				});
 			});	
 			$(".tableAdmin").html(tableAdmin);
 			fillDataTable("table_cot_admin", 50);
@@ -372,7 +370,21 @@ $(document).off("change", ".id_cotz").on("change", ".id_cotz", function() {
 		tr.find(".observaciones").removeAttr('name');
 	}
 });
-
+$(document).off("keyup", ".precio").on("keyup", ".precio", function() {
+	var tr = $(this).closest("tr");
+	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		tr.find(".precio_promocion").val(total);
+	}else if(descuento > 0){
+		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+	}else{
+		tr.find(".precio_promocion").val(precio);
+	}
+});
 $(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
 	var tr = $(this).closest("tr");
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
@@ -566,3 +578,11 @@ function uploadPrecios(formData) {
 		data: formData,
 	});
 }
+
+$(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event){
+	event.preventDefault();
+	var ides = $(this).attr("data-id-producto");
+	getModal("Main/CotzUsuario/"+ides, function (){ });
+});
+
+
