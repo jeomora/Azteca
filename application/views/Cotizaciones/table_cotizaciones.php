@@ -23,12 +23,12 @@ if(!$this->session->userdata("username")){
 				<div class="ibox-content">
 					<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
-							<i class="fa fa-plus"></i>
+							<i class="fa fa-plus"></i> Agregar Cotización
 						</button>
 					</div>
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" download="<?php echo 'Cotización '.date('Y-m-d').' '.$usuario['username'].'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" download="<?php echo 'Cotización '.date('Y-m-d H:i').' '.$usuario['username'].'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i> Descargar formato cotizaciones<span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">
@@ -37,10 +37,11 @@ if(!$this->session->userdata("username")){
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
+								<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value="" size="20" />
 							</div>
 						<?php echo form_close(); ?>
 					</div>
+					
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_cot_proveedores">
 							<thead>

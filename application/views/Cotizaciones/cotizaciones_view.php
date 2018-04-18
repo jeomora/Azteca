@@ -76,7 +76,13 @@ if(!$this->session->userdata("username")){
 	.fill_form{display: none}
 	select#id_proves {color: #000;}
 
-	.spinns{width:35rem;height:25rem;background-color:#FFF;text-align:center;line-height:25rem;border-radius: 5px;border: 3px solid #3b467b;}
+	.spinns{width:35rem;height:25rem;background-color: rgba(255,255,255,0.5);
+	    padding: 10rem;
+	    color: #FF6805;
+	    border: 2px solid #FF6805;
+	    border-radius: 5px;
+	    margin-left: 35%}
+	.fa-spin{margin-left: 4rem}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">
@@ -88,7 +94,7 @@ if(!$this->session->userdata("username")){
 				<div class="ibox-content" style="padding-top: 4rem;">
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_precios.xlsx'); ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Precios" class="btn btn-info"><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
+							<a href="<?php echo base_url('./assets/uploads/Formato_precios.xlsx'); ?>" download="<?php echo 'Precios Sistema '.date('Y-m-d H:i').'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Precios" class="btn btn-info"><i class="fa fa-cloud-download"></i> Descargar formato precios<span class="nav-label" download></span> </a>
 						</div>
 					</div>
 					<div class="btn-group">
@@ -104,9 +110,16 @@ if(!$this->session->userdata("username")){
 					<div class="btn-group">
 						<?php echo form_open("Cotizaciones/fill_excel", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-file-excel-o"></i>
+								<i class="fa fa-file-excel-o"></i> Descargar Excel Cotizaciones
 							</button>
 						<?php echo form_close(); ?>
+					</div>
+					<div class="btn-group">
+						<div class="col-sm-2">
+							<button id="ver_proveedor" class="btn btn-info" data-toggle="tooltip" title="Filtrar 1 proveedor">
+								<i class="fa fa-eye"></i> Cotizaciones por proveedor
+							</button>
+						</div>
 					</div>
 					<!--<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
