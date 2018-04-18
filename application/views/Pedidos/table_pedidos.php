@@ -43,6 +43,13 @@ if(!$this->session->userdata("username")){
 	    padding: 7px; 
 	}
 	select#id_proves4 {color: black;}
+	.spinns{width:35rem;height:25rem;background-color: rgba(255,255,255,0.5);
+	    padding: 10rem;
+	    color: #FF6805;
+	    border: 2px solid #FF6805;
+	    border-radius: 5px;
+	    margin-left: 35%}
+	.fa-spin{margin-left: 4rem}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -78,7 +85,7 @@ if(!$this->session->userdata("username")){
 						</select>
 						<div class="btn-group">
 							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-file-excel-o"></i>
+								<i class="fa fa-file-excel-o"></i> Descargar Excel Pedidos
 							</button>
 						</div>
 					</div>

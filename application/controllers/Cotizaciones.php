@@ -789,9 +789,23 @@ class Cotizaciones extends MY_Controller {
 		return $botones;
 	}
 
+	public function ver_proveedor(){
+		$where=["usuarios.id_grupo" => 2];
+		$data["title"] = "Filtrar por proveedor";
+		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$data["view"] = $this->load->view("Cotizaciones/proveedor", $data,TRUE);
+		$this->jsonResponse($data);
+	}
+
+	public function getProveedorCot($ides){
+		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()]);
+		$this->jsonResponse($data);
+	}
+
 	public function fill_formato1(){
 		$flag = 1;
 		$flag1 = 1;
+
 		$array = "";
 		$array2 = "";
 		$filenam = "";

@@ -54,19 +54,8 @@ function getGrupo() {
 
 function setAdminTable(){
 	event.preventDefault();
-	/*$("html").block({
-		centerY: 0,
-		message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
-		overlayCSS: { backgroundColor: '#DDFF33' },
-		css: { position: 'absolute',
-	    top: '25rem',
-	    left: '45rem',
-	    background: 'rgba(255,255,255,0.5)',
-	    padding: '10rem',
-	    color: '#FF6805',
-	    border: '2px solid #FF6805'},
-	});*/
-	//setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
+	
+	$(".tableAdmin").html('<tr><td colspan="16"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
@@ -586,3 +575,31 @@ $(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event)
 });
 
 
+$(document).off("click", "#ver_proveedor").on("click", "#ver_proveedor", function(event){
+	event.preventDefault();
+	getModal("Cotizaciones/ver_proveedor/", function (){ });
+});
+
+$(document).off("change", "#id_pro").on("change", "#id_pro", function() {
+	event.preventDefault();
+	var proveedor = $("#id_pro option:selected").val();
+	getProveedorCot(proveedor)
+	.done(function (resp){
+		if(resp.cotizaciones){
+			$.each(resp.cotizaciones, function(indx, value){
+				value.observaciones = value.observaciones == null ? "" : value.observaciones;
+				$(".cot-prov").append('<tr><td>'+value.codigo+'</td><td>'+value.producto+'</td><td>'+value.precio+'</td><td>'+value.precio_promocion
+					+'</td><td>'+value.observaciones+'</td></tr>')
+			});
+		}
+		fillDataTable("table_prov_cot", 50);
+	});
+});
+
+function getProveedorCot(id_prov) {
+	return $.ajax({
+		url: site_url+"/Cotizaciones/getProveedorCot/"+id_prov,
+		type: "POST",
+		dataType: "JSON"
+	});
+}

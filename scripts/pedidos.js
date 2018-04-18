@@ -125,7 +125,7 @@ function tablePedidoTienda(response,colors,sucur){
 							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
 							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
 					
-	return table_contain;
+	$(".wonder").html(table_contain);
 }
 
 function tablePedidoAll(response,colors,sucur){
@@ -185,7 +185,7 @@ function tablePedidoAll(response,colors,sucur){
 	if(flag == ''){
 		table_contain = "";
 	}
-	return table_contain;
+	$(".wonder").html(table_contain);
 }
 
 $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
@@ -193,10 +193,9 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 	var id_cotizacion = $("#id_proves4 option:selected").val();
 	var proveedor = $("#id_proves4 option:selected").text();
 	var table_contain = "";
-
+	$(".wonder").html('<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>');
 
 	if(id_cotizacion != "nope"){
-		$(".wonder").html("")
 		$(".fill_form").css("display","block");
 		$("#id_proves2").val(proveedor);
 		var sucur = "";
@@ -205,28 +204,16 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 				sucur = response == null ? 0 : response.nombre;
 				colors = response == null ? 0 : response.color;
 				var stringArray = id_cotizacion.split(",");
-		$(".wonder").html("");
 		var flag = "";
-		$("html").block({
-			centerY: 0,
-			message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
-			overlayCSS: { backgroundColor: '#DDFF33' },
-			css: { position: 'absolute',
-		    top: '25rem',
-		    left: '45rem',
-		    background: 'rgba(255,255,255,0.5)',
-		    padding: '10rem',
-		    color: '#FF6805',
-		    border: '2px solid #FF6805'},
-		});
-		setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 4000);
 		for (var i = 0; i < stringArray.length; i++) {
 			getPedidos(stringArray[i])
 			.done(function (response){
 				if(sucur == 0){
-					$(".wonder").append(tablePedidoAll(response,colors,sucur));
+					tablePedidoAll(response,colors,sucur);
+
 				}else{
-					$(".wonder").append(tablePedidoTienda(response,colors,sucur));
+					tablePedidoTienda(response,colors,sucur);
+
 				}
 			});
 		}

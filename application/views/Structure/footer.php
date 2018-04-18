@@ -1,21 +1,22 @@
 <style type="text/css">
-	.spinns {
-	    position: absolute;
-	    top: 25rem;
-	    left: 45rem;
-	    background-color: rgba(255,255,255,0.5);
-	    padding: 10rem;
-	    color: #FF6805;
-	    border: 2px solid #FF6805;
-	    border-radius: 5px;
-	    display: none;
-	}
+
 	.modal-content.animated.flipInY {
     background-color: rgb(255, 104, 5);
     color: #FFF;
 }
 .modal-body {
     color: #000;
+}
+input.form-control.input-sm {
+    border: 2px solid #FF6805;
+    margin: 2px;
+    color: black;
+}
+label {
+    background-color: #FF6805;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
 }
 </style>		
 				<!-- Page Footer-->
@@ -63,7 +64,7 @@
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/colorpicker/bootstrap-colorpicker.min.js') ?>"></script>
 </body>
 </html>
-<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>
+
 <div class="modal inmodal" id="mainModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content animated flipInY">
