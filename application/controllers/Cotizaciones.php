@@ -135,8 +135,6 @@ class Cotizaciones extends MY_Controller {
 			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 			'fecha_registro'	=>	date('Y-m-d H:i:s'),
-			'fecha_caduca'		=>	($this->input->post('fecha_caducidad') !='') ? date('Y-m-d', strtotime($this->input->post('fecha_caducidad'))) : NULL,
-			'existencias'		=>	str_replace(',', '',$this->input->post('existencias')),
 			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
 		];
 		$data ['id_cotizacion']=$this->ct_mdl->insert($cotizacion);
