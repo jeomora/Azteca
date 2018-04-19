@@ -197,15 +197,61 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function() {
 	var total =0;
 	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
 	var precio = Number($(this).val().replace(/[^0-9\.]+/g,""));
-	if($(".descuento").is(":checked")){
-		descuento = Number('0.0'+descuento);
-		total = (precio - (precio * descuento));
+	total = (precio - (precio * descuento));
+	var num_1 = Number($("#num_one").val().replace(/[^0-9\.]+/g,""));
+	var num_2 = Number($("#num_two").val().replace(/[^0-9\.]+/g,""));
+	if(num_1 > 0 ){
+		total = ((precio * num_2) / (num_1 + num_2));
+	}
+	$("#precio_promocion").val(total);
+});
+
+$(document).off("keyup", "#precio").on("keyup", "#precio", function() {
+	var total =0;
+	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
+	var precio = Number($(this).val().replace(/[^0-9\.]+/g,""));
+	total = (precio - (precio * descuento));
+	var num_1 = Number($("#num_one").val().replace(/[^0-9\.]+/g,""));
+	var num_2 = Number($("#num_two").val().replace(/[^0-9\.]+/g,""));
+	if(num_1 > 0 ){
+		total = ((precio * num_2) / (num_1 + num_2));
+	}
+	$("#precio_promocion").val(total);
+});
+
+$(document).off("keyup", "#porcentaje").on("keyup", "#porcentaje", function () {
+	var total =0;
+	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
+	var precio = $("#precio").val().replace(/[^0-9\.]+/g,"");
+	total = (precio - (precio * descuento/100));
+	$("#precio_promocion").val(total);
+});
+
+$(document).off("keyup", "#num_one").on("keyup", "#num_one", function () {
+	var total =0;
+	var num_2 = parseInt($("#num_two").val());
+	var num_1 = parseInt($("#num_one").val());
+	if(num_2 > 0 && num_1 > 0){
+		var precio = $("#precio").val();
+		total = ((precio * num_2) / (num_1 + num_2));
+		console.log(precio * num_2);
+		console.log(num_1 + num_2);
 		$("#precio_promocion").val(total);
 	}else{
-		var num_1 = Number($("#num_one").val().replace(/[^0-9\.]+/g,""));
-		var num_2 = Number($("#num_two").val().replace(/[^0-9\.]+/g,""));
+		$("#precio_promocion").val($("#precio").val().replace(/[^0-9\.]+/g,""));
+	}
+});
+
+$(document).off("keyup", "#num_two").on("keyup", "#num_two", function () {
+	var total =0;
+	var num_1 = parseInt($("#num_one").val());
+	var num_2 = parseInt($("#num_two").val());
+	if(num_1 > 0){
+		var precio = $("#precio").val();
 		total = ((precio * num_2) / (num_1 + num_2));
 		$("#precio_promocion").val(total);
+	}else{
+		$("#precio_promocion").val($("#precio").val().replace(/[^0-9\.]+/g,""));
 	}
 });
 
@@ -382,6 +428,7 @@ $(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
 		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
 	}
 });
+
 $(document).off("keyup", ".num_one").on("keyup", ".num_one", function () {
 	var tr = $(this).closest("tr");
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
@@ -582,20 +629,43 @@ $(document).off("click", "#ver_proveedor").on("click", "#ver_proveedor", functio
 
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
+	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
+	$(".cot-prov").html("");
 	getProveedorCot(proveedor)
 	.done(function (resp){
 		if(resp.cotizaciones){
 			$.each(resp.cotizaciones, function(indx, value){
 				value.observaciones = value.observaciones == null ? "" : value.observaciones;
-				$(".cot-prov").append('<tr><td>'+value.codigo+'</td><td>'+value.producto+'</td><td>'+value.precio+'</td><td>'+value.precio_promocion
+				$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td><td>'+value.precio+'</td><td>'+value.precio_promocion
 					+'</td><td>'+value.observaciones+'</td></tr>')
 			});
 		}
-		fillDataTable("table_prov_cot", 50);
+		$(".searchboxs").css("display","block")
 	});
+
 });
 
+function myFunction() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table_prov_cots");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
 function getProveedorCot(id_prov) {
 	return $.ajax({
 		url: site_url+"/Cotizaciones/getProveedorCot/"+id_prov,

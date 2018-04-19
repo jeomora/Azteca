@@ -2,6 +2,7 @@
 	tr:hover {background-color: #21b9bb !important;}
 	tr:hover > td{color: white !important;}
 	.modal-body{height: 65vh;overflow-y: scroll;}
+	.searchboxs{display: none}
 </style>
 <?php 
 if(!$this->session->userdata("username")){
@@ -23,15 +24,19 @@ if(!$this->session->userdata("username")){
 					<?php endforeach ?>
 			</select>
 		</div>
+		<div class="col-lg-5"></div>
+		<div class="col-lg-4 searchboxs">
+			<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
+		</div>
 	</div>
-	<div class="row"></div>
+	
 	<div class="row">
 		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover" id="table_prov_cot">
+			<table class="table table-striped table-bordered table-hover" id="table_prov_cots">
 				<thead>
 					<tr>
-						<th style="width: 5%">CÓDIGO</th>
 						<th>DESCRIPCIÓN</th>
+						<th style="width: 5%">CÓDIGO</th>
 						<th>PRECIO</th>
 						<th>PRECIO C/PROMOCIÓN</th>
 						<th>OBSERVACIONES</th>

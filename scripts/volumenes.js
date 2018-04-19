@@ -253,19 +253,43 @@ $(document).off("click", "#ver_proveedor").on("click", "#ver_proveedor", functio
 
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
+	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
+	$(".cot-prov").html("");
 	getProveedorCot(proveedor)
 	.done(function (resp){
 		if(resp.cotizaciones){
 			$.each(resp.cotizaciones, function(indx, value){
 				value.observaciones = value.observaciones == null ? "" : value.observaciones;
-				$(".cot-prov").append('<tr><td>'+value.codigo+'</td><td>'+value.producto+'</td><td>'+value.precio+'</td><td>'+value.precio_promocion
+				$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td><td>'+value.precio+'</td><td>'+value.precio_promocion
 					+'</td><td>'+value.observaciones+'</td></tr>')
 			});
 		}
-		fillDataTable("table_prov_cot", 50);
+		$(".searchboxs").css("display","block")
 	});
+
 });
+
+function myFunction() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table_prov_cots");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
 
 function getProveedorCot(id_prov) {
 	return $.ajax({
