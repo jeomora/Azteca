@@ -148,7 +148,7 @@ if(!$this->session->userdata("username")){
 									<td class="td2Form">PIEZAS</td>
 									<td class="td2Form">PEDIDO</td>
 								</tr>
-								<!-- <?php //if ($pedidos): ?>
+								<!<?php //if ($pedidos): ?>
 									<?php //foreach ($pedidos as $key => $value): ?>
 										<tr>
 											<th><?php //echo $value->id_pedido ?></th>
@@ -157,13 +157,13 @@ if(!$this->session->userdata("username")){
 											<td><?php //echo $value->fecha ?></td>
 											<td><?php //echo strtoupper($value->sucursal) ?></td>
 											<td>
-												<button id="update_pedido" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-pedido="<?php echo $value->id_pedido ?>">
+												<button id="update_pedido" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-pedido="<?php //echo $value->id_pedido ?>">
 													<i class="fa fa-pencil"></i>
 												</button>
-												<button id="show_pedido" class="btn btn-success" data-toggle="tooltip" title="Ver" data-id-pedido="<?php echo $value->id_pedido ?>">
+												<button id="show_pedido" class="btn btn-success" data-toggle="tooltip" title="Ver" data-id-pedido="<?php //echo $value->id_pedido ?>">
 													<i class="fa fa-eye"></i>
 												</button>
-												<button id="delete_pedido" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-pedido="<?php echo $value->id_pedido ?>">
+												<button id="delete_pedido" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-pedido="<?php //echo $value->id_pedido ?>">
 													<i class="fa fa-trash"></i>
 												</button>
 

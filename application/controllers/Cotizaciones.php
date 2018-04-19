@@ -13,6 +13,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Existencias_model", "ex_mdl");
+		$this->load->model("Precio_sistema_model", "pre_mdl");
 	}
 
 	public function index(){
@@ -112,6 +113,36 @@ class Cotizaciones extends MY_Controller {
 		];
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/volumenes", $data);
+	}
+	
+	public function proveedor(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/volumenes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 2];
+		$data["title"] = "Filtrar por proveedor";
+		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Cotizaciones/proveedor", $data);
 	}
 
 	public function add_cotizacion(){
@@ -751,10 +782,17 @@ class Cotizaciones extends MY_Controller {
 						"id_producto"		=>	$productos->id_producto,
 						"precio_sistema"	=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue())),
 						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue())),
-						"fecha_cambio"		=>	date('Y-m-d H:i:s')
+						"fecha_registro"		=>	date('Y-m-d H:i:s')
 					];
-					$data['cotizacion']=$this->ct_mdl->update($new_precios,
-						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber(),'id_producto'=>$productos->id_producto]);
+					$precios = $this->pre_mdl->get("id_precio",['id_producto'=> $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()])[0];
+					if(sizeof($precios) > 0 ){
+						$data['cotizacion']=$this->pre_mdl->update($new_precios,
+						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber(),'id_precio'=>$precios->id_precio]);
+					}else{
+						$data['cotizacion']=$this->pre_mdl->insert($new_precios);
+					}
+					
+					
 				}
 			}
 		}
@@ -919,13 +957,7 @@ class Cotizaciones extends MY_Controller {
 		return $botones;
 	}
 
-	public function ver_proveedor(){
-		$where=["usuarios.id_grupo" => 2];
-		$data["title"] = "Filtrar por proveedor";
-		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
-		$data["view"] = $this->load->view("Cotizaciones/proveedor", $data,TRUE);
-		$this->jsonResponse($data);
-	}
+	
 
 	public function getProveedorCot($ides){
 		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()]);

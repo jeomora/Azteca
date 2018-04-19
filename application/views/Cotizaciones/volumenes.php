@@ -101,9 +101,9 @@ if(!$this->session->userdata("username")){
 					</div>
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<button id="ver_proveedor" class="btn btn-info" data-toggle="tooltip" title="Filtrar 1 proveedor">
+							<a href="../Cotizaciones/proveedor" rel="external-new-window" id="proveedorCotz"><button id="ver_proveedor" class="btn btn-info" data-toggle="tooltip" title="Filtrar 1 proveedor">
 								<i class="fa fa-eye"></i> Cotizaciones por proveedor
-							</button>
+							</button></a>
 						</div>
 					</div>
 

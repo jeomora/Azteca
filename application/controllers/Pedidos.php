@@ -11,6 +11,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Usuarios_model", "user_mdl");
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Existencias_model", "ex_mdl");
+		$this->load->model("Precio_sistema_model", "pre_mdl");
 	}
 
 	public function index(){
@@ -205,7 +206,39 @@ class Pedidos extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function guardaPedido(){
+	public function guardaSistema(){
+		$user = $this->session->userdata();
+		$values = json_decode($this->input->post('values'), true);
+		$ides = $this->ct_mdl->get('id_producto', ['id_cotizacion'=>$values["id_cotizacion"]])[0];
+		$sist = [
+				"id_producto"=>	$ides->{"id_producto"},
+				"precio_sistema"=>	$values["sistema"], 
+				"precio_four"=>	$values["cuatro"],
+				"fecha_registro"=>date("Y-m-d H:i:s")
+			];
+		$press = $this->pre_mdl->get('id_precio', ['id_producto'=>$ides->{"id_producto"},'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber()])[0];
+		if($press == NULL){
+			$respuesta = $this->pre_mdl->insert($sist);
+		}else{
+			$respuesta = $this->pre_mdl->update($sist,["id_precio" => $press->{'id_precio'}]);
+		}
+		if($respuesta){
+			$mensaje = [
+				"id" 	=> 'Éxito',
+				"desc"	=> 'Pedido registrado correctamente',
+				"type"	=> 'success'
+			];
+		}else{
+			$mensaje = [
+				"id" 	=> 'Error',
+				"desc"	=> 'No se registro el Pedido',
+				"type"	=> $respuesta
+			];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function guardaPedidos(){
 		$user = $this->session->userdata();
 		$values = json_decode($this->input->post('values'), true);
 
