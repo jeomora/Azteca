@@ -16,8 +16,7 @@ class Productos_model extends MY_Model {
 			productos.codigo,
 			f.nombre AS familia")
 		->from($this->TABLE_NAME)
-		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
-		->where($this->TABLE_NAME.".estatus", 1);
+		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
@@ -93,6 +92,79 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizacion
 				return $result;
 			} else {
 				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function getProdFam($where = [],$prove){
+		$this->db->select("
+			productos.id_producto,
+			productos.nombre AS producto,
+			productos.codigo,
+			productos.estatus,
+			f.nombre AS familia,
+			f.id_familia")
+		->from($this->TABLE_NAME)
+		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
+		->where("productos.estatus <> 0")
+		->order_by("f.id_familia,productos.nombre", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++){
+			if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
+				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
+			}
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["id_producto"]	=	$comparativa[$i]->id_producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["estatus"]		=	$comparativa[$i]->estatus;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["codigo"]		=	$comparativa[$i]->codigo;
+			$precios2 = $this->db->select('precio,
+				  num_one,
+				  num_two,
+				  observaciones,
+				  descuento')
+				->from('cotizaciones')
+				->where('WEEKOFYEAR(fecha_registro)',16)
+				->where('id_producto',$comparativa[$i]->id_producto)
+				->where('id_proveedor',$prove)
+				->group_by("id_proveedor");
+				$precios = $this->db->get()->result();
+			if($precios){
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	$precios[0]->precio;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	$precios[0]->num_one;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	$precios[0]->num_two;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	$precios[0]->observaciones;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	$precios[0]->descuento;
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	"";
+			}
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
 			}
 		} else {
 			return false;

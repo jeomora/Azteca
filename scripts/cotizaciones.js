@@ -32,6 +32,10 @@ $(function($) {
 			setAdminTable();
 		}
 	});
+	$('#proveedorCotz[rel=external-new-window]').click(function(){
+	    window.open(this.href, "myWindowName", "width=800, height=600");
+	    return false;
+	  });
 	
 	fillDataTable("table_cot_proveedores", 50);
 });
@@ -77,7 +81,8 @@ function setAdminTable(){
 					}else{
 						tableAdmin += '<td>'+value.codigo+'</td><td>'+value.producto+'</td>';
 					}
-					tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td>'+
+					tableAdmin += '<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
+								'</div></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'+
 								'<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>';
 					if(value.precio_first >= value.precio_sistema){
 						tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>';
@@ -99,6 +104,8 @@ function setAdminTable(){
 			});	
 			$(".tableAdmin").html(tableAdmin);
 			fillDataTable("table_cot_admin", 50);
+			$(".cuatro").inputmask("currency", {radixPoint: ".", prefix: ""});
+			$(".sistema").inputmask("currency", {radixPoint: ".", prefix: ""});
 		});
 	
 
@@ -115,7 +122,6 @@ $(window).on("load", function (event) {
 	});
 });
 $(document).off("click", "#ths").on("click", "#ths", function(event) {
-	console.log("jkdjkds");
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById("table_cot_admin");
   switching = true;
@@ -622,10 +628,7 @@ $(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event)
 });
 
 
-$(document).off("click", "#ver_proveedor").on("click", "#ver_proveedor", function(event){
-	event.preventDefault();
-	getModal("Cotizaciones/ver_proveedor/", function (){ });
-});
+
 
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
@@ -673,3 +676,30 @@ function getProveedorCot(id_prov) {
 		dataType: "JSON"
 	});
 }
+
+$(document).off("focusout", ".precio_sistema").on("focusout", ".precio_sistema", function () {
+	var tr = $(this).closest("tr");
+	var cantidad = $(this).val();
+	guardaPrecios(tr,"sistema",cantidad);
+});
+$(document).off("focusout", ".precio_four").on("focusout", ".precio_four", function () {
+	var tr = $(this).closest("tr");
+	var cantidad = $(this).val();
+	guardaPrecios(tr,"cuatro",cantidad);
+});
+
+function guardaPrecios(tr, tipo,cantidad){
+	var id_cotizacion = tr.find("#update_cotizacion").data("idCotizacion");
+	var sistema = tipo == "sistema" ? cantidad : tr.find(".precio_sistema").val();
+	var cuatro = tipo == "cuatro" ? cantidad : tr.find(".precio_four").val();
+	sistema = sistema == "" ? 0 : sistema;
+	cuatro = cuatro == "" ? 0 : cuatro;
+	var values = {'id_cotizacion': id_cotizacion,'sistema': sistema,'cuatro': cuatro};
+	return $.ajax({
+		url: site_url+"Pedidos/guardaSistema",
+		type: "POST",
+		dataType: 'JSON',
+		data: {values : JSON.stringify(values)}
+	});
+}
+

@@ -13,6 +13,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Existencias_model", "ex_mdl");
+		$this->load->model("Precio_sistema_model", "pre_mdl");
 	}
 
 	public function index(){
@@ -112,6 +113,36 @@ class Cotizaciones extends MY_Controller {
 		];
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/volumenes", $data);
+	}
+	
+	public function proveedor(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/volumenes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 2];
+		$data["title"] = "Filtrar por proveedor";
+		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Cotizaciones/proveedor", $data);
 	}
 
 	public function add_cotizacion(){
@@ -445,6 +476,86 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
+	public function fill_excel_pro(){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$this->cellStyle("A1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' => 
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+		
+		$hoja->setCellValue("B1", "DESCRIPCIÓN SISTEMA")->getColumnDimension('B')->setWidth(70);
+		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
+		$hoja->setCellValue("D1", "PROMOCIÓN")->getColumnDimension('D')->setWidth(50);
+		$hoja->setCellValue("E1", "# EN #")->getColumnDimension('E')->setWidth(12);
+		$hoja->setCellValue("F1", "# EN #")->getColumnDimension('F')->setWidth(12);
+		$hoja->setCellValue("G1", "% DESCUENTO")->getColumnDimension('G')->setWidth(15);
+
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->mergeCells('E1:F1');
+
+		$productos = $this->prod_mdl->getProdFam(NULL,$this->input->post('id_pro'));
+		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
+		$row_print = 2;
+		if ($productos){
+			foreach ($productos as $key => $value){
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
+				$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
+				$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("B{$row_print}", $row['producto']);
+						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("C{$row_print}", $row['precio'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');;
+						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("D{$row_print}", $row['observaciones']);
+						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("E{$row_print}", $row['num_one']);
+						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("F{$row_print}", $row['num_two']);
+						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("G{$row_print}", $row['descuento']);
+						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
+
+						$row_print++;
+					}
+				}
+			}
+		}
+
+
+
+		$file_name = "Cotización ".$provs->nombre.".xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+
+	}
+
 	public function fill_excelV(){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
@@ -751,10 +862,17 @@ class Cotizaciones extends MY_Controller {
 						"id_producto"		=>	$productos->id_producto,
 						"precio_sistema"	=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue())),
 						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue())),
-						"fecha_cambio"		=>	date('Y-m-d H:i:s')
+						"fecha_registro"		=>	date('Y-m-d H:i:s')
 					];
-					$data['cotizacion']=$this->ct_mdl->update($new_precios,
-						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber(),'id_producto'=>$productos->id_producto]);
+					$precios = $this->pre_mdl->get("id_precio",['id_producto'=> $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()])[0];
+					if(sizeof($precios) > 0 ){
+						$data['cotizacion']=$this->pre_mdl->update($new_precios,
+						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber(),'id_precio'=>$precios->id_precio]);
+					}else{
+						$data['cotizacion']=$this->pre_mdl->insert($new_precios);
+					}
+					
+					
 				}
 			}
 		}
@@ -919,13 +1037,7 @@ class Cotizaciones extends MY_Controller {
 		return $botones;
 	}
 
-	public function ver_proveedor(){
-		$where=["usuarios.id_grupo" => 2];
-		$data["title"] = "Filtrar por proveedor";
-		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
-		$data["view"] = $this->load->view("Cotizaciones/proveedor", $data,TRUE);
-		$this->jsonResponse($data);
-	}
+	
 
 	public function getProveedorCot($ides){
 		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()]);

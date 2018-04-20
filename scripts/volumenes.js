@@ -24,7 +24,10 @@ $(function($) {
 			]
 		});*/
 		
-	
+	$('#proveedorCotz[rel=external-new-window]').click(function(){
+	    window.open(this.href, "myWindowName", "width=800, height=600");
+	    return false;
+	  });
 	setAdminTable();
 
 });
@@ -246,10 +249,7 @@ function calculaTotales() {
 	return total;
 }
 
-$(document).off("click", "#ver_proveedor").on("click", "#ver_proveedor", function(event){
-	event.preventDefault();
-	getModal("Cotizaciones/ver_proveedor/", function (){ });
-});
+
 
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
