@@ -67,7 +67,7 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.existencias,
 			cotizaciones.observaciones,
 			cotizaciones.id_producto,
-			p.codigo,
+			p.codigo,prod.color,prod.colorp,
 			p.nombre AS producto")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
@@ -97,7 +97,7 @@ class Cotizaciones_model extends MY_Model {
 
 	public function getCotz($where = [],$fech){
 		$this->db->select("cotizaciones.id_cotizacion, 
-			ctz_first.fecha_registro,prod.estatus,
+			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
@@ -214,7 +214,7 @@ class Cotizaciones_model extends MY_Model {
 	public function comparaCotizaciones($where=[], $fech, $tienda){
 		$this->db->select("ctz_first.id_cotizacion, 
 			ctz_first.fecha_registro,
-			cajas,piezas,pedido,prod.id_producto,id_pedido,
+			cajas,piezas,pedido,prod.id_producto,id_pedido,prod.color,prod.colorp,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo,prod.estatus, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
@@ -294,6 +294,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_maximo"]	=	$comparativa[$i]->precio_maximo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["precio_promedio"]	=	$comparativa[$i]->precio_promedio;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_next"]	=	$comparativa[$i]->promocion_next;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["colorp"]	=	$comparativa[$i]->colorp;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["color"]	=	$comparativa[$i]->color;
 			$stores = array(57, 58, 59, 60, 61, 62, 63);
 			for ($d=0; $d < sizeof($stores); $d++) { 
 				$pedidos = $this->db->select('id_pedido,
@@ -661,7 +663,7 @@ class Cotizaciones_model extends MY_Model {
 
 	public function getCotzV($where = [],$fech){
 		$this->db->select("cotizaciones.id_cotizacion, 
-			ctz_first.fecha_registro,prod.estatus,
+			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,

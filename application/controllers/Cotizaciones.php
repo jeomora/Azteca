@@ -524,12 +524,30 @@ class Cotizaciones extends MY_Controller {
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
+						if($row['color'] == '#92CEE3'){
+							$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+						}else{
+							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("B{$row_print}", $row['producto']);
+						if($row['estatus'] == 2){
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						if($row['estatus'] == 3){
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+						if($row['colorp'] == 1){
+							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
+						}else{
+							$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+						}
 						$hoja->setCellValue("C{$row_print}", $row['precio'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');;
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+
 						$hoja->setCellValue("D{$row_print}", $row['observaciones']);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("E{$row_print}", $row['num_one']);
