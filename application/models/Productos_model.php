@@ -105,7 +105,9 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizacion
 			productos.codigo,
 			productos.estatus,
 			f.nombre AS familia,
-			f.id_familia")
+			f.id_familia,
+			productos.colorp,
+			productos.color")
 		->from($this->TABLE_NAME)
 		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
 		->where("productos.estatus <> 0")
@@ -135,6 +137,8 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizacion
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["producto"]		=	$comparativa[$i]->producto;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["estatus"]		=	$comparativa[$i]->estatus;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["codigo"]		=	$comparativa[$i]->codigo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
 			$precios2 = $this->db->select('precio,
 				  num_one,
 				  num_two,

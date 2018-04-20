@@ -74,16 +74,29 @@ function setAdminTable(){
 					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
 					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
 					tableAdmin += '<tr><td>'+value.familia+'</td>';
+					if(value.color == "#92CEE3"){
+						tableAdmin += '<td style="background-color: #92CEE3">'+value.codigo+'</td>'
+					}else{
+						tableAdmin += '<td>'+value.codigo+'</td>'
+					}
 					if(value.estatus == 2){
-						tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.producto+'</td>';
+						tableAdmin += '<td style="background-color: #00b0f0">'+value.producto+'</td>';
 					}else if(value.status == 3){
 						tableAdmin += '<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.producto+'</td>';
 					}else{
-						tableAdmin += '<td>'+value.codigo+'</td><td>'+value.producto+'</td>';
+						tableAdmin += '<td>'+value.producto+'</td>';
 					}
-					tableAdmin += '<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-								'</div></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'+
-								'<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>';
+
+					if(value.colorp == 1){
+						tableAdmin += '<td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
+								'</div></td><td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
+					}else{
+						tableAdmin += '<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
+								'</div></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
+					}
+					
+
+					tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>';
 					if(value.precio_first >= value.precio_sistema){
 						tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>';
 					}else{
