@@ -16,6 +16,7 @@ if(!$this->session->userdata("username")){
 		<h3>Seleccione un proveedor</h3>
 	</div>
 	<div class="row">
+		<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 		<div class="col-lg-3" style="margin-bottom: 1rem">
 			<select name="id_pro" id="id_pro" class="form-control">
 				<option value="nope">Seleccionar...</option>
@@ -24,7 +25,15 @@ if(!$this->session->userdata("username")){
 					<?php endforeach ?>
 			</select>
 		</div>
-		<div class="col-lg-5"></div>
+		<div class="col-lg-5">
+			<div class="btn-group">
+				
+					<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+						<i class="fa fa-file-excel-o"></i> Descargar Cotización de la Semana
+					</button>
+				<?php echo form_close(); ?>
+			</div>
+		</div>
 		<div class="col-lg-4 searchboxs">
 			<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
 		</div>
