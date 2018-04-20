@@ -112,6 +112,10 @@ class Cotizaciones_model extends MY_Model {
 			ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
+			UPPER(CONCAT(proveedor_nxts.nombre,' ',proveedor_nxts.apellido)) AS proveedor_nxts,
+			ctz_nxts.observaciones AS promocion_nxts,
+			ctz_nxts.precio AS precio_nxtso,
+			IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
@@ -124,9 +128,12 @@ class Cotizaciones_model extends MY_Model {
 			AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "")
 		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
 			AND cotizaciones.estatus = 1 AND cotizaciones.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fech)." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor ORDER BY cotizaciones.precio ASC LIMIT 1 )", "LEFT")
+		->join("cotizaciones ctz_nxts", "ctz_nxts.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
+			AND cotizaciones.estatus = 1 AND cotizaciones.precio_promocion >= ctz_next.precio_promocion AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fech)." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor AND cotizaciones.id_proveedor <> ctz_next.id_proveedor ORDER BY cotizaciones.precio ASC LIMIT 1 )", "LEFT")
 
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "INNER")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
+		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->where("WEEKOFYEAR(sist.fecha_registro)", $this->weekNumber())
 		->group_by("cotizaciones.id_producto")
