@@ -156,7 +156,11 @@ if(!$this->session->userdata("username")){
 									<th>FACTURA</th>
 									<th>C/PROMOCIÓN</th>
 									<th>2DO PROVEEDOR</th>
-									<th>OBSERVACIÓN</th>
+									<th>2DA OBSERVACIÓN</th>
+									<th>FACTURA</th>
+									<th>C/PROMOCIÓN</th>
+									<th>3ER PROVEEDOR</th>
+									<th>3ER OBSERVACIÓN</th>
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>

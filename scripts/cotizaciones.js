@@ -59,7 +59,7 @@ function getGrupo() {
 function setAdminTable(){
 	event.preventDefault();
 	
-	$(".tableAdmin").html('<tr><td colspan="16"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
+	$(".tableAdmin").html('<tr><td colspan="20"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
@@ -70,9 +70,13 @@ function setAdminTable(){
 					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
 					value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
+					value.precio_nxts = value.precio_nxts == null ? 0 : value.precio_nxts;
+					value.precio_nxtso = value.precio_nxtso == null ? 0 : value.precio_nxtso;
 					value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
+					value.proveedor_nxts = value.proveedor_nxts == null ? "" : value.proveedor_nxts;
 					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
 					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
+					value.promocion_nxts = value.promocion_nxts == null ? "" : value.promocion_nxts;
 					tableAdmin += '<tr><td>'+value.familia+'</td>';
 					if(value.color == "#92CEE3"){
 						tableAdmin += '<td style="background-color: #92CEE3">'+value.codigo+'</td>'
@@ -104,14 +108,25 @@ function setAdminTable(){
 					}
 					tableAdmin += '<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>'+
 								'<td>$ '+formatNumber(parseFloat(value.precio_maximo), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_promedio), 2)+'</td>';
+
 					tableAdmin += value.precio_nexto == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nexto), 2)+'</td>'					
 					if(value.precio_next >= value.precio_sistema){
 						tableAdmin += value.precio_next > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
 					}else{
 						tableAdmin += value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
 					}
-					tableAdmin += '<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td><td>'+
-								'<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+					tableAdmin += '<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td>';
+
+					tableAdmin += value.precio_nxtso == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nxtso), 2)+'</td>'					
+					if(value.precio_nxts >= value.precio_sistema){
+						tableAdmin += value.precio_nxts > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_nxts), 2)+'</div></td>' : '<td></td>';
+					}else{
+						tableAdmin += value.precio_nxts > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_nxts), 2)+'</div></td>' : '<td></td>';
+					}
+					tableAdmin += '<td>'+value.proveedor_nxts+'</td><td>'+value.promocion_nxts+'</td>';
+
+
+					tableAdmin += '<td><button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-trash"></i></button></td></tr>';
 			});	

@@ -43,6 +43,7 @@ class Productos_model extends MY_Model {
 			productos.id_producto,
 			productos.nombre AS producto,
 			productos.codigo,
+			productos.color,productos.colorp,
 			f.nombre AS familia")
 		->from($this->TABLE_NAME)
 		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
