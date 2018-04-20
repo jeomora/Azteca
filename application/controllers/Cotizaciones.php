@@ -1058,7 +1058,7 @@ class Cotizaciones extends MY_Controller {
 	
 
 	public function getProveedorCot($ides){
-		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()]);
+		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => $this->weekNumber()]);
 		$this->jsonResponse($data);
 	}
 

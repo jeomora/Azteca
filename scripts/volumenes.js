@@ -43,7 +43,7 @@ function getAdminTable() {
 function setAdminTable(){
 	event.preventDefault();
 	
-	$(".tableAdmin").html('<tr><td colspan="16"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
+	$(".tableAdminv").html('<tr><td colspan="16"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
@@ -58,11 +58,7 @@ function setAdminTable(){
 					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
 					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
 					tableAdmin += '<tr><td>'+value.familia+'</td>';
-					if(value.color == "#92CEE3"){
-						tableAdmin += '<td style="background-color: #92CEE3">'+value.codigo+'</td>'
-					}else{
-						tableAdmin += '<td>'+value.codigo+'</td>'
-					}
+					
 					if(value.estatus == 2){
 						tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.producto+'</td>';
 					}else if(value.status == 3){
@@ -98,8 +94,8 @@ function setAdminTable(){
 								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-trash"></i></button></td></tr>';
 			});	
-			$(".tableAdmin").html(tableAdmin);
-			fillDataTable("table_cot_admin", 50);
+			$(".tableAdminv").html(tableAdmin);
+			fillDataTable("table_cot_v", 50);
 		});
 	
 

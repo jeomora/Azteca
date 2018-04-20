@@ -67,7 +67,7 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.existencias,
 			cotizaciones.observaciones,
 			cotizaciones.id_producto,
-			p.codigo,prod.color,prod.colorp,
+			p.codigo,p.color,p.colorp,
 			p.nombre AS producto")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
@@ -343,7 +343,7 @@ class Cotizaciones_model extends MY_Model {
 	public function productos_proveedor($where=[]){
 		$this->db->select("
 			cotizaciones.id_cotizacion, cotizaciones.precio,
-			p.id_producto, UPPER(p.nombre) AS producto,
+			p.id_producto, UPPER(p.nombre) AS producto,p.color,p.colorp,
 			u.id_usuario, UPPER(CONCAT(u.nombre,' ',u.apellido)) AS proveedor")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
@@ -573,7 +573,7 @@ class Cotizaciones_model extends MY_Model {
 	public function comparaCotizaciones2($where=[], $fech, $tienda){
 		$this->db->select("ctz_first.id_cotizacion, 
 			ctz_first.fecha_registro,
-			prod.id_producto,
+			prod.id_producto,prod.color,prod.colorp,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo,prod.estatus, prod.nombre AS producto,
 			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
@@ -681,7 +681,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_maxima.precio AS precio_maximo,
 			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
-		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
+		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "RIGHT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "INNER")
 		->join("precio_sistema sist", "prod.id_producto = sist.id_producto", "INNER")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 

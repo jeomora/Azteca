@@ -83,6 +83,12 @@ if(!$this->session->userdata("username")){
 	    border-radius: 5px;
 	    margin-left: 35%}
 	.fa-spin{margin-left: 4rem}
+	input.form-control.precio_sistema.numeric {
+	    width: 90px !important;
+	}
+	input.form-control.precio_four.numeric {
+	    width: 90px !important;
+	}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">
@@ -108,7 +114,7 @@ if(!$this->session->userdata("username")){
 					</div>
 
 					<div class="table-responsive"> 
-						<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
+						<table class="table table-striped table-bordered table-hover" id="table_cot_v">
 							<thead>
 								<tr>
 									<th>FAMILIA</th>
@@ -129,7 +135,7 @@ if(!$this->session->userdata("username")){
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
-							<tbody class="tableAdmin">
+							<tbody class="tableAdminv">
 
 							</tbody>
 						</table>
