@@ -27,9 +27,11 @@ if(!$this->session->userdata("username")){
 						</button>
 					</div>
 					<div class="btn-group">
-						<div class="col-sm-2">
-							<a href="<?php echo base_url('./assets/uploads/Formato_cotizaciones.xlsx'); ?>" download="<?php echo 'Cotización '.date('Y-m-d H:i').' '.$usuario['username'].'.xlsx' ; ?>" target="_blank" data-toggle="tooltip" title="Decargar Formato Cotizaciones" class="btn btn-info"><i class="fa fa-cloud-download"></i> Descargar formato cotizaciones<span class="nav-label" download></span> </a>
-						</div>
+						<?php echo form_open("Cotizaciones/archivo_cotizacion", array("id" => 'archivo_cotizacion', "target" => '_blank')); ?>
+							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+								<i class="fa fa-cloud-download"></i> Descargar formato cotizaciones
+							</button>
+						<?php echo form_close(); ?>
 					</div>
 					<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
