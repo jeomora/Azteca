@@ -185,6 +185,61 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 	}
 	
 
+	public function getProdFamS($where = []){
+		$this->db->select("
+			productos.id_producto,
+			productos.nombre AS producto,
+			productos.codigo,
+			productos.estatus,
+			f.nombre AS familia,
+			f.id_familia,
+			productos.colorp,
+			productos.color,
+			productos.fecha_registro")
+		->from($this->TABLE_NAME)
+		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
+		->where("productos.estatus <> 0")
+		->order_by("f.id_familia,productos.nombre", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++){
+			if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
+				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
+			}
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["id_producto"]	=	$comparativa[$i]->id_producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["estatus"]		=	$comparativa[$i]->estatus;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["codigo"]		=	$comparativa[$i]->codigo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Productos_model.php */
