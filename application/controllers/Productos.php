@@ -125,7 +125,7 @@ class Productos extends MY_Controller {
 		$user = $this->session->userdata();
 		$producto = ['codigo'	=>	$this->input->post('codigo'),
 					'nombre'	=>	strtoupper($this->input->post('nombre')),
-					// 'precio'	=>	$this->input->post('precio'),
+					'estatus'	=>	$this->input->post('estatus'),
 					'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
 		];
 		$getProducto = $this->pro_md->get(NULL, ['codigo'=>$producto['codigo']])[0];

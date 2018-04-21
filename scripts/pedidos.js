@@ -185,6 +185,9 @@ function tablePedidoAll(response,colors,sucur){
 	if(flag == ''){
 		table_contain = "";
 	}
+	if(!response){
+		table_contain = "<h1>No hay cotizaciones asignadas para poder hacer pedidos</h1>"
+	}
 	$(".wonder").html(table_contain);
 }
 

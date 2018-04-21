@@ -49,10 +49,13 @@ class Main extends MY_Controller {
 	}
 
 	public function getCotzUsuario($ides){
-		$semana = $this->weekNumber() -1;
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$data["prueba"] = $semana;
 		$data["title"]="PRODUCTOS COTIZADOS EN LA ANTERIOR SEMANA";
-		$data["cotizaciones"] =  $this->cot_md->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(fecha_registro)' => $semana]);
+		$data["cotizaciones"] =  $this->cot_md->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
 		$data["view"] = $this->load->view("Cotizaciones/get_cotz", $data,TRUE);
 		$data["button"]="<button class='btn btn-success repeat_cotizacion' id='repeat_cot' type='button' data-id-cot='".$ides."'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Repetir precios
@@ -61,9 +64,12 @@ class Main extends MY_Controller {
 	}
 
 	public function repeat_cotizacion(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$semana = $this->weekNumber() -1;
-		$cotizaciones =  $this->cot_md->getAnterior(['id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(fecha_registro)' => $semana]);
+		$cotizaciones =  $this->cot_md->getAnterior(['id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
 		$i = 0;
 		$new_cotizacion = null;
 		if ($cotizaciones){
@@ -82,7 +88,7 @@ class Main extends MY_Controller {
 					"num_two"			=>	$value->num_two,
 					"descuento"			=>	$value->descuento,
 					"precio_promocion"	=>	$value->precio_promocion,
-					"fecha_registro"	=>	date('Y-m-d H:i:s'),
+					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 					"observaciones"		=>	$value->observaciones,
 				];
 				$i++;

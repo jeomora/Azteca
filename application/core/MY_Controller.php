@@ -56,7 +56,10 @@ class MY_Controller extends CI_Controller {
 
 	public function weekNumber($date=NULL){
 		if (empty($date)) {
-			$date = date("Y-m-d");
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$intervalo = new DateInterval('P2D');
+			$fecha->add($intervalo);
+			$date = $fecha->format('Y-m-d H:i:s');
 		}
 		$day	=	substr(date($date),8,2);//Día actual
 		$month	=	substr(date($date),5,2);//Mes actual

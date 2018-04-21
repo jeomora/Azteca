@@ -117,6 +117,9 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function get_pedidos(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
 		if ($id_proveedor == "VOLUMEN") {
@@ -127,19 +130,26 @@ class Pedidos extends MY_Controller {
 			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
 		}
 		
-		$fecha = date('Y-m-d');
+		$fecha = $fecha->format('Y-m-d H:i:s');
 		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
 		$this->jsonResponse($productosProveedor);
 	}
 
 	public function get_cotizaciones(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$id_proveedor = $this->input->post('id_proveedor');
 		$where=["ctz_first.id_proveedor" => $this->input->post('id_proves')];
-		$fecha = date('Y-m-d');
+		$fecha = $fecha->format('Y-m-d H:i:s');
 		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		$this->jsonResponse($productosProveedor);
 	}
 
 	public function upload_pedidos(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$config['upload_path']          = './assets/uploads/precios/';
         $config['allowed_types']        = 'xlsx|xls';
@@ -187,7 +197,7 @@ class Pedidos extends MY_Controller {
 						"num_two"			=>	$column_two,
 						"descuento"			=>	$descuento,
 						"precio_promocion"	=>	$precio_promocion,
-						"fecha_registro"	=>	date('Y-m-d H:i:s'),
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
 					];
 				}
@@ -207,6 +217,9 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function guardaSistema(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$values = json_decode($this->input->post('values'), true);
 		$ides = $this->ct_mdl->get('id_producto', ['id_cotizacion'=>$values["id_cotizacion"]])[0];
@@ -214,9 +227,9 @@ class Pedidos extends MY_Controller {
 				"id_producto"=>	$ides->{"id_producto"},
 				"precio_sistema"=>	$values["sistema"], 
 				"precio_four"=>	$values["cuatro"],
-				"fecha_registro"=>date("Y-m-d H:i:s")
+				"fecha_registro"=>$fecha->format('Y-m-d H:i:s')
 			];
-		$press = $this->pre_mdl->get('id_precio', ['id_producto'=>$ides->{"id_producto"},'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber()])[0];
+		$press = $this->pre_mdl->get('id_precio', ['id_producto'=>$ides->{"id_producto"},'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber($fecha->format('Y-m-d H:i:s'))])[0];
 		if($press == NULL){
 			$respuesta = $this->pre_mdl->insert($sist);
 		}else{
@@ -239,6 +252,9 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function guardaPedidos(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$values = json_decode($this->input->post('values'), true);
 
@@ -248,9 +264,9 @@ class Pedidos extends MY_Controller {
 				"cajas"=>	$values["cajas"],
 				"piezas"=>	$values["piezas"],
 				"pedido"=>$values["pedido"],
-				"fecha_registro"=>date("Y-m-d H:i:s")
+				"fecha_registro"=>$fecha->format('Y-m-d H:i:s')
 			];
-		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber(), 'id_tienda'=>$user['id_usuario']])[0];
+		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_tienda'=>$user['id_usuario']])[0];
 		if($ides == NULL){
 			$respuesta = $this->ex_mdl->insert($pedido);
 		}else{
@@ -273,11 +289,14 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function save_pedido(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$pedido = [
 			"id_sucursal"		=>	$this->input->post('id_sucursal'),
 			"id_proveedor"		=>	$this->input->post('id_proveedor'),
 			"id_user_registra"	=>	$this->ion_auth->user()->row()->id, 
-			"fecha_registro"	=>	date("Y-m-d H:i:s"),
+			"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 			"total"				=>	str_replace(",", "", $this->input->post('total'))
 		];
 		

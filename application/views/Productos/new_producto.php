@@ -15,6 +15,17 @@
 					<input type="text" name="nombre" value="" class="form-control" placeholder="Nombre">
 				</div>
 			</div>
+
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="estatus">Tipo Producto</label>
+					<select name="estatus" class="form-control chosen-select">
+						<option value="1">NORMAL</option>
+						<option value="2">VOLUMEN</option>
+						<option value="3">AMARILLO</option>
+					</select>
+				</div>
+			</div>
 			
 			<!-- <div class="col-sm-6">
 				<div class="form-group">
