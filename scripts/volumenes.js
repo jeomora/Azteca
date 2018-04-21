@@ -54,9 +54,11 @@ function setAdminTable(){
 					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
 					value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
+					value.precio_firsto = value.precio_firsto == null ? 0 : value.precio_firsto;
 					value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
 					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
 					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
+					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
 					tableAdmin += '<tr><td>'+value.familia+'</td>';
 					
 					if(value.estatus == 2){

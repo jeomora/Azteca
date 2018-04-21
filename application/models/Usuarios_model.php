@@ -43,10 +43,13 @@ class Usuarios_model extends MY_Model {
 	}
 
 	public function getCotizados($where = []){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$this->db->select("usuarios.id_usuario as ides, CONCAT(usuarios.nombre,' ',usuarios.apellido) as proveedor")
 		->from($this->TABLE_NAME)
 		->where("usuarios.id_usuario NOT IN (SELECT cotizaciones.id_proveedor FROM cotizaciones WHERE 
-			WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.estatus = 1 GROUP BY 
+			WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND cotizaciones.estatus = 1 GROUP BY 
 			cotizaciones.id_proveedor)")
 		->where($this->TABLE_NAME.".id_grupo", 2)
 		->where($this->TABLE_NAME.".estatus", 1)

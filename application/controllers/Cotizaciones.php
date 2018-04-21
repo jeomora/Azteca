@@ -156,6 +156,9 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function save(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$cotizacion = [
 			'nombre'			=>	strtoupper($this->input->post('nombre')),
 			'id_producto'		=>	$this->input->post('id_producto'),
@@ -165,7 +168,7 @@ class Cotizaciones extends MY_Controller {
 			'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
 			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
-			'fecha_registro'	=>	date('Y-m-d H:i:s'),
+			'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
 			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
 		];
 		$data ['id_cotizacion']=$this->ct_mdl->insert($cotizacion);
@@ -241,11 +244,14 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function hacer_pedido($value=''){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$size = sizeof($this->input->post('id_producto[]'));
 		$productos = $this->input->post('id_producto[]');
 		$importe = $this->input->post('importe[]');
 		for($i = 0; $i < $size; $i++){
-			$pedid = $this->ped_mdl->getWeekPedidos(NULL,$productos[$i],$this->weekNumber());
+			$pedid = $this->ped_mdl->getWeekPedidos(NULL,$productos[$i],$this->weekNumber($fecha->format('Y-m-d H:i:s')));
 			if($pedid){
 				$id_pedido = $this->ped_mdl->update(["total" => 0], $pedid->total+$importe[$i]);
 			}else{
@@ -253,7 +259,7 @@ class Cotizaciones extends MY_Controller {
 					"id_sucursal"		=>	1,
 					"id_proveedor"		=>	$producto[$i],
 					"id_user_registra"	=>	$this->ion_auth->user()->row()->id, 
-					"fecha_registro"	=>	date("Y-m-d H:i:s"),
+					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 					"total"				=>	str_replace(",", "", $importe[$i])
 				];
 				$id_pedido = $this->ped_mdl->insert($pedido);
@@ -333,14 +339,19 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function getAdminTable(){
-		$fecha = date("Y-m-d");
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
 		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
 		$this->jsonResponse($data);
 	}
 	public function getVolTable(){
-		$where=["prod.estatus" => 2];
-		$fecha = date("Y-m-d");
-		$data["cotizados"] = $this->ct_mdl->getCotzV($where,$fecha);
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$data["cotizados"] = $this->ct_mdl->getCotzV(NULL,$fecha);
 		$this->jsonResponse($data);
 	}
 
@@ -415,8 +426,11 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("L1", "PRECIO PROMOCIÓN")->getColumnDimension('L')->setWidth(12);
 		$hoja->setCellValue("M1", "2DO PROVEEDOR")->getColumnDimension('M')->setWidth(15);
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
-		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
-		$fecha = date('Y-m-d');
+		$where=["prod.estatus <> "=>0];//Semana actual
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2($where, $fecha,0);
 
 		$row_print =3;
@@ -522,7 +536,7 @@ class Cotizaciones extends MY_Controller {
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
-		$this->cellStyle("A1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Medium");
 		$border_style= array('borders' => array('right' => array('style' => 
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		
@@ -542,7 +556,7 @@ class Cotizaciones extends MY_Controller {
 		if ($productos){
 			foreach ($productos as $key => $value){
 				$hoja->setCellValue("B{$row_print}", $value['familia']);
-				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Medium");
 				$hoja->setCellValue("B{$row_print}", $value['familia']);
 				$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
 				$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
@@ -550,27 +564,27 @@ class Cotizaciones extends MY_Controller {
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						if($row['color'] == '#92CEE3'){
-							$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Medium");
 						}else{
-							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Medium");
 						}
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("B{$row_print}", $row['producto']);
 						if($row['estatus'] == 2){
-							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Medium");
 						}
 						if($row['estatus'] == 3){
-							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Medium");
 						}
 						
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 						if($row['colorp'] == 1){
-							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
+							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Medium");
 						}else{
-							$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+							$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Medium");
 						}
-						$hoja->setCellValue("C{$row_print}", $row['precio'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');;
+						$hoja->setCellValue("C{$row_print}", $row['precio'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 
 						$hoja->setCellValue("D{$row_print}", $row['observaciones']);
@@ -581,13 +595,27 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("G{$row_print}", $row['descuento']);
 						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
-
+						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)){
+							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Medium");
+							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Medium");
+							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Medium");
+							$this->cellStyle("D{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Medium");
+							$this->cellStyle("E{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Medium");
+							$this->cellStyle("F{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Medium");
+							$this->cellStyle("G{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Medium");
+							$hoja->setCellValue("C{$row_print}", "NUEVO");
+						}
 						$row_print++;
 					}
 				}
 			}
 		}
-
+		$hoja->getStyle("A3:G{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+		$hoja->getStyle("B3:B{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
 
 		$file_name = "Cotización ".$provs->nombre.".xlsx"; //Nombre del documento con extención
@@ -627,16 +655,19 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(12);
 		$hoja->setCellValue("E1", "PRECIO MENOR")->getColumnDimension('E')->setWidth(12);
 		$hoja->setCellValue("F1", "PRECIO PROMOCIÓN")->getColumnDimension('F')->setWidth(12);
-		$hoja->setCellValue("G1", "PROVEEDOR")->getColumnDimension('G')->setWidth(15);
+		$hoja->setCellValue("G1", "PROVEEDOR")->getColumnDimension('G')->setWidth(20);
 		$hoja->setCellValue("H1", "OBSERVACIÓN")->getColumnDimension('H')->setWidth(30);
 		$hoja->setCellValue("I1", "PRECIO MÁXIMO")->getColumnDimension('I')->setWidth(12);
 		$hoja->setCellValue("J1", "PRECIO PROMEDIO")->getColumnDimension('J')->setWidth(12);
 		$hoja->setCellValue("K1", "2DO PRECIO")->getColumnDimension('K')->setWidth(12);
 		$hoja->setCellValue("L1", "PRECIO PROMOCIÓN")->getColumnDimension('L')->setWidth(12);
-		$hoja->setCellValue("M1", "2DO PROVEEDOR")->getColumnDimension('M')->setWidth(15);
+		$hoja->setCellValue("M1", "2DO PROVEEDOR")->getColumnDimension('M')->setWidth(20);
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
-		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"prod.estatus"=>2];//Semana actual
-		$fecha = date('Y-m-d');
+		$where=["prod.estatus"=>2];//Semana actual
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2($where, $fecha,0);
 		$border_style= array('borders' => array('right' => array('style' => 
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
@@ -713,6 +744,12 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function upload_cotizaciones(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		
+		
+
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 100;
@@ -759,7 +796,7 @@ class Cotizaciones extends MY_Controller {
 						"num_two"			=>	$column_two,
 						"descuento"			=>	$descuento,
 						"precio_promocion"	=>	$precio_promocion,
-						"fecha_registro"	=>	date('Y-m-d H:i:s'),
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 						"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
 					];
 				}
@@ -779,6 +816,9 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function upload_pedidos(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
@@ -787,10 +827,21 @@ class Cotizaciones extends MY_Controller {
 		$sheet = $objExcel->getSheet(0); 
 		$num_rows = $sheet->getHighestDataRow();
 		$tienda = $this->session->userdata('id_usuario');
+
+		$config['upload_path']          = './assets/uploads/precios/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+        
+
+        $this->load->library('upload', $config);
+        $this->upload->do_upload('file_cotizaciones');
 		for ($i=3; $i<=$num_rows; $i++) { 
 			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 			if (sizeof($productos) > 0) {
-				$this->prod_mdl->delete("EXISTENCIAS","WEEKOFYEAR(fecha_registro)".$this->weekNumber()."AND id_tienda = ".$tienda." AND id_producto = ".$productos->id_producto);
+				$this->prod_mdl->delete("EXISTENCIAS","WEEKOFYEAR(fecha_registro)".$this->weekNumber($fecha->format('Y-m-d H:i:s'))."AND id_tienda = ".$tienda." AND id_producto = ".$productos->id_producto);
 				$column_one=0; $column_two=0; $column_three=0;
 				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();	
 				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
@@ -802,7 +853,7 @@ class Cotizaciones extends MY_Controller {
 					"cajas"			=>	$column_one,
 					"piezas"			=>	$column_two,
 					"pedido"	=>	$column_three,
-					"fecha_registro"	=>	date('Y-m-d H:i:s')
+					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
 				];
 			}
 		}
@@ -894,6 +945,9 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function upload_precios(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$config['upload_path']          = './assets/uploads/precios/';
         $config['allowed_types']        = 'xlsx|xls';
@@ -919,12 +973,12 @@ class Cotizaciones extends MY_Controller {
 						"id_producto"		=>	$productos->id_producto,
 						"precio_sistema"	=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue())),
 						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue())),
-						"fecha_registro"		=>	date('Y-m-d H:i:s')
+						"fecha_registro"		=>	$fecha->format('Y-m-d H:i:s')
 					];
 					$precios = $this->pre_mdl->get("id_precio",['id_producto'=> $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()])[0];
 					if(sizeof($precios) > 0 ){
 						$data['cotizacion']=$this->pre_mdl->update($new_precios,
-						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber(),'id_precio'=>$precios->id_precio]);
+						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')),'id_precio'=>$precios->id_precio]);
 					}else{
 						$data['cotizacion']=$this->pre_mdl->insert($new_precios);
 					}
@@ -958,7 +1012,9 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function set_pedido_provs($id){
-
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		ini_set("memory_limit", "-1");
 		$search = ["productos.nombre", "cotizaciones.precio", "cotizaciones.observaciones"];
 		$columns = "usuarios.id_usuario, productos.id_producto, productos.nombre AS producto, cotizaciones.precio AS precio, cotizaciones.observaciones";
@@ -967,7 +1023,7 @@ class Cotizaciones extends MY_Controller {
 			["table"	=>	"productos",		"ON"	=>	"cotizaciones.id_producto = productos.id_producto",	"clausula"	=>	"INNER"]
 		];
 		$where = [
-				["clausula"	=>	"WEEKOFYEAR(cotizaciones.fecha_registro)",	"valor"	=>	$this->weekNumber()],
+				["clausula"	=>	"WEEKOFYEAR(cotizaciones.fecha_registro)",	"valor"	=>	$this->weekNumber($fecha->format('Y-m-d H:i:s'))],
 				["clausula"	=>	"cotizaciones.id_proveedor",	"valor"	=>	$id],
 				["clausula"	=>	"cotizaciones.estatus",	"valor"	=>	1]
 		];

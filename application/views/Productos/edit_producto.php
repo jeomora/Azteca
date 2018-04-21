@@ -22,7 +22,17 @@
 					<input type="text" name="nombre" value="<?php echo $producto->nombre ?>" class="form-control" placeholder="Nombre">
 				</div>
 			</div>
-			
+
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="estatus">Tipo Producto</label>
+					<select name="estatus" class="form-control chosen-select">
+						<option value="1" <?php echo $producto->estatus == 1 ? 'selected' : '' ?> >NORMAL</option>
+						<option value="2" <?php echo $producto->estatus == 2 ? 'selected' : '' ?> >VOLUMEN</option>
+						<option value="3" <?php echo $producto->estatus == 3 ? 'selected' : '' ?> >AMARILLO</option>
+					</select>
+				</div>
+			</div>
 			<!-- <div class="col-sm-6">
 				<div class="form-group">
 					<label for="precio">Precio</label>

@@ -39,6 +39,9 @@ class Productos_model extends MY_Model {
 	}
 
 	public function getCotizados($where = []){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$this->db->select("
 			productos.id_producto,
 			productos.nombre AS producto,
@@ -48,7 +51,7 @@ class Productos_model extends MY_Model {
 		->from($this->TABLE_NAME)
 		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
 		->where("productos.id_producto NOT IN (SELECT cotizaciones.id_producto FROM cotizaciones WHERE 
-WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.estatus = 1)")
+WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND cotizaciones.estatus = 1)")
 		->where($this->TABLE_NAME.".estatus", 1);
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -100,6 +103,9 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizacion
 	}
 
 	public function getProdFam($where = [],$prove){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 		$this->db->select("
 			productos.id_producto,
 			productos.nombre AS producto,
@@ -108,7 +114,8 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizacion
 			f.nombre AS familia,
 			f.id_familia,
 			productos.colorp,
-			productos.color")
+			productos.color,
+			productos.fecha_registro")
 		->from($this->TABLE_NAME)
 		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
 		->where("productos.estatus <> 0")
@@ -140,13 +147,14 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizacion
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["codigo"]		=	$comparativa[$i]->codigo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
 			$precios2 = $this->db->select('precio,
 				  num_one,
 				  num_two,
 				  observaciones,
 				  descuento')
 				->from('cotizaciones')
-				->where('WEEKOFYEAR(fecha_registro)',16)
+				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($fecha->format('Y-m-d H:i:s')))
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->where('id_proveedor',$prove)
 				->group_by("id_proveedor");
