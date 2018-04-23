@@ -68,15 +68,20 @@ function setAdminTable(){
 					value.precio_four = value.precio_four == null ? 0 : value.precio_four;
 					value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
 					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
+					value.precio_firsto = value.precio_firsto == null ? 0 : value.precio_firsto;
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
 					value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
 					value.precio_nxts = value.precio_nxts == null ? 0 : value.precio_nxts;
 					value.precio_nxtso = value.precio_nxtso == null ? 0 : value.precio_nxtso;
+					value.proveedor_first = value.proveedor_first == null ? "" : value.proveedor_first;
 					value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
 					value.proveedor_nxts = value.proveedor_nxts == null ? "" : value.proveedor_nxts;
 					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
 					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
 					value.promocion_nxts = value.promocion_nxts == null ? "" : value.promocion_nxts;
+
+					value.precio_promedio = value.precio_promedio == null ? 0 : value.precio_promedio;
+					value.precio_maximo = value.precio_maximo == null ? 0 : value.precio_maximo;
 					tableAdmin += '<tr><td>'+value.familia+'</td>';
 					if(value.color == "#92CEE3"){
 						tableAdmin += '<td style="background-color: #92CEE3">'+value.codigo+'</td>'
