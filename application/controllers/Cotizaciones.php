@@ -955,6 +955,7 @@ class Cotizaciones extends MY_Controller {
         $this->upload->do_upload('file_precios');
 		$this->load->library("excelfile");
 		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
 		$file = $_FILES["file_precios"]["tmp_name"];
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0); 
