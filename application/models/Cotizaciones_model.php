@@ -119,7 +119,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_maxima.precio AS precio_maximo,
 			AVG(c.precio) AS precio_promedio")
 		->from("productos prod")
-		->join("cotizaciones c", "prod.id_producto = c.id_producto", "LEFT")
+		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
 			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
@@ -133,11 +133,10 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
-		->join("precio_sistema sists", "prod.id_producto = sists.id_producto", "LEFT")
-		->join("precio_sistema sist", "sist.id_precio = (SELECT s.id_precio FROM precio_sistema s WHERE sists.id_precio = s.id_precio AND WEEKOFYEAR(s.fecha_registro) = ".$this->weekNumber($fech).")", "LEFT")
+		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->where("prod.estatus <>","0")
 		->group_by("prod.nombre")
-		->order_by("fam.id_familia,prod.id_producto", "ASC");
+		->order_by("fam.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -194,7 +193,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")
-		->order_by("prod.id_producto", "ASC");
+		->order_by("prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -237,7 +236,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_next.precio AS precio_nexto,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
-			AVG(c.precio) AS precio_promedio")
+			AVG(cotizaciones.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
 		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
 		
@@ -251,8 +250,7 @@ class Cotizaciones_model extends MY_Model {
 
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "INNER")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
-		->join("precio_sistema sists", "prod.id_producto = sists.id_producto", "LEFT")
-		->join("precio_sistema sist", "sist.id_precio = (SELECT s.id_precio FROM precio_sistema s WHERE sists.id_precio = s.id_precio AND WEEKOFYEAR(s.fecha_registro) = ".$this->weekNumber($fech).")", "LEFT")
+		->join("precio_sistema sist", "prod.id_producto = sist.id_producto", "LEFT")
 		->join("existencias","existencias.id_pedido = (SELECT existencias.id_pedido FROM existencias WHERE id_tienda = ".$tienda." AND existencias.id_producto = ctz_first.id_producto and WEEKOFYEAR(existencias.fecha_registro) = ".$this->weekNumber($fech)." GROUP BY existencias.id_producto)","LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("cotizaciones.id_producto")
@@ -503,7 +501,7 @@ class Cotizaciones_model extends MY_Model {
 		->where($this->TABLE_NAME.".estatus", 1)
 		->where("WEEKOFYEAR(sist.fecha_registro)", $this->weekNumber())
 		->group_by("cotizaciones.id_producto")
-		->order_by("prod.id_producto", "ASC");
+		->order_by("fam.id_familia,prod.id_producto", "ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
@@ -600,10 +598,10 @@ class Cotizaciones_model extends MY_Model {
 			ctz_nxts.precio AS precio_nxtso,
 			IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
 			ctz_maxima.precio AS precio_maximo,
-			AVG(c.precio) AS precio_promedio")
+			AVG(csq.precio) AS precio_promedio")
 		->from("productos prod")
-		->join("cotizaciones c", "prod.id_producto = c.id_producto", "LEFT")
-		
+		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
+		->join("cotizaciones csq", "prod.id_producto = csq.id_producto AND WEEKOFYEAR(csq.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
 			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE c.id_producto = ctz_max.id_producto
@@ -616,10 +614,9 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
-		->join("precio_sistema sists", "prod.id_producto = sists.id_producto", "LEFT")
-		->join("precio_sistema sist", "sist.id_precio = (SELECT s.id_precio FROM precio_sistema s WHERE sists.id_precio = s.id_precio AND WEEKOFYEAR(s.fecha_registro) = ".$this->weekNumber($fech).")", "LEFT")
+		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->group_by("prod.nombre")
-		->order_by("fam.id_familia,prod.id_producto", "ASC");
+		->order_by("fam.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -700,7 +697,7 @@ class Cotizaciones_model extends MY_Model {
 			ctz_maxima.precio AS precio_maximo,
 			AVG(c.precio) AS precio_promedio")
 		->from("productos prod")
-		->join("cotizaciones c", "prod.id_producto = c.id_producto", "LEFT")
+		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
 			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
@@ -714,11 +711,10 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
-		->join("precio_sistema sists", "prod.id_producto = sists.id_producto", "LEFT")
-		->join("precio_sistema sist", "sist.id_precio = (SELECT s.id_precio FROM precio_sistema s WHERE sists.id_precio = s.id_precio AND WEEKOFYEAR(s.fecha_registro) = ".$this->weekNumber($fech).")", "LEFT")
+		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->where("prod.estatus","2")
 		->group_by("prod.nombre")
-		->order_by("fam.id_familia,prod.id_producto", "ASC");
+		->order_by("fam.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
