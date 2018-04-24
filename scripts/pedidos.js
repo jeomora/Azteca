@@ -125,7 +125,7 @@ function tablePedidoTienda(response,colors,sucur){
 							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
 							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
 					
-	$(".wonder").html(table_contain);
+	$(".wonder").append(table_contain);
 }
 
 function tablePedidoAll(response,colors,sucur){
@@ -185,7 +185,6 @@ function tablePedidoAll(response,colors,sucur){
 	if(flag == ''){
 		table_contain = "";
 	}
-	console.log("ta " + table_contain)
 	$(".wonder").append(table_contain);
 	$(".spinns").css("display","none")
 }
