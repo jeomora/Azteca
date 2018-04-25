@@ -14,6 +14,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Existencias_model", "ex_mdl");
 		$this->load->model("Precio_sistema_model", "pre_mdl");
+		$this->load->model("Faltantes_model", "falt_mdl");
 	}
 
 	public function index(){
@@ -143,6 +144,36 @@ class Cotizaciones extends MY_Controller {
 		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/proveedor", $data);
+	}
+
+	public function faltantes(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/faltantes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 2, "usuarios.estatus" => 1];
+		$data["title"] = "Filtrar por proveedor";
+		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Cotizaciones/faltantes", $data);
 	}
 
 	public function add_cotizacion(){
@@ -1915,6 +1946,43 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
+	public function registro_fltnts(){
+		$user = $this->session->userdata();
+		$size = sizeof($this->input->post('id_cotz[]'));
+		$cotz = $this->input->post('id_cotz[]');
+		$no_semanas = $this->input->post('no_semanas[]');
+		for($i = 0; $i < $size; $i++){
+			if($no_semanas[$i] <> "" || $no_semanas[$i] <> NULL){
+				$fecha = new DateTime(date('Y-m-d H:i:s'));
+				$intervalo = new DateInterval('P'.$no_semanas[$i].'W');
+				$fecha->add($intervalo);
+				$fecha->format('Y-m-d H:i:s');
+				/*$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $cotz[$i], 'WEEKOFYEAR(fecha_registro) <=' => $this->weekNumber(), 'id_proveedor' => $this->input->post('id_pro')])[0];
+				if($antes){
+					$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"antes" => "id_faltante: ".$antes->id_faltante." /Proveedor: ".$antes->id_proveedor." /Producto:".$antes->id_producto."/F Termino: ".$antes->fecha_termino.
+								"/Semanas: ".$antes->no_semanas,
+						"despues" => "El usuario cambio las semanas..../Semanas: ".$no_semanas."/Fecha Termino:";
+					$data['cambios'] = $this->cambio_md->insert($cambios);
+					$data ['id_faltante'] = $this->falt_mdl->update([
+						"no_semanas" => $no_semanas[$i],
+						"observaciones" => $[$i]
+					], $antes->id_faltante);
+				}*/
+			}
+			
+		}
+
+		
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Faltantes actualizados correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($no_semanas[$i]);
+	}
 
 }
 

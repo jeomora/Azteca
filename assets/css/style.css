@@ -2888,6 +2888,7 @@ ol.unstyled {
   padding: 10px 20px;
   position: absolute;
   right: 0;
+  z-index: 10000000000000000000000;
 }
 .footer.fixed_full {
   position: fixed;
