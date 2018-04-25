@@ -4,14 +4,14 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="nombre">Nombre</label>
-					<input type="text" name="nombre" value="" class="form-control" placeholder="Nombre">
+					<label for="nombre">Empresa</label>
+					<input type="text" name="nombre" value="" class="form-control" placeholder="Empresa">
 				</div>
 			</div>
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="apellido">Apellido</label>
-					<input type="text" name="apellido" value="" class="form-control" placeholder="Apellido">
+					<label for="apellido">Nombre Completo Proveedor</label>
+					<input type="text" name="apellido" value="" class="form-control" placeholder="Nombre Completo Proveedor">
 				</div>
 			</div>
 			<div class="col-sm-6">

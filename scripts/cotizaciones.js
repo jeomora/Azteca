@@ -58,8 +58,19 @@ function getGrupo() {
 
 function setAdminTable(){
 	event.preventDefault();
-	
-	$(".tableAdmin").html('<tr><td colspan="20"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
+	$("html").block({
+		centerY: 0,
+		message: '<div class="spinns"><div id="myProgress"><div id="myBar"></div></div><span style="font-size:3rem;">Cargando...</span></div></td></tr>',
+		overlayCSS: { backgroundColor: '#DDFF33' },
+		css: { position: 'absolute',
+	    top: '25rem',
+	    left: '45rem',
+	    background: 'rgba(255,255,255,0.5)',
+	    padding: '10rem',
+	    color: '#FF6805',
+	    border: '2px solid #FF6805'},
+	});
+	move();
 	var tableAdmin = "";
 	getAdminTable()
 		.done(function (resp) {
@@ -139,9 +150,24 @@ function setAdminTable(){
 			fillDataTable("table_cot_admin", 50);
 			$(".cuatro").inputmask("currency", {radixPoint: ".", prefix: ""});
 			$(".sistema").inputmask("currency", {radixPoint: ".", prefix: ""});
+			$("html").unblock();
 		});
 	
 
+}
+
+function move() {
+  var elem = document.getElementById("myBar");   
+  var width = 1;
+  var id = setInterval(frame, 200);
+  function frame() {
+    if (width >= 100) {
+      clearInterval(id);
+    } else {
+      width++; 
+      elem.style.width = width + '%'; 
+    }
+  }
 }
 
 $(document).off("click", "#no_cotizados").on("click", "#no_cotizados", function(event){
