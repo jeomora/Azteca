@@ -24,7 +24,7 @@ if(!$this->session->userdata("username")){
 						<thead>
 							<tr>
 								<th>NO</th>
-								<th>NOMBRE</th>
+								<th>EMPRESA</th>
 								<th>TELÉFONO</th>
 								<th>CORREO</th>
 								<th>CONTRASEÑA</th>
@@ -49,9 +49,9 @@ if(!$this->session->userdata("username")){
 											<button id="update_usuario" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-usuario="<?php echo $value->id_usuario ?>">
 												<i class="fa fa-pencil"></i>
 											</button>
-											<button id="show_usuario" class="btn btn-success" data-toggle="tooltip" title="Ver" data-id-usuario="<?php echo $value->id_usuario ?>">
+											<!--<button id="show_usuario" class="btn btn-success" data-toggle="tooltip" title="Ver" data-id-usuario="<?php //echo $value->id_usuario ?>">
 												<i class="fa fa-eye"></i>
-											</button>
+											</button>-->
 											<button id="delete_usuario" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-usuario="<?php echo $value->id_usuario ?>">
 												<i class="fa fa-trash"></i>
 											</button>

@@ -7,6 +7,18 @@ if(!$this->session->userdata("username")){
 }
 ?>
 <style type="text/css" media="screen">
+	.progress {
+	    display: block;
+	    text-align: center;
+	    width: 0;
+	    height: 3px;
+	    background: red;
+	    transition: width .3s;
+	}
+	.progress.hide {
+	    opacity: 0;
+	    transition: opacity 1.3s;
+	}
 	input.form-control.precio_sistema.numeric {
 	    width: 90px !important;
 	}
@@ -86,9 +98,17 @@ if(!$this->session->userdata("username")){
 	    padding: 10rem;
 	    color: #FF6805;
 	    border: 2px solid #FF6805;
-	    border-radius: 5px;
-	    margin-left: 35%}
+	    border-radius: 5px;}
 	.fa-spin{margin-left: 4rem}
+	#myProgress {
+	    width: 100%;
+	    background-color: grey;
+	}
+	#myBar {
+	    width: 1%;
+	    height: 30px;
+	    background-color: green;
+	}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight" style="padding-left: 0;padding-right: 0">
 	<div class="row">

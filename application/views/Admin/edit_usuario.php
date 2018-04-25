@@ -8,14 +8,14 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="nombre">Nombre</label>
-					<input type="text" name="nombre" value="<?php echo $usuario->nombre ?>" class="form-control" placeholder="Nombre">
+					<label for="nombre">Empresa</label>
+					<input type="text" name="nombre" value="<?php echo $usuario->nombre ?>" class="form-control" placeholder="Empresa">
 				</div>
 			</div>
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="apellido">Apellido</label>
-					<input type="text" name="apellido" value="<?php echo $usuario->apellido ?>" class="form-control" placeholder="Apellido">
+					<label for="apellido">Nombre Completo Proveedor</label>
+					<input type="text" name="apellido" value="<?php echo $usuario->apellido ?>" class="form-control" placeholder="Nombre Completo Proveedor">
 				</div>
 			</div>
 			<div class="col-sm-6">
@@ -33,7 +33,7 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="password">Contraseña</label> <!-- $password trae la contraseña desencritada -->
-					<input type="text" name="password" value="<?php echo $password ?>" class="form-control" placeholder="*********">
+					<input type="text" name="password"  class="form-control" placeholder="*********">
 				</div>
 			</div>
 

@@ -2,9 +2,9 @@
 	<div class="row">
 		<table class="table" width="100%" border="5">
 			<tr>
-				<th>NOMBRE</th> 
+				<th>EMPRESA</th> 
 				<td><?php echo $usuario->nombre ?></td>
-				<th>APELLIDO</th>
+				<th>NOMBRE COMPLETO DEL PROVEEDOR</th>
 				<td><?php echo $usuario->apellido ?></td>
 			</tr>
 			<tr>
