@@ -1915,6 +1915,7 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
+
 }
 
 /* End of file Cotizaciones.php */

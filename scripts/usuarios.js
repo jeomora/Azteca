@@ -83,3 +83,14 @@ $(document).off("click", "#show_usuario").on("click", "#show_usuario", function(
 	getModal("Welcome/get_usuario/"+ id_usuario, function (){ });
 });
 
+$(document).off("change", "#id_grupo").on("change", "#id_grupo", function() {
+	event.preventDefault();
+	console.log("Dude");
+	var id_grupo = $("#id_grupo option:selected").val();
+	console.log(id_grupo)
+	if(id_grupo == 2){
+		$(".conj").css("display","block");
+	}else{
+		$(".conj").css("display","none");
+	}
+});

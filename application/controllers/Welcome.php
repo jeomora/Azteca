@@ -109,13 +109,20 @@ class Welcome extends MY_Controller {
 	}
 
 	public function save_user(){
+		$gr = $this->input->post('id_grupo');
+		if ($gr <> 2) {
+			$conjunto = "";
+		}else{
+			$conjunto = $this->input->post('conjunto');
+		}
 		$usuario = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
 			"apellido"	=>	strtoupper($this->input->post('apellido')),
 			"telefono"	=>	$this->input->post('telefono'),
 			"email"		=>	$this->input->post('correo'),
 			"password"	=>	$this->encryptPassword($this->input->post('password')),
-			"id_grupo"	=>	$this->input->post('id_grupo')];
+			"id_grupo"	=>	$this->input->post('id_grupo'),
+			"conjunto"	=>	$conjunto];
 
 		$getUsuario = $this->user_md->get(NULL, ['email'=>$usuario['email']])[0];
 
@@ -144,13 +151,20 @@ class Welcome extends MY_Controller {
 	public function update_user(){
 		$user = $this->session->userdata();
 		$antes = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_usuario')])[0];
+		$gr = $this->input->post('id_grupo');
+		if ($gr <> 2) {
+			$conjunto = "";
+		}else{
+			$conjunto = $this->input->post('conjunto');
+		}
 		$usuario = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
 			"apellido"	=>	strtoupper($this->input->post('apellido')),
 			"telefono"	=>	$this->input->post('telefono'),
 			"email"		=>	$this->input->post('correo'),
 			"password"	=>	$this->encryptPassword($this->input->post('password')),
-			"id_grupo"	=>	$this->input->post('id_grupo')];
+			"id_grupo"	=>	$this->input->post('id_grupo'),
+			"conjunto"	=>	$conjunto];
 
 		$data ['id_usuario'] = $this->user_md->update($usuario, $this->input->post('id_usuario'));
 		$cambios = [
@@ -211,27 +225,35 @@ class Welcome extends MY_Controller {
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
-		$this->cellStyle("A1:N2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:D1", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' => 
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+		
+		$hoja->setCellValue("A1", "EMPRESA")->getColumnDimension('B')->setWidth(40);
+		$hoja->setCellValue("B1", "NOMBRE")->getColumnDimension('C')->setWidth(40);
+		$hoja->setCellValue("C1", "EMAIL")->getColumnDimension('D')->setWidth(40);
+		$hoja->setCellValue("D1", "CONTRASEÑA")->getColumnDimension('E')->setWidth(30);
 		$cotizacionesProveedor = $this->user_md->getUsuarios();
-		$row_print =3;
+		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $row){
-						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						$hoja->setCellValue("A{$row_print}", $row->id_usuario);//Formato de fraccion
-						$hoja->setCellValue("B{$row_print}", $row->nombre);
-						$hoja->setCellValue("C{$row_print}", $row->apellido);//Formto de moneda
-						$hoja->setCellValue("D{$row_print}", $row->email);
-						$hoja->setCellValue("E{$row_print}", $this->showPassword($row->password));
+						$hoja->setCellValue("A{$row_print}", $row->nombre);
+						$hoja->setCellValue("B{$row_print}", $row->apellido);//Formto de moneda
+						$hoja->setCellValue("C{$row_print}", $row->email);
+						$hoja->setCellValue("D{$row_print}", $this->showPassword($row->password));
+						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
 						$row_print ++;
 			}
 		}
 
-		$file_name = "Cotizaciones.xls"; //Nombre del documento con extención
+		$file_name = "Proveedores.xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 
