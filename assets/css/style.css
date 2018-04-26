@@ -1677,7 +1677,7 @@ table.dataTable thead .sorting:after {
   background-image: none;
   border: 1px solid #e5e6e7;
   border-radius: 1px;
-  color: inherit;
+  color: #000;
   display: block;
   padding: 6px 12px;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
@@ -2888,6 +2888,7 @@ ol.unstyled {
   padding: 10px 20px;
   position: absolute;
   right: 0;
+  z-index: 10000000000000000000000;
 }
 .footer.fixed_full {
   position: fixed;

@@ -20,6 +20,13 @@ if(!$this->session->userdata("username")){
 						</button>
 
 					</div>
+					<div class="btn-group">
+						<?php echo form_open("Welcome/print_usuarios", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+								<i class="fa fa-file-excel-o"></i> Descargar Usuarios & Contraseñas
+							</button>
+						<?php echo form_close(); ?>
+					</div>
 					<table class="table table-striped table-bordered table-hover" id="table_usuarios">
 						<thead>
 							<tr>

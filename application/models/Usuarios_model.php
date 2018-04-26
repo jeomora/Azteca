@@ -20,7 +20,8 @@ class Usuarios_model extends MY_Model {
 			g.nombre AS grupo")
 		->from($this->TABLE_NAME)
 		->join("grupos g", $this->TABLE_NAME.".id_grupo = g.id_grupo", "LEFT")
-		->where($this->TABLE_NAME.".estatus", 1);
+		->where($this->TABLE_NAME.".estatus", 1)
+		->where($this->TABLE_NAME.".id_grupo", 2);
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {

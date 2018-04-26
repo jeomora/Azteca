@@ -33,14 +33,14 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="password">Contraseña</label> <!-- $password trae la contraseña desencritada -->
-					<input type="text" name="password"  class="form-control" placeholder="*********">
+					<input type="text" name="password" class="form-control" placeholder="*********">
 				</div>
 			</div>
 
-			<div class="col-sm-6">
+			<div class="col-sm-3">
 				<div class="form-group">
 					<label for="id_grupo">Grupos</label>
-					<select name="id_grupo" class="form-control chosen-select">
+					<select name="id_grupo" class="form-control chosen-select" id="id_grupo">
 						<option value="-1">Seleccionar...</option>
 						<?php if ($grupos):foreach ($grupos as $key => $value): ?>
 							<?php if ($grupo == 4 && $value->nombre <> 'ADMINISTRADOR'): ?>
@@ -50,6 +50,20 @@
 								<option value="<?php echo $value->id_grupo ?>" <?php echo $usuario->id_grupo == $value->id_grupo ? 'selected' : '' ?>><?php echo $value->nombre ?></option>
 							<?php endif; ?>
 						<?php endforeach; endif ?>
+					</select>
+				</div>
+			</div>
+			
+			<div class="col-sm-3 conj" <?php if($usuario->id_grupo <> 2): ?> style="display: none" <?php endif; ?>>
+				<div class="form-group">
+					<label for="conjunto">conjunto</label>
+					<select name="conjunto" class="form-control chosen-select">
+						<option value="SIN" <?php echo $usuario->conjunto == 'SIN' ? 'selected' : '' ?>>SIN FORMATO PEDIDOS</option>
+						<option value="INDIVIDUAL" <?php echo $usuario->conjunto == 'INDIVIDUAL' ? 'selected' : '' ?>>INDIVIDUAL</option>
+						<option value="VARIOS1" <?php echo $usuario->conjunto == 'VARIOS1' ? 'selected' : '' ?>>VARIOS 1°</option>
+						<option value="VARIOS2" <?php echo $usuario->conjunto == 'VARIOS2' ? 'selected' : '' ?>>VARIOS 2°</option>
+						<option value="VARIOS3" <?php echo $usuario->conjunto == 'VARIOS3' ? 'selected' : '' ?>>VARIOS 3°</option>
+						<option value="VARIOS4" <?php echo $usuario->conjunto == 'VARIOS4' ? 'selected' : '' ?>>VARIOS 4°</option>
 					</select>
 				</div>
 			</div>

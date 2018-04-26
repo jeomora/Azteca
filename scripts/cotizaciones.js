@@ -8,7 +8,7 @@ $(function($) {
 				type: "POST"
 			},
 			processing: true,
-			language: {
+			lnaguage: {
 	            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
 			serverSide: true,
 			responsive: true,
@@ -60,7 +60,7 @@ function setAdminTable(){
 	event.preventDefault();
 	$("html").block({
 		centerY: 0,
-		message: '<div class="spinns"><div id="myProgress"><div id="myBar"></div></div><span style="font-size:3rem;">Cargando...</span></div></td></tr>',
+		message: '<div id="myProgress"><div id="myBar"></div></div><span style="font-size:3rem;">Cargando...</span></div>',
 		overlayCSS: { backgroundColor: '#DDFF33' },
 		css: { position: 'absolute',
 	    top: '25rem',
@@ -142,7 +142,8 @@ function setAdminTable(){
 					tableAdmin += '<td>'+value.proveedor_nxts+'</td><td>'+value.promocion_nxts+'</td>';
 
 
-					tableAdmin += '<td><button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+					tableAdmin += '<td><button id="detallazos" class="btn btn-success" data-toggle="tooltip" title="Detalles" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-eye"></i></button><button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 								'<i class="fa fa-trash"></i></button></td></tr>';
 			});	
@@ -345,6 +346,13 @@ $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion",
 	event.preventDefault();
 	sendForm("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
 });
+
+$(document).off("click", "#detallazos").on("click", "#detallazos", function(event){
+	event.preventDefault();
+	var id_cotizacion = $(this).closest("tr").find("#detallazos").data("idCotizacion");
+	getModal("Cotizaciones/detallazos/"+ id_cotizacion, function (){ });
+});
+
 
 $(document).off("click", "#new_pedido").on("click", "#new_pedido", function(event){
 	event.preventDefault();
