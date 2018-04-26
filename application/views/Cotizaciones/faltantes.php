@@ -44,7 +44,7 @@ if(!$this->session->userdata("username")){
 						<th>PRECIO</th>
 						<th>PRECIO C/PROMOCIÓN</th>
 						<th>OBSERVACIONES</th>
-						<th>ACCION</th>
+						<th>FECHA TERMINO</th>
 					</tr>
 				</thead>
 				<tbody class="cot-prov">
@@ -54,7 +54,7 @@ if(!$this->session->userdata("username")){
 		</div>
 	</div>
 	<button class="btn btn-primary save_faltante" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="button">
-		<i class="fa fa-file-excel-o"></i> Descargar Cotización de la Semana
+		<i class="fa fa-file-excel-o"></i> Guardar Faltantes
 	</button>
 </div>
 

@@ -51,6 +51,47 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
+	public function getAllCotizaciones($where = []){
+		$this->db->select("
+			cotizaciones.id_cotizacion,
+			cotizaciones.id_proveedor,
+			cotizaciones.nombre AS promocion,
+			cotizaciones.precio,
+			cotizaciones.precio_promocion,
+			cotizaciones.num_one,
+			cotizaciones.num_two,
+			cotizaciones.descuento,
+			cotizaciones.fecha_registro,
+			cotizaciones.fecha_caduca,
+			cotizaciones.existencias,
+			cotizaciones.observaciones,
+			UPPER(CONCAT(u.nombre,' ',u.apellido)) AS proveedor,
+			p.nombre AS producto")
+		->from($this->TABLE_NAME)
+		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "LEFT")
+		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
+		->group_by($this->TABLE_NAME.".id_producto")
+		->order_by($this->TABLE_NAME.".precio_promocion", "ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
 
 	public function getAnterior($where = []){
 		$this->db->select("
@@ -68,9 +109,11 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.observaciones,
 			cotizaciones.id_producto,
 			p.codigo,p.color,p.colorp,
-			p.nombre AS producto")
+			p.nombre AS producto,
+			fal.fecha_termino,fal.no_semanas")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
+		->join("faltantes fal", $this->TABLE_NAME.".id_producto = fal.id_producto AND ".$this->TABLE_NAME.".id_proveedor = fal.id_proveedor AND ".$this->TABLE_NAME.".fecha_registro < fal.fecha_registro","LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by($this->TABLE_NAME.".id_producto")
 		->order_by("p.nombre", "ASC");
@@ -344,8 +387,6 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
-	
-
 	public function productos_proveedor($where=[]){
 		$this->db->select("
 			cotizaciones.id_cotizacion, cotizaciones.precio,
@@ -519,9 +560,6 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
-
-
-
 	public function preciosBajos($where=[]){
 		$this->db->select("cotizaciones.id_cotizacion,
 			prod.codigo, prod.nombre AS producto,
@@ -576,6 +614,7 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
+
 	public function comparaCotizaciones2($where=[], $fech, $tienda){
 		$this->db->select("c.id_cotizacion, 
 			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
@@ -660,6 +699,10 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["promocion_next"]	=	$comparativa[$i]->promocion_next;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["colorp"]	=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["color"]	=	$comparativa[$i]->color;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_nxtso"]	=	$comparativa[$i]->precio_nxtso;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_nxts"]		=	$comparativa[$i]->precio_nxts;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["proveedor_nxts"]	=	$comparativa[$i]->proveedor_nxts;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["promocion_nxts"]	=	$comparativa[$i]->promocion_nxts;
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {
@@ -671,7 +714,6 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
-
 
 	public function getCotzV($where = [],$fech){
 		$this->db->select("c.id_cotizacion, 
@@ -737,6 +779,63 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
+
+	public function get_cotdel($where=[],$producto=0,$fechas){
+		$this->db->select("cotizaciones.id_cotizacion,cotizaciones.num_one, cotizaciones.num_two, cotizaciones.descuento, cotizaciones.id_proveedor, cotizaciones.precio_sistema, 
+			cotizaciones.precio_four, cotizaciones.precio, cotizaciones.precio_promocion, cotizaciones.observaciones, 
+			CONCAT(u.nombre,' ',u.apellido) as nomb")
+		->from($this->TABLE_NAME)
+		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "INNER")
+		->where($this->TABLE_NAME.".estatus", 0)
+		->where($this->TABLE_NAME.".id_producto",$producto)
+		->where("WEEKOFYEAR(".$this->TABLE_NAME.".fecha_registro)", $this->weekNumber($fechas));
+
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			return $result;
+		} else {
+			return false;
+		}
+	}
+
+	public function getLastWeek($where=[],$producto = 0,$fechas){
+		$this->db->select("ctz_first.precio_promocion, CONCAT(u.nombre,' ',u.apellido) AS nomb")
+			->from($this->TABLE_NAME)
+			->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
+			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$fechas." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$fechas.") LIMIT 1)", "LEFT")
+			->join("usuarios u","ctz_first.id_proveedor = u.id_usuario","LEFT")
+			->where($this->TABLE_NAME.".estatus", 1)
+			->where("WEEKOFYEAR(".$this->TABLE_NAME.".fecha_registro)", $fechas)
+			->where($this->TABLE_NAME.".id_producto", $producto)
+			->group_by("ctz_first.id_proveedor");
+
+			if ($where !== NULL) {
+				if (is_array($where)) {
+					foreach ($where as $field=>$value) {
+						$this->db->where($field, $value);
+					}
+				} else {
+					$this->db->where($this->PRI_INDEX, $where);
+				}
+			}
+			$result = $this->db->get()->result();
+			if ($result) {
+				return $result;
+			} else {
+				return false;
+			}
+	}
+
+	
 
 }
 

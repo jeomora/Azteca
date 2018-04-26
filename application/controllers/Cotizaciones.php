@@ -50,7 +50,7 @@ class Cotizaciones extends MY_Controller {
 		}elseif($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
 					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
-			$data["cotizaciones"] = $this->ct_mdl->getCotizaciones($where);
+			$data["cotizaciones"] = $this->ct_mdl->getAllCotizaciones($where);
 			$data["usuarios"] = $this->user_md->getUsuarios();	
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
@@ -190,19 +190,38 @@ class Cotizaciones extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		$cotizacion = [
-			'nombre'			=>	strtoupper($this->input->post('nombre')),
-			'id_producto'		=>	$this->input->post('id_producto'),
-			'id_proveedor'		=>	$this->session->userdata('id_usuario'),
-			'num_one'			=>	$this->input->post('num_one'),
-			'num_two'			=>	$this->input->post('num_two'),
-			'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
-			'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
-			'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
-			'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
-			'observaciones'		=>	strtoupper($this->input->post('observaciones'))
-		];
-		$data ['id_cotizacion']=$this->ct_mdl->insert($cotizacion);
+		$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+		if($antes){
+			$cotizacion = [
+				'nombre'			=>	strtoupper($this->input->post('nombre')),
+				'id_producto'		=>	$this->input->post('id_producto'),
+				'id_proveedor'		=>	$this->session->userdata('id_usuario'),
+				'num_one'			=>	$this->input->post('num_one'),
+				'num_two'			=>	$this->input->post('num_two'),
+				'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
+				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
+				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
+				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
+				'observaciones'		=>	strtoupper($this->input->post('observaciones')),
+				'estatus' => 0
+			];
+			$data ['id_cotizacion']=$this->ct_mdl->insert($cotizacion);
+		}else{
+			$cotizacion = [
+				'nombre'			=>	strtoupper($this->input->post('nombre')),
+				'id_producto'		=>	$this->input->post('id_producto'),
+				'id_proveedor'		=>	$this->session->userdata('id_usuario'),
+				'num_one'			=>	$this->input->post('num_one'),
+				'num_two'			=>	$this->input->post('num_two'),
+				'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
+				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
+				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
+				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
+				'observaciones'		=>	strtoupper($this->input->post('observaciones'))
+			];
+			$data ['id_cotizacion']=$this->ct_mdl->insert($cotizacion);
+		}
+		
 		$mensaje = [
 			"id" 	=> 'Éxito',
 			"desc"	=> 'Cotización registrada correctamente',
@@ -354,6 +373,23 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
+	public function detallazos($id){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
+		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["title"]="Cotizaciones Eliminadas y faltantes de :<br>".$data["producto"]->nombre;
+		$user = $this->session->userdata();
+		$data["faltas"] = $this->falt_mdl->getfaltas(NULL,$data["cotizacion"]->id_producto, date("Y-m-d H:i:s"));
+		$data["cotss"]=$this->ct_mdl->get_cotdel(NULL, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P7D');
+		$fecha->sub($intervalo);
+		$data["lastweek"]=$this->ct_mdl->getLastWeek(NULL, $data["cotizacion"]->id_producto,$this->weekNumber($fecha->format('Y-m-d H:i:s')));
+		$data["view"]=$this->load->view("Cotizaciones/detallazos", $data, TRUE);
+		$this->jsonResponse($data);
+	}
 
 	public function ver_cotizacion($id,$fech){
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
@@ -433,7 +469,7 @@ class Cotizaciones extends MY_Controller {
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
-		$this->cellStyle("A1:N2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:R2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' => 
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
@@ -450,6 +486,11 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("L1", "PRECIO PROMOCIÓN")->getColumnDimension('L')->setWidth(12);
 		$hoja->setCellValue("M1", "2DO PROVEEDOR")->getColumnDimension('M')->setWidth(15);
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
+		$hoja->setCellValue("O1", "3ER PRECIO")->getColumnDimension('O')->setWidth(12);
+		$hoja->setCellValue("P1", "PRECIO PROMOCIÓN")->getColumnDimension('P')->setWidth(12);
+		$hoja->setCellValue("Q1", "3ER PROVEEDOR")->getColumnDimension('Q')->setWidth(15);
+		$hoja->setCellValue("R1", "3ER OBSERVACIÓN")->getColumnDimension('R')->setWidth(30);
+
 		$where=["prod.estatus <> "=>0];//Semana actual
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -525,6 +566,24 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("M{$row_print}")->applyFromArray($border_style);						
 						$hoja->setCellValue("N{$row_print}", $row['promocion_next'])->getStyle("N{$row_print}");
 						$hoja->getStyle("N{$row_print}")->applyFromArray($border_style);
+
+						$hoja->setCellValue("O{$row_print}", $row['precio_nxtso'])->getStyle("O{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->getStyle("O{$row_print}")->applyFromArray($border_style);
+						if($row['precio_sistema'] < $row['precio_nxts']){
+							$hoja->setCellValue("P{$row_print}", $row['precio_nxts'])->getStyle("P{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("P{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+						}else if($row['precio_next'] !== NULL){
+							$hoja->setCellValue("P{$row_print}", $row['precio_nxts'])->getStyle("P{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("P{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+						}else{
+							$hoja->setCellValue("P{$row_print}", $row['precio_nxts'])->getStyle("P{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("P{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						$hoja->getStyle("P{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("Q{$row_print}", $row['proveedor_nxts'])->getStyle("Q{$row_print}");
+						$hoja->getStyle("Q{$row_print}")->applyFromArray($border_style);						
+						$hoja->setCellValue("R{$row_print}", $row['promocion_nxts'])->getStyle("R{$row_print}");
+						$hoja->getStyle("R{$row_print}")->applyFromArray($border_style);
 						$row_print ++;
 					}
 				}
@@ -819,17 +878,34 @@ class Cotizaciones extends MY_Controller {
 					}else{
 						$precio_promocion = $precio;
 					}
-					$new_cotizacion[$i]=[
-						"id_producto"		=>	$productos->id_producto,
-						"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
-						"precio"			=>	$precio,
-						"num_one"			=>	$column_one,
-						"num_two"			=>	$column_two,
-						"descuento"			=>	$descuento,
-						"precio_promocion"	=>	$precio_promocion,
-						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-						"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
-					];
+					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+					if($antes){
+						$new_cotizacion[$i]=[
+							"id_producto"		=>	$productos->id_producto,
+							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+							"precio"			=>	$precio,
+							"num_one"			=>	$column_one,
+							"num_two"			=>	$column_two,
+							"descuento"			=>	$descuento,
+							"precio_promocion"	=>	$precio_promocion,
+							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
+							"estatus" => 0
+						];
+					}else{
+						$new_cotizacion[$i]=[
+							"id_producto"		=>	$productos->id_producto,
+							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+							"precio"			=>	$precio,
+							"num_one"			=>	$column_one,
+							"num_two"			=>	$column_two,
+							"descuento"			=>	$descuento,
+							"precio_promocion"	=>	$precio_promocion,
+							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
+						];
+					}
+					
 				}
 			}
 		}
@@ -1185,7 +1261,7 @@ class Cotizaciones extends MY_Controller {
 	
 
 	public function getProveedorCot($ides){
-		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => $this->weekNumber()]);
+		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => $this->weekNumber()]);
 		$this->jsonResponse($data);
 	}
 
@@ -1948,40 +2024,61 @@ class Cotizaciones extends MY_Controller {
 
 	public function registro_fltnts(){
 		$user = $this->session->userdata();
-		$size = sizeof($this->input->post('id_cotz[]'));
-		$cotz = $this->input->post('id_cotz[]');
+		$size = sizeof($this->input->post('id_producto[]'));
+		$cotz = $this->input->post('id_producto[]');
 		$no_semanas = $this->input->post('no_semanas[]');
 		for($i = 0; $i < $size; $i++){
-			if($no_semanas[$i] <> "" || $no_semanas[$i] <> NULL){
+			if($no_semanas[$i] <> "" && $no_semanas[$i] <> NULL){
 				$fecha = new DateTime(date('Y-m-d H:i:s'));
 				$intervalo = new DateInterval('P'.$no_semanas[$i].'W');
 				$fecha->add($intervalo);
 				$fecha->format('Y-m-d H:i:s');
-				/*$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $cotz[$i], 'WEEKOFYEAR(fecha_registro) <=' => $this->weekNumber(), 'id_proveedor' => $this->input->post('id_pro')])[0];
+				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $cotz[$i], 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_pro')])[0];
 				if($antes){
 					$cambios = [
 						"id_usuario" => $user["id_usuario"],
 						"fecha_cambio" => date('Y-m-d H:i:s'),
 						"antes" => "id_faltante: ".$antes->id_faltante." /Proveedor: ".$antes->id_proveedor." /Producto:".$antes->id_producto."/F Termino: ".$antes->fecha_termino.
 								"/Semanas: ".$antes->no_semanas,
-						"despues" => "El usuario cambio las semanas..../Semanas: ".$no_semanas."/Fecha Termino:";
+						"despues" => "El usuario cambio las semanas..../Semanas: ".$no_semanas[$i]."/Fecha Termino:".$fecha->format('Y-m-d H:i:s')];
 					$data['cambios'] = $this->cambio_md->insert($cambios);
 					$data ['id_faltante'] = $this->falt_mdl->update([
 						"no_semanas" => $no_semanas[$i],
-						"observaciones" => $[$i]
+						"fecha_termino" => $fecha->format('Y-m-d H:i:s')
 					], $antes->id_faltante);
-				}*/
+					$mensaje = [
+						"id" 	=> 'Éxito',
+						"desc"	=> 'Faltantes actualizados correctamente',
+						"type"	=> 'success'
+					];
+				}else{
+					$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"antes" => "Proveedor: ".$this->input->post('id_pro')." /Producto:".$cotz[$i]."/F Termino: ".$fecha->format('Y-m-d H:i:s').
+								"/Semanas: ".$no_semanas[$i],
+						"despues" => "El usuario agrego faltantes."];
+					$data['cambios'] = $this->cambio_md->insert($cambios);
+					$new_faltante=[
+						"id_producto"		=>	$cotz[$i],
+						"fecha_termino"	=>	$fecha->format('Y-m-d H:i:s'),
+						"no_semanas"		=>	$no_semanas[$i],
+						"id_proveedor" => $this->input->post('id_pro')
+					];
+					$data ['id_faltante'] = $this->falt_mdl->insert($new_faltante);
+					$mensaje = [
+						"id" 	=> 'Éxito',
+						"desc"	=> 'Faltantes insertados correctamente',
+						"type"	=> 'success'
+					];
+				}
 			}
 			
 		}
 
 		
-		$mensaje = [
-			"id" 	=> 'Éxito',
-			"desc"	=> 'Faltantes actualizados correctamente',
-			"type"	=> 'success'
-		];
-		$this->jsonResponse($no_semanas[$i]);
+		
+		$this->jsonResponse($mensaje);
 	}
 
 }
