@@ -113,7 +113,7 @@ class Cotizaciones_model extends MY_Model {
 			fal.fecha_termino,fal.no_semanas")
 		->from($this->TABLE_NAME)
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
-		->join("faltantes fal", $this->TABLE_NAME.".id_producto = fal.id_producto AND ".$this->TABLE_NAME.".id_proveedor = fal.id_proveedor AND ".$this->TABLE_NAME.".fecha_registro < fal.fecha_registro","LEFT")
+		->join("faltantes fal", $this->TABLE_NAME.".id_producto = fal.id_producto AND ".$this->TABLE_NAME.".id_proveedor = fal.id_proveedor AND ".$this->TABLE_NAME.".fecha_registro < fal.fecha_registro AND fal.fecha_termino > CURDATE() ","LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by($this->TABLE_NAME.".id_producto")
 		->order_by("p.nombre", "ASC");
