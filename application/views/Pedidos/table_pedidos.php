@@ -59,29 +59,27 @@ if(!$this->session->userdata("username")){
 						<label for="id_proveedor" class="lblget">Proveedor</label>
 						<select name="id_proves2" id="id_proves2" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<option value="27">TACAMBA</option>
-							<option value="4">SAHUAYO</option>
-							<option value="2">DECASA</option>
-							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
-							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71">VARIOS 3RO</option>
-							<option value="13,46,72,19,22,35,26,23,12,28,67,11,29,52,74">VARIOS 4TO</option>
-							<option value="3">DUERO</option>
-							<option value="VOLUMEN">VOLUMEN</option>
+							<option value="VARIOS">VARIOS 1°</option>
+							<option value="VARIOS">VARIOS 2°</option>
+							<option value="VARIOS">VARIOS 3°</option>
+							<option value="VARIOS">VARIOS 4°</option>
+							<option value="VOLUEN">VOLUMEN</option>
 							<option value="AMARILLOS">AMARILLOS</option>
+							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
+								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
+							<?php endforeach;endif; ?>
 						</select>
 						<select name="id_proves4" id="id_proves4" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<option value="27">TACAMBA</option>
-							<option value="4">SAHUAYO</option>
-							<option value="2">DECASA</option>
-							<option value="5,6,24,17,21,56">VARIOS 1ER</option>
-							<option value="20,18,8,7,9,49,53,54,51">VARIOS 2DO</option>
-							<option value="45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71">VARIOS 3RO</option>
-							<option value="13,46,72,19,22,35,26,23,12,28,67,11,29,52,74">VARIOS 4TO</option>
-							<option value="3">DUERO</option>
+							<option value="VARIOS1">VARIOS 1°</option>
+							<option value="VARIOS2">VARIOS 2°</option>
+							<option value="VARIOS3">VARIOS 3°</option>
+							<option value="VARIOS4">VARIOS 4°</option>
 							<option value="VOLUMEN">VOLUMEN</option>
 							<option value="AMARILLOS">AMARILLOS</option>
+							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
+								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
+							<?php endforeach;endif; ?>
 						</select>
 						<div class="btn-group">
 							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">

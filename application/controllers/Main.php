@@ -10,6 +10,7 @@ class Main extends MY_Controller {
 		$this->load->model("Cotizaciones_model", "cot_md");
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Cambios_model", "cambio_md");
+		$this->load->model("Faltantes_model", "falt_mdl");
 	}
 
 	//Primera función que carga el dashboard
@@ -69,28 +70,46 @@ class Main extends MY_Controller {
 		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$semana = $this->weekNumber() -1;
+		
 		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
+		
 		$i = 0;
 		$new_cotizacion = null;
 		if ($cotizaciones){
 			foreach ($cotizaciones as $key => $value){
+				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
+				if($antes){
+					$new_cotizacion[$i] = [
+						"id_producto"		=>	$value->id_producto,
+						"id_proveedor"		=>	$this->input->post('id_proveedor'),
+						"precio"			=>	$value->precio,
+						"num_one"			=>	$value->num_one,
+						"num_two"			=>	$value->num_two,
+						"descuento"			=>	$value->descuento,
+						"precio_promocion"	=>	$value->precio_promocion,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+						"observaciones"		=>	$value->observaciones,
+						'estatus' => 0
+					];
+				}else{
+					$new_cotizacion[$i] = [
+						"id_producto"		=>	$value->id_producto,
+						"id_proveedor"		=>	$this->input->post('id_proveedor'),
+						"precio"			=>	$value->precio,
+						"num_one"			=>	$value->num_one,
+						"num_two"			=>	$value->num_two,
+						"descuento"			=>	$value->descuento,
+						"precio_promocion"	=>	$value->precio_promocion,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+						"observaciones"		=>	$value->observaciones,
+					];
+				}
 				$cambios = [
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
 				"antes" => "Repite cotizacion",
 				"despues" => "Del proveedor ".$this->input->post('id_proveedor')];
 				$data['cambios'] = $this->cambio_md->insert($cambios);
-				$new_cotizacion[$i]=[
-					"id_producto"		=>	$value->id_producto,
-					"id_proveedor"		=>	$this->input->post('id_proveedor'),
-					"precio"			=>	$value->precio,
-					"num_one"			=>	$value->num_one,
-					"num_two"			=>	$value->num_two,
-					"descuento"			=>	$value->descuento,
-					"precio_promocion"	=>	$value->precio_promocion,
-					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-					"observaciones"		=>	$value->observaciones,
-				];
 				$i++;
 			}
 		}

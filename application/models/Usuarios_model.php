@@ -47,7 +47,7 @@ class Usuarios_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		$this->db->select("usuarios.id_usuario as ides, CONCAT(usuarios.nombre,' ',usuarios.apellido) as proveedor")
+		$this->db->select("usuarios.id_usuario as ides, usuarios.nombre as proveedor")
 		->from($this->TABLE_NAME)
 		->where("usuarios.id_usuario NOT IN (SELECT cotizaciones.id_proveedor FROM cotizaciones WHERE 
 			WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND cotizaciones.estatus = 1 GROUP BY 
@@ -93,7 +93,7 @@ class Usuarios_model extends MY_Model {
 	public function getUsuario($where=[]){
 		$this->db->select("
 			usuarios.id_usuario AS ides,
-			CONCAT(usuarios.nombre,' ',usuarios.apellido) AS names
+			usuarios.nombre AS names
 			")
 		->from($this->TABLE_NAME)
 		->where($this->TABLE_NAME.".estatus", 1);
@@ -120,7 +120,7 @@ class Usuarios_model extends MY_Model {
 	public function getHim($where=[],$ides=""){
 		$this->db->select("
 			usuarios.id_usuario AS ides,
-			CONCAT(usuarios.nombre,' ',usuarios.apellido) AS names
+			usuarios.nombre AS names
 			")
 		->from($this->TABLE_NAME)
 		->where($this->TABLE_NAME.".id_usuario", $ides);

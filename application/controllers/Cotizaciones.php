@@ -191,10 +191,9 @@ class Cotizaciones extends MY_Controller {
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
-		$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_termino)' => weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+		$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
 		if($antes){
 			$cotizacion = [
-				'nombre'			=>	strtoupper($this->input->post('nombre')),
 				'id_producto'		=>	$this->input->post('id_producto'),
 				'id_proveedor'		=>	$this->session->userdata('id_usuario'),
 				'num_one'			=>	$this->input->post('num_one'),
@@ -213,7 +212,6 @@ class Cotizaciones extends MY_Controller {
 			}
 		}else{
 			$cotizacion = [
-				'nombre'			=>	strtoupper($this->input->post('nombre')),
 				'id_producto'		=>	$this->input->post('id_producto'),
 				'id_proveedor'		=>	$this->session->userdata('id_usuario'),
 				'num_one'			=>	$this->input->post('num_one'),
@@ -888,7 +886,7 @@ class Cotizaciones extends MY_Controller {
 						$precio_promocion = $precio;
 					}
 					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
-					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_termino)' => weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
 					if($antes){
 						$new_cotizacion[$i]=[
 							"id_producto"		=>	$productos->id_producto,
@@ -1194,12 +1192,12 @@ class Cotizaciones extends MY_Controller {
 			$columns = "ctz_first.estatus,cotizaciones.id_cotizacion, cotizaciones.fecha_registro, ctz_first.precio_sistema, ctz_first.precio_four,
 			fam.id_familia, fam.nombre AS familia,
 			prod.codigo, prod.nombre AS producto,
-			UPPER(CONCAT(proveedor_first.nombre,' ',proveedor_first.apellido)) AS proveedor_first,
+			UPPER(proveedor_first.nombre) AS proveedor_first,
 			ctz_first.precio AS precio_firsto,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.nombre AS promocion_first,
 			ctz_first.observaciones AS observaciones_first,
-			UPPER(CONCAT(proveedor_next.nombre,' ',proveedor_next.apellido)) AS proveedor_next,
+			UPPER(proveedor_next.nombre) AS proveedor_next,
 			ctz_next.precio AS precio_nexto,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			ctz_maxima.precio AS precio_maximo,
@@ -1303,69 +1301,23 @@ class Cotizaciones extends MY_Controller {
 		$id_proves = $this->input->post('id_proves4');
 		$proves = $this->input->post('id_proves2');
 
-		switch ($id_proves){
-			case "5,6,24,17,21,56":
-				$array = array(5,6,24,17,21,56);
-				$array2 = array("DIST NESTLE","19 HERMANOS","PUMA","LA CORONA","SUMMA","FERRERO");
-				$filenam = "VARIOS 1ER";
-				break;
-			case "20,18,8,7,9,49,53,54,51":
-				$array = array(20,18,8,7,9,49,53,54,51);
-				$array2 = array("HUGO'S","JASPO","LOPEZ","VIOLETA","MORGAR","MAQUISA","SURTIDOR","ECODELI","PLASTIQUICK");
-				$filenam = "VARIOS 2DO";
-				break;
-			case "45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71":
-				$array = array(45,25,34,68,32,10,69,39,40,50,70,15,47,44,42,65,71);
-				$array2 = array("MANTECA AKK","ALIMENTOS BALANCEADOS","CHOCOLATE MOCTEZUMA","CHOCOLATERIA DE OCCIDENTE","CAFE BEREA","COSPOR","CERILLERA LA CENTRAL","HARINERA GUADALUPE","SELLO ROJO","OSCAR JIMENEZ","ALPURA","HENSA","ALUMINIO NEZZE","LECHE LALA","AJEMEX","VAPE","CARBON GAVILAN");
-				$filenam = "VARIOS 3RO";
-				break;
-			case "13,46,72,19,22,35,26,23,12,28,67,11,29,52,74":
-				$array = array(46,72,19,22,35,26,23,12,28,67,11,52,74);
-				$array2 = array("MANTECA 4 MILPAS","MANTECA EL ANGEL","PAÑALES MAURY","ORSA","LA PRATERIA","DIST. ROMAN","PRODUCMEX","PURINA","SALUDABLES","PRODUCTOS MEXICANOS","SALES Y ABARROTES","SCHETTINOS","DIKELOG");
-				$filenam = "VARIOS 4TO";
-				break;
-			case "27":
-				$array = array(27);
-				$array2 = array("TACAMBA");
-				$filenam = "TACAMBA";
-				break;
-			case "4":
-				$array = array(4);
-				$array2 = array("SAHUAYO");
-				$filenam = "SAHUAYO";
-				break;
-			case "2":
-				$array = array(2);
-				$array2 = array("DECASA");
-				$filenam = "DECASA";
-				break;
-			case "3":
-				$array = array(3);
-				$array2 = array("DUERO");
-				$filenam = "DUERO";
-				break;
-			case "VOLUMEN":
-				$array = array("VOLUMEN");
-				$array2 = array("VOLÚMENES");
-				$filenam = "VOLUMEN";
-				break;
-			case "AMARILLOS":
-				$array = array("AMARILLOS");
-				$array2 = array("AMARILLOS");
-				$filenam = "AMARILLOS";
-				break;
-			default:
-				$array = array($id_proves);
-				$array2 = array($proves);
+		if ($proves === "VARIOS") {
+			$array = $this->usua_mdl->get(NULL, ["conjunto" => $id_proves]);
+			$filenam = $id_proves;
+		}elseif ($proves === "VOLUMEN" || $proves === "AMARILLOs") {
+			$filenam = $proves;
+			$array = ['nombre' => $id_proves];
+		}else{
+			$array = $this->usua_mdl->get(NULL, ["id_usuario" => $id_proves])[0];
+			$filenam = $array->nombre;
 		}
+		
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
 		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
 
 		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
-
 		
-
 		$this->excelfile->createSheet();
         $hoja = $this->excelfile->setActiveSheetIndex(1);
         $hoja->setTitle("PEDIDO");
@@ -1385,7 +1337,6 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('E')->setWidth("15");
 		$hoja->getColumnDimension('F')->setWidth("15");
 		
-		
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
 		$hoja1->getColumnDimension('C')->setWidth("6");
@@ -1402,10 +1353,15 @@ class Cotizaciones extends MY_Controller {
 		$flagBorder1 = 1;
 		$flagBorder2 = 0;
 		$flagBorder3 = 1;
-		for ($i=0; $i < sizeof($array) ; $i++) {
+		
+		$i = 0;
+		if ($array){
+			foreach ($array as $key => $value){
 			//HOJA EXISTENCIAS
+			$i++;
+			$this->jsonResponse($array);
 			$this->excelfile->setActiveSheetIndex(0);
-			if($i > 0){
+			if($i > 1){
 				$flagBorder = $flag1 - 4;
 				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder1.':E'.$flagBorder)->applyFromArray($styleArray);
 				$flagBorder1 = $flag1;
@@ -1417,7 +1373,7 @@ class Cotizaciones extends MY_Controller {
 			$this->cellStyle("A".$flag1.":D".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->mergeCells('A'.$flag1.':B'.$flag1);
 			$hoja1->setCellValue("A".$flag1, "EXISTENCIAS");
-			$hoja1->setCellValue("E".$flag1, "PEDIDOS A '".$array2[$i]."' ".date("d-m-Y"));
+			$hoja1->setCellValue("E".$flag1, "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
 			$this->cellStyle("E".$flag1, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 			$flag1++;
 			$this->cellStyle("A".$flag1.":E".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
@@ -1448,7 +1404,7 @@ class Cotizaciones extends MY_Controller {
 				$hoja->mergeCells('X'.$flag.':Z'.$flag);
 				$hoja->mergeCells('AA'.$flag.':AC'.$flag);
 				$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-				$hoja->setCellValue("B".$flag, "PEDIDOS A '".$array2[$i]."' ".date("d-m-Y"));
+				$hoja->setCellValue("B".$flag, "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
 				$this->cellStyle("I".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 				$hoja->setCellValue("I".$flag, "ABARROTES");
 				$this->cellStyle("L".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -1526,7 +1482,7 @@ class Cotizaciones extends MY_Controller {
 				$hoja->mergeCells('W'.$flag.':Y'.$flag);
 				$hoja->mergeCells('Z'.$flag.':AB'.$flag);
 				$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-				$hoja->setCellValue("B".$flag, "PEDIDOS A '".$array2[$i]."' ".date("d-m-Y"));
+				$hoja->setCellValue("B".$flag, "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
 				$this->cellStyle("H".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 				$hoja->setCellValue("H".$flag, "ABARROTES");
 				$this->cellStyle("K".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -1590,16 +1546,21 @@ class Cotizaciones extends MY_Controller {
 				$hoja->setCellValue("AB".$flag, "PEDIDO");
 				$hoja->setCellValue("AC".$flag, "PROMOCION");
 			}
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$intervalo = new DateInterval('P2D');
+			$fecha->add($intervalo);
 
-			if ($array[$i] === "AMARILLOS") {
-				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"prod.estatus" => 3];//Semana actual
-			}elseif ($array[$i] === "VOLUMEN" ) {
-				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"prod.estatus" => 2];//Semana actual
+			if ($value->nombre === "AMARILLOS") {
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber( $fecha->format('Y-m-d H:i:s')),"prod.estatus" => 3];//Semana actual
+			}elseif ($value->nombre === "VOLUMEN" ) {
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber( $fecha->format('Y-m-d H:i:s')),"prod.estatus" => 2];//Semana actual
 			}else{
-				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber(),"ctz_first.id_proveedor" => $array[$i],"prod.estatus" => 1];//Semana actual
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber( $fecha->format('Y-m-d H:i:s')),"ctz_first.id_proveedor" => $value->id_usuario,"prod.estatus" => 1];//Semana actual
 			}
-			$fecha = date('Y-m-d');
-			$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$intervalo = new DateInterval('P2D');
+			$fecha->add($intervalo);
+			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
 			$difff = 0.01;
 			$flag2 = 3;
 			$flage = 5;
@@ -1818,8 +1779,9 @@ class Cotizaciones extends MY_Controller {
 				$hoja->setCellValue("AJ{$flagf}", "=SUMA(AJ5:AJ".$flagfs.")")->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$flage = $flag + 5;
 			}
-		}
 		
+			}
+		}
 		$this->excelfile->setActiveSheetIndex(1);
 			if($flagBorder2 == 0){
 				$flagBorder2 = $flag - 4;
