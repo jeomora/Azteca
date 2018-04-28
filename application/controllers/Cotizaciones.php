@@ -191,7 +191,7 @@ class Cotizaciones extends MY_Controller {
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
-		$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+		$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
 		if($antes){
 			$cotizacion = [
 				'id_producto'		=>	$this->input->post('id_producto'),
@@ -885,10 +885,10 @@ class Cotizaciones extends MY_Controller {
 					}else{
 						$precio_promocion = $precio;
 					}
-					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
-					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
 					if($antes){
-						$new_cotizacion[$i]=[
+						$new_cotizacion=[
 							"id_producto"		=>	$productos->id_producto,
 							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
 							"precio"			=>	$precio,
@@ -900,12 +900,12 @@ class Cotizaciones extends MY_Controller {
 							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
 							"estatus" => 0];
 							if($cotiz){
-								$data['cotizacin']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+								$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
 							}else{
-								$data['cotizacin']=$this->ct_mdl->insert($new_cotizacion);
+								$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
 							}
 					}else{
-						$new_cotizacion[$i]=[
+						$new_cotizacion=[
 							"id_producto"		=>	$productos->id_producto,
 							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
 							"precio"			=>	$precio,
@@ -917,9 +917,9 @@ class Cotizaciones extends MY_Controller {
 							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
 						];
 						if($cotiz){
-							$data['cotizacin']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
 						}else{
-							$data['cotizacin']=$this->ct_mdl->insert($new_cotizacion);
+							$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
 						}
 					}
 					
@@ -1277,7 +1277,7 @@ class Cotizaciones extends MY_Controller {
 	
 
 	public function getProveedorCot($ides){
-		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => $this->weekNumber()]);
+		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => ($this->weekNumber()-1)]);
 		$this->jsonResponse($data);
 	}
 
