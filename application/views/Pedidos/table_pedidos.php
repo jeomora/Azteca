@@ -59,11 +59,11 @@ if(!$this->session->userdata("username")){
 						<label for="id_proveedor" class="lblget">Proveedor</label>
 						<select name="id_proves2" id="id_proves2" class="form-control">
 							<option value="nope">Seleccionar...</option>
-							<option value="VARIOS">VARIOS 1°</option>
-							<option value="VARIOS">VARIOS 2°</option>
-							<option value="VARIOS">VARIOS 3°</option>
-							<option value="VARIOS">VARIOS 4°</option>
-							<option value="VOLUEN">VOLUMEN</option>
+							<option value="VARIOS1">VARIOS 1°</option>
+							<option value="VARIOS2">VARIOS 2°</option>
+							<option value="VARIOS3">VARIOS 3°</option>
+							<option value="VARIOS4">VARIOS 4°</option>
+							<option value="VOLUMEN">VOLUMEN</option>
 							<option value="AMARILLOS">AMARILLOS</option>
 							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
 								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>

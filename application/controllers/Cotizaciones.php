@@ -1300,17 +1300,19 @@ class Cotizaciones extends MY_Controller {
 		$filenam = "";
 		$id_proves = $this->input->post('id_proves4');
 		$proves = $this->input->post('id_proves2');
-
-		if ($proves === "VARIOS") {
+		$prs = substr($id_proves,0,6);
+		if ($prs === "VARIOS") {
 			$array = $this->usua_mdl->get(NULL, ["conjunto" => $id_proves]);
 			$filenam = $id_proves;
-		}elseif ($proves === "VOLUMEN" || $proves === "AMARILLOs") {
-			$filenam = $proves;
-			$array = ['nombre' => $id_proves];
+		}elseif ($id_proves === "VOLUMEN" || $id_proves === "AMARILLOS") {
+			$filenam = $id_proves;
+			$array = (object)['0'=>(object)['nombre' => $id_proves]];
 		}else{
-			$array = $this->usua_mdl->get(NULL, ["id_usuario" => $id_proves])[0];
-			$filenam = $array->nombre;
+			$array = $this->user_md->get(NULL, ["id_usuario" => $id_proves]);
+			$filenam = $array[0]->nombre;
 		}
+
+		
 		
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
@@ -1359,10 +1361,10 @@ class Cotizaciones extends MY_Controller {
 			foreach ($array as $key => $value){
 			//HOJA EXISTENCIAS
 			$i++;
-			$this->jsonResponse($array);
+			
 			$this->excelfile->setActiveSheetIndex(0);
 			if($i > 1){
-				$flagBorder = $flag1 - 4;
+				$flagBorder = $flag1 ;
 				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder1.':E'.$flagBorder)->applyFromArray($styleArray);
 				$flagBorder1 = $flag1;
 			}
@@ -1386,7 +1388,7 @@ class Cotizaciones extends MY_Controller {
 
 			$this->excelfile->setActiveSheetIndex(1);
 			if($i > 0){
-				$flagBorder2 = $flag - 4;
+				$flagBorder2 = $flag ;
 				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder3.':AC'.$flagBorder2)->applyFromArray($styleArray);
 				$flagBorder3 = $flag;
 			}
@@ -1564,9 +1566,11 @@ class Cotizaciones extends MY_Controller {
 			$difff = 0.01;
 			$flag2 = 3;
 			$flage = 5;
+
 			if ($cotizacionesProveedor){
 				foreach ($cotizacionesProveedor as $key => $value){
 					//Existencias
+
 					$this->excelfile->setActiveSheetIndex(0);
 					$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 					$hoja1->setCellValue("E".$flag1, $value['familia']);
@@ -1784,13 +1788,13 @@ class Cotizaciones extends MY_Controller {
 		}
 		$this->excelfile->setActiveSheetIndex(1);
 			if($flagBorder2 == 0){
-				$flagBorder2 = $flag - 4;
+				$flagBorder2 = $flag ;
 				$this->excelfile->getActiveSheet()->getStyle('A1:AC'.$flagBorder2)->applyFromArray($styleArray);
 				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder3.':AC'.$flagBorder2)->applyFromArray($styleArray);
 			}
 		$this->excelfile->setActiveSheetIndex(0);
 			if($flagBorder == 0){
-				$flagBorder = $flag1 - 4;
+				$flagBorder = $flag1 ;
 				$this->excelfile->getActiveSheet()->getStyle('A1:E'.$flagBorder)->applyFromArray($styleArray);
 				$this->excelfile->getActiveSheet()->getStyle('A'.$flagBorder1.':E'.$flagBorder)->applyFromArray($styleArray);
 			}
