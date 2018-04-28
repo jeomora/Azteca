@@ -68,8 +68,9 @@ class Main extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
+		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
-		$semana = $this->weekNumber() -1;
+
 		
 		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
 		
@@ -80,8 +81,8 @@ class Main extends MY_Controller {
 				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
 				if($antes){
 					$new_cotizacion[$i] = [
-						"id_producto"		=>	$value->id_producto,
 						"id_proveedor"		=>	$this->input->post('id_proveedor'),
+						"id_producto"		=>	$value->id_producto,
 						"precio"			=>	$value->precio,
 						"num_one"			=>	$value->num_one,
 						"num_two"			=>	$value->num_two,
@@ -102,6 +103,7 @@ class Main extends MY_Controller {
 						"precio_promocion"	=>	$value->precio_promocion,
 						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 						"observaciones"		=>	$value->observaciones,
+						'estatus' => 1
 					];
 				}
 				$cambios = [
