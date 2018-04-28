@@ -14,8 +14,8 @@ class Pedidos_model extends MY_Model {
 			pedidos.id_pedido,
 			DATE_FORMAT(pedidos.fecha_registro,'%d-%m-%Y') AS fecha, 
 			pedidos.total,
-			UPPER(CONCAT(pro.nombre,' ',pro.apellido)) AS proveedor,
-			UPPER(CONCAT(us.nombre,' ',us.apellido)) AS user_registra,
+			UPPER(pro.nombre) AS proveedor,
+			UPPER(us.nombre) AS user_registra,
 			s.nombre AS sucursal")
 		->from($this->TABLE_NAME)
 		->join("sucursales s", $this->TABLE_NAME.".id_sucursal = s.id_sucursal", "LEFT")

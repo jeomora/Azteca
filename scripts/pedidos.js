@@ -118,14 +118,15 @@ function tablePedidoTienda(response,colors,sucur){
 		});
 	});
 	table_contain = '<div class="ibox float-e-margins"><div class="ibox-title"><h5>PEDIDOS A '+flag+' '+getFech()+'</h5></div>'+
-							'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
-							'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: '+colors+'" colspan="3">'+sucur+'</th></tr></thead>'+
-							'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
-							'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
-							'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
-							'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
+					'<div class="ibox-content"><div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="table_pedidos" style="text-align:  center;"">'+
+					'<thead><tr><th colspan="8">PRODUCTO</th><th style="background-color: '+colors+'" colspan="3">'+sucur+'</th></tr></thead>'+
+					'<tbody><tr><td class="td2Form">CÓDIGO</td><td class="td2Form">DESCRIPCIÓN</td><th colspan="6" class="td2Form"></th>'+
+					'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
+					'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
+					'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
 					
 	$(".wonder").append(table_contain);
+	$(".spinns").css("display","none")
 }
 
 function tablePedidoAll(response,colors,sucur){
@@ -193,31 +194,49 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 	event.preventDefault();
 	var id_cotizacion = $("#id_proves4 option:selected").val();
 	var proveedor = $("#id_proves4 option:selected").text();
+	$("#id_proves2 option[value="+id_cotizacion+"]").attr('selected','selected');
 	var table_contain = "";
 	$(".wonder").html('<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>');
 
 	if(id_cotizacion != "nope"){
 		$(".fill_form").css("display","block");
-		$("#id_proves2").val(proveedor);
+		
 		var sucur = "";
 		getSucursal()
 			.done(function (response){
 				sucur = response == null ? 0 : response.nombre;
 				colors = response == null ? 0 : response.color;
 				var stringArray = id_cotizacion.split(",");
-		var flag = "";
-		for (var i = 0; i < stringArray.length; i++) {
-			getPedidos(stringArray[i])
-			.done(function (response){
-				if(sucur == 0){
-					tablePedidoAll(response,colors,sucur);
-
+				var flag = "";
+				if(id_cotizacion == "VARIOS1" || id_cotizacion == "VARIOS2" || id_cotizacion == "VARIOS3" || id_cotizacion == "VARIOS4"){
+					getConjunto(id_cotizacion).done(function (respon){
+						$.each(respon, function(index, value){
+							if(sucur == 0){
+								getAllPedidos(value.id_usuario)
+								.done(function (response){
+									tablePedidoAll(response,colors,sucur);
+								});
+							}else{
+								getPedidosSingle(value.id_usuario)
+								.done(function (response){
+									tablePedidoTienda(response,colors,sucur);
+								});
+							}
+						});
+					});
 				}else{
-					tablePedidoTienda(response,colors,sucur);
-
+					if(sucur == 0){
+						getAllPedidos(id_cotizacion)
+						.done(function (response){
+							tablePedidoAll(response,colors,sucur);
+						});
+					}else{
+						getPedidosSingle(id_cotizacion)
+						.done(function (response){
+							tablePedidoTienda(response,colors,sucur);
+						});
+					}
 				}
-			});
-		}
 			});
 	}else{
 		$(".fill_form").css("display","none");
@@ -328,9 +347,37 @@ function getSucursal(){
 	});
 }
 
+function getConjunto(id_provs){
+	return $.ajax({
+		url: site_url+"/Pedidos/getConjs",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: id_provs},
+	});
+}
+
+
 function getPedidos(id_prov) {
 	return $.ajax({
 		url: site_url+"/Pedidos/get_pedidos",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: id_prov},
+	});
+}
+
+function getAllPedidos(id_prov) {
+	return $.ajax({
+		url: site_url+"/Pedidos/get_allpedidos",
+		type: "POST",
+		dataType: "JSON",
+		data: {id_proveedor: id_prov},
+	});
+}
+
+function getPedidosSingle(id_prov) {
+	return $.ajax({
+		url: site_url+"/Pedidos/get_pedidosingle",
 		type: "POST",
 		dataType: "JSON",
 		data: {id_proveedor: id_prov},

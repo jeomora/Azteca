@@ -10,7 +10,7 @@ class Cambios_model extends MY_Model {
 	}
 
 	public function getCambios(){
-		$this->db->select("id_cambio, CONCAT(usuarios.nombre,' ',usuarios.apellido) AS usuario, cambios.fecha_cambio, antes, despues")
+		$this->db->select("id_cambio, usuarios.nombre AS usuario, cambios.fecha_cambio, antes, despues")
 		->from($this->TABLE_NAME)
 		->join("usuarios", $this->TABLE_NAME.".id_usuario = usuarios.id_usuario", "INNER")
 		->order_by($this->TABLE_NAME.".fecha_cambio", "ASC");;

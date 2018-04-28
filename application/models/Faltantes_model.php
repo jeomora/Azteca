@@ -10,7 +10,7 @@ class Faltantes_model extends MY_Model {
 	}
 
 	public function getfaltas($where=[],$producto=0,$fechas){
-		$this->db->select("fecha_termino,CONCAT(nombre,' ',apellido) as nomb")
+		$this->db->select("fecha_termino,nombre as nomb")
 		->from($this->TABLE_NAME)
 		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario ", "LEFT")
 		->where($this->TABLE_NAME.".fecha_termino >", "'".$fechas."'")

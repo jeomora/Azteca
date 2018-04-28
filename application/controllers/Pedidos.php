@@ -46,7 +46,9 @@ class Pedidos extends MY_Controller {
 		];
 		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
 		$data["proveedores"] = $this->user_mdl->getUsuarios();
-		if($user['id_grupo'] ==3){
+		$data["conjuntos"] = $this->user_mdl->get(NULL, ["conjunto" => "INDIVIDUAL"]);
+
+		if($user['id_grupo'] == 3){
 			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
 		}else{
 			$this->estructura("Pedidos/table_pedidos", $data, FALSE);
@@ -132,6 +134,49 @@ class Pedidos extends MY_Controller {
 		
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
+		$this->jsonResponse($productosProveedor);
+	}
+
+	public function get_allpedidos(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$id_proveedor = $this->input->post('id_proveedor');
+		$user = $this->session->userdata();
+		if ($id_proveedor == "VOLUMEN") {
+			$where = ["prod.estatus" => 2];
+		}elseif ($id_proveedor == "AMARILLOS") {
+			$where = ["prod.estatus" => 3];
+		}else{
+			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
+		}
+		
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$productosProveedor = $this->ct_mdl->getPedidosAll($where,$fecha,$user["id_usuario"]);
+		$this->jsonResponse($productosProveedor);
+	}
+
+	public function getConjs(){
+		$productosProveedor = $this->user_mdl->get(NULL, ["conjunto" => $this->input->post('id_proveedor')]);
+		$this->jsonResponse($productosProveedor);
+	}
+
+	public function get_pedidosingle(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$id_proveedor = $this->input->post('id_proveedor');
+		$user = $this->session->userdata();
+		if ($id_proveedor == "VOLUMEN") {
+			$where = ["prod.estatus" => 2];
+		}elseif ($id_proveedor == "AMARILLOS") {
+			$where = ["prod.estatus" => 3];
+		}else{
+			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
+		}
+		
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$productosProveedor = $this->ct_mdl->getPedidosSingle($where,$fecha,$user["id_usuario"]);
 		$this->jsonResponse($productosProveedor);
 	}
 
