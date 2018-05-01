@@ -834,6 +834,8 @@ class Cotizaciones_model extends MY_Model {
 	}
 
 	public function getPedidosAll($where=[],$fech=0,$tienda){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
 		$this->db->select("ctz_first.id_cotizacion, 
 			ctz_first.fecha_registro,
 			prod.id_producto,prod.color,prod.colorp,
