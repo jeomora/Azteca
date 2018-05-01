@@ -194,8 +194,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 	event.preventDefault();
 	var id_cotizacion = $("#id_proves4 option:selected").val();
 	var proveedor = $("#id_proves4 option:selected").text();
-	$('#id_proves2 option:selected').removeAttr('selected');
-	$("#id_proves2 option[value="+id_cotizacion+"]").attr('selected','selected');
+	
 	var table_contain = "";
 	$(".wonder").html('<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>');
 
@@ -232,6 +231,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 							tablePedidoAll(response,colors,sucur);
 						});
 					}else{
+						console.log(id_cotizacion);
 						getPedidosSingle(id_cotizacion)
 						.done(function (response){
 							tablePedidoTienda(response,colors,sucur);

@@ -206,9 +206,9 @@ class Cotizaciones extends MY_Controller {
 				'estatus' => 0
 			];
 			if($cotiz){
-				$data['cotizacin']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+				$data['cotizacin']=$this->ct_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
 			}else{
-				$data['cotizacin']=$this->ct_mdl->insert($new_cotizacion);
+				$data['cotizacin']=$this->ct_mdl->insert($cotizacion);
 			}
 		}else{
 			$cotizacion = [
@@ -223,9 +223,9 @@ class Cotizaciones extends MY_Controller {
 				'observaciones'		=>	strtoupper($this->input->post('observaciones'))
 			];
 			if($cotiz){
-				$data['cotizacin']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+				$data['cotizacin']=$this->ct_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
 			}else{
-				$data['cotizacin']=$this->ct_mdl->insert($new_cotizacion);
+				$data['cotizacin']=$this->ct_mdl->insert($cotizacion);
 			}
 		}
 		
@@ -457,6 +457,7 @@ class Cotizaciones extends MY_Controller {
 	
 	public function fill_excel(){
 		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
 		$hoja = $this->excelfile->getActiveSheet();
 		$hoja->getDefaultStyle()
@@ -886,9 +887,8 @@ class Cotizaciones extends MY_Controller {
 						$precio_promocion = $precio;
 					}
 					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
-					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
 					if($antes){
-						$new_cotizacion=[
+						$new_cotizacion[$i]=[
 							"id_producto"		=>	$productos->id_producto,
 							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
 							"precio"			=>	$precio,
@@ -898,14 +898,10 @@ class Cotizaciones extends MY_Controller {
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
-							"estatus" => 0];
-							if($cotiz){
-								$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
-							}else{
-								$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
-							}
+							"estatus" => 0
+						];
 					}else{
-						$new_cotizacion=[
+						$new_cotizacion[$i]=[
 							"id_producto"		=>	$productos->id_producto,
 							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
 							"precio"			=>	$precio,
@@ -914,19 +910,16 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
+							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
+							"estatus" => 1
 						];
-						if($cotiz){
-							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
-						}else{
-							$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
-						}
 					}
 					
 				}
 			}
 		}
 		if (sizeof($new_cotizacion) > 0) {
+			$data['cotizacion']=$this->ct_mdl->insert_batch($new_cotizacion);
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
 						"type"	=>	'success'];
@@ -936,6 +929,7 @@ class Cotizaciones extends MY_Controller {
 						"type"	=>	'error'];
 		}
 		$this->jsonResponse($mensaje);
+		
 	}
 
 	public function upload_pedidos(){
