@@ -1306,14 +1306,17 @@ class Cotizaciones extends MY_Controller {
 			$filenam = $id_proves;
 		}elseif ($id_proves === "VOLUMEN" || $id_proves === "AMARILLOS") {
 			$filenam = $id_proves;
-			$array = (object)['0'=>(object)['nombre' => $id_proves]];
+			$array = (object)['0'=>['nombre' => $id_proves]];
 		}else{
 			$array = $this->user_md->get(NULL, ["id_usuario" => $id_proves]);
 			$filenam = $array[0]->nombre;
 		}
-
 		
+		foreach ($array as $key => $value){
+			$this->jsonResponse($value->nombre);
+		}
 		
+		/*
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
 		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
@@ -1806,7 +1809,7 @@ class Cotizaciones extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 
-		$excel_Writer->save("php://output");
+		$excel_Writer->save("php://output");*/
 		/*$excel_Writer = new PHPExcel_Writer_Excel2007($this->excelfile);
 		$excel_Writer->setOffice2003Compatibility(true);
 		$excel_Writer->save("php://output");*/
