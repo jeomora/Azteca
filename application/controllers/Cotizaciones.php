@@ -89,6 +89,35 @@ class Cotizaciones extends MY_Controller {
 		$this->estructura("Cotizaciones/anteriores", $data);
 	}
 
+	public function agregar(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/agregar',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 2];
+		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Cotizaciones/agregar", $data);
+	}
+
 	public function volumenes(){
 		ini_set("memory_limit", "-1");
 		$data['links'] = [
@@ -880,7 +909,7 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
-	public function upload_cotizaciones(){
+	public function upload_cotizaciones($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
@@ -905,7 +934,11 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0); 
 		$num_rows = $sheet->getHighestDataRow();
-		$proveedor = $this->session->userdata('id_usuario');
+		if($idesp == 0){
+			$proveedor = $this->session->userdata('id_usuario');
+		}else{
+			$proveedor = $idesp;
+		}
 		for ($i=3; $i<=$num_rows; $i++) { 
 			if($sheet->getCell('C'.$i)->getValue() > 0){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
@@ -926,7 +959,7 @@ class Cotizaciones extends MY_Controller {
 						$precio_promocion = $precio;
 					}
 					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
-					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
 					if($antes){
 						$new_cotizacion=[
 							"id_producto"		=>	$productos->id_producto,
@@ -939,11 +972,11 @@ class Cotizaciones extends MY_Controller {
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
 							"estatus" => 0];
-							if($cotiz){
-								$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
-							}else{
-								$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
-							}
+						if($cotiz){
+							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+						}else{
+							$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
+						}
 					}else{
 						$new_cotizacion=[
 							"id_producto"		=>	$productos->id_producto,
