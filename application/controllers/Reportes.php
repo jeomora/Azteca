@@ -7,6 +7,7 @@ class Reportes extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Usuarios_model", "user_mdl");
+		$this->load->model("Cambios_model", "cam_mdl");
 	}
 
 	public function precios_bajos(){
@@ -66,6 +67,34 @@ class Reportes extends MY_Controller {
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$data["promociones_igual"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Reportes/table_precios_iguales", $data);
+	}
+
+	public function actividad(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/reportes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where = ["usuarios.id_usuario <>" => 1 ];
+		$data["cambios"] = $this->cam_mdl->getCambios($where);
+		$this->estructura("Reportes/actividad", $data);
 	}
 
 	public function cotizaciones(){
