@@ -913,32 +913,35 @@ class Cotizaciones extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		
-		
-
-		$config['upload_path']          = './assets/uploads/cotizaciones/';
-        $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
-        $config['max_height']           = 768;
-        
-
-        $this->load->library('upload', $config);
-        $this->upload->do_upload('file_cotizaciones');
-
-		$this->load->library("excelfile");
-		ini_set("memory_limit", -1);
-		$file = $_FILES["file_cotizaciones"]["tmp_name"];
-		$sheet = PHPExcel_IOFactory::load($file);
-		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0); 
-		$num_rows = $sheet->getHighestDataRow();
 		if($idesp == 0){
 			$proveedor = $this->session->userdata('id_usuario');
 		}else{
 			$proveedor = $idesp;
 		}
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$filen = "Cotizacion ".date("d-m-Y H:i:s");
+		
+		
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        
+        
+        
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_cotizaciones');
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_cotizaciones"]["tmp_name"];
+		$filename=$_FILES['file_cotizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0); 
+		$num_rows = $sheet->getHighestDataRow();
+		
 		for ($i=3; $i<=$num_rows; $i++) { 
 			if($sheet->getCell('C'.$i)->getValue() > 0){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
@@ -1000,6 +1003,14 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 		if (sizeof($new_cotizacion) > 0) {
+			$cambios=[
+					"id_usuario"		=>	$this->session->userdata('id_usuario'),
+					"fecha_cambio"		=>	date("d-m-Y H:i:s"),
+					"antes"			=>	"El usuario sube archivo de cotizaciones de ".$proveedor,
+					"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
+					"accion"			=>	"Sube Archivo"
+				];
+			$data['cambios']=$this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
 						"type"	=>	'success'];

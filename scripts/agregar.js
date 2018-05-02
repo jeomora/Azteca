@@ -15,7 +15,7 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+				//setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
 			}
 		});
 });
