@@ -584,7 +584,7 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 
 function uploadCotizaciones(formData) {
 	return $.ajax({
-		url: site_url+"Cotizaciones/upload_cotizaciones",
+		url: site_url+"Cotizaciones/upload_cotizaciones/0",
 		type: "POST",
 		cache: false,
 		contentType: false,
