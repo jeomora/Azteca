@@ -9,12 +9,12 @@ class Cambios_model extends MY_Model {
 		$this->PRI_INDEX = "id_cambio";
 	}
 
-	public function getCambios(){
-		$this->db->select("id_cambio, usuarios.nombre AS usuario, cambios.fecha_cambio, antes, despues")
-		->from($this->TABLE_NAME)
+	public function getCambios($where=[]){
+		$this->db->select("id_cambio, usuarios.nombre AS usuario, cambios.fecha_cambio, antes, despues, accion")
+		->from("cambios")
 		->join("usuarios", $this->TABLE_NAME.".id_usuario = usuarios.id_usuario", "INNER")
 		->order_by($this->TABLE_NAME.".fecha_cambio", "ASC");;
-		$menus = $this->db->get()->result();
+		
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
@@ -29,7 +29,7 @@ class Cambios_model extends MY_Model {
 			if (is_array($where)) {
 				return $result;
 			} else {
-				return array_shift($result);
+				return $result;
 			}
 		} else {
 			return false;
