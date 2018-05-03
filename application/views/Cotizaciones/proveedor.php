@@ -3,6 +3,7 @@
 	tr:hover > td{color: white !important;}
 	.modal-body{height: 65vh;overflow-y: scroll;}
 	.searchboxs{display: none}
+	.top-navigation #page-wrapper {margin-left: 0;overflow-y: scroll;}
 </style>
 <?php 
 if(!$this->session->userdata("username")){
