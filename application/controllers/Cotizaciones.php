@@ -1091,7 +1091,7 @@ class Cotizaciones extends MY_Controller {
 		if (sizeof($new_cotizacion) > 0) {
 			$cambios=[
 					"id_usuario"		=>	$this->session->userdata('id_usuario'),
-					"fecha_cambio"		=>	date("d-m-Y H:i:s"),
+					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
 					"antes"			=>	"El usuario sube archivo de cotizaciones de ".$proveedor,
 					"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
 					"accion"			=>	"Sube Archivo"

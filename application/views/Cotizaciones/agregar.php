@@ -16,6 +16,7 @@ if(!$this->session->userdata("username")){
 	<div class="row">
 		<h3>Seleccione un proveedor</h3>
 	</div>
+	<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 	<div class="row">
 		<div class="col-lg-3" style="margin-bottom: 1rem">
 			<select name="id_pro" id="id_pro" class="form-control">
@@ -37,14 +38,14 @@ if(!$this->session->userdata("username")){
 				</div>
 				<div class="ibox-content" style="padding-top: 5rem">
 					<div class="btn-group">
-						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
+						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion" type="button">
 							<i class="fa fa-plus"></i> Agregar Cotización
 						</button>
 					</div>
 					<div class="btn-group">
-						<?php echo form_open("Cotizaciones/archivo_cotizacion", array("id" => 'archivo_cotizacion', "target" => '_blank')); ?>
-							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-cloud-download"></i> Descargar formato cotizaciones
+
+							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+								<i class="fa fa-file-excel-o"></i> Descargar formato cotizaciones
 							</button>
 						<?php echo form_close(); ?>
 					</div>
