@@ -316,3 +316,4 @@ function getProveedorCot(id_prov) {
 		dataType: "JSON"
 	});
 }
+

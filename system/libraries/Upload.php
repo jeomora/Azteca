@@ -371,7 +371,7 @@ class CI_Upload {
 	 * @param	string	$field
 	 * @return	bool
 	 */
-	public function do_upload($field = 'userfile')
+	public function do_upload($field = 'userfile',$filna='')
 	{
 		// Is $_FILES[$field] set? If not, no reason to continue.
 		if (isset($_FILES[$field]))
@@ -468,19 +468,19 @@ class CI_Upload {
 		}
 
 		// if we're overriding, let's now make sure the new name and type is allowed
-		if ($this->_file_name_override !== '')
+		if ($filna !== '')
 		{
-			$this->file_name = $this->_prep_filename($this->_file_name_override);
+			$this->file_name = $this->_prep_filename($filna);
 
 			// If no extension was provided in the file_name config item, use the uploaded one
-			if (strpos($this->_file_name_override, '.') === FALSE)
+			if (strpos($filna, '.') === FALSE)
 			{
 				$this->file_name .= $this->file_ext;
 			}
 			else
 			{
 				// An extension was provided, let's have it!
-				$this->file_ext	= $this->get_extension($this->_file_name_override);
+				$this->file_ext	= $this->file_ext;
 			}
 
 			if ( ! $this->is_allowed_filetype(TRUE))

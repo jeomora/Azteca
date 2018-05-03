@@ -3,6 +3,7 @@
 	tr:hover > td{color: white !important;}
 	.modal-body{height: 65vh;overflow-y: scroll;}
 	.searchboxs{display: none}
+	.top-navigation #page-wrapper {margin-left: 0;overflow-y: scroll;}
 </style>
 <?php 
 if(!$this->session->userdata("username")){
@@ -16,7 +17,6 @@ if(!$this->session->userdata("username")){
 		<h3>Seleccione un proveedor</h3>
 	</div>
 	<div class="row">
-		<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 		<div class="col-lg-3" style="margin-bottom: 1rem">
 			<select name="id_pro" id="id_pro" class="form-control">
 				<option value="nope">Seleccionar...</option>
@@ -26,9 +26,7 @@ if(!$this->session->userdata("username")){
 			</select>
 		</div>
 		
-		<div class="col-lg-4 searchboxs">
-			<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
-		</div>
+		
 	</div>
 	
 	<div class="row">
@@ -37,7 +35,7 @@ if(!$this->session->userdata("username")){
 				<div class="ibox-title">
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
-				<div class="ibox-content">
+				<div class="ibox-content" style="padding-top: 5rem">
 					<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
 							<i class="fa fa-plus"></i> Agregar Cotización
@@ -60,12 +58,16 @@ if(!$this->session->userdata("username")){
 							</div>
 						<?php echo form_close(); ?>
 					</div>
+					<div class="btn-group searchboxs">
+						<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
+					</div>
 					
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_cot_proveedores">
 							<thead>
 								<tr>
 									<th>DESCRIPCIÓN</th>
+									<th>CODIGO</th>
 									<th>FECHA REGISTRO</th>
 									<th>PRECIO FACTURA</th>
 									<th>PRECIO FACTURA C/PROMOCIÓN</th>
@@ -75,7 +77,7 @@ if(!$this->session->userdata("username")){
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="cot-prov">
 								
 							</tbody>
 						</table>

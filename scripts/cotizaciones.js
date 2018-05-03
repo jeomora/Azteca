@@ -253,7 +253,7 @@ $(document).off("click", ".descuento").on("click", ".descuento", function() {
 
 $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", function(event) {
 	if($("#id_producto").val() !== ''){
-		sendForm("Cotizaciones/save", $("#form_cotizacion_new"), "");
+		sendForm("Cotizaciones/save/0", $("#form_cotizacion_new"), "");
 	}else{
 		toastr.warning("Seleccione un artículo de la lista", user_name);
 	}
