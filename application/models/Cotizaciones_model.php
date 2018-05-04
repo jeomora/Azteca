@@ -1068,6 +1068,54 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
+
+	public function getProveedorBajos($where = [],$fech,$prove){
+		$this->db->select("c.id_cotizacion, UPPER(prove_first.nombre) as proves, cs.precio_promocion as proves_promo, cs.precio as proves_precio, cs.observaciones as proves_obs,
+			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
+			fam.id_familia, fam.nombre AS familia,
+			prod.codigo, prod.nombre AS producto,prod.id_producto,
+			UPPER(proveedor_first.nombre) AS proveedor_first,
+			UPPER(prove_first.nombre) AS prove_nombre,
+			ctz_first.precio AS precio_firsto,
+			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
+			ctz_first.observaciones AS promocion_first,
+			ctz_first.nombre AS observaciones_first,
+			sist.precio_sistema,
+			sist.precio_four")
+		->from("productos prod")
+		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." AND c.id_proveedor =".$prove, "RIGHT")
+		->join("cotizaciones cs", "c.id_cotizacion = cs.id_cotizacion AND WEEKOFYEAR(cs.fecha_registro) = ".$this->weekNumber($fech)." AND cs.id_proveedor =".$prove, "RIGHT")
+		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
+			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
+		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
+		->join("usuarios prove_first", "cs.id_proveedor = prove_first.id_usuario", "LEFT")
+		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
+		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
+		->where("prod.estatus <>","0")
+		->group_by("prod.nombre")
+		->order_by("fam.id_familia,prod.nombre", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
 }
 
 

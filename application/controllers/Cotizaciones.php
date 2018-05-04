@@ -1293,7 +1293,7 @@ class Cotizaciones extends MY_Controller {
 						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue())),
 						"fecha_registro"		=>	$fecha->format('Y-m-d H:i:s')
 					];
-					$precios = $this->pre_mdl->get("id_precio",['id_producto'=> $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber()])[0];
+					$precios = $this->pre_mdl->get("id_precio",['id_producto'=> $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s'))])[0];
 					if(sizeof($precios) > 0 ){
 						$data['cotizacion']=$this->pre_mdl->update($new_precios,
 						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')),'id_precio'=>$precios->id_precio]);
@@ -1468,7 +1468,14 @@ class Cotizaciones extends MY_Controller {
 		return $botones;
 	}
 
-	
+	public function getProveedorBajos($ides){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		
+		$data["cotizaciones"] =  $this->ct_mdl->getProveedorBajos(NULL,$fecha->format('Y-m-d H:i:s'),$ides);
+		$this->jsonResponse($data);
+	}
 
 	public function getProveedorCot($ides){
 		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => ($this->weekNumber()-1)]);
@@ -2257,6 +2264,133 @@ class Cotizaciones extends MY_Controller {
 		
 		
 		$this->jsonResponse($mensaje);
+	}
+
+	public function fill_excel_bajos(){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' => 
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+		
+		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
+		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
+		$hoja->setCellValue("D1", "PRECIO PROMOCIÓN")->getColumnDimension('D')->setWidth(15);
+		$hoja->setCellValue("E1", "OBSERVACIONES")->getColumnDimension('E')->setWidth(22);
+		$hoja->setCellValue("F1", "SISTEMA")->getColumnDimension('F')->setWidth(12);
+		$hoja->setCellValue("G1", "PRECIO 4")->getColumnDimension('G')->setWidth(15);
+		$hoja->setCellValue("H1", "DIFERENCIA")->getColumnDimension('H')->setWidth(15);
+		$hoja->setCellValue("I1", "PROVEEDOR")->getColumnDimension('I')->setWidth(22);
+		$hoja->setCellValue("J1", "PRECIO")->getColumnDimension('J')->setWidth(12);
+		$hoja->setCellValue("K1", "OBSERVACIONES")->getColumnDimension('K')->setWidth(22);
+
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		
+		$hoja->mergeCells('B2:F2');
+
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		
+		$productos =  $this->ct_mdl->getProveedorBajos(NULL,$fecha->format('Y-m-d H:i:s'),$this->input->post('id_pro'));
+
+		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
+		$hoja->setCellValue("B2", "COMPARACIÓN DE PRECIOS ".$provs->nombre)->getColumnDimension('B')->setWidth(70); 
+		$row_print = 3;
+
+
+		if ($productos){
+			foreach ($productos as $key => $value){
+				
+			if($value->color === '#92CEE3'){
+				$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
+			}else{
+				$this->cellStyle("A{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+			}
+			$hoja->setCellValue("A{$row_print}", $value->codigo)->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+			$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("B{$row_print}", $value->producto);
+			if($value->estatus == 2){
+				$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Book");
+			}
+			if($value->estatus == 3){
+				$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
+			}
+			
+			$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+			if($value->colorp == 1){
+				$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
+			}else{
+				$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+			}
+			$hoja->setCellValue("C{$row_print}", $value->proves_precio)->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+
+			$hoja->setCellValue("D{$row_print}", $value->proves_promo)->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("E{$row_print}", $value->proves_obs);
+			$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("F{$row_print}", $value->precio_sistema)->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("G{$row_print}", $value->precio_four)->getStyle("G{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
+			$diffes = $value->proves_promo - $value->precio_first;
+			$hoja->setCellValue("H{$row_print}", $diffes)->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("I{$row_print}", $value->proveedor_first);
+			$hoja->getStyle("I{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("J{$row_print}", $value->precio_first)->getStyle("J{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->getStyle("J{$row_print}")->applyFromArray($border_style);
+			$hoja->setCellValue("K{$row_print}", $value->observaciones_first);
+			$hoja->getStyle("K{$row_print}")->applyFromArray($border_style);
+			
+			if($value->proves_promo < $value->precio_first){
+				$this->cellStyle("H{$row_print}", "FF0066", "000000", FALSE, 10, "Franklin Gothic Book");
+			}else{
+				$this->cellStyle("H{$row_print}", "FFE6F0", "000000", FALSE, 10, "Franklin Gothic Book");
+			}
+
+			if ($value->proves === $value->proveedor_first) {
+				$hoja->setCellValue("H{$row_print}", "");
+				$hoja->setCellValue("I{$row_print}", "");
+				$hoja->setCellValue("J{$row_print}", "");
+				$hoja->setCellValue("K{$row_print}", "");
+			}
+
+
+			$row_print++;
+
+			}
+		}
+		$hoja->getStyle("A3:K{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+		$file_name = "Comparación ".$provs->nombre.".xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+
 	}
 
 }
