@@ -92,7 +92,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$where = NULL;
+		$where = ["usuarios.id_usuario <> "=> 1];
 		$data["cambios"] = $this->cam_mdl->getCambios($where);
 		$this->estructura("Reportes/actividad", $data);
 	}
