@@ -92,9 +92,9 @@ function tablePedidoTienda(response,colors,sucur){
 			vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
 			vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
 			vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
-			vl.cajas = vl.cajas == null ? '""' : vl.cajas;
-			vl.piezas = vl.piezas == null ? '""' : vl.piezas;
-			vl.pedido = vl.pedido == null ? '""' : vl.pedido;
+			vl.cajas = vl.cajas == "" ? 0 : vl.cajas;
+			vl.piezas = vl.piezas == "" ? 0 : vl.piezas;
+			vl.pedido = vl.pedido == "" ? 0 : vl.pedido;
 			flag = vl.proveedor_first;
 			table_contain += '<tr><td>'+vl.codigo+'</td><td>'+vl.producto+'</td><td>'+vl.precio_first+'</td><td>'+vl.promocion_first+'</td>'+
 						'<td>$ '+formatNumber(parseFloat(vl.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(vl.precio_next), 2)+'</td>'+
@@ -521,7 +521,7 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 
 function uploadPedidos(formData) {
 	return $.ajax({
-		url: site_url+"Cotizaciones/upload_pedidos",
+		url: site_url+"Cotizaciones/upload_pedidos/0",
 		type: "POST",
 		cache: false,
 		contentType: false,

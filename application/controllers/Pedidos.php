@@ -55,6 +55,34 @@ class Pedidos extends MY_Controller {
 		}
 		
 	}
+	public function agregar(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/agregar',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 3];
+		$data["tiendas"] = $this->user_mdl->getUsuarios($where);
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Pedidos/agregar", $data);
+	}
 
 	public function add_pedido(){
 		$data["title"]="REGISTRAR PEDIDOS";
@@ -189,76 +217,6 @@ class Pedidos extends MY_Controller {
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where, $fecha,0);
 		$this->jsonResponse($productosProveedor);
-	}
-
-	public function upload_pedidos(){
-		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
-		$fecha->add($intervalo);
-		$user = $this->session->userdata();
-		$config['upload_path']          = './assets/uploads/precios/';
-        $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
-        $config['max_height']           = 768;
-        
-
-        $this->load->library('upload', $config);
-        $this->upload->do_upload('file_cotizaciones');
-        
-		$this->load->library("excelfile");
-		ini_set("memory_limit", "-1");
-		$file = $_FILES["file_cotizaciones"]["tmp_name"];
-		$sheet = PHPExcel_IOFactory::load($file);
-		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0); 
-		$num_rows = $sheet->getHighestDataRow();
-		
-		for ($i=3; $i<=$num_rows; $i++) { 
-			if($sheet->getCell('B'.$i)->getValue() > 0){
-				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
-				if (sizeof($productos) > 0) {
-					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('B'.$i)->getValue()));
-					$column_one = $sheet->getCell('D'.$i)->getValue();
-					$column_two = $sheet->getCell('E'.$i)->getValue();
-					$descuento = $sheet->getCell('F'.$i)->getValue();
-
-					if ($column_one ==1 && $column_two ==1) {
-						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
-					}elseif ($column_one >=1 && $column_two >1) {
-						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
-					}elseif ($descuento >0) {
-						$precio_promocion = ($precio - ($precio * ($descuento/100)));
-					}else{
-						$precio_promocion = $precio;
-					}
-					$new_cotizacion[$i]=[
-						"id_producto"		=>	$productos->id_producto,
-						"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
-						"precio"			=>	$precio,
-						"num_one"			=>	$column_one,
-						"num_two"			=>	$column_two,
-						"descuento"			=>	$descuento,
-						"precio_promocion"	=>	$precio_promocion,
-						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-						"observaciones"		=>	$sheet->getCell('C'.$i)->getValue()
-					];
-				}
-			}
-		}
-		if (sizeof($new_cotizacion) > 0) {
-			$data['cotizacion']=$this->ct_mdl->insert_batch($new_cotizacion);
-			$mensaje=[	"id"	=>	'Éxito',
-						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
-						"type"	=>	'success'];
-		}else{
-			$mensaje=[	"id"	=>	'Error',
-						"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
-						"type"	=>	'error'];
-		}
-		$this->jsonResponse($mensaje);
 	}
 
 	public function guardaSistema(){

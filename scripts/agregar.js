@@ -224,3 +224,44 @@ $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", funct
 		toastr.warning("Seleccione un artículo de la lista", user_name);
 	}
 });
+
+$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+	event.preventDefault();
+	var proveedor = $("#id_proves4 option:selected").val();
+	var fdata = new FormData($("#upload_pedidos")[0]);
+	if(proveedor != "nope"){
+		blockPage();
+		uploadPedidos(fdata,proveedor)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				toastr.error(resp.desc, user_name);
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+			}
+		});
+	}
+});
+
+$(document).off("change", "#id_proves4").on("change", "#id_proves4", function(event) {
+	event.preventDefault();
+	$(".sbir").css("display","none");
+	var proveedor = $("#id_proves4 option:selected").val();
+	if(proveedor != "nope"){
+		$(".sbir").css("display","block");
+	}else{
+		$(".sbir").css("display","none");
+	}
+});
+
+function uploadPedidos(formData,proveedor) {
+	return $.ajax({
+		url: site_url+"Cotizaciones/upload_pedidos/"+proveedor,
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

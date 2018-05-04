@@ -1089,10 +1089,11 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 		if (sizeof($new_cotizacion) > 0) {
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$proveedor])[0];
 			$cambios=[
 					"id_usuario"		=>	$this->session->userdata('id_usuario'),
 					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
-					"antes"			=>	"El usuario sube archivo de cotizaciones de ".$proveedor,
+					"antes"			=>	"El usuario sube archivo de cotizaciones de ".$aprov->nombre,
 					"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
 					"accion"			=>	"Sube Archivo"
 				];
@@ -1108,7 +1109,7 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function upload_pedidos(){
+	public function upload_pedidos($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
@@ -1119,9 +1120,17 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0); 
 		$num_rows = $sheet->getHighestDataRow();
-		$tienda = $this->session->userdata('id_usuario');
+		
+		if($idesp === "0"){
+			$tienda = $this->session->userdata('id_usuario');
+		}else{
+			$tienda = $idesp;
+		}
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $tienda])[0];
+		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
+		$filen = "Pedidos".$nams."".rand();
 
-		$config['upload_path']          = './assets/uploads/precios/';
+		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 100;
         $config['max_width']            = 1024;
@@ -1130,11 +1139,12 @@ class Cotizaciones extends MY_Controller {
         
 
         $this->load->library('upload', $config);
-        $this->upload->do_upload('file_cotizaciones');
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_cotizaciones',$filen);
 		for ($i=3; $i<=$num_rows; $i++) { 
 			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 			if (sizeof($productos) > 0) {
-				$this->prod_mdl->delete("EXISTENCIAS","WEEKOFYEAR(fecha_registro)".$this->weekNumber($fecha->format('Y-m-d H:i:s'))."AND id_tienda = ".$tienda." AND id_producto = ".$productos->id_producto);
+				$exis = $this->ex_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$tienda,"id_producto"=>$productos->id_producto])[0];
 				$column_one=0; $column_two=0; $column_three=0;
 				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();	
 				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
@@ -1148,10 +1158,23 @@ class Cotizaciones extends MY_Controller {
 					"pedido"	=>	$column_three,
 					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
 				];
+				if($exis){
+					$data['cotizacion']=$this->ex_mdl->update($new_existencias[$i], ['id_pedido' => $exis->id_pedido]);
+				}else{
+					$data['cotizacion']=$this->ex_mdl->insert($new_existencias[$i]);
+				}
 			}
 		}
 		if (sizeof($new_existencias) > 0) {
-			$data['cotizacion']=$this->ex_mdl->insert_batch($new_existencias);
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$tienda])[0];
+			$cambios=[
+					"id_usuario"		=>	$this->session->userdata('id_usuario'),
+					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+					"antes"			=>	"El usuario sube archivo de pedidos de la tienda ".$aprov->nombre,
+					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
+					"accion"			=>	"Sube Pedidos"
+				];
+			$data['cambios']=$this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Pedidos cargados correctamente en el Sistema',
 						"type"	=>	'success'];
