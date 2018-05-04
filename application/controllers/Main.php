@@ -67,7 +67,7 @@ class Main extends MY_Controller {
 	public function repeat_cotizacion(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
-		$fecha->add($intervalo);
+		$fecha->sub($intervalo);
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
 
@@ -106,17 +106,19 @@ class Main extends MY_Controller {
 						'estatus' => 1
 					];
 				}
-				$cambios = [
-				"id_usuario" => $user["id_usuario"],
-				"fecha_cambio" => date('Y-m-d H:i:s'),
-				"antes" => "Repite cotizacion",
-				"despues" => "Del proveedor ".$this->input->post('id_proveedor')];
-				$data['cambios'] = $this->cambio_md->insert($cambios);
+				
 				$i++;
 			}
 		}
 		if (sizeof($new_cotizacion) > 0) {
 			$data['cotizacion']=$this->cot_md->insert_batch($new_cotizacion);
+			$aprov = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_proveedor')])[0];
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Repite cotizacion",
+				"despues" => "Del proveedor ".$aprov->nombre];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',
 						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
 						"type"	=>	'success'];

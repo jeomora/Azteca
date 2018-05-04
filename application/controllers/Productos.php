@@ -40,7 +40,7 @@ class Productos extends MY_Controller {
 	public function productos_dataTable(){
 		$search = ["productos.codigo", "productos.nombre", "fam.nombre"];
 
-		$columns = "productos.id_producto, productos.nombre AS producto, productos.codigo, fam.nombre AS familia";
+		$columns = "productos.id_producto, productos.nombre AS producto, productos.codigo, fam.nombre AS familia,productos.color";
 
 		$joins = [
 			["table"	=>	"familias fam",	"ON"	=>	"productos.id_familia = fam.id_familia",	"clausula"	=>	"INNER"]
@@ -126,6 +126,7 @@ class Productos extends MY_Controller {
 		$producto = ['codigo'	=>	$this->input->post('codigo'),
 					'nombre'	=>	strtoupper($this->input->post('nombre')),
 					'estatus'	=>	$this->input->post('estatus'),
+					'colorp'	=>	$this->input->post('colorp'),
 					'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
 		];
 		$getProducto = $this->pro_md->get(NULL, ['codigo'=>$producto['codigo']])[0];

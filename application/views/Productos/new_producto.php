@@ -26,6 +26,15 @@
 					</select>
 				</div>
 			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="estatus">Conversión</label>
+					<select name="colorp" class="form-control chosen-select">
+						<option value="0" <?php echo $producto->colorp == 0 ? 'selected' : '' ?> >No</option>
+						<option value="1" <?php echo $producto->colorp == 1 ? 'selected' : '' ?> >Si</option>
+					</select>
+				</div>
+			</div>
 			
 			<!-- <div class="col-sm-6">
 				<div class="form-group">
