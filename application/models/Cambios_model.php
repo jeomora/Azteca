@@ -13,7 +13,7 @@ class Cambios_model extends MY_Model {
 		$this->db->select("id_cambio, usuarios.nombre AS usuario, cambios.fecha_cambio, antes, despues, accion")
 		->from("cambios")
 		->join("usuarios", $this->TABLE_NAME.".id_usuario = usuarios.id_usuario", "INNER")
-		->order_by($this->TABLE_NAME.".fecha_cambio", "ASC");;
+		->order_by($this->TABLE_NAME.".fecha_cambio", "DESC");;
 		
 		if ($where !== NULL) {
 			if (is_array($where)) {
