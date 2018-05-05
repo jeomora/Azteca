@@ -1081,13 +1081,21 @@ class Cotizaciones_model extends MY_Model {
 			ctz_first.observaciones AS promocion_first,
 			ctz_first.nombre AS observaciones_first,
 			sist.precio_sistema,
+			UPPER(proveedor_next.nombre) AS proveedor_next,
+			ctz_next.fecha_registro AS fecha_next,
+			ctz_next.observaciones AS promocion_next,
+			ctz_next.precio AS precio_nexto,
+			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
 			sist.precio_four")
 		->from("productos prod")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." AND c.id_proveedor =".$prove, "RIGHT")
 		->join("cotizaciones cs", "c.id_cotizacion = cs.id_cotizacion AND WEEKOFYEAR(cs.fecha_registro) = ".$this->weekNumber($fech)." AND cs.id_proveedor =".$prove, "RIGHT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
 			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
+		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cott.id_cotizacion FROM cotizaciones cott WHERE cott.id_producto = ctz_first.id_producto
+			AND cott.estatus = 1 AND cott.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cott.fecha_registro) = ".$this->weekNumber($fech)." AND cott.id_proveedor <> ctz_first.id_proveedor ORDER BY cott.precio ASC LIMIT 1 )", "LEFT")
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
+		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios prove_first", "cs.id_proveedor = prove_first.id_usuario", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
 		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")

@@ -68,7 +68,7 @@ class Main extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->sub($intervalo);
-		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
+		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s'));
 		$user = $this->session->userdata();
 
 		
@@ -79,6 +79,9 @@ class Main extends MY_Controller {
 		if ($cotizaciones){
 			foreach ($cotizaciones as $key => $value){
 				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
+				$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
 				if($antes){
 					$new_cotizacion[$i] = [
 						"id_proveedor"		=>	$this->input->post('id_proveedor'),
@@ -111,6 +114,7 @@ class Main extends MY_Controller {
 			}
 		}
 		if (sizeof($new_cotizacion) > 0) {
+			$this->jsonResponse($new_cotizacion);
 			$data['cotizacion']=$this->cot_md->insert_batch($new_cotizacion);
 			$aprov = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_proveedor')])[0];
 			$cambios = [
@@ -127,7 +131,7 @@ class Main extends MY_Controller {
 						"desc"	=>	'No hay cotizaciones de la semana pasada',
 						"type"	=>	'error'];
 		}
-		$this->jsonResponse($mensaje);
+		//$this->jsonResponse($mensaje);
 	}
 
 	public function uploadFoto(){

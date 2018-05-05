@@ -842,7 +842,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("G{$row_print}", $row['descuento']);
 						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
-						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber())){
+						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -2361,20 +2361,16 @@ class Cotizaciones extends MY_Controller {
 			$hoja->getStyle("J{$row_print}")->applyFromArray($border_style);
 			$hoja->setCellValue("K{$row_print}", $value->observaciones_first);
 			$hoja->getStyle("K{$row_print}")->applyFromArray($border_style);
-			
-			if($value->proves_promo < $value->precio_first){
+
+			if($value->proves === $value->proveedor_first){
 				$this->cellStyle("H{$row_print}", "FF0066", "000000", FALSE, 10, "Franklin Gothic Book");
-			}else{
+				$hoja->setCellValue("H{$row_print}", $diffes);
+				$hoja->setCellValue("I{$row_print}", $value->proveedor_next);
+				$hoja->setCellValue("J{$row_print}", $value->precio_next);
+				$hoja->setCellValue("K{$row_print}", $value->promocion_next);
+			}elseif($value->proves_promo >= $value->precio_first){
 				$this->cellStyle("H{$row_print}", "FFE6F0", "000000", FALSE, 10, "Franklin Gothic Book");
 			}
-
-			if ($value->proves === $value->proveedor_first) {
-				$hoja->setCellValue("H{$row_print}", "");
-				$hoja->setCellValue("I{$row_print}", "");
-				$hoja->setCellValue("J{$row_print}", "");
-				$hoja->setCellValue("K{$row_print}", "");
-			}
-
 
 			$row_print++;
 

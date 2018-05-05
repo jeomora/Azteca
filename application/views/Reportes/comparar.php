@@ -1,6 +1,5 @@
 <style type="text/css" media="screen">
 	tr:hover {background-color: #21b9bb !important;}
-	tr:hover > td{color: white !important;}
 	.modal-body{height: 65vh;overflow-y: scroll;}
 	.searchboxs{display: none}
 	.top-navigation #page-wrapper {margin-left: 0;overflow-y: scroll;}
@@ -46,7 +45,6 @@ if(!$this->session->userdata("username")){
 					<tr>
 						<th>DESCRIPCIÓN</th>
 						<th style="width: 5%">CÓDIGO</th>
-						<th>PRECIO</th>
 						<th>PRECIO C/PROMOCIÓN</th>
 						<th>OBSERVACIONES</th>
 						<th>SISTEMA</th>
