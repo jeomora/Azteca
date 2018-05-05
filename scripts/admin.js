@@ -15,7 +15,7 @@ $(document).off("click", "#repeat_cot").on("click", "#repeat_cot", function(even
 				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+				//setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
 			}
 		});
 });

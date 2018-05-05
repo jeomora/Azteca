@@ -14,25 +14,25 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 					value.observaciones = value.observaciones == null ? "" : value.observaciones;
 					value.proves_obs = value.proves_obs == null ? "" : value.proves_obs;
 					value.descuento = value.descuento == null ? "" : value.descuento;
-					value.num_one = value.num_one == null ? "" : value.num_one;
-					value.num_two = value.num_two == null ? "" : value.num_two;
-					diffes = value.proves_promo - value.precio_first
-
-					if(value.proves_promo < value.precio_first){
-						$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td><td>$ '+formatNumber(parseFloat(value.proves_precio), 2)+
-							'</td><td>$ '+formatNumber(parseFloat(value.proves_promo), 2)+'</td><td>'+value.proves_obs+'</td><td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td>'+
-							'<td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td><td style="background-color:#FF0066">$ '+formatNumber(parseFloat(diffes), 2)+'</td><td>'+value.proveedor_first+'</td>'+
-							'><td>$ '+formatNumber(parseFloat(value.precio_first), 2)+'</td><td>'+value.observaciones_first+'</td></tr>');
-					}else if(value.proves == value.proveedor_first){
-						$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td><td>$ '+formatNumber(parseFloat(value.proves_precio), 2)+
-							'</td><td>$ '+formatNumber(parseFloat(value.proves_promo), 2)+'</td><td>'+value.proves_obs+'</td><td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td>'+
-							'<td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td><td style="background-color:#FFE6F0"></td><td></td>'+
-							'<td></td><td></td></tr>');
-					}else{
-						$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td><td>$ '+formatNumber(parseFloat(value.proves_precio), 2)+
-							'</td><td>$ '+formatNumber(parseFloat(value.proves_promo), 2)+'</td><td>'+value.proves_obs+'</td><td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td>'+
+					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
+					value.observaciones_first = value.observaciones_first == null ? "" : value.observaciones_first;
+					
+					value.proveedor_first =  value.proveedor_first == null ? "" : value.proveedor_first;
+					value.proveedor_next =  value.proveedor_next == null ? "" : value.proveedor_next;
+					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
+					value.observaciones_next = value.observaciones_next == null ? "" : value.observaciones_next;
+					if(value.proves === value.proveedor_first){
+						diffes = value.proves_promo - value.precio_next;
+						$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td>'+
+							'<td>$ '+formatNumber(parseFloat(value.proves_promo), 2)+'</td><td>'+value.proves_obs+'</td><td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td>'+
+							'<td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td><td style="background-color:#FF0066">$ '+formatNumber(parseFloat(diffes), 2)+'</td><td>'+value.proveedor_next+'</td>'+
+							'><td>$ '+formatNumber(parseFloat(value.precio_next), 2)+'</td><td>'+value.promocion_next+'</td></tr>');
+					}else if(value.proves_promo >= value.precio_first){
+						diffes = value.proves_promo - value.precio_first;
+						$(".cot-prov").append('<tr><td>'+value.producto+'</td><td>'+value.codigo+'</td>'+
+							'<td>$ '+formatNumber(parseFloat(value.proves_promo), 2)+'</td><td>'+value.proves_obs+'</td><td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td>'+
 							'<td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td><td style="background-color:#FFE6F0">$ '+formatNumber(parseFloat(diffes), 2)+'</td><td>'+value.proveedor_first+'</td>'+
-							'<td>$ '+formatNumber(parseFloat(value.precio_first), 2)+'</td><td>'+value.observaciones_first+'</td></tr>');
+							'><td>$ '+formatNumber(parseFloat(value.precio_first), 2)+'</td><td>'+value.promocion_first+'</td></tr>');
 					}
 				});
 			}
