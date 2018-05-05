@@ -225,6 +225,7 @@ class Pedidos extends MY_Controller {
 		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$values = json_decode($this->input->post('values'), true);
+		$this->jsonResponse($values);
 		$ides = $this->ct_mdl->get('id_producto', ['id_cotizacion'=>$values["id_cotizacion"]])[0];
 		$sist = [
 				"id_producto"=>	$ides->{"id_producto"},

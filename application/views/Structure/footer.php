@@ -18,11 +18,14 @@ label {
     border-radius: 5px;
     color: white;
 }
+.pull-right:hover{
+	color: blue
+}
 </style>		
 				<!-- Page Footer-->
 						<div class="footer" style="color: white">
 							<a href="http://jeomora.com" style="color:white" target="_blank"><div class="pull-right">
-								<strong>AUTOR: Jeovany Mora Vieyra</strong>
+								<strong style="font-size: 1.5rem"><i class="fa fa-info-circle"></i>   Jeovany Mora Vieyra</strong>
 							</div></a>
 							<div>
 								<strong>ABARROTES AZTECA AUTOSERVICIOS S.A DE CV &copy; 2017-2018 </strong> 

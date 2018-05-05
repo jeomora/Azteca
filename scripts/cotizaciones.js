@@ -109,10 +109,12 @@ function setAdminTable(){
 
 					if(value.colorp == 1){
 						tableAdmin += '<td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-								'</div></td><td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
+								'</div><button id="update_cotizacion" style="display:none" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-pencil"></i></button></td><td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
 					}else{
 						tableAdmin += '<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-								'</div></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
+								'</div><button id="update_cotizacion" style="display:none" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-pencil"></i></button></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
 					}
 					
 
