@@ -166,7 +166,6 @@ if(!$this->session->userdata("username")){
 						<table class="table table-striped table-bordered table-hover" id="table_cot_admin">
 							<thead>
 								<tr>
-									<th>FAMILIA</th>
 									<th>CÓDIGO</th>
 									<th>DESCRIPCIÓN</th>
 									<th>SISTEMA</th>

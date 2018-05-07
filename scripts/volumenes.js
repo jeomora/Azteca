@@ -24,10 +24,7 @@ $(function($) {
 			]
 		});*/
 		
-	$('#proveedorCotz[rel=external-new-window]').click(function(){
-	    window.open(this.href, "myWindowName", "width=800, height=600");
-	    return false;
-	  });
+	
 	setAdminTable();
 
 });

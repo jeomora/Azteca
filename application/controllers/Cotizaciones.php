@@ -1019,11 +1019,11 @@ class Cotizaciones extends MY_Controller {
         
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
-        $this->upload->do_upload('file_cotizaciones',$filen);
+        $this->upload->do_upload('file_otizaciones',$filen);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
-		$file = $_FILES["file_cotizaciones"]["tmp_name"];
-		$filename=$_FILES['file_cotizaciones']['name'];
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0); 
@@ -1380,42 +1380,58 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function cotizaciones_dataTable(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fech = $fecha->format('Y-m-d H:i:s');
 		ini_set("memory_limit", "-1");
-			$search = ["fam.nombre", "prod.codigo", "prod.nombre", "ctz_first.nombre", "ctz_first.observaciones", "proveedor_first.nombre", "proveedor_first.apellido",
-				"proveedor_next.nombre", "proveedor_next.apellido","ctz_first.precio","ctz_next.precio"];
-			$columns = "ctz_first.estatus,cotizaciones.id_cotizacion, cotizaciones.fecha_registro, ctz_first.precio_sistema, ctz_first.precio_four,
+		ini_set("max_execution_time", "-1");
+			$search = ["prod.codigo"];
+			$columns = "c.id_cotizacion, 
+			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
 			fam.id_familia, fam.nombre AS familia,
-			prod.codigo, prod.nombre AS producto,
+			prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,
 			ctz_first.precio AS precio_firsto,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
-			ctz_first.nombre AS promocion_first,
-			ctz_first.observaciones AS observaciones_first,
+			ctz_first.observaciones AS promocion_first,
+			ctz_first.nombre AS observaciones_first,
+			sist.precio_sistema,
+			sist.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,
+			ctz_next.fecha_registro AS fecha_next,
+			ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
+			UPPER(proveedor_nxts.nombre) AS proveedor_nxts,
+			ctz_nxts.observaciones AS promocion_nxts,
+			ctz_nxts.precio AS precio_nxtso,
+			IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
 			ctz_maxima.precio AS precio_maximo,
-			ctz_next.observaciones AS observaciones_next,
-			AVG(cotizaciones.precio) AS precio_promedio";
+			AVG(c.precio) AS precio_promedio";
 			$joins = [
-				["table"	=>	"productos prod",			"ON"	=>	"cotizaciones.id_producto = prod.id_producto",	"clausula"	=>	"LEFT"],
-				["table"	=>	"familias fam",				"ON"	=>	"prod.id_familia = fam.id_familia",				"clausula"	=>	"INNER"],
-				["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE cotizaciones.id_producto = ctz_min.id_producto 
-					 AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber()." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"				=>	"LEFT"],
-				["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE cotizaciones.id_producto = ctz_max.id_producto
-					 AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"			=>	"INNER"],
-				["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cotizaciones.id_cotizacion FROM cotizaciones WHERE cotizaciones.id_producto = ctz_first.id_producto
-					AND cotizaciones.estatus = 1 AND cotizaciones.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber()." AND cotizaciones.id_proveedor <> ctz_first.id_proveedor ORDER BY cotizaciones.precio_promocion ASC LIMIT 1)",	"clausula"						=>	"LEFT"],
-				["table"	=>	"usuarios proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id_usuario",	"clausula"	=>	"INNER"],
+				["table"	=>	"cotizaciones c","ON"	=>	"prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ",	"clausula"	=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_first",	"ON"	=>	"ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
+			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "clausula"	=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_maxima",	"ON"	=>	"ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE c.id_producto = ctz_max.id_producto
+					 AND ctz_max.precio = (SELECT MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber().") LIMIT 1)",	"clausula"	=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_next",	"ON"	=>	"ctz_next.id_cotizacion = (SELECT cott.id_cotizacion FROM cotizaciones cott WHERE cott.id_producto = ctz_first.id_producto
+			AND cott.estatus = 1 AND cott.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cott.fecha_registro) = ".$this->weekNumber($fech)." AND cott.id_proveedor <> ctz_first.id_proveedor ORDER BY cott.precio ASC LIMIT 1 )",	"clausula"	=>	"LEFT"],
+				["table"	=>	"cotizaciones ctz_nxts",	"ON"	=>	"ctz_nxts.id_cotizacion = (SELECT cots.id_cotizacion FROM cotizaciones cots WHERE cots.id_producto = ctz_first.id_producto
+			AND cots.estatus = 1 AND cots.precio_promocion >= ctz_next.precio_promocion AND WEEKOFYEAR(cots.fecha_registro) = ".$this->weekNumber($fech)." AND cots.id_proveedor <> ctz_first.id_proveedor AND cots.id_proveedor <> ctz_next.id_proveedor ORDER BY cots.precio ASC LIMIT 1 )",	"clausula"	=>	"LEFT"],
+				["table"	=>	"usuarios proveedor_first",	"ON"	=>	"ctz_first.id_proveedor = proveedor_first.id_usuario",	"clausula"	=>	"LEFT"],
 				["table"	=>	"usuarios proveedor_next",	"ON"	=>	"ctz_next.id_proveedor = proveedor_next.id_usuario",	"clausula"	=>	"LEFT"],
+				["table"	=>	"usuarios proveedor_nxts",	"ON"	=>	"ctz_nxts.id_proveedor = proveedor_nxts.id_usuario",	"clausula"	=>	"LEFT"],
+				["table"	=>	"familias fam",	"ON"	=>	"prod.id_familia = fam.id_familia",	"clausula"	=>	"LEFT"],
+				["table"	=>	"precio_sistema sist",	"ON"	=>	"prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ",	"clausula"	=>	"LEFT"],
 			];
 		$where = [
-				["clausula"	=>	"ctz_first.estatus",	"valor"	=>	1]
+				["clausula"	=>	"prod.estatus <>",	"valor"	=>	0]
 			];
-			$order="prod.id_producto";
-			$group ="cotizaciones.id_producto";
+			$order="fam.id_familia,prod.nombre";
+			$group ="prod.nombre";
 
-		$cotizacionesProveedor = $this->ct_mdl->get_pagination($columns, $joins, $where, $search, $group, $order);
+		$cotizacionesProveedor = $this->prod_mdl->get_pagination($columns, $joins, $where, $search, $group, $order);
 
 		$data =[];
 		$no = $_POST["start"];
@@ -1434,7 +1450,7 @@ class Cotizaciones extends MY_Controller {
 						$row[] = ($value->precio_first > 0) ? '<div class="preciomas">$ '.number_format($value->precio_first,2,'.',',').'</div>' : '';
 					}
 					$row[] = $value->proveedor_first;
-					$row[] = $value->observaciones_first;
+					$row[] = $value->promocion_first;
 					$row[] = '$ '.number_format($value->precio_maximo,2,'.',',');
 					$row[] = '$ '.number_format($value->precio_promedio,2,'.',',');
 					$row[] = ($value->precio_nexto > 0) ? '$ '.number_format($value->precio_nexto,2,'.',',') : '';
@@ -1444,15 +1460,15 @@ class Cotizaciones extends MY_Controller {
 						$row[] = ($value->precio_next > 0) ? '<div class="preciomas">$ '.number_format($value->precio_next,2,'.',',').'</div>' : '';
 					}
 					$row[] = $value->proveedor_next;
-					$row[] = $value->observaciones_next;
+					$row[] = $value->promocion_next;
 					$row[] = $this->column_buttons($value->id_cotizacion, "All");
 					$data[] = $row;
 				}
 		$salida = [
 			"query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
-			"recordsTotal"		=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
-			"recordsFiltered"	=>	$this->ct_mdl->count_filtered("cotizaciones.id_producto", $where, $search, $joins),
+			"recordsTotal"		=>	$this->ct_mdl->count_filtered("prod.id_producto", $where, $search, $joins),
+			"recordsFiltered"	=>	$this->ct_mdl->count_filtered("prod.id_producto", $where, $search, $joins),
 			"data" => $data];
 		$this->jsonResponse($salida);
 	}
