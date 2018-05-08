@@ -5,7 +5,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	var proveedor = $("#id_pro option:selected").val();
 	window.open("agregar/2", "Cotizaciones", "width=800, height=600");
 	getProveedorCot(proveedor)
-	.done(function (resp) {
+	.done(function (resp) { 
 		if(resp){
 			$(".cot-prov").html("");
 			$.each(resp, function(indx, value){
