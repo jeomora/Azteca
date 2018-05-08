@@ -93,7 +93,7 @@ function setAdminTable(){
 
 					value.precio_promedio = value.precio_promedio == null ? 0 : value.precio_promedio;
 					value.precio_maximo = value.precio_maximo == null ? 0 : value.precio_maximo;
-					tableAdmin += '<tr><td>'+value.familia+'</td>';
+					tableAdmin += '<tr>';
 					if(value.color == "#92CEE3"){
 						tableAdmin += '<td style="background-color: #92CEE3">'+value.codigo+'</td>'
 					}else{

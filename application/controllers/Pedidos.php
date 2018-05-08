@@ -12,6 +12,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Existencias_model", "ex_mdl");
 		$this->load->model("Precio_sistema_model", "pre_mdl");
+		$this->load->model("Stocks_model", "sto_mdl");
 	}
 
 	public function index(){

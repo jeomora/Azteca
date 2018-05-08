@@ -3,6 +3,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	$(".float-e-margins").css("display","none");
 	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
+	window.open("agregar/2", "Cotizaciones", "width=800, height=600");
 	getProveedorCot(proveedor)
 	.done(function (resp) {
 		if(resp){
@@ -26,7 +27,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	});
 });
 
-$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+$(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones", function(event) {
 	event.preventDefault();
 	blockPage();
 	var proveedor = $("#id_pro option:selected").val();
