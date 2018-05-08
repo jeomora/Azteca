@@ -1019,11 +1019,11 @@ class Cotizaciones extends MY_Controller {
         
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
-        $this->upload->do_upload('file_cotizaciones',$filen);
+        $this->upload->do_upload('file_otizaciones',$filen);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
-		$file = $_FILES["file_cotizaciones"]["tmp_name"];
-		$filename=$_FILES['file_cotizaciones']['name'];
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0); 

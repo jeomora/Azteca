@@ -4,7 +4,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
 	getProveedorCot(proveedor)
-	.done(function (resp) {
+	.done(function (resp) { 
 		if(resp){
 			$(".cot-prov").html("");
 			$.each(resp, function(indx, value){
@@ -26,7 +26,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	});
 });
 
-$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+$(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones", function(event) {
 	event.preventDefault();
 	blockPage();
 	var proveedor = $("#id_pro option:selected").val();
