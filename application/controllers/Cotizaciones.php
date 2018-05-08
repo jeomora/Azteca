@@ -1935,10 +1935,10 @@ class Cotizaciones extends MY_Controller {
 									$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 									$hoja->setCellValue("H{$flag}", $row['caja0']);
 									$hoja->setCellValue("I{$flag}", $row['pz0']);
-									if ($row['stocant'] === NULL) {
+									if ($row['stocant'] === NULL || $row['stocant'] === 0) {
 										$hoja->setCellValue("J{$flag}", 0);
 										$hoja->setCellValue("K{$flag}", $row['ped0']);
-									}elseif($row['stocant'] === 0){
+									}elseif($row['stocant'] < $row['caja0']){
 										$hoja->setCellValue("J{$flag}", $row['stocant']);
 										$hoja->setCellValue("K{$flag}", 0);
 									}else{
