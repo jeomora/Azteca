@@ -1721,7 +1721,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->mergeCells('R'.$flag.':T'.$flag);
 						$hoja->mergeCells('U'.$flag.':W'.$flag);
 						$hoja->mergeCells('X'.$flag.':Z'.$flag);
-						$hoja->mergeCells('AA'.$flag.':AD'.$flag);
+						$hoja->mergeCells('AA'.$flag.':AC'.$flag);
 						$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja->setCellValue("B".$flag, "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
 						$this->cellStyle("H".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -1938,6 +1938,9 @@ class Cotizaciones extends MY_Controller {
 									if ($row['stocant'] === NULL) {
 										$hoja->setCellValue("J{$flag}", 0);
 										$hoja->setCellValue("K{$flag}", $row['ped0']);
+									}elseif($row['stocant'] === 0){
+										$hoja->setCellValue("J{$flag}", $row['stocant']);
+										$hoja->setCellValue("K{$flag}", 0);
 									}else{
 										$hoja->setCellValue("J{$flag}", $row['stocant']);
 										$hoja->setCellValue("K{$flag}", ($row['stocant'] - $row['caja0']));
