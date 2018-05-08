@@ -853,12 +853,13 @@ class Cotizaciones_model extends MY_Model {
 			ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,
 			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
-			ctz_maxima.precio AS precio_maximo,
+			ctz_maxima.precio AS precio_maximo,sto.cantidad as stocant,
 			AVG(c.precio) AS precio_promedio")
 		->from($this->TABLE_NAME)
-		->join("cotizaciones c", "cotizaciones.id_cotizacion = c.id_cotizacion AND WEEKOFYEAR(c.fecha_registro) =".$this->weekNumber($fech)." " ,"LEFT")
+		->join("cotizaciones c", "cotizaciones.id_cotizacion = c.id_cotizacion AND WEEKOFYEAR(c.fecha_registro) =".$this->weekNumber($fech)." " ,"RIGHT")
 		->join("productos prod", $this->TABLE_NAME.".id_producto = prod.id_producto", "LEFT")
 		->join("familias fam", "prod.id_familia = fam.id_familia", "INNER")
+		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
 			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE c.id_producto = ctz_max.id_producto
@@ -866,7 +867,7 @@ class Cotizaciones_model extends MY_Model {
 		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cc.id_cotizacion FROM cotizaciones cc WHERE cc.id_producto = ctz_first.id_producto AND cc.estatus = 1 AND cc.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cc.fecha_registro) = ".$this->weekNumber($fech)." AND cc.id_proveedor <> ctz_first.id_proveedor ORDER BY cc.precio ASC LIMIT 1 )", "LEFT")
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "INNER")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
-		->join("precio_sistema sist", "prod.id_producto = sist.id_producto", "LEFT")
+		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("c.id_producto")
 		->order_by("fam.id_familia,prod.nombre", "ASC");
@@ -913,6 +914,7 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["promocion_next"]	=	$comparativa[$i]->promocion_next;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["colorp"]	=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["color"]	=	$comparativa[$i]->color;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["stocant"]	=	$comparativa[$i]->stocant;
 			$stores = array(57, 58, 59, 60, 61, 62, 63);
 			for ($d=0; $d < sizeof($stores); $d++) { 
 				$pedidos = $this->db->select('id_pedido,
