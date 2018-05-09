@@ -1,9 +1,21 @@
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
+	var proveedor = $("#id_pro option:selected").val();
+	if(proveedor != "nope"){
+		renderTable();
+		$("#id_pro").prop('disabled', 'disabled');
+		$("#camb").css("display","block");
+	}else{
+		$("#camb").css("display","none");
+	}
+	
+});
+
+function renderTable(){
+	$(".cot-prov").html();
 	$(".float-e-margins").css("display","none");
 	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
-	window.open("agregar/2", "Cotizaciones", "width=800, height=600");
 	getProveedorCot(proveedor)
 	.done(function (resp) {
 		if(resp){
@@ -25,7 +37,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 		$(".searchboxs").css("display","block");
 		$(".float-e-margins").css("display","block");
 	});
-});
+}
 
 $(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones", function(event) {
 	event.preventDefault();
@@ -98,11 +110,11 @@ $(document).off("click", "#delete_cotizacion").on("click", "#delete_cotizacion",
 
 $(document).off("click", ".update_cotizacion").on("click", ".update_cotizacion", function(event) {
 	event.preventDefault();
-	sendForm("Cotizaciones/update", $("#form_cotizacion_edit"), "");
+	sendFormos("Cotizaciones/update", $("#form_cotizacion_edit"), "");
 });
 $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion", function(event) {
 	event.preventDefault();
-	sendForm("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
+	sendFormos("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
 });
 $(document).off("change", ".id_producto").on("change", ".id_producto", function() {
 	var tr = $(this).closest("tr");
@@ -216,6 +228,11 @@ $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", funct
 		$(".numeric").number(true, 0);
 	});
 });
+$(document).off("click", "#camb").on("click", "#camb", function(event) {
+	event.preventDefault();
+	$("#id_pro").removeAttr("disabled");
+	$("#camb").css("display","none");
+});
 
 $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", function(event) {
 	var proveedor = $("#id_pro option:selected").val();
@@ -266,3 +283,39 @@ function uploadPedidos(formData,proveedor) {
 		data: formData,
 	});
 }
+
+function sendFormos(url, formData, url_repuesta){
+		url_repuesta = typeof url_repuesta === 'undefined' ? "/#" : url_repuesta;
+		$.ajax({
+			url: site_url + url,
+			type: "POST",
+			dataType: "JSON",
+			data: (formData).serializeArray()
+		})
+		.done(function(response) {
+			switch(response.type){
+				case "success":
+					emptyModal();
+					$("#mainModal").modal("hide");
+					renderTable();
+				break;
+
+				case "info":
+					emptyModal();
+					$("#mainModal").modal("hide");
+					renderTable();
+				break;
+
+				case "warning":
+					toastr.warning(response.desc, user_name);
+				break;
+
+				default:
+					toastr.error(response.desc, user_name);
+			}
+			$("#notifications").html(response);
+		})
+		.fail(function(response) {
+			// console.log("Error en la respuesta: ", response);
+		});
+	}
