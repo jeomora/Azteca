@@ -26,7 +26,11 @@ if(!$this->session->userdata("username")){
 					<?php endforeach ?>
 			</select>
 		</div>
-		
+		<div class="col-lg-3" style="margin-bottom: 1rem">
+			<button class="btn btn-info" name="camb" data-toggle="tooltip" title="Cambiar" type="button" id="camb" style="display: none">
+				<i class="fa fa-refresh"></i> Cambiar Proveedor
+			</button>
+		</div>
 		
 	</div>
 	
