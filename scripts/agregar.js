@@ -237,7 +237,7 @@ $(document).off("click", "#camb").on("click", "#camb", function(event) {
 $(document).off("click", ".new_cotizacion").on("click", ".new_cotizacion", function(event) {
 	var proveedor = $("#id_pro option:selected").val();
 	if($("#id_producto").val() !== ''){
-		sendForm("Cotizaciones/save/"+proveedor, $("#form_cotizacion_new"), "");
+		sendFormos("Cotizaciones/save/"+proveedor, $("#form_cotizacion_new"), "");
 	}else{
 		toastr.warning("Seleccione un artículo de la lista", user_name);
 	}
@@ -255,7 +255,7 @@ $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones
 				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
-				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+				renderTable();
 			}
 		});
 	}
