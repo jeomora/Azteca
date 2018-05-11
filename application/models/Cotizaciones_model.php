@@ -51,7 +51,7 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
-	public function getAllCotizaciones($where = []){
+	public function getAllCotizacidones($where = []){
 		$this->db->select("
 			cotizaciones.id_cotizacion,
 			cotizaciones.id_proveedor,
@@ -141,15 +141,14 @@ class Cotizaciones_model extends MY_Model {
 	public function getCotz($where = [],$fech){
 		$this->db->select("c.id_cotizacion, 
 			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
-			
 			prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,
 			ctz_first.precio AS precio_firsto,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,
-			ctz_first.nombre AS observaciones_first,
-			sist.precio_sistema,
-			sist.precio_four,
+			ctz_first.observaciones AS observaciones_first,
+			prod.precio_sistema,
+			prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,
 			ctz_next.fecha_registro AS fecha_next,
 			ctz_next.observaciones AS promocion_next,
@@ -160,10 +159,9 @@ class Cotizaciones_model extends MY_Model {
 			ctz_nxts.precio AS precio_nxtso,
 			IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
 			ctz_maxima.precio AS precio_maximo,
-			AVG(c.precio) AS precio_promedio")
-		->from("productos prod")
+			AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia,")
+		->from("prodandprice prod")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
-		
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
 			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE ctz_first.id_producto = ctz_max.id_producto
@@ -175,10 +173,8 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
-		->join("precio_sistema sist", "ctz_first.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
-		->where("prod.estatus <>","0")
 		->group_by("prod.nombre")
-		->order_by("prod.nombre", "ASC");
+		->order_by("prod.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -616,15 +612,15 @@ class Cotizaciones_model extends MY_Model {
 	public function comparaCotizaciones2($where=[], $fech, $tienda){
 		$this->db->select("c.id_cotizacion, 
 			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
-			fam.id_familia, fam.nombre AS familia,
+			prod.id_familia, prod.familia AS familia,
 			prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,
 			ctz_first.precio AS precio_firsto,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,
 			ctz_first.nombre AS observaciones_first,
-			sist.precio_sistema,
-			sist.precio_four,
+			prod.precio_sistema,
+			prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,
 			ctz_next.fecha_registro AS fecha_next,
 			ctz_next.observaciones AS promocion_next,
@@ -636,7 +632,7 @@ class Cotizaciones_model extends MY_Model {
 			IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(csq.precio) AS precio_promedio")
-		->from("productos prod")
+		->from("prodandprice prod")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->join("cotizaciones csq", "prod.id_producto = csq.id_producto AND WEEKOFYEAR(csq.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto 
@@ -650,10 +646,8 @@ class Cotizaciones_model extends MY_Model {
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
-		->join("familias fam", "prod.id_familia = fam.id_familia", "LEFT")
-		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->group_by("prod.nombre")
-		->order_by("fam.id_familia,prod.nombre", "ASC");
+		->order_by("prod.id_familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -667,7 +661,7 @@ class Cotizaciones_model extends MY_Model {
 		}
 		$comparativa = $this->db->get()->result();
 
-
+		
 		// echo $this->db->last_query();
 		$comparativaIndexada = [];
 		for ($i=0; $i<sizeof($comparativa); $i++) { 
@@ -706,7 +700,7 @@ class Cotizaciones_model extends MY_Model {
 			if (is_array($where)) {
 				return $comparativaIndexada;
 			} else {
-				return array_shift($comparativaIndexada);
+				return $comparativaIndexada;
 			}
 		} else {
 			return false;
