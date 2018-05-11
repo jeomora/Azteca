@@ -117,6 +117,7 @@ if(!$this->session->userdata("username")){
 				<div class="ibox-title">
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
+				
 				<div class="ibox-content" style="padding-top: 4rem;">
 					<div class="btn-group">
 						<div class="col-sm-2">

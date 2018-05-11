@@ -614,13 +614,13 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("S1", "3ER PROVEEDOR")->getColumnDimension('S')->setWidth(15);
 		$hoja->setCellValue("T1", "3ER OBSERVACIÓN")->getColumnDimension('T')->setWidth(30);
 
-		$where=["prod.estatus <> "=>0];//Semana actual
+		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2($where, $fecha,0);
-
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2(NULL, $fecha,0);
+		
 		$row_print =3;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
