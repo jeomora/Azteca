@@ -51,7 +51,7 @@ class Cotizaciones_model extends MY_Model {
 			return false;
 		}
 	}
-	public function getAllCotizacidones($where = []){
+	public function getAllCotizaciones($where = []){
 		$this->db->select("
 			cotizaciones.id_cotizacion,
 			cotizaciones.id_proveedor,
