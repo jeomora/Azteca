@@ -1048,7 +1048,7 @@ class Cotizaciones extends MY_Controller {
 					}else{
 						$precio_promocion = $precio;
 					}
-					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->session->userdata('id_usuario')])[0];
+					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $proveedor])[0];
 					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
 					if($antes){
 						$new_cotizacion=[
@@ -1530,6 +1530,7 @@ class Cotizaciones extends MY_Controller {
 		
 		
 		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
 		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
 		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
