@@ -10,7 +10,7 @@ if(!$this->session->userdata("username")){
 	.progress {
 	    display: block;
 	    text-align: center;
-	    width: 0;
+	    width: 0; 
 	    height: 3px;
 	    background: red;
 	    transition: width .3s;
