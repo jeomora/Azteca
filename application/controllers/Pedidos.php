@@ -169,7 +169,7 @@ class Pedidos extends MY_Controller {
 	public function get_allpedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
-		$fecha->add($intervalo);
+		$fecha->add($intervalo);	
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
 		if ($id_proveedor == "VOLUMEN") {
@@ -177,7 +177,7 @@ class Pedidos extends MY_Controller {
 		}elseif ($id_proveedor == "AMARILLOS") {
 			$where = ["prod.estatus" => 3];
 		}else{
-			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
+			$where = ["ctz1.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
 		}
 		
 		$fecha = $fecha->format('Y-m-d H:i:s');
