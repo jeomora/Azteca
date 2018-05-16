@@ -187,7 +187,7 @@ function tablePedidoAll(response,colors,sucur){
 		table_contain = "";
 	}
 	$(".wonder").append(table_contain);
-	$(".spinns").css("display","none")
+	
 }
 
 $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
