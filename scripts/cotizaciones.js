@@ -2,14 +2,15 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-		/*$("#table_cot_admin").dataTable({
+		$("#table_cot_admin").dataTable({
 			ajax: {
 				url: site_url +"Cotizaciones/cotizaciones_dataTable",
 				type: "POST"
 			},
 			processing: true,
 			lnaguage: {
-	            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
+	            processing: '<div style="width:80rem;height:50rem;background-image:url(assets/img/clock.gif)"><h1 style="margin:0;padding-top:5rem">Cargando cotizaciones</h1>'+
+		'<img src="assets/img/waits.gif" /></div>'},
 			serverSide: true,
 			responsive: true,
 			pageLength: 50,
@@ -22,16 +23,16 @@ $(function($) {
 			buttons: [
 				{ extend: 'pageLength' },
 			]
-		});*/
+		});
 		
 	
-	getGrupo()
+	/*getGrupo()
 	.done(function (resp){
 		console.log(resp)
 		if(resp.ides != 2){
 			setAdminTable();
 		}
-	});
+	});*/
 	$('#proveedorCotz[rel=external-new-window]').click(function(){
 	    window.open(this.href, "myWindowName", "width=800, height=600");
 	    return false;

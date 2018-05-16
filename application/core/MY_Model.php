@@ -191,11 +191,15 @@ class MY_Model extends CI_Model {
 		return $query->result();
 	}
 
+	
+
 	public function count_filtered($column_count=NULL, $wheres=[], $search=[], $joins=[]){
 		$this->get_pagination_query("COUNT(DISTINCT {$column_count}) AS rows", $joins, $wheres, $search, NULL, NULL);
 		$query = $this->db->get();
 		return $query->row()->rows;
 	}
+
+	
 
 }
 

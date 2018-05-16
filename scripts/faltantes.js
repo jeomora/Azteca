@@ -7,7 +7,7 @@ $(function($) {
 
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
-	$(".searchboxs").css("display","none")
+	 
 	var proveedor = $("#id_pro option:selected").val();
 	$(".cot-prov").html("");
 	getProveedorCot(proveedor)
