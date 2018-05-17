@@ -10,7 +10,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	}
 	
 });
-
+ 
 function renderTable(){
 	$(".cot-prov").html();
 	$(".float-e-margins").css("display","none");

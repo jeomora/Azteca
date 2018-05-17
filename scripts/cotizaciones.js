@@ -2,7 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-		$("#table_cot_admin").dataTable({
+		/*$("#table_cot_admin").dataTable({
 			ajax: {
 				url: site_url +"Cotizaciones/cotizaciones_dataTable",
 				type: "POST"
@@ -23,16 +23,16 @@ $(function($) {
 			buttons: [
 				{ extend: 'pageLength' },
 			]
-		});
+		});*/
 		
 	
-	/*getGrupo()
+	getGrupo()
 	.done(function (resp){
 		console.log(resp)
 		if(resp.ides != 2){
 			setAdminTable();
 		}
-	});*/
+	});
 	$('#proveedorCotz[rel=external-new-window]').click(function(){
 	    window.open(this.href, "myWindowName", "width=800, height=600");
 	    return false;

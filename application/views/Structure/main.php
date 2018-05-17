@@ -232,17 +232,17 @@
 		});
 	}
 
-	
+
 
 	function blockPage(){
 		$("html").block({
 			centerY: 0,
-			message: "<h2>"+user_name+"</h2> <img src='./assets/img/busy.gif'/> <h3>Espere que se cargue la información ...</h3>",
-			css: { top: '50px', left: '', right: '10px' },
-			overlayCSS: { backgroundColor: '#DDFF33' }
+			message: "<h2>HOLA "+user_name+"</h2> <img style='width:100%' src='../assets/img/uploading.gif'/> <h3>Por favor espere que se cargue la información ...</h3>",
+			css: { top: '50px', left: '', right: '10px', borderRadius: '15px' },
+			overlayCSS: { backgroundColor: '#AAAAA9' }
 		});
 	}
-	
+
 	function unblockPage() {
 		$("html").unblock();
 	}
