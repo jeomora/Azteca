@@ -52,7 +52,7 @@ class Cotizaciones extends MY_Controller {
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
 					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
 			$data["cotizaciones"] = $this->ct_mdl->getAllCotizaciones($where);
-			$data["usuarios"] = $this->user_md->getUsuarios();	
+			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
 			$data["proveedores"] = $this->usua_mdl->getUsuarios();
@@ -84,7 +84,7 @@ class Cotizaciones extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		
+
 		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/anteriores", $data);
@@ -94,7 +94,7 @@ class Cotizaciones extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		
+
 		$where=["cotizaciones.id_proveedor" => $ides, "cotizaciones.estatus <> " => 0 ,
 				"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))];
 		$data["cotizaciones"] = $this->ct_mdl->getAllCotizaciones($where);
@@ -156,7 +156,7 @@ class Cotizaciones extends MY_Controller {
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/volumenes", $data);
 	}
-	
+
 	public function proveedor(){
 		ini_set("memory_limit", "-1");
 		$data['links'] = [
@@ -299,7 +299,7 @@ class Cotizaciones extends MY_Controller {
 			];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 		}
-		
+
 		$mensaje = [
 			"id" 	=> 'Éxito',
 			"desc"	=> 'Cotización registrada correctamente',
@@ -391,7 +391,7 @@ class Cotizaciones extends MY_Controller {
 				$pedido = [
 					"id_sucursal"		=>	1,
 					"id_proveedor"		=>	$producto[$i],
-					"id_user_registra"	=>	$this->ion_auth->user()->row()->id, 
+					"id_user_registra"	=>	$this->ion_auth->user()->row()->id,
 					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 					"total"				=>	str_replace(",", "", $importe[$i])
 				];
@@ -559,7 +559,7 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["proveedor"] = $this->ct_mdl->pedido(NULL,$data["producto"]->id_producto);
-		
+
 		$data["title"]="HACER PEDIDO ".$data['producto']->nombre;
 		$data["view"]=$this->load->view("Cotizaciones/new_pedido", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_pedido' type='button'>
@@ -568,7 +568,7 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
-	
+
 	public function fill_excel(){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
@@ -592,7 +592,7 @@ class Cotizaciones extends MY_Controller {
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 		$this->cellStyle("A1:T2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
@@ -615,13 +615,13 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("S1", "3ER PROVEEDOR")->getColumnDimension('S')->setWidth(15);
 		$hoja->setCellValue("T1", "3ER OBSERVACIÓN")->getColumnDimension('T')->setWidth(30);
 
-		
+
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2(NULL, $fecha,0);
-		
+
 		$row_print =3;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
@@ -665,8 +665,8 @@ class Cotizaciones extends MY_Controller {
 							$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
 							$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						
-						
+
+
 						$hoja->setCellValue("F{$row_print}", $row['precio_firsto'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						if($row['estatus'] == 2){
@@ -724,7 +724,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("N{$row_print}")->applyFromArray($border_style);
 
 						$hoja->setCellValue("O{$row_print}", $row['proveedor_next'])->getStyle("O{$row_print}");
-						$hoja->getStyle("O{$row_print}")->applyFromArray($border_style);						
+						$hoja->getStyle("O{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("P{$row_print}", $row['promocion_next'])->getStyle("P{$row_print}");
 						$hoja->getStyle("P{$row_print}")->applyFromArray($border_style);
 
@@ -742,7 +742,7 @@ class Cotizaciones extends MY_Controller {
 						}
 						$hoja->getStyle("R{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("S{$row_print}", $row['proveedor_nxts'])->getStyle("S{$row_print}");
-						$hoja->getStyle("S{$row_print}")->applyFromArray($border_style);						
+						$hoja->getStyle("S{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("T{$row_print}", $row['promocion_nxts'])->getStyle("T{$row_print}");
 						$hoja->getStyle("T{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("A{$row_print}:T{$row_print}")
@@ -753,11 +753,11 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		
+
 
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
-		 
+
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
@@ -789,9 +789,9 @@ class Cotizaciones extends MY_Controller {
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 		$this->cellStyle("A1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		
+
 		$hoja->setCellValue("B1", "DESCRIPCIÓN SISTEMA")->getColumnDimension('B')->setWidth(70);
 		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
 		$hoja->setCellValue("D1", "PROMOCIÓN")->getColumnDimension('D')->setWidth(50);
@@ -829,7 +829,7 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						
+
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 						if($row['colorp'] == 1){
 							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -922,7 +922,7 @@ class Cotizaciones extends MY_Controller {
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2($where, $fecha,0);
 
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
 		$row_print =3;
@@ -977,8 +977,8 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja->getStyle("L{$row_print}")->applyFromArray($border_style);
-						$hoja->setCellValue("M{$row_print}", $row['proveedor_next'])->getStyle("M{$row_print}");	
-						$hoja->getStyle("M{$row_print}")->applyFromArray($border_style);					
+						$hoja->setCellValue("M{$row_print}", $row['proveedor_next'])->getStyle("M{$row_print}");
+						$hoja->getStyle("M{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("N{$row_print}", $row['promocion_next'])->getStyle("N{$row_print}");
 						$hoja->getStyle("N{$row_print}")->applyFromArray($border_style);
 
@@ -990,7 +990,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getStyle("A3:N{$row_print}")
                  ->getAlignment()
                  ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-	
+
 		$file_name = "Cotizaciones Volúmenes.xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
@@ -1012,16 +1012,16 @@ class Cotizaciones extends MY_Controller {
 		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
 		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
 		$filen = "Cotizacion".$nams."".rand();
-		
-		
+
+
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 100;
         $config['max_width']            = 1024;
         $config['max_height']           = 768;
-        
-        
-        
+
+
+
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_otizaciones',$filen);
@@ -1031,10 +1031,10 @@ class Cotizaciones extends MY_Controller {
 		$filename=$_FILES['file_otizaciones']['name'];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0); 
+		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
-		
-		for ($i=3; $i<=$num_rows; $i++) { 
+
+		for ($i=3; $i<=$num_rows; $i++) {
 			if($sheet->getCell('C'.$i)->getValue() > 0){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
@@ -1090,7 +1090,7 @@ class Cotizaciones extends MY_Controller {
 							$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
 						}
 					}
-					
+
 				}
 			}
 		}
@@ -1124,9 +1124,9 @@ class Cotizaciones extends MY_Controller {
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0); 
+		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
-		
+
 		if($idesp === "0"){
 			$tienda = $this->session->userdata('id_usuario');
 		}else{
@@ -1142,17 +1142,17 @@ class Cotizaciones extends MY_Controller {
         $config['max_width']            = 1024;
         $config['max_height']           = 768;
         $config['max_height']           = 768;
-        
+
 
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_cotizaciones',$filen);
-		for ($i=3; $i<=$num_rows; $i++) { 
+		for ($i=3; $i<=$num_rows; $i++) {
 			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 			if (sizeof($productos) > 0) {
 				$exis = $this->ex_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$tienda,"id_producto"=>$productos->id_producto])[0];
 				$column_one=0; $column_two=0; $column_three=0;
-				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();	
+				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();
 				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
 				$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 
@@ -1200,9 +1200,9 @@ class Cotizaciones extends MY_Controller {
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0); 
+		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
-		for ($i=3; $i<=$num_rows; $i++) { 
+		for ($i=3; $i<=$num_rows; $i++) {
 			if($sheet->getCell('B'.$i)->getValue() > 0){
 				$productos = $this->prod_mdl->get("id_producto",['nombre'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				$proveedor = $this->usua_mdl->get("id_usuario",['nombre'=> $sheet->getCell('G'.$i)->getValue()])[0];
@@ -1277,7 +1277,7 @@ class Cotizaciones extends MY_Controller {
         $config['max_width']            = 1024;
         $config['max_height']           = 768;
         $config['max_height']           = 768;
-        
+
 
         $this->load->library('upload', $config);
         $this->upload->do_upload('file_precios');
@@ -1286,7 +1286,7 @@ class Cotizaciones extends MY_Controller {
 		ini_set("max_execution_time", "-1");
 		$file = $_FILES["file_precios"]["tmp_name"];
 		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0); 
+		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 		for ($i=3; $i<=$num_rows; $i++) {
 			if($sheet->getCell('B'.$i)->getValue() !=''){
@@ -1305,8 +1305,8 @@ class Cotizaciones extends MY_Controller {
 					}else{
 						$data['cotizacion']=$this->pre_mdl->insert($new_precios);
 					}
-					
-					
+
+
 				}
 			}
 		}
@@ -1368,13 +1368,13 @@ class Cotizaciones extends MY_Controller {
 				$row[] = $value->observaciones;
 				$row[] = "<div class='input-group m-b'>
 						 <span class='input-group-addon'><i class='fa fa-slack'></i></span>
-						 <input type='number' min='0' value='' class='form-control cantidad'> 
+						 <input type='number' min='0' value='' class='form-control cantidad'>
 						 </div>";
 				$row[] = '<td><button type="button" id="add_me" class="btn btn-info" data-toggle="tooltip" title="Agregar" data-id-cotizacion="'.$value->id_producto.'">
 						<i class="fa fa-plus"></i></button></td>';
 				$data[] = $row;
 			}
-		}	
+		}
 		$salida = [
 			"query"				=>	$this->db->last_query(),
 			"draw"				=>	$_POST['draw'],
@@ -1392,7 +1392,7 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 			$search = ["prodandprice.codigo","prodandprice.nombre"];
-			$columns = "ctz1.id_cotizacion, 
+			$columns = "ctz1.id_cotizacion,
 			ctz1.fecha_registro,prodandprice.estatus,prodandprice.color,prodandprice.colorp,
 			prodandprice.codigo, prodandprice.nombre AS producto,prodandprice.id_producto,
 			UPPER(ctz1.nombre) AS proveedor_first,
@@ -1486,13 +1486,13 @@ class Cotizaciones extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		
+
 		$data["cotizaciones"] =  $this->ct_mdl->getProveedorBajos(NULL,$fecha->format('Y-m-d H:i:s'),$ides);
 		$this->jsonResponse($data);
 	}
 
 	public function getProveedorCot($ides){
-		$data["cotizaciones"] =  $this->ct_mdl->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => ($this->weekNumber()-1)]);
+		$data["cotizaciones"] =  $this->ct_mdl->getfalts(['fal.id_proveedor'=>$ides,'fal.fecha_termino >' => date("Y-m-d H:i:s")]);
 		$this->jsonResponse($data);
 	}
 
@@ -1525,14 +1525,14 @@ class Cotizaciones extends MY_Controller {
 			$array = $this->user_md->get(NULL, ["id_usuario" => $id_proves]);
 			$filenam = $array[0]->nombre;
 		}
-		
-		
+
+
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
 		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
 		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
-		
+
 		$this->excelfile->createSheet();
         $hoja = $this->excelfile->setActiveSheetIndex(1);
         $hoja->setTitle("PEDIDO");
@@ -1549,7 +1549,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('D')->setWidth("15");
 		$hoja->getColumnDimension('E')->setWidth("15");
 		$hoja->getColumnDimension('F')->setWidth("15");
-		
+
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
 		$hoja1->getColumnDimension('C')->setWidth("6");
@@ -1571,7 +1571,7 @@ class Cotizaciones extends MY_Controller {
 		$sumall = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "");
 		if ($array){
 			foreach ($array as $key => $value){
-				
+
 				$fecha = new DateTime(date('Y-m-d H:i:s'));
 				$intervalo = new DateInterval('P2D');
 				$fecha->add($intervalo);
@@ -1588,10 +1588,10 @@ class Cotizaciones extends MY_Controller {
 				$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
 				$difff = 0.01;
 				$flag2 = 3;
-				
+
 				if ($cotizacionesProveedor){
 					//HOJA EXISTENCIAS
-					
+
 					$this->excelfile->setActiveSheetIndex(0);
 					if($i > 0){
 						$flagBorder = $flag1 ;
@@ -1796,12 +1796,12 @@ class Cotizaciones extends MY_Controller {
 					}
 					foreach ($cotizacionesProveedor as $key => $value){
 						//Existencias
-						
+
 						$this->excelfile->setActiveSheetIndex(0);
 						$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 						$hoja1->setCellValue("E".$flag1, $value['familia']);
 						$flag1 +=1;
-						
+
 						//Pedidos
 						$this->excelfile->setActiveSheetIndex(1);
 						$this->cellStyle("B".$flag, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
@@ -1844,7 +1844,7 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("D{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
 										$this->cellStyle("B{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
 									}
-									
+
 									$hoja->setCellValue("E{$flag}", $row['precio_sistema'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
 									$this->cellStyle("E".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
 									if($row['colorp'] == 1){
@@ -1939,7 +1939,7 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("F{$flag}", $row['precio_next'])->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$this->cellStyle("F{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 									}
-									
+
 									$hoja->setCellValue("G{$flag}", $row['proveedor_next']);
 									$this->cellStyle("H".$flag.":AC".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 									$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -1960,7 +1960,7 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("J{$flag}", $row['stocant']);
 										$hoja->setCellValue("K{$flag}", ($row['stocant'] - $row['caja0']));
 									}
-									
+
 									$this->cellStyle("K{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 									$hoja->setCellValue("L{$flag}", $row['caja1']);
 									$hoja->setCellValue("M{$flag}", $row['pz1']);
@@ -1995,14 +1995,14 @@ class Cotizaciones extends MY_Controller {
 									$hoja->setCellValue("AJ{$flag}", "=C".$flag."*Z".$flag)->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 									$hoja->setCellValue("AK{$flag}", "=C".$flag."*AC".$flag)->getStyle("AK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								}
-								$border_style= array('borders' => array('right' => array('style' => 
+								$border_style= array('borders' => array('right' => array('style' =>
 									PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 								$this->excelfile->setActiveSheetIndex(1);
 								$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AD'.$flag)->applyFromArray($styleArray);
-								
+
 								$this->excelfile->setActiveSheetIndex(0);
 								$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':E'.$flag1)->applyFromArray($styleArray);
-								
+
 								$hoja->getStyle("A{$flag}:G{$flag}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -2056,7 +2056,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		
+
 		$this->cellStyle("B".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("B".$flag, "ABARROTES");
 		$hoja->setCellValue("C{$flag}", "=(".substr($sumall[1],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -2089,7 +2089,7 @@ class Cotizaciones extends MY_Controller {
 
 		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
-		 
+
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "FORMATO ".$filenam." ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
@@ -2124,9 +2124,9 @@ class Cotizaciones extends MY_Controller {
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 		$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		
+
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
 		$hoja->setCellValue("C1", "SISTEMA")->getColumnDimension('C')->setWidth(15);
 		$hoja->setCellValue("D1", "PRECIO 4")->getColumnDimension('D')->setWidth(50);
@@ -2157,7 +2157,7 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						
+
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 						if($row['colorp'] == 1){
 							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -2215,9 +2215,9 @@ class Cotizaciones extends MY_Controller {
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 		$this->cellStyle("A1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		
+
 		$hoja->setCellValue("B1", "DESCRIPCIÓN SISTEMA")->getColumnDimension('B')->setWidth(70);
 		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
 		$hoja->setCellValue("D1", "PROMOCIÓN")->getColumnDimension('D')->setWidth(50);
@@ -2252,7 +2252,7 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						
+
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 						if($row['colorp'] == 1){
 							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -2354,11 +2354,9 @@ class Cotizaciones extends MY_Controller {
 					];
 				}
 			}
-			
+
 		}
 
-		
-		
 		$this->jsonResponse($mensaje);
 	}
 
@@ -2384,9 +2382,9 @@ class Cotizaciones extends MY_Controller {
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		
+
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
 		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
 		$hoja->setCellValue("D1", "PRECIO PROMOCIÓN")->getColumnDimension('D')->setWidth(15);
@@ -2399,23 +2397,23 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("K1", "OBSERVACIONES")->getColumnDimension('K')->setWidth(22);
 
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
-		
+
 		$hoja->mergeCells('B2:F2');
 
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		
+
 		$productos =  $this->ct_mdl->getProveedorBajos(NULL,$fecha->format('Y-m-d H:i:s'),$this->input->post('id_pro'));
 
 		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
-		$hoja->setCellValue("B2", "COMPARACIÓN DE PRECIOS ".$provs->nombre)->getColumnDimension('B')->setWidth(70); 
+		$hoja->setCellValue("B2", "COMPARACIÓN DE PRECIOS ".$provs->nombre)->getColumnDimension('B')->setWidth(70);
 		$row_print = 3;
 
 
 		if ($productos){
 			foreach ($productos as $key => $value){
-				
+
 			if($value->color === '#92CEE3'){
 				$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
 			}else{
@@ -2430,7 +2428,7 @@ class Cotizaciones extends MY_Controller {
 			if($value->estatus == 3){
 				$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 			}
-			
+
 			$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 			if($value->colorp == 1){
 				$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -2485,6 +2483,145 @@ class Cotizaciones extends MY_Controller {
 
 	}
 
+	public function upload_faltantes($idpro = NULL){
+		$user = $this->session->userdata();
+		$config['upload_path']          = './assets/uploads/faltantes/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+	    $user = $this->session->userdata();
+        $this->load->library('upload', $config);
+        $this->upload->do_upload('file_faltantes');
+		$this->load->library("excelfile");
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$file = $_FILES["file_faltantes"]["tmp_name"];
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=1; $i<=$num_rows; $i++) {
+			if($sheet->getCell('B'.$i)->getValue() !=''){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$no_semanas = $sheet->getCell('C'.$i)->getValue() == '' ? 1 : $sheet->getCell('C'.$i)->getValue();
+					$fecha = new DateTime(date('Y-m-d H:i:s'));
+					$intervalo = new DateInterval('P'.$no_semanas.'W');
+					$fecha->add($intervalo);
+					$fecha->format('Y-m-d H:i:s');
+					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $idpro])[0];
+
+					if($antes){
+						$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$antes->id_producto])[0];
+						$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$antes->id_proveedor])[0];
+						$cambios = [
+							"id_usuario" => $user["id_usuario"],
+							"fecha_cambio" => date('Y-m-d H:i:s'),
+							"accion" => "Actualizo faltantes",
+							"antes" => "id_faltante: ".$antes->id_faltante." /Proveedor: ".$aprov->nombre." /Producto:".$aprod->nombre."/F Termino: ".$antes->fecha_termino.
+									"/Semanas: ".$no_semanas." ",
+							"despues" => "El usuario cambio las semanas: \n/Semanas: ".$no_semanas."/Fecha Termino:".$fecha->format('Y-m-d H:i:s')];
+						$data['cambios'] = $this->cambio_md->insert($cambios);
+						$data ['id_faltante'] = $this->falt_mdl->update([
+							"no_semanas" => $no_semanas,
+							"fecha_termino" => $fecha->format('Y-m-d H:i:s')
+						], $antes->id_faltante);
+						$mensaje = [
+							"id" 	=> 'Éxito',
+							"desc"	=> 'Faltantes actualizados correctamente',
+							"type"	=> 'success'
+						];
+					}else{
+						$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$productos->id_producto ] )[0];
+						$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$idpro])[0];
+							$cambios = [
+							"id_usuario" => $user["id_usuario"],
+							"fecha_cambio" => date('Y-m-d H:i:s'),
+							"accion" => "Inserto faltantes",
+							"antes" => "Proveedor: ".$aprov->nombre." /Producto:".$aprod->nombre."/F Termino: ".$fecha->format('Y-m-d H:i:s').
+									"/Semanas: ".$no_semanas."",
+							"despues" => "El usuario agrego faltantes."];
+						$data['cambios'] = $this->cambio_md->insert($cambios);
+						$new_faltante=[
+							"id_producto"		=>	$productos->id_producto,
+							"fecha_termino"	=>	$fecha->format('Y-m-d H:i:s'),
+							"no_semanas"		=>	$no_semanas,
+							"id_proveedor" => $idpro
+						];
+						$data ['id_faltante'] = $this->falt_mdl->insert($new_faltante);
+						$mensaje = [
+							"id" 	=> 'Éxito',
+							"desc"	=> 'Faltantes insertados correctamente',
+							"type"	=> 'success'
+						];
+					}
+				}
+			}
+		}
+
+
+		$this->jsonResponse($mensaje);
+	}
+
+	public function add_faltante($id_prove){
+		$data["usuario"] = $this->user_md->get(NULL,["id_usuario" => $id_prove])[0];
+		$data["title"]="AGREGAR FALTANTE A ".$data["usuario"]->nombre;
+		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
+		$data["view"]=$this->load->view("Cotizaciones/falta_add", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_falta' type='button'>
+											<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Agregar Faltante
+										</button>";
+		$this->jsonResponse($data);
+	}
+
+	public function save_falta(){
+		$user = $this->session->userdata();
+		$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P'.$this->input->post('semanas').'W');
+		$fecha->add($intervalo);
+		$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
+		$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_proveedor')])[0];
+
+		if($antes){
+			$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"accion" => "Actualizo faltantes",
+						"antes" => "id_faltante: ".$antes->id_faltante." /Proveedor: ".$aprov->nombre." /Producto:".$aprod->nombre."/F Termino: ".$antes->fecha_termino.
+								"/Semanas: ".$antes->no_semanas." ",
+						"despues" => "El usuario cambio las semanas: \n/Semanas: ".$this->input->post('semanas')."/Fecha Termino:".$fecha->format('Y-m-d H:i:s')];
+			$data ['id_faltante'] = $this->falt_mdl->update([
+				"no_semanas" => $this->input->post('semanas'),
+				"fecha_termino" => $fecha->format('Y-m-d H:i:s')
+			], $antes->id_faltante);
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+		}else{
+			$faltante = [
+				'id_producto'		=>	$this->input->post('id_producto'),
+				'id_proveedor'		=>	$this->input->post('id_proveedor'),
+				'fecha_termino'	=>	$fecha->format('Y-m-d H:i:s'),
+				'no_semanas' => $this->input->post('semanas')
+			];
+				$data ['id_faltante'] = $this->falt_mdl->insert($faltante);
+				$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Inserto faltantes",
+				"antes" => "Proveedor: ".$aprov->nombre." /Producto:".$aprod->nombre."/F Termino: ".$fecha->format('Y-m-d H:i:s').
+						"/Semanas: ".$this->input->post('semanas')."",
+				"despues" => "El usuario agrego faltantes."];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+		}
+
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Cotización registrada correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
 }
 
 /* End of file Cotizaciones.php */
