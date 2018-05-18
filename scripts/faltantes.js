@@ -14,9 +14,9 @@ function renderTable(proveedor){
 				value.fecha_termino = value.fecha_termino== null ? "" : getweekdays(value.fecha_termino);
 				value.observaciones = value.observaciones == null ? "" : value.observaciones;
 				$(".cot-prov").append('<tr><td>'+value.codigo+'</td><td>'+value.producto+'</td><td>'+value.no_semanas+'</td><td>'+value.fecha_termino+'</td>'+
-										'<td><button id="update_cotizacion" type="button" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_faltante+'">'+
-										'<i class="fa fa-pencil"></i></button><button type="button" id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_faltante+'">'+
-										'<i class="fa fa-trash"></i></button></td></tr>')
+										//'<td><button id="update_cotizacion" type="button" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_faltante+'">'+
+										//'<i class="fa fa-pencil"></i></button><button type="button" id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_faltante+'">'+
+										/*'<i class="fa fa-trash"></i></button></td>*/'</tr>')
 			});
 			$(".searchboxs").css("display","block");
 		}else {
