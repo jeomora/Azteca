@@ -16,12 +16,12 @@ class Main extends MY_Controller {
 	//Primera función que carga el dashboard
 	public function index(){
 		$user = $this->session->userdata();//Trae los datos del usuario
-		
+
 		$data["proveedores"]=$this->user_md->getUsuarios(['usuarios.id_grupo'=>2]);//Son proveedores
 		$data["productos"]=$this->pr_md->get();
 		$data["familias"]=$this->fam_md->get();
 		$where = [];
-		
+
 		if($user['id_grupo'] ==2){//El grupo 2 es proveedor
 			$where = [	"cotizaciones.id_proveedor"					=>	$user['id_usuario'],
 						"WEEKOFYEAR(cotizaciones.fecha_registro)"	=>	$this->weekNumber()
@@ -31,7 +31,7 @@ class Main extends MY_Controller {
 		}
 		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
 		$data["ides"] = $user['id_grupo'];
-		
+
 		$this->estructura("Admin/welcome", $data);
 	}
 
@@ -71,16 +71,19 @@ class Main extends MY_Controller {
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s'));
 		$user = $this->session->userdata();
 
-		
+
 		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
-		
+
 		$i = 0;
 		$new_cotizacion = null;
 		if ($cotizaciones){
 			foreach ($cotizaciones as $key => $value){
 				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
 				$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+				$intervalo = new DateInterval('P2D');
+				$num_one = $value->num_one == '' ? 0 : $value->num_one;
+				$num_two = $value->num_two == '' ? 0 : $value->num_two;
+				$descuento = $value->descuento == '' ? 0 : $value->descuento;
 		$fecha->add($intervalo);
 				if($antes){
 					$new_cotizacion[$i] = [
@@ -92,7 +95,7 @@ class Main extends MY_Controller {
 						"descuento"			=>	$value->descuento,
 						"precio_promocion"	=>	$value->precio_promocion,
 						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-						"observaciones"		=>	$value->observaciones,
+						"observaciones"		=>	$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($value->observaciones),
 						'estatus' => 0
 					];
 				}else{
@@ -105,11 +108,11 @@ class Main extends MY_Controller {
 						"descuento"			=>	$value->descuento,
 						"precio_promocion"	=>	$value->precio_promocion,
 						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-						"observaciones"		=>	$value->observaciones,
+						"observaciones"		=>		$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($value->observaciones),
 						'estatus' => 1
 					];
 				}
-				
+
 				$i++;
 			}
 		}
@@ -142,10 +145,10 @@ class Main extends MY_Controller {
    		$categoria = $this->input->post('categoria');
 
 		$ruta_folder = $this->createFolder($categoria); //Se crea el folder si no existe
-		
+
 		$explode = explode(".", $_FILES['file']['name']);
 		$extension = array_pop($explode);
-		
+
 		$imagen = [
 			"file_name"		=>	$id_producto.'_'.$explode[0],
 			"upload_path"	=>	FCPATH.$ruta_folder,
@@ -155,7 +158,7 @@ class Main extends MY_Controller {
 		];
 
 		$this->upload->initialize($imagen);
-		
+
 		if (! $this->upload->do_upload('file')){
 			$data = ["id"	=>	"Error",
         			"desc"	=>	$this->upload->display_errors(),
