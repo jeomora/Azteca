@@ -70,6 +70,7 @@ if(!$this->session->userdata("username")){
 							<th>DESCRIPCIÓN</th>
 							<th>SEMANAS FALTANTES</th>
 							<th>FECHA TERMINO</th>
+							<!--<th>ACCIONES</th>-->
 						</tr>
 					</thead>
 					<tbody class="cot-prov">
