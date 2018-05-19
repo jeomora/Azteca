@@ -116,11 +116,11 @@ $(document).off("click", "#delete_cotizacion").on("click", "#delete_cotizacion",
 
 $(document).off("click", ".update_cotizacion").on("click", ".update_cotizacion", function(event) {
 	event.preventDefault();
-	sendFormos("Cotizaciones/update", $("#form_cotizacion_edit"), "");
+	sendFormos("Cotizaciones/update2", $("#form_cotizacion_edit"), "");
 });
 $(document).off("click", ".delete_cotizacion").on("click", ".delete_cotizacion", function(event) {
 	event.preventDefault();
-	sendFormos("Cotizaciones/delete", $("#form_cotizacion_delete"), "");
+	sendFormos("Cotizaciones/delete2", $("#form_cotizacion_delete"), "");
 });
 $(document).off("change", ".id_producto").on("change", ".id_producto", function() {
 	var tr = $(this).closest("tr");
@@ -178,7 +178,9 @@ $(document).off("change", ".id_cotz").on("change", ".id_cotz", function() {
 });
 $(document).off("keyup", ".precio").on("keyup", ".precio", function() {
 	var tr = $(this).closest("tr");
+
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
+
 	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
 	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
 	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
