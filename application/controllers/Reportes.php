@@ -34,7 +34,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		
+
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$data["preciosBajos"] = $this->ct_mdl->preciosBajos($where);
 		$this->estructura("Reportes/table_precios_bajos", $data);
@@ -63,7 +63,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		
+
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$data["promociones_igual"] = $this->ct_mdl->getCotizaciones($where);
 		$this->estructura("Reportes/table_precios_iguales", $data);
@@ -148,7 +148,7 @@ class Reportes extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		
+
 		$data["proveedores"] = $this->user_mdl->getUsuarios(['usuarios.id_grupo'=>2]);//Son proveedores;
 		$this->estructura("Reportes/filter_cotizaciones", $data);
 	}
@@ -184,6 +184,34 @@ class Reportes extends MY_Controller {
 
 	private function excelCotizaciones(){
 		# code...
+	}
+
+	public function expo(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/expo',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 2];
+		$data["proveedores"] = $this->user_mdl->getUsuarios($where);
+		$this->estructura("Reportes/expo", $data);
 	}
 
 }

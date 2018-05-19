@@ -37,7 +37,7 @@
     </div>
     <br>
 
-		<div class="row">
+		<!--<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					<label for="fecha_termino">FECHA TERMINO</label>
@@ -48,7 +48,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 
 		<?php echo form_close(); ?>
 	</div>
