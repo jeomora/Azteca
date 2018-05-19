@@ -8,18 +8,19 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	}else{
 		$("#camb").css("display","none");
 	}
-	
+
 });
- 
+
 function renderTable(){
 	$(".cot-prov").html();
 	$(".float-e-margins").css("display","none");
 	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
+	$(".cot-prov").html("");
 	getProveedorCot(proveedor)
-	.done(function (resp) { 
+	.done(function (resp) {
 		if(resp){
-			$(".cot-prov").html("");
+
 			$.each(resp, function(indx, value){
 				value.observaciones = value.observaciones == null ? "" : value.observaciones;
 				value.descuento = value.descuento == null ? "" : value.descuento;
@@ -74,7 +75,7 @@ function getProveedorCot(id_prov) {
 	});
 }
 function myFunction() {
-  // Declare variables 
+  // Declare variables
   var input, filter, table, tr, td, i;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
@@ -90,7 +91,7 @@ function myFunction() {
       } else {
         tr[i].style.display = "none";
       }
-    } 
+    }
   }
 }$(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion", function(event){
 	event.preventDefault();
