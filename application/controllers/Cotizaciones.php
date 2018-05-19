@@ -2673,15 +2673,15 @@ class Cotizaciones extends MY_Controller {
 					$column_one = $sheet->getCell('E'.$i)->getValue();
 					$column_two = $sheet->getCell('F'.$i)->getValue();
 					$descuento = $sheet->getCell('G'.$i)->getValue();
+					$precio_promocion = $precio;
 
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($column_one >=1 && $column_two >1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
-					}elseif ($descuento >0) {
-						$precio_promocion = ($precio - ($precio * ($descuento/100)));
-					}else{
-						$precio_promocion = $precio;
+					}
+					if ($descuento >0) {
+						$precio_promocion = ($precio_promocion - ($precio_promocion * ($descuento/100)));
 					}
 					$cotiz =  $this->expo_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
 					$new_cotizacion=[
