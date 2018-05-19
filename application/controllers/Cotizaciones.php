@@ -241,6 +241,9 @@ class Cotizaciones extends MY_Controller {
 		$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
 		$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
 		$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$proveedor])[0];
+		$num_one = $this->input->post('num_one') == '' ? 0 : $this->input->post('num_one');
+		$num_two = $this->input->post('num_two') == '' ? 0 : $this->input->post('num_two');
+		$descuento = str_replace(',', '', $this->input->post('porcentaje')) == '' ? 0 : str_replace(',', '', $this->input->post('porcentaje'));
 		if($antes){
 			$cotizacion = [
 				'id_producto'		=>	$this->input->post('id_producto'),
@@ -251,7 +254,7 @@ class Cotizaciones extends MY_Controller {
 				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
-				'observaciones'		=>	strtoupper($this->input->post('observaciones')),
+				'observaciones'		=>	$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($this->input->post('observaciones')),
 				'estatus' => 0
 			];
 
@@ -281,7 +284,7 @@ class Cotizaciones extends MY_Controller {
 				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
-				'observaciones'		=>	strtoupper($this->input->post('observaciones'))
+				'observaciones'		=>		$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($this->input->post('observaciones'))
 			];
 			if($cotiz){
 				$data['cotizacin']=$this->ct_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
@@ -804,7 +807,7 @@ class Cotizaciones extends MY_Controller {
 
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->mergeCells('E1:F1');
-
+		$this->jsonResponse($this->input->post('id_pro'));
 		$productos = $this->prod_mdl->getProdFam(NULL,$this->input->post('id_pro'));
 		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
 		$row_print = 2;
@@ -1068,7 +1071,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
+							"observaciones"		=>	$column_one." en ".$column_two." descuento: %".$descuento."/// ".$sheet->getCell('D'.$i)->getValue(),
 							"estatus" => 0];
 						if($cotiz){
 							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
@@ -1085,7 +1088,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
+							"observaciones"		=>	$column_one." en ".$column_two." descuento: %".$descuento." /// ".$sheet->getCell('D'.$i)->getValue()
 						];
 						if($cotiz){
 							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);

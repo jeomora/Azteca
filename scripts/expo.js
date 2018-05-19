@@ -19,10 +19,11 @@ function renderTable(){
 	$(".float-e-margins").css("display","none");
 	$(".searchboxs").css("display","none")
 	var proveedor = $("#id_pro option:selected").val();
+	$(".cot-prov").html("");
 	getProveedorCot(proveedor)
 	.done(function (resp) {
 		if(resp){
-			$(".cot-prov").html("");
+
 			$.each(resp, function(indx, value){
 				value.observaciones = value.observaciones == null ? "" : value.observaciones;
 				value.descuento = value.descuento == null ? "" : value.descuento;
