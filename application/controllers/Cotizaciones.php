@@ -635,7 +635,6 @@ class Cotizaciones extends MY_Controller {
 				if ($value['articulos']) {
 
 					foreach ($value['articulos'] as $key => $row){
-						$this->jsonResponse($row);
 						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						if($row['color'] == '#92CEE3'){
 							$this->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
