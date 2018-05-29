@@ -876,7 +876,6 @@ class Cotizaciones extends MY_Controller {
 
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->mergeCells('E1:F1');
-		$this->jsonResponse($this->input->post('id_pro'));
 		$productos = $this->prod_mdl->getProdFam(NULL,$this->input->post('id_pro'));
 		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
 		$row_print = 2;
@@ -3009,7 +3008,7 @@ class Cotizaciones extends MY_Controller {
 
 						$dif2 = $row["precio_first"] - $row["xpromo"];
 						if($row['precio_first'] !== NULL){
-							if ($dif1 >= ($row["precio_first"] * .30) || $dif1 <= (($row["precio_first"] * .30) * (-1))) {
+							if ($dif2 >= ($row["precio_first"] * .30) || $dif2 <= (($row["precio_first"] * .30) * (-1))) {
 								$hoja->setCellValue("H{$row_print}", $dif2)->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
 								$this->cellStyle("H{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -3025,7 +3024,7 @@ class Cotizaciones extends MY_Controller {
 
 						$dif3 = $row["precio_next"] - $row["xpromo"];
 						if($row['precio_next'] !== NULL){
-							if ($dif1 >= ($row["precio_next"] * .30) || $dif1 <= (($row["precio_next"] * .30) * (-1))) {
+							if ($dif3 >= ($row["precio_next"] * .30) || $dif3 <= (($row["precio_next"] * .30) * (-1))) {
 								$hoja->setCellValue("I{$row_print}", $dif3)->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->getStyle("I{$row_print}")->applyFromArray($border_style);
 								$this->cellStyle("I{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -3129,13 +3128,13 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("AL{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AM{$row_print}")->applyFromArray($border_style);
 
-						$hoja->setCellValue("AN{$row_print}", "=K".$row_print."*U".$row_print)->getStyle("AN{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AO{$row_print}", "=K".$row_print."*X".$row_print)->getStyle("AO{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AP{$row_print}", "=K".$row_print."*AA".$row_print)->getStyle("AP{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AQ{$row_print}", "=K".$row_print."*AD".$row_print)->getStyle("AQ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AR{$row_print}", "=K".$row_print."*AG".$row_print)->getStyle("AR{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AS{$row_print}", "=K".$row_print."*AJ".$row_print)->getStyle("AS{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AT{$row_print}", "=K".$row_print."*AM".$row_print)->getStyle("AT{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AN{$row_print}", "=(K".$row_print."*U".$row_print.")")->getStyle("AN{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AO{$row_print}", "=(K".$row_print."*X".$row_print.")")->getStyle("AO{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AP{$row_print}", "=(K".$row_print."*AA".$row_print.")")->getStyle("AP{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AQ{$row_print}", "=(K".$row_print."*AD".$row_print.")")->getStyle("AQ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AR{$row_print}", "=(K".$row_print."*AG".$row_print.")")->getStyle("AR{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AS{$row_print}", "=(K".$row_print."*AJ".$row_print.")")->getStyle("AS{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("AT{$row_print}", "=(K".$row_print."*AM".$row_print.")")->getStyle("AT{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
 						$hoja->setCellValue("AU{$row_print}", "=SUM(AN{$row_print}:AT{$row_print})")->getStyle("AU{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$this->cellStyle("AU{$row_print}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
