@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://env-6001887.jl.serv.net.mx';
+$config['base_url'] = 'http://env-6001887.jl.serv.net.mx/';
 
 /*
 |--------------------------------------------------------------------------
