@@ -1651,16 +1651,16 @@ class Cotizaciones extends MY_Controller {
 				$intervalo = new DateInterval('P2D');
 				$fecha->add($intervalo);
 				if ($value->nombre === "AMARILLOS") {
-					$where=["prod.estatus" => 3];//Semana actual
-				}elseif ($value->nombre === "VOLUMEN" ) {
-					$where=["prod.estatus" => 2];//Semana actual
-				}else{
-					$where=["ctz1.id_proveedor" => $value->id_usuario,"prod.estatus" => 1];//Semana actual
-				}
-				$fecha = new DateTime(date('Y-m-d H:i:s'));
-				$intervalo = new DateInterval('P2D');
-				$fecha->add($intervalo);
-				$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber( $fecha->format('Y-m-d H:i:s')),"prod.estatus" => 3];//Semana actual
+			}elseif ($value->nombre === "VOLUMEN" ) {
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber( $fecha->format('Y-m-d H:i:s')),"prod.estatus" => 2];//Semana actual
+			}else{
+				$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber( $fecha->format('Y-m-d H:i:s')),"ctz_first.id_proveedor" => $value->id_usuario,"prod.estatus" => 1];//Semana actual
+			}
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$intervalo = new DateInterval('P2D');
+			$fecha->add($intervalo);
+			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
 				$difff = 0.01;
 				$flag2 = 3;
 
