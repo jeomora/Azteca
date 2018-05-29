@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.6.214',
+	'hostname' => '192.168.5.246',
 	'username' => 'root',
-	'password' => 'W5aPEDtTkk',
+	'password' => 'IRCcgv33478',
 	'database' => 'azteca',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -96,10 +96,10 @@ $db['default'] = array(
 
 $db['server'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.6.214',
-	'username' => 'root',
-	'password' => 'W5aPEDtTkk',
-	'database' => 'azteca',
+	'hostname' => 'localhost',
+	'username' => '',
+	'password' => '',
+	'database' => '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
