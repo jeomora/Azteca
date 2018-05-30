@@ -189,10 +189,7 @@ $this->db->select("c.id_cotizacion,
 			AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia")
 		->from("prodandprice prod")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR(CURDATE()) AND c.estatus = 1", "LEFT")
-		->join("cotizaciones ctz_first", "c.id_cotizacion = ctz_first.id_cotizacion AND ctz_first.id_cotizacion = (SELECT ctz_min.id_cotizacion FROM cotizaciones	ctz_min
-		WHERE	c.id_producto = ctz_min.id_producto AND WEEKOFYEAR(ctz_min.fecha_registro) = WEEKOFYEAR(CURDATE()) AND ctz_min.precio_promocion =
-			(SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND
-			ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = WEEKOFYEAR(CURDATE())) LIMIT 1)", "LEFT")
+		->join("cotizaciones ctz_first", "c.id_cotizacion = ctz_first.id_cotizacion AND ctz_first.id_cotizacion = (SELECT ctz_min.id_cotizacion FROM cotizaciones ctz_min	WHERE	c.id_producto = ctz_min.id_producto AND WEEKOFYEAR(ctz_min.fecha_registro) = WEEKOFYEAR(CURDATE()) AND ctz_min.precio_promocion =	(SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = WEEKOFYEAR(CURDATE())) LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "c.id_cotizacion = ctz_maxima.id_cotizacion AND ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE
 		ctz_first.id_producto = ctz_max.id_producto AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE
 		ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = WEEKOFYEAR(CURDATE())) LIMIT 1)", "LEFT")
