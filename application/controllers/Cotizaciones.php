@@ -626,7 +626,7 @@ class Cotizaciones extends MY_Controller {
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2(NULL, $fecha,0);
 
-		$row_print =3;
+		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
 				$hoja->setCellValue("B{$row_print}", $value['familia']);
