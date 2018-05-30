@@ -190,16 +190,9 @@ $this->db->select("c.id_cotizacion,
 		->from("prodandprice prod")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR(CURDATE()) AND c.estatus = 1", "LEFT")
 		->join("cotizaciones ctz_first", "c.id_cotizacion = ctz_first.id_cotizacion AND ctz_first.id_cotizacion = (SELECT ctz_min.id_cotizacion FROM cotizaciones ctz_min	WHERE	c.id_producto = ctz_min.id_producto AND WEEKOFYEAR(ctz_min.fecha_registro) = WEEKOFYEAR(CURDATE()) AND ctz_min.precio_promocion =	(SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = WEEKOFYEAR(CURDATE())) LIMIT 1)", "LEFT")
-		->join("cotizaciones ctz_maxima", "c.id_cotizacion = ctz_maxima.id_cotizacion AND ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE
-		ctz_first.id_producto = ctz_max.id_producto AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE
-		ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = WEEKOFYEAR(CURDATE())) LIMIT 1)", "LEFT")
-		->join("cotizaciones ctz_next", "c.id_cotizacion = ctz_next.id_cotizacion AND ctz_next.id_cotizacion = (SELECT cott.id_cotizacion FROM cotizaciones cott WHERE
-		cott.id_producto = ctz_first.id_producto AND cott.estatus = 1 AND cott.precio_promocion >= ctz_first.precio_promocion AND
-		WEEKOFYEAR(cott.fecha_registro) = WEEKOFYEAR(CURDATE()) AND cott.id_proveedor <> ctz_first.id_proveedor ORDER BY cott.precio ASC LIMIT 1 )", "LEFT")
-		->join("cotizaciones ctz_nxts", "c.id_cotizacion = ctz_nxts.id_cotizacion AND ctz_nxts.id_cotizacion = (SELECT cots.id_cotizacion FROM cotizaciones cots WHERE
-		cots.id_producto = ctz_first.id_producto AND cots.estatus = 1 AND cots.precio_promocion >= ctz_next.precio_promocion AND
-		WEEKOFYEAR(cots.fecha_registro) = WEEKOFYEAR(CURDATE()) AND cots.id_proveedor <> ctz_first.id_proveedor AND
-		cots.id_proveedor <> ctz_next.id_proveedor ORDER BY cots.precio ASC LIMIT 1 )" ,"LEFT")
+		->join("cotizaciones ctz_maxima", "c.id_cotizacion = ctz_maxima.id_cotizacion AND ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE ctz_first.id_producto = ctz_max.id_producto AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = WEEKOFYEAR(CURDATE())) LIMIT 1)", "LEFT")
+		->join("cotizaciones ctz_next", "c.id_cotizacion = ctz_next.id_cotizacion AND ctz_next.id_cotizacion = (SELECT cott.id_cotizacion FROM cotizaciones cott WHERE cott.id_producto = ctz_first.id_producto AND cott.estatus = 1 AND cott.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cott.fecha_registro) = WEEKOFYEAR(CURDATE()) AND cott.id_proveedor <> ctz_first.id_proveedor ORDER BY cott.precio ASC LIMIT 1 )", "LEFT")
+		->join("cotizaciones ctz_nxts", "c.id_cotizacion = ctz_nxts.id_cotizacion AND ctz_nxts.id_cotizacion = (SELECT cots.id_cotizacion FROM cotizaciones cots WHERE cots.id_producto = ctz_first.id_producto AND cots.estatus = 1 AND cots.precio_promocion >= ctz_next.precio_promocion AND WEEKOFYEAR(cots.fecha_registro) = WEEKOFYEAR(CURDATE()) AND cots.id_proveedor <> ctz_first.id_proveedor AND cots.id_proveedor <> ctz_next.id_proveedor ORDER BY cots.precio ASC LIMIT 1 )" ,"LEFT")
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
