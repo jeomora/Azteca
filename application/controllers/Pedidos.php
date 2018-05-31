@@ -17,7 +17,7 @@ class Pedidos extends MY_Controller {
 
 	public function index(){
 		$user = $this->session->userdata();//Trae los datos del usuario
-		
+
 		$where = [];
 
 		if($user['id_grupo'] ==2){//El grupo 2 es proveedor
@@ -54,7 +54,7 @@ class Pedidos extends MY_Controller {
 		}else{
 			$this->estructura("Pedidos/table_pedidos", $data, FALSE);
 		}
-		
+
 	}
 	public function agregar(){
 		ini_set("memory_limit", "-1");
@@ -121,7 +121,7 @@ class Pedidos extends MY_Controller {
 	}
 
 	public function update(){
-	
+
 		$mensaje = [
 			"id" 	=> 'Éxito',
 			"desc"	=> 'Pedido actualizado correctamente',
@@ -139,7 +139,7 @@ class Pedidos extends MY_Controller {
 		];
 		$this->jsonResponse($mensaje);
 	}
- 
+
 	public function get_productos(){
 		$id_proveedor = $this->input->post('id_proveedor');
 		$where = ["cotizaciones.id_proveedor" => $id_proveedor];
@@ -160,7 +160,7 @@ class Pedidos extends MY_Controller {
 		}else{
 			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
 		}
-		
+
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
 		$this->jsonResponse($productosProveedor);
@@ -169,7 +169,7 @@ class Pedidos extends MY_Controller {
 	public function get_allpedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
-		$fecha->add($intervalo);	
+		$fecha->add($intervalo);
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
 		if ($id_proveedor == "VOLUMEN") {
@@ -177,11 +177,13 @@ class Pedidos extends MY_Controller {
 		}elseif ($id_proveedor == "AMARILLOS") {
 			$where = ["prod.estatus" => 3];
 		}else{
-			$where = ["ctz1.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
+			//$where = ["ctz1.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
+			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
 		}
-		
+
 		$fecha = $fecha->format('Y-m-d H:i:s');
-		$productosProveedor = $this->ct_mdl->getPedidosAll($where,$fecha,$user["id_usuario"]);
+		//$productosProveedor = $this->ct_mdl->getPedidosAll($where,$fecha,$user["id_usuario"]);
+		$productosProveedor = $this->ct_mdl->comparaCotizaciones($where,$fecha,$user["id_usuario"]);
 		$this->jsonResponse($productosProveedor);
 	}
 
@@ -203,7 +205,7 @@ class Pedidos extends MY_Controller {
 		}else{
 			$where = ["ctz_first.id_proveedor" => $id_proveedor,"prod.estatus" => 1];
 		}
-		
+
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$productosProveedor = $this->ct_mdl->getPedidosSingle($where,$fecha,$user["id_usuario"]);
 		$this->jsonResponse($productosProveedor);
@@ -230,7 +232,7 @@ class Pedidos extends MY_Controller {
 		$ides = $this->ct_mdl->get('id_producto', ['id_cotizacion'=>$values["id_cotizacion"]])[0];
 		$sist = [
 				"id_producto"=>	$ides->{"id_producto"},
-				"precio_sistema"=>	$values["sistema"], 
+				"precio_sistema"=>	$values["sistema"],
 				"precio_four"=>	$values["cuatro"],
 				"fecha_registro"=>$fecha->format('Y-m-d H:i:s')
 			];
@@ -265,7 +267,7 @@ class Pedidos extends MY_Controller {
 
 		$pedido = [
 				"id_producto"=>	$values["id_producto"],
-				"id_tienda"=>	$user['id_usuario'], 
+				"id_tienda"=>	$user['id_usuario'],
 				"cajas"=>	$values["cajas"],
 				"piezas"=>	$values["piezas"],
 				"pedido"=>$values["pedido"],
@@ -300,13 +302,13 @@ class Pedidos extends MY_Controller {
 		$pedido = [
 			"id_sucursal"		=>	$this->input->post('id_sucursal'),
 			"id_proveedor"		=>	$this->input->post('id_proveedor'),
-			"id_user_registra"	=>	$this->ion_auth->user()->row()->id, 
+			"id_user_registra"	=>	$this->ion_auth->user()->row()->id,
 			"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
 			"total"				=>	str_replace(",", "", $this->input->post('total'))
 		];
-		
+
 		$id_pedido = $this->ped_mdl->insert($pedido);
-		
+
 		$size = sizeof($this->input->post('id_producto[]'));
 		$productos = $this->input->post('id_producto[]');
 		for($i = 0; $i < $size; $i++){
