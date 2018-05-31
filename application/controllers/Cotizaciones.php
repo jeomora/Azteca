@@ -647,8 +647,7 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		$objExcel = PHPExcel_IOFactory::load("./assets/uploads/cotizaciones/plantilla.xlsx");
-		$hoja = $objExcel->getSheet(0); 
+		$hoja = $this->excelfile->getActiveSheet();
 				$hoja->getDefaultStyle()
 		    ->getBorders()
 		    ->getTop()
@@ -669,7 +668,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("A1:T2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		/*$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
 		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(12);
 		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(12);
@@ -688,7 +687,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("Q1", "3ER PRECIO")->getColumnDimension('Q')->setWidth(12);
 		$hoja->setCellValue("R1", "PRECIO PROMOCIÓN")->getColumnDimension('R')->setWidth(12);
 		$hoja->setCellValue("S1", "3ER PROVEEDOR")->getColumnDimension('S')->setWidth(15);
-		$hoja->setCellValue("T1", "3ER OBSERVACIÓN")->getColumnDimension('T')->setWidth(30);*/
+		$hoja->setCellValue("T1", "3ER OBSERVACIÓN")->getColumnDimension('T')->setWidth(30);
 
 
 		$fecha = new DateTime(date('Y-m-d H:i:s'));

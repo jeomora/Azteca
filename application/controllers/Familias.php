@@ -32,8 +32,8 @@ class Familias extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		
-		$data["familias"] = $this->fam_md->get(); 
+
+		$data["familias"] = $this->fam_md->get(NULL, ['estatus <>'=>0]);
 		$this->estructura("Familias/table_familias", $data);
 	}
 
