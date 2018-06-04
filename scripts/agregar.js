@@ -97,7 +97,7 @@ function myFunction() {
 	event.preventDefault();
 	var id_cotizacion = $(this).closest("tr").find("#update_cotizacion").data("idCotizacion");
 	var proveedor = $("#id_pro option:selected").val();
-	getModal("Cotizaciones/get_update2/"+ id_cotizacion+"/"+proveedor, function (){
+	getModal("Cotizaciones/get_update/"+ id_cotizacion+"/"+proveedor, function (){
 		datePicker();
 		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
 	});
