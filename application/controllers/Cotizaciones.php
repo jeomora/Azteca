@@ -254,7 +254,7 @@ class Cotizaciones extends MY_Controller {
 				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
-				'observaciones'		=>	$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($this->input->post('observaciones')),
+				'observaciones'		=>	strtoupper($this->input->post('observaciones')),
 				'estatus' => 0
 			];
 
@@ -284,7 +284,7 @@ class Cotizaciones extends MY_Controller {
 				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
 				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
 				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
-				'observaciones'		=>		$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($this->input->post('observaciones'))
+				'observaciones'		=>	strtoupper($this->input->post('observaciones'))
 			];
 			if($cotiz){
 				$data['cotizacin']=$this->ct_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
