@@ -441,8 +441,8 @@ class Cotizaciones extends MY_Controller {
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
-		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
-		$data["title"]="ACTUALIZR COTIZACIÓN DE <br>".$data["producto"]->nombre;
+		//$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["producto"]->nombre;
 		$user = $this->session->userdata();
 		$where=["cotizaciones.id_proveedor" => $idpros];
 		$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
