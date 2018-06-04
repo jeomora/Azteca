@@ -353,6 +353,47 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function update2(){
+		$user = $this->session->userdata();
+		$size = sizeof($this->input->post('id_cotz[]'));
+		$cotz = $this->input->post('id_cotz[]');
+		$precio = $this->input->post('precio[]');
+		$precio_promocion = $this->input->post('precio_promocion[]');
+		$num_one = $this->input->post('num_one[]');
+		$num_two = $this->input->post('num_two[]');
+		$descuento = $this->input->post('descuento[]');
+		$observaciones = $this->input->post('observaciones[]');
+		for($i = 0; $i < $size; $i++){
+			$antes =  $this->expo_mdl->get(NULL, ['id_cotizacion'=>$cotz[$i]])[0];
+			$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$antes->id_producto])[0];
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$antes->id_proveedor])[0];
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Cotizacion actualizada",
+				"antes" => "id : ".$antes->id_cotizacion." \n///Proveedor: ".$aprov->nombre." \n///Producto:".$aprod->nombre." \n///Precio: ".
+							$antes->precio." \n///Precio promoción: ".$antes->precio_promocion." \n///".$antes->num_one." en ".$antes->num_two.
+							" \n///% Descuento: ".$antes->descuento." \nRegistrado: ".$antes->fecha_registro." \n///Observaciones: ".$antes->observaciones,
+				"despues" => "Precio: ".$precio[$i]."\n///Precio promoción: ".$precio_promocion[$i]."\n///".$num_one[$i]." en ".$num_two[$i].
+							"\n///%Descuento: ".$descuento[$i]."\n///Observaciones: ".$observaciones[$i]];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+			$data ['id_cotizacion'] = $this->expo_mdl->update([
+				"precio" => $precio[$i],
+				"precio_promocion" => $precio_promocion[$i],
+				"num_one" => $num_one[$i],
+				"num_two" => $num_two[$i],
+				"descuento" => $descuento[$i],
+				"observaciones" => $observaciones[$i]
+			], $cotz[$i]);
+		}
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Cotización actualizada correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+
 
 	public function delete(){
 		$size = sizeof($this->input->post('id_producto[]'));
@@ -379,6 +420,34 @@ class Cotizaciones extends MY_Controller {
 		];
 		$this->jsonResponse($mensaje);
 	}
+
+
+	public function delete2(){
+		$size = sizeof($this->input->post('id_producto[]'));
+		$user = $this->session->userdata();
+		$productos = $this->input->post('id_producto[]');
+		for($i = 0; $i < $size; $i++){
+			$antes =  $this->expo_mdl->get(NULL, ['id_cotizacion'=>$productos[$i]])[0];
+			$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$antes->id_producto])[0];
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$antes->id_proveedor])[0];
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "id : ".$antes->id_cotizacion." \n///Proveedor: ".$aprov->nombre." \n///Producto:".$aprod->nombre." \n///Precio: ".
+							$antes->precio." \n///Precio promoción: ".$antes->precio_promocion." \n///".$antes->num_one." en ".$antes->num_two.
+							" \n///% Descuento: ".$antes->descuento." \nRegistrado: ".$antes->fecha_registro." \n///Observaciones: ".$antes->observaciones,
+				"accion" => "Cotizacion eliminada","despues" => "El usuario elimino la cotización"];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+			$data ['id_cotizacion'] = $this->expo_mdl->update(["estatus" => 0], $productos[$i]);
+		}
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Cotización eliminada correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+
 
 	public function hacer_pedido($value=''){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
@@ -440,15 +509,18 @@ class Cotizaciones extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
+
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
-		//$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["producto"]->nombre;
+
 		$user = $this->session->userdata();
-		$where=["cotizaciones.id_proveedor" => $idpros];
-		$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+
+		$data["cots"]= $this->expo_mdl->get(NULL, ['id_cotizacion'=>$id]);
 		$where=["cotizaciones.id_proveedor" => $idpros, "cotizaciones.estatus" => 0];
-		$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
-		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
+		$data["cotss"]= $this->expo_mdl->get(NULL, ['id_cotizacion'=>$id]);
+
+		$data["view"]=$this->load->view("Reportes/edit_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
 						</button>";
@@ -484,14 +556,14 @@ class Cotizaciones extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
+		$data["cotizacion"] = $this->expo_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
 		$data["title"]="Marque la casilla del producto :<br>".$data["producto"]->nombre;
 		$where=["cotizaciones.id_proveedor" => $idpros];
-		$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+		$data["cots"]=$this->expo_mdl->get(NULL, ['id_cotizacion'=>$id]);
 		$where=["cotizaciones.id_proveedor" => $idpros, "cotizaciones.estatus" => 0];
-		$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
-		$data["view"]=$this->load->view("Cotizaciones/delete_cotizacion", $data, TRUE);
+		$data["cotss"]=$this->expo_mdl->get(NULL, ['id_cotizacion'=>$id]);
+		$data["view"]=$this->load->view("Reportes/delete_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-danger delete_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;Eliminar
 						</button>";
@@ -809,6 +881,7 @@ class Cotizaciones extends MY_Controller {
 		$productos = $this->prod_mdl->getProdFam(NULL,$this->input->post('id_pro'));
 		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
 		$row_print = 2;
+
 		if ($productos){
 			foreach ($productos as $key => $value){
 				$hoja->setCellValue("B{$row_print}", $value['familia']);
@@ -2671,15 +2744,15 @@ class Cotizaciones extends MY_Controller {
 					$column_one = $sheet->getCell('E'.$i)->getValue();
 					$column_two = $sheet->getCell('F'.$i)->getValue();
 					$descuento = $sheet->getCell('G'.$i)->getValue();
+					$precio_promocion = $precio;
 
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($column_one >=1 && $column_two >1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
-					}elseif ($descuento >0) {
-						$precio_promocion = ($precio - ($precio * ($descuento/100)));
-					}else{
-						$precio_promocion = $precio;
+					}
+					if ($descuento >0) {
+						$precio_promocion = ($precio_promocion - ($precio_promocion * ($descuento/100)));
 					}
 					$cotiz =  $this->expo_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
 					$new_cotizacion=[
