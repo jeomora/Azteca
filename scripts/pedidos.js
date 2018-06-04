@@ -3,7 +3,7 @@ $(function($) {
 		placement:'top'
 	});
 
-	
+
 });
 
 $(document).off("click", "#new_pedido").on("click", "#new_pedido", function(event) {
@@ -124,7 +124,7 @@ function tablePedidoTienda(response,colors,sucur){
 					'<td class="td2Form" colspan="3">EXISTENCIAS</td></tr><tr><td colspan="2" class="td2Form"></td><td class="td2Form">COSTO</td><td class="td2Form">PROMOCIÓN</td>'+
 					'<td class="td2Form">SISTEMA</td><td class="td2Form">PRECIO 4</td><td class="td2Form">2DO</td><td class="td2Form">PROVEEDOR</td>'+
 					'<td class="td2Form">CAJAS</td><td class="td2Form">PIEZAS</td><td class="td2Form">PEDIDO</td></tr>'+table_contain+'</tbody></table></div></div></div>';
-					
+
 	$(".wonder").append(table_contain);
 	$(".spinns").css("display","none")
 }
@@ -151,7 +151,7 @@ function tablePedidoAll(response,colors,sucur){
 				vl.producto = '<td>'+vl.producto+'</td>';
 				flag = 'PEDIDOS A '+vl.proveedor_first;
 			}
-			
+
 			vl.precio_first = vl.precio_first >= vl.precio_sistema ? '<div class="preciomas">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>' : '<div class="preciomenos">$ '+formatNumber(parseFloat(vl.precio_first), 2)+'</div>';
 			vl.proveedor_next = vl.proveedor_next == null ? "" : vl.proveedor_next;
 			vl.promocion_first = vl.promocion_first == null ? "" : vl.promocion_first;
@@ -186,21 +186,21 @@ function tablePedidoAll(response,colors,sucur){
 	if(flag == ''){
 		table_contain = "";
 	}
-	$(".wonder").append(table_contain);
-	
+	$(".wonder").html(table_contain);
+
 }
 
 $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() {
 	event.preventDefault();
 	var id_cotizacion = $("#id_proves4 option:selected").val();
 	var proveedor = $("#id_proves4 option:selected").text();
-	
+
 	var table_contain = "";
 	$(".wonder").html('<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>');
 
 	if(id_cotizacion != "nope"){
 		$(".fill_form").css("display","block");
-		
+
 		var sucur = "";
 		getSucursal()
 			.done(function (response){
@@ -290,13 +290,13 @@ $(document).off("change","#id_proveedor").on("change","#id_proveedor", function 
 	var rows = "";
 	var proveedor = $("#id_proveedor option:selected").text();
 	getProductos($(this).val())
-		.done(function (response) { 
+		.done(function (response) {
 			var size = response.length;
 			$("#body_response").empty();
 			if (jQuery.isEmptyObject(response)) {
 				toastr.warning("El Proveedor "+proveedor+" no tiene Productos cotizados", user_name);
 			}else{
-				$.each(response, function(index, val) { 
+				$.each(response, function(index, val) {
 					rows += "<tr>"
 								+"<td> <input type='checkbox' value="+val.id_producto+" class='id_producto'> </td>"
 								+"<td>"+val.producto+"</td>"

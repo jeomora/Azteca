@@ -16,12 +16,12 @@
 				-->
 				<div class="navbar-header">
 					<div class="logo_img">
-						<a href="/Azteca/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
+						<a href="/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
 					</div>
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 						<i class="fa fa-reorder"></i>
 					</button>
-					<a href="/Azteca/Main/" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+					<a href="/Main/" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
