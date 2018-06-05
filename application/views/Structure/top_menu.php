@@ -76,6 +76,11 @@
 								<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
 							<?php endif ?>
 						</li>
+						<li class="dropdown">
+							<?php if ($usuario['id_grupo'] == 3): ?>
+								<a href="#">Cambiar Contraseña</a>
+							<?php endif ?>
+						</li>
 					</ul>
 
 					<?php endif ?>
