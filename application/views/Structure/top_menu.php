@@ -4,6 +4,12 @@
 		height: 50px;
 	}
 	.navbar-header {display: inline-flex;}
+	.cambcontra{padding-top: 15px;
+    background-color: #FF6805;
+    border: 0;
+    font-size: 13px;
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600;}
 </style>
 <div id="wrapper">
 	<div id="page-wrapper" class="blue-bg">
@@ -63,6 +69,9 @@
 						<li class="dropdown">
 							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
 						</li>
+						<button id="cambcontra" class="btn btn-success cambcontra" data-toggle="tooltip" title="Cambiar Contraseña" data-id-usuario="<?php echo $usuario['id_usuario'] ?>">
+							<i class="fa fa-key"></i>  CAMBIAR CONTRASEÑA
+						</button>
 					</ul>
 
 					<?php elseif($usuario['id_grupo'] == 3): ?> <!--El grupo 3 son Sucursales -->
@@ -76,11 +85,7 @@
 								<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
 							<?php endif ?>
 						</li>
-						<li class="dropdown">
-							<?php if ($usuario['id_grupo'] == 3): ?>
-								<a href="#">Cambiar Contraseña</a>
-							<?php endif ?>
-						</li>
+						
 					</ul>
 
 					<?php endif ?>

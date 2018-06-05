@@ -588,7 +588,10 @@ $(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones",
 			}
 		});
 });
-
+$(document).off("click", "#cambcontra").on("click", "#cambcontra", function(event){
+	event.preventDefault();
+	getModal("Main/getNotCotizo/", function (){ });
+});
 
 function uploadCotizaciones(formData) {
 	return $.ajax({
@@ -778,3 +781,26 @@ function guardaPrecios(tr, tipo,cantidad){
 	});
 }
 
+$(document).off("click", "#cambcontra").on("click", "#cambcontra", function(event) {
+	event.preventDefault();
+	var id_usuarios = $("#cambcontra").data("idUsuario");
+	getModal("Main/cambioContra/"+id_usuarios, function (){
+		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
+			$("#form_usuario_edit").validate({
+				rules: {
+					password: {required: true, minlength: 8}
+				}
+			});
+			jQuery.extend(jQuery.validator.messages,{
+				minlength: jQuery.validator.format("Por favor ingresa más de {0} caracteres.")
+			});
+		});
+	});
+});
+
+$(document).off("click", ".update_usuario").on("click", ".update_usuario", function(event) {
+	event.preventDefault();
+	if($("#form_usuario_edit").valid()){
+		sendForm("Main/update_user", $("#form_usuario_edit"), "");
+	}
+});
