@@ -1,7 +1,7 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<?php 
+<?php
 if(!$this->session->userdata("username")){
 	redirect("Welcome/Login", "");
 }
@@ -21,29 +21,35 @@ if(!$this->session->userdata("username")){
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
 				<div class="ibox-content">
-					<div class="btn-group">
+					<!--<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
 							<i class="fa fa-plus"></i> Agregar Cotización
 						</button>
-					</div>
-					<div class="btn-group">
-						<?php echo form_open("Cotizaciones/archivo_cotizacion", array("id" => 'archivo_cotizacion', "target" => '_blank')); ?>
+					</div>-->
+					<?php if (!$cotizaciones): ?>
+						<div class="btn-group">
+						<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<input type="text" name="id_pro" id="id_pro" value="<?php echo $usuario['id_usuario'] ?>" hidden>
 							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-cloud-download"></i> Descargar formato cotizaciones
 							</button>
 						<?php echo form_close(); ?>
 					</div>
+					<?php endif ?>
+					
+					<?php if (!$cotizaciones): ?>
 					<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir formato de cotizaciones
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value="" size="20" />
+								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones" value="" size="20" />
 							</div>
 						<?php echo form_close(); ?>
 					</div>
-					
+					<?php endif ?>
+
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_cot_proveedores">
 							<thead>
@@ -55,7 +61,6 @@ if(!$this->session->userdata("username")){
 									<th>DESCUENTO ADICIONAL</th>
 									<th colspan="2">PROMOCIÓN</th>
 									<th>OBSERVACIONES</th>
-									<th>ACCIÓN</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -69,14 +74,6 @@ if(!$this->session->userdata("username")){
 											<td><?php echo ($value->num_one > 0 && $value->num_two > 0) ? $value->num_one.'&nbsp; EN &nbsp;'.$value->num_two : '' ?></td>
 											<td><?php echo $value->promocion ?></td>
 											<td><?php echo $value->observaciones ?></td>
-											<td>
-												<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
-													<i class="fa fa-pencil"></i>
-												</button>
-												<button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="<?php echo $value->id_cotizacion ?>">
-													<i class="fa fa-trash"></i>
-												</button>
-											</td>
 										</tr>
 								<?php endforeach; endif ?>
 							</tbody>

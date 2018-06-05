@@ -16,12 +16,21 @@
 				-->
 				<div class="navbar-header">
 					<div class="logo_img">
-						<a href="/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
+						<?php if ($usuario['id_grupo'] == 2): ?>
+							<a href="#" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
+						<?php else: ?>
+							<a href="/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
+						<?php endif ?>
 					</div>
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 						<i class="fa fa-reorder"></i>
 					</button>
-					<a href="/Main/" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+					
+					<?php if ($usuario['id_grupo'] == 2): ?>
+						<a href="#" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+					<?php else: ?>
+						<a href="/Main/" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+					<?php endif ?>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
@@ -61,7 +70,11 @@
 							<a href="<?php echo site_url('Pedidos') ?>" >PEDIDOS </a>
 						</li>
 						<li class="dropdown">
-							<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
+							<?php if ($usuario['id_grupo'] == 3): ?>
+
+							<?php else: ?>
+								<a href="#">ARTICULOS COTIZADOS: <?php echo empty($cotizaciones) ? 0 : sizeof($cotizaciones) ?> </a>
+							<?php endif ?>
 						</li>
 					</ul>
 
