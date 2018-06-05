@@ -49,6 +49,35 @@ class Main extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	public function cambioContra(){
+		$data["title"]="CAMBIO CONTRASEÑA";
+		$data["usuario"] = $this->user_md->get(NULL, ["id_usuario"=>$this->session->userdata('id_usuario')])[0];
+		$data["view"] = $this->load->view("Structure/contrasena", $data,TRUE);
+		$data["button"]="<button class='btn btn-success update_usuario' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
+						</button>";
+		$this->jsonResponse($data);
+	}
+	public function update_user(){
+		$user = $this->session->userdata();
+		$antes = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_usuario')])[0];
+		$usuario = [
+			"password"	=>	$this->encryptPassword($this->input->post('password')),
+			];
+
+		$data ['id_usuario'] = $this->user_md->update($usuario, $this->input->post('id_usuario'));
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Usuario cambia su contraseña ",
+				"despues" => "Password: ".$this->input->post('password')];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
+		$mensaje = ["id" 	=> 'Éxito',
+					"desc"	=> 'contraseña actualizada correctamente',
+					"type"	=> 'success'];
+		$this->jsonResponse($mensaje);
+	}
+
 	public function getCotzUsuario($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');

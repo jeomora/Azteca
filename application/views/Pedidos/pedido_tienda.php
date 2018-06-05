@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <?php 
-if(!$this->session->userdata("username")){
+if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
 	redirect("Welcome/Login", "");
 }
 ?>

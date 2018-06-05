@@ -6,7 +6,7 @@
 	.top-navigation #page-wrapper {margin-left: 0;overflow-y: scroll;}
 </style>
 <?php 
-if(!$this->session->userdata("username")){
+if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
 	redirect("Welcome/Login", "");
 }
 ?>
