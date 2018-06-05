@@ -34,14 +34,20 @@ class Welcome extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		
+
 		$data["usuarios"] = $this->user_md->getUsuarios();
 		$this->estructura("Admin/table_usuarios", $data);
 	}
 
 	public function login(){
 		if($this->session->userdata("username")){
-			redirect("Main/", $data);
+			$user = $this->session->userdata();
+			if($user['id_grupo'] ==2){
+				redirect("cotizaciones/", $data);
+			}else{
+				redirect("Main/", $data);
+			}
+
 		}
 		$this->data["message"] =NULL;
 		if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -59,7 +65,12 @@ class Welcome extends MY_Controller {
 							"estatus"	=>	$validar->estatus ];
 				$this->session->set_userdata("username", $values['nombre']);
 				$this->session->set_userdata($values);
-				redirect("Main/", "refresh");
+				$user = $this->session->userdata();
+				if($user['id_grupo'] ==2){
+					redirect("cotizaciones/", $data);
+				}else{
+					redirect("Main/", $data);
+				}
 			}else{
 				$this->data['message']='Usuario y/o contraseña incorrectos';
 			}
@@ -226,9 +237,9 @@ class Welcome extends MY_Controller {
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
 		$this->cellStyle("A1:D1", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' => 
+		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		
+
 		$hoja->setCellValue("A1", "EMPRESA")->getColumnDimension('B')->setWidth(40);
 		$hoja->setCellValue("B1", "NOMBRE")->getColumnDimension('C')->setWidth(40);
 		$hoja->setCellValue("C1", "EMAIL")->getColumnDimension('D')->setWidth(40);

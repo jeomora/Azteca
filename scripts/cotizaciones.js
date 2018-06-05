@@ -574,14 +574,14 @@ function calculaTotales() {
 	return total;
 }
 
-$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+$(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones", function(event) {
 	event.preventDefault();
 	blockPage();
 	var fdata = new FormData($("#upload_cotizaciones")[0]);
 	uploadCotizaciones(fdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
-				toastr.error(resp.desc, user_name);
+				setTimeout("location.reload()", 1700, toastr.error(resp.desc, user_name), "");
 			}else{
 				unblockPage();
 				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
