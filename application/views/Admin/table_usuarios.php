@@ -52,6 +52,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 										<td>
 										<?php if ($value->nombre=='MASTER' && $value->grupo=='ADMINISTRADOR'): ?>
 											<!--Le ocultamos las opciones por ser el Usuario Master -->
+										<?php elseif($value->grupo == 'AZTECA' && $this->session->userdata("id_usuario") <> $value->id_usuario): ?>
+											
 										<?php else: ?>
 											<button id="update_usuario" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-usuario="<?php echo $value->id_usuario ?>">
 												<i class="fa fa-pencil"></i>

@@ -248,15 +248,18 @@ class Compras extends MY_Controller {
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $row){
-						$hoja->setCellValue("A{$row_print}", $row->nombre);
-						$hoja->setCellValue("B{$row_print}", $row->apellido);//Formto de moneda
-						$hoja->setCellValue("C{$row_print}", $row->email);
-						$hoja->setCellValue("D{$row_print}", $this->showPassword($row->password));
-						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
-						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
-						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
-						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
-						$row_print ++;
+
+				$hoja->setCellValue("A{$row_print}", $row->nombre);
+				$hoja->setCellValue("B{$row_print}", $row->apellido);//Formto de moneda
+				$hoja->setCellValue("C{$row_print}", $row->email);
+				if ($row->grupo <> 'AZTECA') {
+					$hoja->setCellValue("D{$row_print}", $this->showPassword($row->password));
+				}
+				$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
+				$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+				$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+				$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
+				$row_print ++;
 			}
 		}
 
