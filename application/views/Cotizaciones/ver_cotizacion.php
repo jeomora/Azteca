@@ -1,6 +1,6 @@
 <?php 
 if(!$this->session->userdata("username")){
-	redirect("Welcome/Login", "");
+	redirect("Compras/Login", "");
 }
 ?>
 <style type="text/css" media="screen">

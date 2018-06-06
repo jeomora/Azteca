@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
+class Compras extends MY_Controller {
 
 	function __construct(){
 		parent::__construct();
@@ -80,7 +80,7 @@ class Welcome extends MY_Controller {
 
 	public function logout(){
 		$this->session->sess_destroy();
-		redirect("Welcome/login/", "refresh");
+		redirect("Compras/login/", "refresh");
 	}
 
 	public function new_usuario(){

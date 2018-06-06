@@ -48,7 +48,7 @@ class Cotizaciones extends MY_Controller {
 		$where = [];
 		$this->data["message"] =NULL;
 		if(!$this->session->userdata("username")){
-			redirect("Welcome/Login", "");
+			redirect("Compras/Login", "");
 		}elseif($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
 					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
