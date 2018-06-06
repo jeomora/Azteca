@@ -1,7 +1,7 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
-			redirect("Welcome/Login", "");
+			redirect("Compras/Login", "");
 		}
 ?>
 <div class="wrapper wrapper-content animated fadeInRight">

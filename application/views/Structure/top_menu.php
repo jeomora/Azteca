@@ -91,7 +91,7 @@
 					<?php endif ?>
 					<ul class="nav navbar-top-links navbar-right">
 						<li>
-							<a href="<?php echo site_url('Welcome/logout'); ?>" class="close-session">
+							<a href="<?php echo site_url('Compras/logout'); ?>" class="close-session">
 								<i class="fa fa-sign-out"></i> Salir
 							</a>
 						</li>

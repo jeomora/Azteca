@@ -10,7 +10,7 @@
 </style>
 <?php
 if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
-	redirect("Welcome/Login", "");
+	redirect("Compras/Login", "");
 }
 ?>
 <?php echo form_open_multipart("", array('id' => 'upload_faltantes')); ?>

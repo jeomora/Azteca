@@ -6,7 +6,7 @@
 </style>
 <?php 
 if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
-	redirect("Welcome/Login", "");
+	redirect("Compras/Login", "");
 }
 ?>
 <div class="col-lg-12" style="height: 10rem">

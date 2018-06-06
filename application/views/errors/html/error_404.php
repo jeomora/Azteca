@@ -76,7 +76,7 @@ p {
 		</div>
 		<h1>Página no encontrada</h1>
 		<p>Sí esta seguro que es la url correcta contacte a soporte técnico</p>
-		<p>Ir a <a href="Welcome/Login">inicio</a> para empezar a navegar en el sitio.</p>
+		<p>Ir a <a href="Compras/Login">inicio</a> para empezar a navegar en el sitio.</p>
 	</div>
 </body>
 </html>

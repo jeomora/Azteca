@@ -3,7 +3,7 @@
 ?>
 <?php 
 if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
-	redirect("Welcome/Login", "");
+	redirect("Compras/Login", "");
 }
 ?>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -21,7 +21,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 
 					</div>
 					<div class="btn-group">
-						<?php echo form_open("Welcome/print_usuarios", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<?php echo form_open("Compras/print_usuarios", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar Usuarios & Contraseñas
 							</button>

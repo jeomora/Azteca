@@ -50,7 +50,7 @@
 				<div class="col-md-1"></div>
 				<div class="col-md-10 logind-div">
 					<div class="ibox-content">
-						<?php echo form_open("Welcome/login/",'class="m-t" role="form"');?>
+						<?php echo form_open("Compras/login/",'class="m-t" role="form"');?>
 							<div class="form-group">
 								<input type="email" class="form-control" placeholder="ejemplo@email.com" name="email" required="" value="<?php echo set_value('email')?>" >
 							</div>
