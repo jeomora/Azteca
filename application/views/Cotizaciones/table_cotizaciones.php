@@ -26,6 +26,8 @@ if(!$this->session->userdata("username")){
 							<i class="fa fa-plus"></i> Agregar Cotización
 						</button>
 					</div>-->
+					<?php echo date('w');?>
+					<?php echo date("h:i:sa");?>
 					<?php if (!$cotizaciones): ?>
 						<div class="btn-group">
 						<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
