@@ -25,18 +25,18 @@ if(!$this->session->userdata("username")){
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
 							<i class="fa fa-plus"></i> Agregar Cotización
 						</button>
-					</div>-->
+					</div>--> 
 					<?php echo date('w');?>
 					<?php echo date("h:i:sa");?>
-					<?php if (!$cotizaciones): ?>
+					<?php if ((date('w') == 5 && date("h:i:sa") > '08:00:00pm') || (date('w') == 6 || date('w') == 0) || (date('w') >= 1 && date("h:i:sa") > '02:00:00pm') ||  (date('w') >= 1 && date("h:i:sa") > '02:30:00pm' && $this->session->userdata("id_usuario") == 6) || (date('w') >= 6 && date("h:i:sa") > '06:30:00pm' && $this->session->userdata("id_usuario") == 24)): ?>
 						<div class="btn-group">
-						<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
-						<input type="text" name="id_pro" id="id_pro" value="<?php echo $usuario['id_usuario'] ?>" hidden>
-							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-cloud-download"></i> Descargar formato cotizaciones
-							</button>
-						<?php echo form_close(); ?>
-					</div>
+							<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+							<input type="text" name="id_pro" id="id_pro" value="<?php echo $usuario['id_usuario'] ?>" hidden>
+								<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+									<i class="fa fa-cloud-download"></i> Descargar formato cotizaciones
+								</button>
+							<?php echo form_close(); ?>
+						</div>
 					<?php endif ?>
 					
 					<?php if (!$cotizaciones): ?>
