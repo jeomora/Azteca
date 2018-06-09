@@ -28,7 +28,7 @@ if(!$this->session->userdata("username")){
 					</div>--> 
 					<?php echo date('w');?>
 					<?php echo date("h:i:sa");?>
-					<?php if ((date('w') == 5 && date("h:i:sa") > '08:00:00pm') || (date('w') >= 1 && date("h:i:sa") > '02:00:00pm') ||  (date('w') >= 1 && date("h:i:sa") > '02:30:00pm' && $this->session->userdata("id_usuario") == 6) || (date('w') >= 6 && date("h:i:sa") > '06:30:00pm' && $this->session->userdata("id_usuario") == 24)): ?>
+					<?php if ((date('w') == 5 && date("h:i:sa") > '08:00:00pm') || (date('w') == 1 && date("h:i:sa") > '02:00:00pm') ||  (date('w') == 1 && date("h:i:sa") > '02:30:00pm' && $this->session->userdata("id_usuario") == 6) || (date('w') >= 6 && date("h:i:sa") > '06:30:00pm' && $this->session->userdata("id_usuario") == 24)): ?>
 						<div class="btn-group">
 							<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<input type="text" name="id_pro" id="id_pro" value="<?php echo $usuario['id_usuario'] ?>" hidden>
