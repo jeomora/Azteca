@@ -197,7 +197,7 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->group_by("prod.nombre")
-		->order_by("prod.id_familia,prod.nombre", "ASC");
+		->order_by("prod.familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -738,7 +738,7 @@ $this->db->select("c.id_cotizacion,
 		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->where("prod.estatus","2")
 		->group_by("prod.nombre")
-		->order_by("fam.id_familia,prod.nombre", "ASC");
+		->order_by("fam.nombre,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -840,7 +840,7 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
 		->group_by("prod.nombre")
-		->order_by("prod.id_familia,prod.nombre", "ASC");
+		->order_by("prod.familia,prod.nombre", "ASC");
 
 		if ($where !== NULL){
 			if(is_array($where)){
@@ -1012,7 +1012,7 @@ $this->db->select("c.id_cotizacion,
 		->join("precio_sistema sist", "prod.id_producto = sist.id_producto", "LEFT")
 		->where($this->TABLE_NAME.".estatus", 1)
 		->group_by("c.id_producto")
-		->order_by("fam.id_familia,prod.nombre", "ASC");
+		->order_by("fam.nombre,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -1123,7 +1123,7 @@ $this->db->select("c.id_cotizacion,
 		->join("precio_sistema sist", "prod.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
 		->where("prod.estatus <>","0")
 		->group_by("prod.nombre")
-		->order_by("fam.id_familia,prod.nombre", "ASC");
+		->order_by("fam.familia,prod.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
