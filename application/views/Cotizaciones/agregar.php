@@ -59,7 +59,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones" value="" size="20" />
+								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones"/>
 							</div>
 						<?php echo form_close(); ?>
 					</div>
