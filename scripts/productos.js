@@ -49,7 +49,7 @@ $(document).off("click", ".new_producto").on("click", ".new_producto", function(
 	if($("#form_producto_new").valid()){
 		sendForm("Productos/accion/I", $("#form_producto_new"), "");
 	}
-});
+}); 	
 
 $(document).off("click", "#update_producto").on("click", "#update_producto", function(event){
 	event.preventDefault();

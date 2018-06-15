@@ -337,7 +337,7 @@ class Cotizaciones extends MY_Controller {
 							"\n///%Descuento: ".$descuento[$i]."\n///Observaciones: ".$observaciones[$i]];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$data ['id_cotizacion'] = $this->ct_mdl->update([
-				"precio" => $precio[$i],
+				"precio" => $precio[$i],//$precio[$i]
 				"precio_promocion" => $precio_promocion[$i],
 				"num_one" => $num_one[$i],
 				"num_two" => $num_two[$i],
@@ -1005,7 +1005,7 @@ class Cotizaciones extends MY_Controller {
 
 	public function upload_cotizaciones($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		if($idesp == 0){
 			$proveedor = $this->session->userdata('id_usuario');
