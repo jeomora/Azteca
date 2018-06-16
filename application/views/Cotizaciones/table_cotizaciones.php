@@ -36,7 +36,7 @@ if(!$this->session->userdata("username")){
 						</div>
 					
 					
-					<?php if ((date('w') == 5 && date("h:i:sa") > '08:00:00pm') || (date('w') == 0) || (date('w') == 1 && date("h:i:sa") < '02:00:00pm') ||  (date('w') == 1 && date("h:i:sa") < '02:30:00pm' && $this->session->userdata("id_usuario") == 6) || (date('w') == 1 && date("h:i:sa") < '02:30:00pm' && $this->session->userdata("id_usuario") == 24)): ?>
+					
 					<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir formato de cotizaciones
@@ -47,7 +47,7 @@ if(!$this->session->userdata("username")){
 							</div>
 						<?php echo form_close(); ?>
 					</div>
-					<?php endif ?>
+					
 
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_cot_proveedores">
