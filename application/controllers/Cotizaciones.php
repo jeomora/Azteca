@@ -50,8 +50,11 @@ class Cotizaciones extends MY_Controller {
 		if(!$this->session->userdata("username")){
 			redirect("Compras/Login", "");
 		}elseif($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$intervalo = new DateInterval('P3D');
+			$fecha->add($intervalo);
 			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
-					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
+					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber($fecha)];
 			$data["cotizaciones"] = $this->ct_mdl->getAllCotizaciones($where);
 			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
