@@ -68,8 +68,15 @@ p {
 	font-size: 19px;
 }
 </style>
+
 </head>
+<?php
+if(!$this->session->userdata("username")){
+	redirect("Compras/Login", "");
+}
+?>
 <body>
+
 	<div id="container">
 		<div class="logo_img">
 			<img  src="assets/img/abarrotes.png" />
