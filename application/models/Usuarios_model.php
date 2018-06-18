@@ -46,7 +46,7 @@ class Usuarios_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		$this->db->select("usuarios.id_usuario as ides, usuarios.nombre as proveedor")
+		$this->db->select("id_usuario as ides, nombre as proveedor")
 		->from($this->TABLE_NAME)
 		->where($this->TABLE_NAME.".id_grupo", 2)
 		->where($this->TABLE_NAME.".estatus", 1)
