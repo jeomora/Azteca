@@ -89,7 +89,7 @@ class Cotizaciones extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
 
-		$data["cotizados"] = $this->usua_mdl->get(NULL, ["id_grupo"=> 2]);
+		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/anteriores", $data);
 	}
