@@ -46,8 +46,10 @@ class Usuarios_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		$this->db->select("usuarios.id_usuario as ides, usuarios.nombre as proveedor")
+		$this->db->select("id_usuario as ides, nombre as proveedor")
 		->from($this->TABLE_NAME)
+		->where("usuarios.id_usuario NOT IN (SELECT cotizaciones.id_proveedor FROM cotizaciones WHERE cotizaciones.estatus = 1 AND WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format("Y-m-d H:i:s"))." GROUP BY 
+			cotizaciones.id_proveedor)")
 		->where($this->TABLE_NAME.".id_grupo", 2)
 		->where($this->TABLE_NAME.".estatus", 1)
 		->order_by("proveedor","ASC");
