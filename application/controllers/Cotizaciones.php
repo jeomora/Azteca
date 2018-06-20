@@ -340,8 +340,8 @@ class Cotizaciones extends MY_Controller {
 							"\n///%Descuento: ".$descuento[$i]."\n///Observaciones: ".$observaciones[$i]];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$data ['id_cotizacion'] = $this->ct_mdl->update([
-				"precio" => $precio[$i],//$precio[$i]
-				"precio_promocion" => $precio_promocion[$i],
+				"precio" => str_replace(',', '', $precio[$i]),//$precio[$i]
+				"precio_promocion" => str_replace(',', '', $precio_promocion[$i]),
 				"num_one" => $num_one[$i],
 				"num_two" => $num_two[$i],
 				"descuento" => $descuento[$i],
