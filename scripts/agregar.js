@@ -182,12 +182,22 @@ $(document).off("keyup", ".precio").on("keyup", ".precio", function() {
 		tr.find(".precio_promocion").val(precio);
 	}
 });
+
 $(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
 	var tr = $(this).closest("tr");
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
 	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
-	if($(this).val().replace(/[^0-9\.]+/g,"") > 0){
+	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	if($(this).val().replace(/[^0-9\.]+/g,"") >= 0){
 		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+		var totl = precio - (precio * (descuento / 100))
+		if(num_two > 0 && num_one > 0){
+			var total = (totl * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+			tr.find(".precio_promocion").val(total);
+		}else{
+			tr.find(".precio_promocion").val(totl);
+		}
 	}
 });
 
@@ -196,23 +206,38 @@ $(document).off("keyup", ".num_one").on("keyup", ".num_one", function () {
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
 	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
 	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
 	if(num_two > 0 && num_one > 0){
 		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
 		tr.find(".precio_promocion").val(total);
+		if($(".descuento").val().replace(/[^0-9\.]+/g,"") >= 0){
+			tr.find(".precio_promocion").val(total - (total * (descuento / 100)));
+		}
 	}else{
 		tr.find(".precio_promocion").val(precio);
+		if($(".descuento").val().replace(/[^0-9\.]+/g,"") >= 0){
+			tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+		}
 	}
+
 });
 $(document).off("keyup", ".num_two").on("keyup", ".num_two", function () {
 	var tr = $(this).closest("tr");
 	var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
 	var num_one = tr.find('.num_one').val().replace(/[^0-9\.]+/g,"");
 	var num_two = tr.find('.num_two').val().replace(/[^0-9\.]+/g,"");
+	var descuento = tr.find(".descuento").val().replace(/[^0-9\.]+/g,"");
 	if(num_two > 0 && num_one > 0){
 		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
 		tr.find(".precio_promocion").val(total);
+		if($(".descuento").val().replace(/[^0-9\.]+/g,"") >= 0){
+			tr.find(".precio_promocion").val(total - (total * (descuento / 100)));
+		}
 	}else{
 		tr.find(".precio_promocion").val(precio);
+		if($(".descuento").val().replace(/[^0-9\.]+/g,"") >= 0){
+			tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
+		}
 	}
 });
 
@@ -316,3 +341,74 @@ function sendFormos(url, formData, url_repuesta){
 			// console.log("Error en la respuesta: ", response);
 		});
 	}
+
+$(document).off("keyup", "#precio").on("keyup", "#precio", function() {
+	var precio = $("#precio").val().replace(/[^0-9\.]+/g,"");
+	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
+	var num_one = $('#num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = $('#num_two').val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		$(".#precio_promocion").val(total);
+	}else if(descuento > 0){
+		$("#precio_promocion").val(precio - (precio * (descuento / 100)));
+	}else{
+		$("#precio_promocion").val(precio);
+	}
+});
+
+$(document).off("keyup", "#porcentaje").on("keyup", "#porcentaje", function () {
+	var precio = $("#precio").val().replace(/[^0-9\.]+/g,"");
+	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
+	var num_one = $('#num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = $('#num_two').val().replace(/[^0-9\.]+/g,"");
+	if($(this).val().replace(/[^0-9\.]+/g,"") >= 0){
+		$("#precio_promocion").val(precio - (precio * (descuento / 100)));
+		var totl = precio - (precio * (descuento / 100))
+		if(num_two > 0 && num_one > 0){
+			var total = (totl * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+			$("#precio_promocion").val(total);
+		}else{
+			$("#precio_promocion").val(totl);
+		}
+	}
+});
+
+$(document).off("keyup", "#num_one").on("keyup", "#num_one", function () {
+	var precio = $("#precio").val().replace(/[^0-9\.]+/g,"");
+	var num_one = $('#num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = $('#num_two').val().replace(/[^0-9\.]+/g,"");
+	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		$("#precio_promocion").val(total);
+		if($("#porcentaje").val().replace(/[^0-9\.]+/g,"") >= 0){
+			$("#precio_promocion").val(total - (total * (descuento / 100)));
+		}
+	}else{
+		$("#precio_promocion").val(precio);
+		if($("#porcentaje").val().replace(/[^0-9\.]+/g,"") >= 0){
+			$("#precio_promocion").val(precio - (precio * (descuento / 100)));
+		}
+	}
+
+});
+$(document).off("keyup", "#num_two").on("keyup", "#num_two", function () {
+	var tr = $(this).closest("tr");
+	var precio = $("#precio").val().replace(/[^0-9\.]+/g,"");
+	var num_one = $('#num_one').val().replace(/[^0-9\.]+/g,"");
+	var num_two = $('#num_two').val().replace(/[^0-9\.]+/g,"");
+	var descuento = $("#porcentaje").val().replace(/[^0-9\.]+/g,"");
+	if(num_two > 0 && num_one > 0){
+		var total = (precio * num_two) / (parseFloat(num_one) + parseFloat(num_two));
+		$("#precio_promocion").val(total);
+		if($("#porcentaje").val().replace(/[^0-9\.]+/g,"") >= 0){
+			$("#precio_promocion").val(total - (total * (descuento / 100)));
+		}
+	}else{
+		$("#precio_promocion").val(precio);
+		if($("#porcentaje").val().replace(/[^0-9\.]+/g,"") >= 0){
+			$("#precio_promocion").val(precio - (precio * (descuento / 100)));
+		}
+	}
+});
