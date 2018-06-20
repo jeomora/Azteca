@@ -26,11 +26,6 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<?php endforeach ?>
 			</select>
 		</div>
-		<div class="col-lg-3" style="margin-bottom: 1rem">
-			<button class="btn btn-info" name="camb" data-toggle="tooltip" title="Cambiar" type="button" id="camb" style="display: none">
-				<i class="fa fa-refresh"></i> Cambiar Proveedor
-			</button>
-		</div>
 		
 	</div>
 	
@@ -51,8 +46,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar formato cotizaciones
 							</button>
-						<?php echo form_close(); ?>
 					</div>
+					<?php echo form_close(); ?>
 					<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir formato de cotizaciones

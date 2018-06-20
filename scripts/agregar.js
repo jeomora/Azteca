@@ -3,10 +3,6 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	var proveedor = $("#id_pro option:selected").val();
 	if(proveedor != "nope"){
 		renderTable();
-		$("#id_pro").prop('disabled', 'disabled');
-		$("#camb").css("display","block");
-	}else{
-		$("#camb").css("display","none");
 	}
 
 });
