@@ -105,6 +105,24 @@ $(document).off("click", "#delete_cotizacion").on("click", "#delete_cotizacion",
 	getModal("Cotizaciones/get_delete2/"+ id_cotizacion+"/"+proveedor, function (){ });
 });
 
+$(document).off("click", "#up_cotizacion").on("click", "#up_cotizacion", function(event){
+	event.preventDefault();
+	var tr = $(this).closest("tr");
+	var proveedor = tr.find(".idprovs").val();
+	var id_cotizacion = $(this).closest("tr").find("#up_cotizacion").data("idCotizacion");
+	getModal("Cotizaciones/get_update/"+ id_cotizacion+"/"+proveedor, function (){
+		datePicker();
+		$(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
+	});
+});
+$(document).off("click", "#del_cotizacion").on("click", "#del_cotizacion", function(event){
+	event.preventDefault();
+	var tr = $(this).closest("tr");
+	var proveedor = tr.find(".idprovs").val();
+	var id_cotizacion = $(this).closest("tr").find("#del_cotizacion").data("idCotizacion");
+	getModal("Cotizaciones/get_delete2/"+ id_cotizacion+"/"+proveedor, function (){ });
+});
+
 $(document).off("click", ".update_cotizacion").on("click", ".update_cotizacion", function(event) {
 	event.preventDefault();
 	sendFormos("Cotizaciones/update", $("#form_cotizacion_edit"), "");

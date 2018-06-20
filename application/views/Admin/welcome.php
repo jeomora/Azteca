@@ -64,6 +64,16 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					</button>
 				</div>
 			</div>
+			<div class="col-md-4 cotizados">
+				<div class="ibox-content" style="border-color:#3f47cc">
+					<h2 class="text-navy" style="color:#3f47cc">
+						<i class="fa fa-group"></i> <strong>COTIZACIONES</strong> <br> DIFERENCIA 20%
+					</h2>
+					<a href="Cotizaciones/fastedit" rel="external-new-window" id="fastedit"><button id="fastedit" class="btn btn-success" data-toggle="tooltip" title="VER">
+						<i class="fa fa-eye"></i>
+					</button></a>
+				</div>
+			</div>
 		<?php endif; ?>
 	</div>
 	
