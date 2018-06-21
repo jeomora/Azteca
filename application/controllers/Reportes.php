@@ -154,10 +154,15 @@ class Reportes extends MY_Controller {
 	}
 
 	public function fill_table(){
-		$data["fecha"]=$this->input->post('fecha_registro');
-		$data["semana"]=$this->weekNumber($fecha);
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+
+		$data["fecha"]=$this->input->post('fecha_registro') == "" ? date('Y-m-d') : date('Y-m-d', strtotime($this->input->post('fecha_registro')));
+		$data["semana"]=$this->weekNumber($data["fecha"]);
 		$data["user"]=$this->session->userdata();
-		$this->jsonResponse($data);
+
+		$fecha =  $dias[date('w', strtotime($this->input->post('fecha_registro')))]." ".date('d', strtotime($this->input->post('fecha_registro')))." DE ".$meses[date('n', strtotime($this->input->post('fecha_registro')))-1]. " DEL ".date('Y', strtotime($this->input->post('fecha_registro'))) ;
+		$data["fecha"]= $fecha;
 		$this->load->view("Reportes/table_cotizaciones", $data, FALSE);
 	}
 	public function fill_anterior(){
@@ -167,7 +172,7 @@ class Reportes extends MY_Controller {
 		}else{
 			$fecha = date("Y-m-d");
 		}
-		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
+		$data["cotizaciones"] = $this->ct_mdl->getAnteriores(NULL,$fecha);
 		$this->jsonResponse($data);
 	}
 
