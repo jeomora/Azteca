@@ -11,6 +11,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Usuarios_model", "user_mdl");
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Existencias_model", "ex_mdl");
+		$this->load->model("Existenciasback_model", "exb_mdl");
 		$this->load->model("Precio_sistema_model", "pre_mdl");
 		$this->load->model("Stocks_model", "sto_mdl");
 	}
@@ -276,8 +277,10 @@ class Pedidos extends MY_Controller {
 		$ides = $this->ex_mdl->get('id_pedido', ['id_producto'=>$values["id_producto"],'WEEKOFYEAR(fecha_registro)'=>$this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_tienda'=>$user['id_usuario']])[0];
 		if($ides == NULL){
 			$respuesta = $this->ex_mdl->insert($pedido);
+			$respuesta = $this->exb_mdl->insert($pedido);
 		}else{
 			$respuesta = $this->ex_mdl->update($pedido,["id_pedido" => $ides->{'id_pedido'}]);
+			$respuesta = $this->exb_mdl->update($pedido,["id_pedido" => $ides->{'id_pedido'}]);
 		}
 		if($respuesta){
 			$mensaje = [

@@ -15,6 +15,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Existencias_model", "ex_mdl");
 		$this->load->model("Precio_sistema_model", "pre_mdl");
+		$this->load->model("Precio_sistemaback_model", "preb_mdl");
 		$this->load->model("Faltantes_model", "falt_mdl");
 		$this->load->model("Prodandprice_model", "prodand_mdl");
 		$this->load->model("Expocotz_model", "expo_mdl");
@@ -1358,8 +1359,11 @@ class Cotizaciones extends MY_Controller {
 					if(sizeof($precios) > 0 ){
 						$data['cotizacion']=$this->pre_mdl->update($new_precios,
 						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')),'id_precio'=>$precios->id_precio]);
+						$data['cotizacion']=$this->preb_mdl->update($new_precios,
+						['WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')),'id_precio'=>$precios->id_precio]);
 					}else{
 						$data['cotizacion']=$this->pre_mdl->insert($new_precios);
+						$data['cotizacion']=$this->preb_mdl->insert($new_precios);
 					}
 
 
