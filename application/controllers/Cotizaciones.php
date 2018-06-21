@@ -6,6 +6,7 @@ class Cotizaciones extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Cotizaciones_model", "ct_mdl");
+		$this->load->model("Cotizacionesback_model", "ctb_mdl");
 		$this->load->model("Productos_model", "prod_mdl");
 		$this->load->model("Usuarios_model", "usua_mdl");
 		$this->load->model("Pedidos_model", "ped_mdl");
@@ -292,8 +293,10 @@ class Cotizaciones extends MY_Controller {
 
 			if($cotiz){
 				$data['cotizacin']=$this->ct_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+				$data['cotizacin']=$this->ctb_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
 			}else{
 				$data['cotizacin']=$this->ct_mdl->insert($cotizacion);
+				$data['cotizacin']=$this->ctb_mdl->insert($cotizacion);
 			}
 			$cambios = [
 				"id_usuario" => $this->session->userdata('id_usuario'),
@@ -320,8 +323,10 @@ class Cotizaciones extends MY_Controller {
 			];
 			if($cotiz){
 				$data['cotizacin']=$this->ct_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+				$data['cotizacin']=$this->ctb_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
 			}else{
 				$data['cotizacin']=$this->ct_mdl->insert($cotizacion);
+				$data['cotizacin']=$this->ctb_mdl->insert($cotizacion);
 			}
 			$cambios = [
 				"id_usuario" => $this->session->userdata('id_usuario'),
@@ -376,6 +381,14 @@ class Cotizaciones extends MY_Controller {
 				"descuento" => $descuento[$i],
 				"observaciones" => $observaciones[$i]
 			], $cotz[$i]);
+			$data ['id_cotizacion'] = $this->ctb_mdl->update([
+				"precio" => str_replace(',', '', $precio[$i]),//$precio[$i]
+				"precio_promocion" => str_replace(',', '', $precio_promocion[$i]),
+				"num_one" => $num_one[$i],
+				"num_two" => $num_two[$i],
+				"descuento" => $descuento[$i],
+				"observaciones" => $observaciones[$i]
+			], $cotz[$i]);
 		}
 		$mensaje = [
 			"id" 	=> 'Éxito',
@@ -403,6 +416,7 @@ class Cotizaciones extends MY_Controller {
 				"accion" => "Cotizacion eliminada","despues" => "El usuario elimino la cotización"];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$data ['id_cotizacion'] = $this->ct_mdl->update(["estatus" => 0], $productos[$i]);
+			$data ['id_cotizacion'] = $this->ctb_mdl->update(["estatus" => 0], $productos[$i]);
 		}
 		$mensaje = [
 			"id" 	=> 'Éxito',
