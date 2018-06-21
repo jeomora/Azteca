@@ -17,7 +17,7 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 	get_reporte(formData).done(function(response) {
 		$(".whodid").html(response);
 		$(".tblm").html('<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">'+
-						'<thead><tr><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th><th>PRECIO 4</th>'+
+						'<thead><tr><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>FAMILIA</th><th>SISTEMA</th><th>PRECIO 4</th>'+
 						'<th>PRECIO</th><th>PRECIO PROMOCION</th><th>PROVEEDOR</th>'+
 						'<th>DESCUENTO</th><th colspan="2">PROMOCION # EN #</th><th>OBSERVACIÓN</th>'+
 						'</tr></thead><tbody class="body_anteriores"></tbody></table>');
@@ -25,10 +25,6 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 		get_rpts($("#fecha_registro").val()).done(function(response) {
 				$.each(response, function(indx, vals){
 						$.each(vals, function(index, value){
-							if(familia != value.familia){
-								familia = value.familia;
-								tableAdmin += '<tr><td colspan="11" style="font-size: 2rem;background-color:#000000;color:#FFFFFF;text-align:center">'+value.familia+'</td></tr>';
-							}
 							value.precio = value.precio == null ? 0 : value.precio;
 							value.precio_promocion = value.precio_promocion == null ? 0 : value.precio_promocion;
 							value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
@@ -39,6 +35,7 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 							value.proveedor = value.proveedor == null ? "" : value.proveedor;
 							value.observaciones = value.observaciones == null ? "" : value.observaciones;
 							tableAdmin += '<tr>';
+							value.familia;
 							if(value.estatus == 2){
 								tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.nombre+'</td>';
 							}else if(value.status == 3){
@@ -46,6 +43,7 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 							}else{
 								tableAdmin += '<td>'+value.codigo+'</td><td>'+value.nombre+'</td>';
 							}
+							tableAdmin += '<td>'+value.familia+'</td>';
 							tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio), 2)+'</td>';
 							if(value.precio_promocion >= value.precio_sistema){
 								tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_promocion), 2)+'</div></td>';
