@@ -18,7 +18,7 @@ class Main extends MY_Controller {
 		$user = $this->session->userdata();//Trae los datos del usuario
 
 		$data["proveedores"]=$this->user_md->getUsuarios(['usuarios.id_grupo'=>2]);//Son proveedores
-		$data["productos"]=$this->pr_md->get();
+		$data["productos"]=$this->pr_md->get(NULL,["estatus <>"=>0]);
 		$data["familias"]=$this->fam_md->get();
 		$where = [];
 
