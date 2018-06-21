@@ -69,7 +69,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<h2 class="text-navy" style="color:#3f47cc">
 						<i class="fa fa-group"></i> <strong>COTIZACIONES</strong> <br> DIFERENCIA 20%
 					</h2>
-					<a href="Cotizaciones/fastedit" rel="external-new-window" id="fastedit"><button id="fastedit" class="btn btn-success" data-toggle="tooltip" title="VER">
+					<a href="<?php echo base_url('Cotizaciones/fastedit') ?>" rel="external-new-window" id="fastedit"><button id="fastedit" class="btn btn-success" data-toggle="tooltip" title="VER">
 						<i class="fa fa-eye"></i>
 					</button></a>
 				</div>
