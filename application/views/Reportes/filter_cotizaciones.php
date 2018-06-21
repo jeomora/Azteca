@@ -133,26 +133,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						</div>
 						<div id="respuesta_show" class="row">
-								<div class="row col-sm-12 table-responsive">
-									<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">
-										<thead>
-											<tr>
-												<th>CÓDIGO</th>
-												<th>DESCRIPCIÓN</th>
-												<th>SISTEMA</th>
-												<th>PRECIO 4</th>
-												<th>PRECIO</th>
-												<th>PRECIO PROMOCION</th>
-												<th>PROVEEDOR</th>
-												<th>DESCUENTO</th>
-												<th colspan="2">PROMOCION # EN #</th>
-												<th>OBSERVACIÓN</th>
-											</tr>
-										</thead>
-										<tbody class="body_anteriores">
-											
-										</tbody>
-									</table>
+								<div class="row col-sm-12 table-responsive tblm">
+
 								</div>
 						</div>
 
