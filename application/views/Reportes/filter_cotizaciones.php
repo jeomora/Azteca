@@ -127,11 +127,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<i class="fa fa-filter"></i>
 							</a>
 						</div>
-						<div class="row">
-							<div class="col-lg-4 searchboxs">
-								<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction2()" placeholder="Producto..."></label>
-							</div>
-						</div>
+
 						<div id="respuesta_show" class="row">
 								<div class="row col-sm-12 table-responsive tblm">
 
