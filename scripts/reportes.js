@@ -13,10 +13,11 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 	var tableAdmin = "";
 	var fech = $("#fecha_registro").val();
 	var formData = $("#consultar_cotizaciones").serializeArray();
-	var familia = "";
+	var prods = "0";
+	var flag = 0;
 	get_reporte(formData).done(function(response) {
 		$(".whodid").html(response);
-		$(".tblm").html('<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">'+
+		$(".tblm").html('<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriore">'+
 						'<thead><tr><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>FAMILIA</th><th>SISTEMA</th><th>PRECIO 4</th>'+
 						'<th>PRECIO</th><th>PRECIO PROMOCION</th><th>PROVEEDOR</th>'+
 						'<th>DESCUENTO</th><th colspan="2">PROMOCION # EN #</th><th>OBSERVACIÓN</th>'+
@@ -25,6 +26,22 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 		get_rpts($("#fecha_registro").val()).done(function(response) {
 				$.each(response, function(indx, vals){
 						$.each(vals, function(index, value){
+							if(value.nombre != prods){
+								prods = value.nombre;
+								if (flag == 0) {
+									tableAdmin += '<tr style="border-top:3px solid #549a73;border-left:3px solid #549a73;border-right:3px solid #549a73;">';
+									flag = 1;
+								}else{
+									tableAdmin += '<tr style="border-top:3px solid #5f3ea0;border-left:3px solid #5f3ea0;border-right:3px solid #5f3ea0">';
+									flag = 0;
+								}
+							}else{
+								if (flag == 1) {
+									tableAdmin += '<tr style="border-left:3px solid #549a73;border-right:3px solid #549a73;">';
+								}else{
+									tableAdmin += '<tr style="border-left:3px solid #5f3ea0;border-right:3px solid #5f3ea0">';
+								}
+							}
 							value.precio = value.precio == null ? 0 : value.precio;
 							value.precio_promocion = value.precio_promocion == null ? 0 : value.precio_promocion;
 							value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
@@ -34,7 +51,7 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 							value.num_two = value.num_two == null ? "" : value.num_two;
 							value.proveedor = value.proveedor == null ? "" : value.proveedor;
 							value.observaciones = value.observaciones == null ? "" : value.observaciones;
-							tableAdmin += '<tr>';
+							
 							value.familia;
 							if(value.estatus == 2){
 								tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.nombre+'</td>';
@@ -56,7 +73,7 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 						});
 					});	
 					$(".body_anteriores").html(tableAdmin);
-					fillDataTable("table_anteriores", 50);
+					fillDataTable("table_anteriore", 50);
 			});
 	});
 });
