@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cotizaciones_model extends MY_Model {
+class Cotizacionesback_model extends MY_Model {
 
 	function __construct(){
 		parent::__construct();
-		$this->TABLE_NAME = "cotizaciones";
+		$this->TABLE_NAME = "cotizacionesback";
 		$this->PRI_INDEX = "id_cotizacion";
 	}
 
@@ -1223,7 +1223,7 @@ $this->db->select("c.id_cotizacion,
 	public function getAnteriores($where = [],$fech){
 		$this->db->select("p.nombre, f.nombre AS familia,p.codigo,p.estatus,p.color,p.colorp,c.id_cotizacion,c.fecha_registro AS cfecha, c.precio, c.precio_promocion, c.descuento, c.estatus, c.num_one, c.num_two, c.observaciones, ps.fecha_registro AS psfecha, ps.precio_sistema, ps.precio_four, u.nombre as proveedor")
 		->from("productos p")
-		->join("cotizacionesback c", "p.id_producto = c.id_producto AND c.estatus = 1 AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
+		->join("cotizaciones c", "p.id_producto = c.id_producto AND c.estatus = 1 AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
 		->join("usuarios u", "c.id_proveedor = u.id_usuario", "LEFT")
 		->join("precio_sistema ps", "p.id_producto = ps.id_producto AND WEEKOFYEAR(ps.fecha_registro) =".$this->weekNumber($fech), "LEFT")
 		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
