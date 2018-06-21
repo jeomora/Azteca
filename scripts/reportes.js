@@ -16,6 +16,11 @@ $(document).off("click", "#filter_show").on("click", "#filter_show", function(ev
 	var familia = "";
 	get_reporte(formData).done(function(response) {
 		$(".whodid").html(response);
+		$(".tblm").html('<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">'+
+						'<thead><tr><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th><th>PRECIO 4</th>'+
+						'<th>PRECIO</th><th>PRECIO PROMOCION</th><th>PROVEEDOR</th>'+
+						'<th>DESCUENTO</th><th colspan="2">PROMOCION # EN #</th><th>OBSERVACIÓN</th>'+
+						'</tr></thead><tbody class="body_anteriores"></tbody></table>');
 
 		get_rpts($("#fecha_registro").val()).done(function(response) {
 				$.each(response, function(indx, vals){
