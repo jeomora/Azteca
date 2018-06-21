@@ -160,9 +160,10 @@ class Reportes extends MY_Controller {
 		$data["fecha"]=$this->input->post('fecha_registro') == "" ? date('Y-m-d') : date('Y-m-d', strtotime($this->input->post('fecha_registro')));
 		$data["semana"]=$this->weekNumber($data["fecha"]);
 		$data["user"]=$this->session->userdata();
-
-		$fecha =  $dias[date('w', strtotime($this->input->post('fecha_registro')))]." ".date('d', strtotime($this->input->post('fecha_registro')))." DE ".$meses[date('n', strtotime($this->input->post('fecha_registro')))-1]. " DEL ".date('Y', strtotime($this->input->post('fecha_registro'))) ;
+		$data["fecha"]=$this->input->post('fecha_registro') == "" ? strtotime(date('Y-m-d')) : strtotime($this->input->post('fecha_registro'));
+		$fecha =  $dias[date('w', $data["fecha"])]." ".date('d', $data["fecha"])." DE ".$meses[date('n', $data["fecha"])-1]. " DEL ".date('Y', $data["fecha"]) ;
 		$data["fecha"]= $fecha;
+		//$this->jsonResponse($data["fecha"]);
 		$this->load->view("Reportes/table_cotizaciones", $data, FALSE);
 	}
 	public function fill_anterior(){
