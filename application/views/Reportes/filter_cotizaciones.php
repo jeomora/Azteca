@@ -120,17 +120,39 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</button>
 							</div>
 						</div> -->
-						<div class="col-sm-12"></div>
+						<div class="col-sm-12 whodid"></div>
 						<?php echo form_close(); ?>
 						<div class="col-sm-2">
 							<a title="Filtrar" id="filter_show" data-toggle="tooltip" class="btn btn-info" href="#" >
 								<i class="fa fa-filter"></i>
 							</a>
 						</div>
-
+						<div class="row">
+							<div class="col-lg-4 searchboxs">
+								<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction2()" placeholder="Producto..."></label>
+							</div>
+						</div>
 						<div id="respuesta_show" class="row">
-								<div class="row col-sm-12 tblm">
-
+								<div class="row col-sm-12 table-responsive">
+									<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">
+										<thead>
+											<tr>
+												<th>CÓDIGO</th>
+												<th>DESCRIPCIÓN</th>
+												<th>SISTEMA</th>
+												<th>PRECIO 4</th>
+												<th>PRECIO</th>
+												<th>PRECIO PROMOCION</th>
+												<th>PROVEEDOR</th>
+												<th>DESCUENTO</th>
+												<th colspan="2">PROMOCION # EN #</th>
+												<th>OBSERVACIÓN</th>
+											</tr>
+										</thead>
+										<tbody class="body_anteriores">
+											
+										</tbody>
+									</table>
 								</div>
 						</div>
 

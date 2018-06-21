@@ -10,62 +10,46 @@ $(function($) {
 
 $(document).off("click", "#filter_show").on("click", "#filter_show", function(event) {
 	event.preventDefault();
-	$("html").block({
-		centerY: 0,
-		message: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span>',
-		overlayCSS: { backgroundColor: '#DDFF33' },
-		css: { position: 'absolute',
-	    top: '25rem',
-	    left: '45rem',
-	    background: 'rgba(255,255,255,0.5)',
-	    padding: '10rem',
-	    color: '#FF6805',
-	    border: '2px solid #FF6805'},
-	});
-	setTimeout(function(){ $(".spinns").css("display","none");$("html").unblock(); }, 16000);
 	var tableAdmin = "";
 	var fech = $("#fecha_registro").val();
-	$(".tblm").html('<table class="table table-striped table-bordered table-hover" border="1" id="table_anteriores">'+
-						'<thead><tr><th>CÓDIGO</th><th>DESCRIPCIÓN</th><th>SISTEMA</th><th>PRECIO 4</th>'+
-						'<th>1ER PRECIO</th><th>PROVEEDOR</th><th>OBSERVACIÓN</th>'+
-						'<th>2DO PRECIO</th><th>2DO PROVEEDOR</th><th>OBSERVACIÓN</th><th>VER MÁS</th>'+
-						'</tr></thead><tbody class="body_anteriores"></tbody></table>');
 	var formData = $("#consultar_cotizaciones").serializeArray();
+	var familia = "";
 	get_reporte(formData).done(function(response) {
+		$(".whodid").html(response);
+
 		get_rpts($("#fecha_registro").val()).done(function(response) {
 				$.each(response, function(indx, vals){
 						$.each(vals, function(index, value){
-							value.precio_next = value.precio_next == null ? 0 : value.precio_next;
-							value.precio_four = value.precio_four == null ? 0 : value.precio_four;
+							if(familia != value.familia){
+								familia = value.familia;
+								tableAdmin += '<tr><td colspan="11" style="font-size: 2rem;background-color:#000000;color:#FFFFFF;text-align:center">'+value.familia+'</td></tr>';
+							}
+							value.precio = value.precio == null ? 0 : value.precio;
+							value.precio_promocion = value.precio_promocion == null ? 0 : value.precio_promocion;
 							value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
-							value.precio_first = value.precio_first == null ? 0 : value.precio_first;
-							value.precio_next = value.precio_next == null ? 0 : value.precio_next;
-							value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
-							value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
-							value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
-							value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
+							value.precio_four = value.precio_four == null ? 0 : value.precio_four;
+							value.descuento = value.descuento == null ? "" : value.descuento;
+							value.num_one = value.num_one == null ? "" : value.num_one;
+							value.num_two = value.num_two == null ? "" : value.num_two;
+							value.proveedor = value.proveedor == null ? "" : value.proveedor;
+							value.observaciones = value.observaciones == null ? "" : value.observaciones;
 							tableAdmin += '<tr>';
 							if(value.estatus == 2){
-								tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.producto+'</td>';
+								tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.nombre+'</td>';
 							}else if(value.status == 3){
-								tableAdmin += '<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.producto+'</td>';
+								tableAdmin += '<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.nombre+'</td>';
 							}else{
-								tableAdmin += '<td>'+value.codigo+'</td><td>'+value.producto+'</td>';
+								tableAdmin += '<td>'+value.codigo+'</td><td>'+value.nombre+'</td>';
 							}
-							tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td>';
-							if(value.precio_first >= value.precio_sistema){
-								tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>';
+							tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_sistema), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_four), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio), 2)+'</td>';
+							if(value.precio_promocion >= value.precio_sistema){
+								tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_promocion), 2)+'</div></td>';
 							}else{
-								tableAdmin += '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>'
+								tableAdmin += '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_promocion), 2)+'</div></td>'
 							}
-							tableAdmin += '<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>';					
-							if(value.precio_next >= value.precio_sistema){
-								tableAdmin += value.precio_next > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
-							}else{
-								tableAdmin += value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
-							}
-							tableAdmin += '<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td><td><button id="ver_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Ver más" data-id-cotizacion="'+
-										value.id_cotizacion+'"><i class="fa fa-eye"></i></button><input type="text" name="fecha_registro" id="fecha_registro" value="'+fech+'" hidden="true"></td></tr>';
+							tableAdmin += '<td>'+value.proveedor+'</td><td>'+value.descuento+'</td>';	
+							tableAdmin += '<td>'+value.num_one+'</td><td>'+value.num_two+'</td>';
+							tableAdmin += '<td>'+value.observaciones+'</td></tr>';
 						});
 					});	
 					$(".body_anteriores").html(tableAdmin);
@@ -157,4 +141,25 @@ function getProveedorCot(id_prov) {
 		type: "POST",
 		dataType: "JSON"
 	});
+}
+
+function myFunction2() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table_anteriores");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
 }

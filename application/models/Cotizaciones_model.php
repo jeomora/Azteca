@@ -1219,6 +1219,38 @@ $this->db->select("c.id_cotizacion,
 			return false;
 		}
 	}
+
+	public function getAnteriores($where = [],$fech){
+		$this->db->select("p.nombre, f.nombre AS familia,p.codigo,p.estatus,p.color,p.colorp,c.id_cotizacion,c.fecha_registro AS cfecha, c.precio, c.precio_promocion, c.descuento, c.estatus, c.num_one, c.num_two, c.observaciones, ps.fecha_registro AS psfecha, ps.precio_sistema, ps.precio_four, u.nombre as proveedor")
+		->from("productos p")
+		->join("cotizaciones c", "p.id_producto = c.id_producto AND c.estatus = 1 AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
+		->join("usuarios u", "c.id_proveedor = u.id_usuario", "LEFT")
+		->join("precio_sistema ps", "p.id_producto = ps.id_producto AND WEEKOFYEAR(ps.fecha_registro) =".$this->weekNumber($fech), "LEFT")
+		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
+		->where("p.estatus <>", 0)
+		->order_by("p.id_familia,c.precio_promocion", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
 }
 
 
