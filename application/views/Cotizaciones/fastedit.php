@@ -5,11 +5,7 @@
 	.searchboxs{display: none}
 	.top-navigation #page-wrapper {margin-left: 0;overflow-y: scroll;}
 </style>
-<?php 
-if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
-	redirect("Compras/Login", "");
-}
-?>
+
 
 
 <div class="col-md-12 ibox-content" style="padding: 4%">
