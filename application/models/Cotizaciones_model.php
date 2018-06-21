@@ -1225,7 +1225,7 @@ $this->db->select("c.id_cotizacion,
 		->from("productos p")
 		->join("cotizacionesback c", "p.id_producto = c.id_producto AND c.estatus = 1 AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
 		->join("usuarios u", "c.id_proveedor = u.id_usuario", "LEFT")
-		->join("precio_sistema ps", "p.id_producto = ps.id_producto AND WEEKOFYEAR(ps.fecha_registro) =".$this->weekNumber($fech), "LEFT")
+		->join("precio_sistemaback ps", "p.id_producto = ps.id_producto AND WEEKOFYEAR(ps.fecha_registro) =".$this->weekNumber($fech), "LEFT")
 		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
 		->where("p.estatus <>", 0)
 		->order_by("p.id_familia,p.nombre,c.precio_promocion", "ASC");
