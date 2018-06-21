@@ -1,7 +1,9 @@
 <style type="text/css" media="screen">
 	.logo_img > img {
-		max-width: 100%;
-		height: 50px;
+		max-width: 125%;
+	    height: 100px;
+	    position: absolute;
+	    margin-top: -1rem;
 	}
 	.navbar-header {display: inline-flex;}
 	.cambcontra{padding-top: 15px;
@@ -33,9 +35,9 @@
 					</button>
 					
 					<?php if ($usuario['id_grupo'] == 2): ?>
-						<a href="#" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+						<a href="#" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
 					<?php else: ?>
-						<a href="/Main/" class="navbar-brand"><?php echo strtoupper($usuario['username']) ?></a>
+						<a href="/Main/" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
 					<?php endif ?>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">
