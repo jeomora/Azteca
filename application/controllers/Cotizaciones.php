@@ -3150,6 +3150,170 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
+	public function fill_existe(){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+				$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$this->cellStyle("A1:W2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' =>
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
+		$hoja->mergeCells('C1:E1');
+		$this->cellStyle("C1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("C1", "ABARROTES");
+		$hoja->mergeCells('F1:H1');
+		$this->cellStyle("F1", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("F1", "TIENDA");
+		$hoja->mergeCells('I1:K1');
+		$this->cellStyle("I1", "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("I1", "ULTRAMARINOS");
+		$hoja->mergeCells('L1:N1');
+		$this->cellStyle("L1", "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("L1", "TRINCHERAS");
+		$hoja->mergeCells('O1:Q1');
+		$this->cellStyle("O1", "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("O1", "AZT MERCADO");
+		$hoja->mergeCells('R1:T1');
+		$this->cellStyle("R1", "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("R1", "TENENCIA");
+		$hoja->mergeCells('U1:W1');
+		$this->cellStyle("U1", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("U1", "TIJERAS");
+		$hoja->setCellValue("C2", "CAJAS");
+		$hoja->setCellValue("D2", "PZAS");
+		$hoja->setCellValue("E2", "PEDIDO");
+		$hoja->setCellValue("F2", "CAJAS");
+		$hoja->setCellValue("G2", "PZAS");
+		$hoja->setCellValue("H2", "PEDIDO");
+		$hoja->setCellValue("I2", "CAJAS");
+		$hoja->setCellValue("J2", "PZAS");
+		$hoja->setCellValue("K2", "PEDIDO");
+		$hoja->setCellValue("L2", "CAJAS");
+		$hoja->setCellValue("M2", "PZAS");
+		$hoja->setCellValue("N2", "PEDIDO");
+		$hoja->setCellValue("O2", "CAJAS");
+		$hoja->setCellValue("P2", "PZAS");
+		$hoja->setCellValue("Q2", "PEDIDO");
+		$hoja->setCellValue("R2", "CAJAS");
+		$hoja->setCellValue("S2", "PZAS");
+		$hoja->setCellValue("T2", "PEDIDO");
+		$hoja->setCellValue("U2", "CAJAS");
+		$hoja->setCellValue("V2", "PZAS");
+		$hoja->setCellValue("W2", "PEDIDO");
+
+		$cotizacionesProveedor = $this->ct_mdl->fill_ex(NULL, date('Y-m-d'));
+
+		$row_print =2;
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['color'] == '#92CEE3'){
+							$this->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
+						}else{
+							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+						}
+						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("B{$row_print}", $row['producto']);
+						if($row['estatus'] == 2){
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						if($row['estatus'] == 3){
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+
+						$hoja->getStyle("A{$row_print}:AT{$row_print}")
+			                 ->getAlignment()
+			                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+						$hoja->setCellValue("C{$row_print}", $row['caja0']);
+ 						$hoja->setCellValue("D{$row_print}", $row['pz0']);
+ 						$hoja->setCellValue("E{$row_print}", $row['ped0']);
+ 						$this->cellStyle("E{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("F{$row_print}", $row['caja1']);
+ 						$hoja->setCellValue("G{$row_print}", $row['pz1']);
+ 						$hoja->setCellValue("H{$row_print}", $row['ped1']);
+ 						$this->cellStyle("H{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("I{$row_print}", $row['caja2']);
+ 						$hoja->setCellValue("J{$row_print}", $row['pz2']);
+ 						$hoja->setCellValue("K{$row_print}", $row['ped2']);
+ 						$this->cellStyle("K{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("L{$row_print}", $row['caja3']);
+ 						$hoja->setCellValue("M{$row_print}", $row['pz3']);
+ 						$hoja->setCellValue("N{$row_print}", $row['ped3']);
+ 						$this->cellStyle("N{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("O{$row_print}", $row['caja4']);
+ 						$hoja->setCellValue("P{$row_print}", $row['pz4']);
+ 						$hoja->setCellValue("Q{$row_print}", $row['ped4']);
+ 						$this->cellStyle("Q{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("R{$row_print}", $row['caja5']);
+ 						$hoja->setCellValue("S{$row_print}", $row['pz5']);
+ 						$hoja->setCellValue("T{$row_print}", $row['ped5']);
+ 						$this->cellStyle("T{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("U{$row_print}", $row['caja6']);
+ 						$hoja->setCellValue("V{$row_print}", $row['pz6']);
+ 						$hoja->setCellValue("W{$row_print}", $row['ped6']);
+ 						$this->cellStyle("W{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("I{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("J{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("K{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("L{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("M{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("N{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("O{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("P{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("Q{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("R{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("S{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("T{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("U{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("V{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("W{$row_print}")->applyFromArray($border_style);
+
+						$row_print ++;
+					}
+				}
+			}
+		}
+		$file_name = "EXISTENCIAS TODOS LOS PRODUCTOS.xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+	}
+
 }
 
 /* End of file Cotizaciones.php */
