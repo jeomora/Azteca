@@ -86,11 +86,21 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<i class="fa fa-file-excel-o"></i> Descargar Excel Pedidos
 							</button>
 						</div>
-					</div>
-					<?php echo form_close(); ?>
-					<div class="col-md-12 wonder" style="padding: 0">
 
 					</div>
+					<?php echo form_close(); ?>
+					<br>
+					<?php echo form_open("Cotizaciones/fill_existe", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
+					<div style="padding: 0;margin: 1rem;margin-left: 3rem">
+							<div class="btn-group">
+								<button class="btn btn-primary fill_exist" name="excele" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+									<i class="fa fa-file-excel-o"></i> Descargar existencias todas
+								</button>
+							</div>
+						</div>
+					<?php echo form_close(); ?>
+
+					
 			<!--<div class="ibox float-e-margins">
 				<div class="ibox-title">
 					<h5>LISTADO DE PEDIDOS</h5>
