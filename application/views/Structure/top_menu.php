@@ -1,9 +1,13 @@
 <style type="text/css" media="screen">
 	.logo_img > img {
 		max-width: 125%;
-	    height: 100px;
 	    position: absolute;
-	    margin-top: -1rem;
+	    margin-top: 0rem;
+	    background-color: white;
+	    border-radius: 9rem;
+	    height: 9rem;
+	    width: 9rem;
+	    border: 2px solid #ff6805;
 	}
 	.navbar-header {display: inline-flex;}
 	.cambcontra{padding-top: 15px;
@@ -12,6 +16,13 @@
     font-size: 13px;
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 600;}
+    @media only screen and (max-width: 600px){
+    	.logo_img > img {
+		    border-radius: 6rem;
+		    height: 6rem;
+		    width: 6rem;
+		}
+    }
 </style>
 <div id="wrapper">
 	<div id="page-wrapper" class="blue-bg">
