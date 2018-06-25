@@ -93,8 +93,8 @@ class Cotizaciones extends MY_Controller {
 
 		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
-		$this->estructura("Cotizaciones/anteriores", $data);
-		//$this->jsonResponse($data["cotizados"]);
+		//$this->estructura("Cotizaciones/anteriores", $data);
+		$this->jsonResponse($data["cotizados"]);
 	}
 
 	public function proveedorCots($ides){
