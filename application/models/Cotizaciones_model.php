@@ -1404,6 +1404,161 @@ $this->db->select("c.id_cotizacion,
 			return false;
 		}
 	}
+
+
+	public function fill_exNot($where = [],$fech){
+		$this->db->select("e.cajas,e.pedido,e.piezas,e.id_pedido,p.id_producto,p.nombre AS producto,e.id_tienda,f.id_familia, f.nombre AS familia, u.nombre AS sucursal, p.codigo, e.fecha_registro, p.color, p.colorp, p.estatus")
+		->from("productos p")
+		->join("existencias e", "p.id_producto = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
+		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
+		->join("usuarios u", "e.id_tienda = u.id_usuario", "LEFT")
+		->where("p.estatus <>",0)
+		->where("p.id_producto NOT IN (SELECT c.id_producto FROM cotizaciones c WHERE WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." GROUP BY c.id_producto)")
+		->order_by("f.id_familia,p.nombre", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+
+
+		// echo $this->db->last_query();
+		$prodss = "";
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if ($prodss <> $comparativa[$i]->producto){
+				$prodss = $comparativa[$i]->producto;
+				if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
+					# code...
+				}else{
+					$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
+					$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
+				}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["producto"]		=	$comparativa[$i]->producto;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["estatus"]		=	$comparativa[$i]->estatus;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["codigo"]			=	$comparativa[$i]->codigo;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["colorp"]	=	$comparativa[$i]->colorp;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["color"]	=	$comparativa[$i]->color;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja0"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz0"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped0"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda0"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped0"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja1"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz1"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped1"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda1"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped1"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja2"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz2"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped2"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda2"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped2"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja3"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz3"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped3"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda3"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped3"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja4"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz4"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped4"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda4"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped4"]	=	00;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja5"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz5"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped5"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda5"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped5"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja6"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz6"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped6"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda6"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped6"]	=	0;
+				switch ($comparativa[$i]->id_tienda) {
+					case '57':
+						$e = "0";
+						break;
+					case '58':
+						$e = "1";
+						break;
+					case '59':
+						$e = "2";
+						break;
+					case '60':
+						$e = "3";
+						break;
+					case '61':
+						$e = "4";
+						break;
+					case '62':
+						$e = "5";
+						break;
+					case '63':
+						$e = "6";
+						break;
+					default:
+						$e = "7";
+						break;
+				}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja".$e]		=	$comparativa[$i]->cajas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz".$e]	=	$comparativa[$i]->piezas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped".$e]	=	$comparativa[$i]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda".$e]	=	$comparativa[$i]->id_tienda;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped".$e]	=	$comparativa[$i]->id_pedido;
+			}else{
+				switch ($comparativa[$i]->id_tienda) {
+					case '57':
+						$e = "0";
+						break;
+					case '58':
+						$e = "1";
+						break;
+					case '59':
+						$e = "2";
+						break;
+					case '60':
+						$e = "3";
+						break;
+					case '61':
+						$e = "4";
+						break;
+					case '62':
+						$e = "5";
+						break;
+					case '63':
+						$e = "6";
+						break;
+					default:
+						$e = "7";
+						break;
+				}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja".$e]		=	$comparativa[$i]->cajas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz".$e]	=	$comparativa[$i]->piezas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped".$e]	=	$comparativa[$i]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda".$e]	=	$comparativa[$i]->id_tienda;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped".$e]	=	$comparativa[$i]->id_pedido;
+			}
+			
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
 }
 
 
