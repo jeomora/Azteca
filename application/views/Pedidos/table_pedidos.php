@@ -99,6 +99,15 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						</div>
 					<?php echo form_close(); ?>
+					<?php echo form_open("Cotizaciones/fill_existeNot", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
+					<div style="padding: 0;margin: 1rem;margin-left: 3rem">
+							<div class="btn-group">
+								<button class="btn btn-danger fill_exist" name="excele" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+									<i class="fa fa-file-excel-o"></i> Descargar existencias NO COTIZADOS
+								</button>
+							</div>
+						</div>
+					<?php echo form_close(); ?>
 
 					
 			<!--<div class="ibox float-e-margins">
