@@ -3543,7 +3543,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		$file_name = "EXISTENCIAS TODOS LOS PRODUCTOS.xlsx"; //Nombre del documento con extención
+		$file_name = "EXISTENCIAS PRODUCTOS NO COTIZADOS.xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
