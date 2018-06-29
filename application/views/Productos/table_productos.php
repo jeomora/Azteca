@@ -22,7 +22,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<div class="btn-group">
 						<?php echo form_open("Productos/print_productos", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-cloud-download"></i> Descargar Listado Productos
+								<i class="fa fa-cloud-download"></i> Descargar Formato 
 							</button>
 						<?php echo form_close(); ?>
 					</div>
