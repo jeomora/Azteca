@@ -206,60 +206,184 @@ class Productos extends MY_Controller {
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
-		$this->cellStyle("A1:N2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("A1", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
-		
-		$row_print =3;
-		if ($cotizacionesProveedor){
-			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->setCellValue("B{$row_print}", $value['familia'])->getStyle("B{$row_print}")->getAlignment()->setWrapText(true);
+		$this->cellStyle("A1:B2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' =>
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+
+		$hoja->setCellValue("B1", "DESCRIPCIÓN SISTEMA")->getColumnDimension('B')->setWidth(70);
+
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->mergeCells('E1:F1');
+		$productos = $this->pro_md->getProdFam(NULL,0);
+		$row_print = 2;
+		if ($productos){
+			foreach ($productos as $key => $value){
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
 				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
-						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['color'] == '#92CEE3'){
+							$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
+						}else{
+							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+						}
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-						$hoja->setCellValue("B{$row_print}", $row['producto'])->getStyle("B{$row_print}");
-						$hoja->setCellValue("C{$row_print}", $row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
-						$hoja->setCellValue("D{$row_print}", $row['precio_four'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("E{$row_print}", $row['precio_firsto'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						if($row['precio_sistema'] < $row['precio_first']){
-							$hoja->setCellValue("F{$row_print}", $row['precio_first'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("F{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$hoja->setCellValue("F{$row_print}", $row['precio_first'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("F{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
+						$hoja->setCellValue("B{$row_print}", $row['producto']);
+						if($row['estatus'] == 2){
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						$hoja->setCellValue("G{$row_print}", $row['proveedor_first'])->getStyle("G{$row_print}");
-						$hoja->setCellValue("H{$row_print}", $row['promocion_first'])->getStyle("H{$row_print}");
-						$hoja->setCellValue("I{$row_print}", $row['precio_maximo'])->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("J{$row_print}", $row['precio_promedio'])->getStyle("J{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("K{$row_print}", $row['precio_nexto'])->getStyle("K{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						if($row['precio_sistema'] < $row['precio_next']){
-							$hoja->setCellValue("L{$row_print}", $row['precio_next'])->getStyle("L{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("L{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-						}else if($row['precio_next'] !== NULL){
-							$hoja->setCellValue("L{$row_print}", $row['precio_next'])->getStyle("L{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("L{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$hoja->setCellValue("L{$row_print}", $row['precio_next'])->getStyle("L{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['estatus'] == 3){
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						$hoja->setCellValue("M{$row_print}", $row['proveedor_next'])->getStyle("M{$row_print}");						
-						$hoja->setCellValue("N{$row_print}", $row['promocion_next'])->getStyle("N{$row_print}");
-						$row_print ++;
+
+						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+
+						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)){
+							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
+							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
+							$hoja->setCellValue("C{$row_print}", "NUEVO");
+						}
+						$row_print++;
 					}
 				}
 			}
 		}
+		$hoja->getStyle("A3:H{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+		$hoja->getStyle("B3:B{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-		$file_name = "Cotizaciones.xls"; //Nombre del documento con extención
+        $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "PRODUCTOS ACTIVOS ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
+
+	}
+
+	public function upload_productos(){
+		$proveedor = $this->session->userdata('id_usuario');
+
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
+		$filen = "Productos por ".$nams."".rand();
+
+
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+
+
+
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_productos',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_prod"]["tmp_name"];
+		$filename=$_FILES['file_prod']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+
+		for ($i=3; $i<=$num_rows; $i++) {
+			if($sheet->getCell('C'.$i)->getValue() > 0){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
+					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue()));
+					$column_one = $sheet->getCell('E'.$i)->getValue();
+					$column_two = $sheet->getCell('F'.$i)->getValue();
+					$descuento = $sheet->getCell('G'.$i)->getValue();
+
+					if ($column_one ==1 && $column_two ==1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($column_one >=1 && $column_two >1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($descuento >0) {
+						$precio_promocion = ($precio - ($precio * ($descuento/100)));
+					}else{
+						$precio_promocion = $precio;
+					}
+					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $proveedor])[0];
+					$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
+					if($antes){
+						$new_cotizacion=[
+							"id_producto"		=>	$productos->id_producto,
+							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+							"precio"			=>	$precio,
+							"num_one"			=>	$column_one,
+							"num_two"			=>	$column_two,
+							"descuento"			=>	$descuento,
+							"precio_promocion"	=>	$precio_promocion,
+							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
+							"estatus" => 0];
+						if($cotiz){
+							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+						}else{
+							$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
+						}
+					}else{
+						$new_cotizacion=[
+							"id_producto"		=>	$productos->id_producto,
+							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+							"precio"			=>	$precio,
+							"num_one"			=>	$column_one,
+							"num_two"			=>	$column_two,
+							"descuento"			=>	$descuento,
+							"precio_promocion"	=>	$precio_promocion,
+							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue()
+						];
+						if($cotiz){
+							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+						}else{
+							$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion);
+						}
+					}
+
+				}
+			}
+		}
+		if (!isset($new_cotizacion)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin precios',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_cotizacion) > 0) {
+				$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$proveedor])[0];
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"			=>	"El usuario sube archivo de cotizaciones de ".$aprov->nombre,
+						"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
 	}
 
 }
