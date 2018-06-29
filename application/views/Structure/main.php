@@ -237,7 +237,7 @@
 	function blockPage(){
 		$("html").block({
 			centerY: 0,
-			message: "<h2>HOLA "+user_name+"</h2> <img style='width:100%' src='../assets/img/uploading.gif'/> <h3>Por favor espere que se cargue la información ...</h3>",
+			message: "<h2>HOLA "+user_name+"</h2> <img style='width:100%' src='<?php echo base_url('/assets/img/uploading.gif') ?>'/> <h3>Por favor espere que se cargue la información ...</h3>",
 			css: { top: '50px', left: '', right: '10px', borderRadius: '15px' },
 			overlayCSS: { backgroundColor: '#AAAAA9' }
 		});

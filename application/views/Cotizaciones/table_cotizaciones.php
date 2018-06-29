@@ -21,18 +21,18 @@ if(!$this->session->userdata("username")){
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
 				<div class="ibox-content">
-					<!--<div class="btn-group">
+					<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
 							<i class="fa fa-plus"></i> Agregar Cotización
 						</button>
 					</div>
 					<div class="btn-group">
-							<?php //echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
-							<input type="text" name="id_pro" id="id_pro" value="<?php //echo $usuario['id_usuario'] ?>" hidden>
+							<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+							<input type="text" name="id_pro" id="id_pro" value="<?php echo $usuario['id_usuario'] ?>" hidden>
 								<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 									<i class="fa fa-cloud-download"></i> Descargar formato cotizaciones
 								</button>
-							<?php //echo form_close(); ?>
+							<?php echo form_close(); ?>
 						</div>
 					
 					
@@ -41,12 +41,12 @@ if(!$this->session->userdata("username")){
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir formato de cotizaciones
 						</div>
-						<?php //echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
+						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 							<div class="col-sm-4">
 								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones" value="" size="20" />
 							</div>
-						<?php //echo form_close(); ?>
-					</div>--> 
+						<?php echo form_close(); ?>
+					</div>
 					
 
 					<div class="table-responsive">

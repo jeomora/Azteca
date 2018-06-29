@@ -19,6 +19,24 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<i class="fa fa-plus"></i>
 						</button>
 					</div>
+					<div class="btn-group">
+						<?php echo form_open("Productos/print_productos", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+								<i class="fa fa-cloud-download"></i> Descargar Listado Productos
+							</button>
+						<?php echo form_close(); ?>
+					</div>
+					<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir Varios Productos
+						</div>
+						<?php echo form_open_multipart("", array('id' => 'upload_productos')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info" type="file" id="file_productos" name="file_productos" value="" size="20" />
+							</div>
+						<?php echo form_close(); ?>
+					</div>
+						<table
 						<table class="table table-striped table-bordered table-hover" id="table_productos">
 							<thead>
 								<tr>

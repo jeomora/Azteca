@@ -1,4 +1,5 @@
 $(function($) {
+
 	$("#table_productos").dataTable({
 		ajax: {
 			url: site_url +"Productos/productos_dataTable",
@@ -88,3 +89,30 @@ $(document).off("click", ".delete_producto").on("click", ".delete_producto", fun
 	event.preventDefault();
 	sendForm("Productos/accion/D", $("#form_producto_delete"), "");
 });
+$(document).off("change", "#file_productos").on("change", "#file_productos", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_productos")[0]);
+	uploadProductos(fdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				setTimeout("location.reload()", 1700, toastr.error(resp.desc, user_name), "");
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
+
+
+function uploadProductos(formData) {
+	return $.ajax({
+		url: site_url+"Productos/upload_productos",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

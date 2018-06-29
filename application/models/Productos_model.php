@@ -139,6 +139,7 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 			}else{
 				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
 				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["id_familia"]	=	$comparativa[$i]->id_familia;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
 			}
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["id_producto"]	=	$comparativa[$i]->id_producto;
