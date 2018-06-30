@@ -3576,6 +3576,83 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
+	public function upload_fullpedidos($idesp){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_cotizaciones"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+
+		if($idesp === "0"){
+			$tienda = $this->session->userdata('id_usuario');
+		}else{
+			$tienda = $idesp;
+		}
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $tienda])[0];
+		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
+		$filen = "Pedidos".$nams."".rand();
+
+		$config['upload_path']          = './assets/uploads/pedidos/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+
+
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_cotizaciones',$filen);
+		for ($i=3; $i<=$num_rows; $i++) {
+			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('F'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if (sizeof($productos) > 0) {
+				$exis = $this->ex_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$TIENDAnda,"id_producto"=>$productos->id_producto])[0];
+				$column_one=0; $column_two=0; $column_three=0;
+				$column_one = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
+				$column_two = $sheet->getCell('D'.$i)->getValue() == "" ? 0 : $sheet->getCell('D'.$i)->getValue();
+				$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
+
+				$new_existencias[$i]=[
+					"id_producto"			=>	$productos->id_producto,
+					"id_tienda"			=>	$tienda,
+					"cajas"			=>	$column_one,
+					"piezas"			=>	$column_two,
+					"pedido"	=>	$column_three,
+					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
+				];
+				if($exis){
+					$data['cotizacion']=$this->ex_mdl->update($new_existencias[$i], ['id_pedido' => $exis->id_pedido]);
+				}else{
+					$data['cotizacion']=$this->ex_mdl->insert($new_existencias[$i]);
+				}
+			}
+		}
+		if (sizeof($new_existencias) > 0) {
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$tienda])[0];
+			$cambios=[
+					"id_usuario"		=>	$this->session->userdata('id_usuario'),
+					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+					"antes"			=>	"El usuario sube archivo de pedidos de la tienda ".$aprov->nombre,
+					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
+					"accion"			=>	"Sube Pedidos"
+				];
+			$data['cambios']=$this->cambio_md->insert($cambios);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Pedidos cargados correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Los Pedidos no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
 }
 
 /* End of file Cotizaciones.php */
