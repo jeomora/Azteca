@@ -121,9 +121,9 @@ class Cotizaciones_model extends MY_Model {
 		$result = $this->db->query("SELECT c.id_cotizacion,p.codigo,p.nombre as descrip,p.precio_sistema, c.precio_promocion, c.id_proveedor,u.nombre, (p.precio_sistema - c.precio_promocion) AS diferencia,
 c.precio, c.fecha_registro, c.estatus, c.observaciones, c.descuento, c.num_one, c.num_two
 FROM prodandprice p LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto and c.estatus = 1  
-LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = 26 AND 
+LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = 27 AND 
 (p.precio_sistema - c.precio_promocion) > (p.precio_sistema * 0.2) OR 
-WEEKOFYEAR(c.fecha_registro) = 26 AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY p.id_producto")->result();
+WEEKOFYEAR(c.fecha_registro) = 27 AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY p.id_producto")->result();
 		if ($result) {
 			if (is_array($where)) {
 				return $result;
