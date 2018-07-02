@@ -53,11 +53,11 @@
 				<div class="form-group">
 					<label for="conjunto">Conjunto</label>
 					<select name="conjunto" class="form-control chosen-select">
-						<option value="INDIVIDUAL" <?php echo $usuario->conjunto == 'INDIVIDUAL' ? 'selected' : '' ?>>INDIVIDUAL</option>
-						<option value="VARIOS1" <?php echo $usuario->conjunto == 'VARIOS1' ? 'selected' : '' ?>>VARIOS 1°</option>
-						<option value="VARIOS2" <?php echo $usuario->conjunto == 'VARIOS2' ? 'selected' : '' ?>>VARIOS 2°</option>
-						<option value="VARIOS3" <?php echo $usuario->conjunto == 'VARIOS3' ? 'selected' : '' ?>>VARIOS 3°</option>
-						<option value="VARIOS4" <?php echo $usuario->conjunto == 'VARIOS4' ? 'selected' : '' ?>>VARIOS 4°</option>
+						<option value="INDIVIDUAL" selected>INDIVIDUAL</option>
+						<option value="VARIOS1">VARIOS 1°</option>
+						<option value="VARIOS2">VARIOS 2°</option>
+						<option value="VARIOS3">VARIOS 3°</option>
+						<option value="VARIOS4">VARIOS 4°</option>
 					</select>
 				</div>
 			</div>
