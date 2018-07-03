@@ -288,7 +288,7 @@ class Productos extends MY_Controller {
 						"nombre" => $sheet->getCell('B'.$i)->getValue(),
 						"codigo" => $sheet->getCell('A'.$i)->getValue(),
 						"colorp" => $conversion,
-						"estatus" => 6];
+						"estatus" => 5];
 				$data ['id_producto'] = $this->pro_md->update($new_producto, $productos->id_producto);
 			}else{
 				$new_producto=[
@@ -296,7 +296,7 @@ class Productos extends MY_Controller {
 						"nombre" => $sheet->getCell('B'.$i)->getValue(),
 						"codigo" => $sheet->getCell('A'.$i)->getValue(),
 						"colorp" => $conversion,
-						"estatus" => 6];
+						"estatus" => 5];
 				$data ['id_producto']=$this->pro_md->insert($new_producto);
 			}
 		}
