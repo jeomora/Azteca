@@ -2,7 +2,7 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-
+	fillDataTable('table_precios_iguales',50);
 	datePicker();
 
 });
