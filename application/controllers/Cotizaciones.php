@@ -202,7 +202,7 @@ class Cotizaciones extends MY_Controller {
 			'/assets/css/plugins/dataTables/buttons.dataTables.min',
 		];
 		$data['scripts'] = [
-			'/scripts/volumenes',
+			'/scripts/directos',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
@@ -217,7 +217,7 @@ class Cotizaciones extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
 		$data["usuar"]  = $this->session->userdata();
-		$this->estructura("Cotizaciones/volumenes", $data);
+		$this->estructura("Cotizaciones/directos", $data);
 	}
 
 	public function proveedor(){
@@ -755,8 +755,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 						if($row['precio_sistema'] < $row['precio_first']){
@@ -911,8 +911,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 10, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
@@ -1033,8 +1033,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						if($row['precio_sistema'] < $row['precio_first']){
 							$hoja->setCellValue("F{$row_print}", $row['precio_first'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -2254,8 +2254,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 10, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
 
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
@@ -2352,8 +2352,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 10, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
 
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
@@ -2530,6 +2530,9 @@ class Cotizaciones extends MY_Controller {
 			}
 			if($value->estatus == 3){
 				$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
+			}
+			if($value->estatus == 4){
+				$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 10, "Franklin Gothic Book");
 			}
 
 			$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
@@ -3100,8 +3103,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 
@@ -3291,8 +3294,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 
@@ -3530,8 +3533,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] == 3){
 							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						if($row['estatus'] == 4){
-							$this->cellStyle("B{$row_print}", "704C34", "000000", FALSE, 12, "Franklin Gothic Book");
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 
 						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
