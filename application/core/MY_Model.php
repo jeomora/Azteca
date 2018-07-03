@@ -117,7 +117,7 @@ class MY_Model extends CI_Model {
 		if($limit !==FALSE && $start !==FALSE){
 			$this->db->limit($limit, $start);
 		}
-		$this->db->where($this->TABLE_NAME.".estatus", 1);
+		
 
 		$this->db->from($this->TABLE_NAME);
 
