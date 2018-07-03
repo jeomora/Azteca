@@ -124,7 +124,7 @@ class Main extends MY_Controller {
 						"descuento"			=>	$value->descuento,
 						"precio_promocion"	=>	$value->precio_promocion,
 						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-						"observaciones"		=>	$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($value->observaciones),
+						"observaciones"		=>	strtoupper($value->observaciones),
 						'estatus' => 0
 					];
 				}else{
@@ -137,7 +137,7 @@ class Main extends MY_Controller {
 						"descuento"			=>	$value->descuento,
 						"precio_promocion"	=>	$value->precio_promocion,
 						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-						"observaciones"		=>		$num_one." en ".$num_two." descuento: %".$descuento." /// ".strtoupper($value->observaciones),
+						"observaciones"		=>	strtoupper($value->observaciones),
 						'estatus' => 1
 					];
 				}
