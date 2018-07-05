@@ -114,9 +114,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					</div>
 
 					<div class="table-responsive"> 
-						<table class="table table-striped table-bordered table-hover" id="table_cot_v">
+						<table class="table table-striped table-bordered table-hover" id="table_dir">
 							<thead>
-								<tr>
+								<tr class="trdirectos">
 									<th>FAMILIA</th>
 									<th>CÓDIGO</th>
 									<th>DESCRIPCIÓN</th>
@@ -135,7 +135,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 									<th>ACCIÓN</th>
 								</tr>
 							</thead>
-							<tbody class="tableAdminv">
+							<tbody class="tabledirectos">
 
 							</tbody>
 						</table>
