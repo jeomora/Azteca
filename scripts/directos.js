@@ -40,6 +40,7 @@ function setAdminTable(){
 	});
 	var producto = [];
 	var vals = [];
+	var gg = "";
 	getAdminTable()
 		.done(function (resp) {
 			if(resp.cotizados){
@@ -64,11 +65,15 @@ function setAdminTable(){
 						}
 					}
 					tablebody += "</tr>";
-					$(".tableAdminv").append(tablebody);
+					gg += tablebody;
 					tablebody = "";
 				});
 			}
+			
+			setTimeout(function(){ $(".tableAdminv").html(gg); }, 3000);
+			setTimeout(function(){ $(".tableAdminv").html(gg); }, 10000);
 		});
+
 }
 
 $(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion", function(event){

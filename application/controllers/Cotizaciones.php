@@ -3701,6 +3701,108 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function fill_directos(){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+				$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$this->cellStyle("A1:AK2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' =>
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
+		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(12);
+		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(12);
+		$hoja->setCellValue("E1", "PRECIO")->getColumnDimension('E')->setWidth(12);
+		$hoja->setCellValue("E2", "PROMEDIO")->getColumnDimension('E')->setWidth(12);
+		$hoja->setCellValue("F1", "PRECIO")->getColumnDimension('F')->setWidth(12);
+		$hoja->setCellValue("F2", "MAXIMO")->getColumnDimension('F')->setWidth(12);
+		$col = 6;
+		$rws = 3;
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$cotPro = $this->ct_mdl->getCotzP(NULL, $fecha,4);
+		if ($cotPro){
+			foreach ($cotPro as $key => $value){
+				$hoja->setCellValueByColumnAndRow($col, 2, $value->nombre);
+                $col++;
+                $col++;
+			}
+		}
+		$col=6;
+		$producto = "";
+		$costo = 0;
+		$maximo = 0;
+		$flag = 0;
+		$prueba = "";
+		$cotizacionesProveedor = $this->ct_mdl->getCotzD(NULL, $fecha,4);
+		if ($cotizacionesProveedor) {
+			foreach ($cotizacionesProveedor as $key => $value) {
+				foreach ($value["articulos"] as $key => $val) {
+					if ($producto <> $value["producto"]) {
+						$hoja->setCellValue("B{$rws}", $value["producto"]);
+						$producto = $value["producto"];
+						$hoja->setCellValue("A{$rws}", $val["codigo"])->getStyle("A{$rws}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("C{$rws}", $val["precio_sistema"])->getStyle("C{$rws}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("D{$rws}", $val["precio_four"])->getStyle("D{$rws}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					}
+					$maximo = $maximo < $val["precio_promocion"] ? $val["precio_promocion"] : $maximo;
+					$costo =  $val["precio_promocion"] + $costo;
+					for ($i=0; $i < count($cotPro); $i++) {
+						$prueba = $prueba."".$cotPro[$i]->nombre." == ".$val["proveedor"]." on ".$col." and ".$rws."\n";
+						if ($cotPro[$i]->nombre == $val["proveedor"]) {
+							$hoja->setCellValueByColumnAndRow($col, $rws, $val["precio_promocion"]);
+							$col++;
+							$hoja->setCellValueByColumnAndRow($col, $rws, $val["observaciones"]);
+							$col++;
+						}else{
+							$col++;
+							$col++;
+						}
+					}
+					$col = 6;
+				}
+				$costo = $costo / count($value["articulos"]);
+				$hoja->setCellValue("E{$rws}", $costo)->getStyle("E{$rws}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$hoja->setCellValue("F{$rws}", $maximo)->getStyle("F{$rws}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				
+				$rws++;	
+			}
+		}
+		//$this->jsonResponse($prueba);
+
+
+        $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "DIRECTOS ".$fecha.".xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+	}
+
 }
 
 /* End of file Cotizaciones.php */
