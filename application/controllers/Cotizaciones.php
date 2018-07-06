@@ -628,6 +628,24 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	public function getDirTable($directo){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$data["cotizados"] = $this->ct_mdl->getCotzD(NULL,$fecha,$directo);
+		$this->jsonResponse($data);
+	}
+
+	public function getDirProv($directo){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$data["cotizados"] = $this->ct_mdl->getCotzP(NULL,$fecha,$directo);
+		$this->jsonResponse($data);
+	}
+
 	public function getGrupo(){
 		$user = $this->session->userdata();
 		$data["ides"] = $user['id_grupo'];

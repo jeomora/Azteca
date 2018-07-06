@@ -95,25 +95,25 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		<div class="col-lg-12" style="padding: 0">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>LISTADO DE COTIZACIONES EN VOLÚMENES</h5>
+					<h5>LISTADO DE COTIZACIONES DIRECTOS</h5>
 				</div>
 				<div class="ibox-content" style="padding-top: 4rem;">
 					<div class="btn-group">
-						<?php echo form_open("Cotizaciones/fill_excelV", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<?php echo form_open("Cotizaciones/fill_excelD/1", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar Excel Moderna
 							</button>
 						<?php echo form_close(); ?>
 					</div>
 					<div class="btn-group">
-						<?php echo form_open("Cotizaciones/fill_excelV", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<?php echo form_open("Cotizaciones/fill_excelD/2", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-warning" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar Excel Costeña
 							</button>
 						<?php echo form_close(); ?>
 					</div>
 					<div class="btn-group">
-						<?php echo form_open("Cotizaciones/fill_excelV", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<?php echo form_open("Cotizaciones/fill_excelD/3", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-danger" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar Excel Cuétara
 							</button>
@@ -123,23 +123,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<div class="table-responsive"> 
 						<table class="table table-striped table-bordered table-hover" id="table_cot_v">
 							<thead>
-								<tr>
+								<tr class="trdirectos">
 									<th>FAMILIA</th>
 									<th>CÓDIGO</th>
 									<th>DESCRIPCIÓN</th>
 									<th>SISTEMA</th>
 									<th>PRECIO 4</th>
-									<th>FACTURA</th>
-									<th>C/PROMOCIÓN</th>
-									<th>PROVEEDOR</th>
-									<th>OBSERVACIÓN</th>
-									<th>PRECIO MAXIMO</th>
-									<th>PRECIO PROMEDIO</th>
-									<th>FACTURA</th>
-									<th>C/PROMOCIÓN</th>
-									<th>2DO PROVEEDOR</th>
-									<th>OBSERVACIÓN</th>
-									<th>ACCIÓN</th>
 								</tr>
 							</thead>
 							<tbody class="tableAdminv">

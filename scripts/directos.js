@@ -2,36 +2,20 @@ $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'
 	});
-		/*$("#table_cot_admin").dataTable({
-			ajax: {
-				url: site_url +"Cotizaciones/cotizaciones_dataTable",
-				type: "POST"
-			},
-			processing: true,
-			language: {
-	            processing: '<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div> '},
-			serverSide: true,
-			responsive: true,
-			pageLength: 50,
-			dom: 'Bfrtip',
-			bSort : false,
-			lengthMenu: [
-				[ 10, 30, 50, -1 ],
-				[ '10 registros', '30 registros', '50 registros', 'Mostrar todos']
-			],
-			buttons: [
-				{ extend: 'pageLength' },
-			]
-		});*/
-		
-	
 	setAdminTable();
-
 });
 
 function getAdminTable() {
 	return $.ajax({
-		url: site_url+"/Cotizaciones/getVolTable",
+		url: site_url+"/Cotizaciones/getDirTable/4",
+		type: "POST",
+		dataType: "JSON"
+	});
+}
+
+function getTableHead() {
+	return $.ajax({
+		url: site_url+"/Cotizaciones/getDirProv/4",
 		type: "POST",
 		dataType: "JSON"
 	});
@@ -39,72 +23,52 @@ function getAdminTable() {
 
 function setAdminTable(){
 	event.preventDefault();
+	var tablehead = "";
+	var proveedor = [];
+	var tablebody = "";
 	
-	$(".tableAdminv").html('<tr><td colspan="16"><div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div></td></tr>');
-	var tableAdmin = "";
+	var flag = 0;
+	var flag2 = false;
+	getTableHead().done(function (resp){
+		if(resp.cotizados){
+			$.each(resp.cotizados, function(index, value){
+				flag += 1;
+				proveedor.push({id:flag, name:value.nombre})
+				$(".trdirectos").append("<th colspan='2'>"+value.nombre+"</th>");
+			});
+		}
+	});
+	var producto = [];
+	var vals = [];
 	getAdminTable()
 		.done(function (resp) {
-			$.each(resp.cotizados, function(indx, value){
-					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
-					value.precio_four = value.precio_four == null ? 0 : value.precio_four;
-					value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
-					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
-					value.precio_firsto = value.precio_firsto == null ? 0 : value.precio_firsto;
-					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
-					value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
-					value.precio_nxts = value.precio_nxts == null ? 0 : value.precio_nxts;
-					value.precio_nxtso = value.precio_nxtso == null ? 0 : value.precio_nxtso;
-					value.proveedor_first = value.proveedor_first == null ? "" : value.proveedor_first;
-					value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
-					value.proveedor_nxts = value.proveedor_nxts == null ? "" : value.proveedor_nxts;
-					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
-					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
-					value.promocion_nxts = value.promocion_nxts == null ? "" : value.promocion_nxts;
-
-					value.precio_promedio = value.precio_promedio == null ? 0 : value.precio_promedio;
-					value.precio_maximo = value.precio_maximo == null ? 0 : value.precio_maximo;
-					tableAdmin += '<tr><td>'+value.familia+'</td>';
-					
-					if(value.estatus == 2){
-						tableAdmin += '<td style="background-color: #00b0f0">'+value.codigo+'</td><td style="background-color: #00b0f0">'+value.producto+'</td>';
-					}else if(value.status == 3){
-						tableAdmin += '<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.producto+'</td>';
-					}else{
-						tableAdmin += '<td>'+value.codigo+'</td><td>'+value.producto+'</td>';
+			if(resp.cotizados){
+				$.each(resp.cotizados, function(indx, value){
+					for (var i = 0; i < flag; i++) {
+						$.each(value.articulos, function(index, val){
+							if(i == 0 && tablebody == ""){
+								tablebody += "<tr><td>"+val.familia+"</td><td>"+val.codigo+"</td><td>"+val.producto+"</td><td> $"+formatNumber(parseFloat(val.precio_sistema), 2)+"</td><td>"+formatNumber(parseFloat(val.precio_four), 2)+"</td>";
+							}
+							if(i == proveedor.findIndex(x => x.name === val.proveedor) && flag2 == false){
+								flag2 = true;
+								vals = val;
+							}
+						});
+						if(flag2 == true){
+							tablebody += "<td>$ "+formatNumber(parseFloat(vals.precio_promocion), 2)+"</td><td style='font-size:10px'>"+(vals.observaciones == null ? "Sin observaciones" : vals.observaciones)+"</td>";
+							flag2 = false;
+							vals = [];
+						}else{
+							tablebody += "<td></td><td></td>";
+							vals = [];
+						}
 					}
-
-					if(value.colorp == 1){
-						tableAdmin += '<td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-								'</div></td><td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
-					}else{
-						tableAdmin += '<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-								'</div></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>'
-					}
-
-					tableAdmin += '<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>';
-					if(value.precio_first >= value.precio_sistema){
-						tableAdmin += '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>';
-					}else{
-						tableAdmin += '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>'
-					}
-					tableAdmin += '<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>'+
-								'<td>$ '+formatNumber(parseFloat(value.precio_maximo), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_promedio), 2)+'</td>';
-					tableAdmin += value.precio_nexto == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nexto), 2)+'</td>'					
-					if(value.precio_next >= value.precio_sistema){
-						tableAdmin += value.precio_next > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
-					}else{
-						tableAdmin += value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>';
-					}
-					tableAdmin += '<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td><td>'+
-								'<button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
-								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
-								'<i class="fa fa-trash"></i></button></td></tr>';
-			});	
-			$(".tableAdminv").html(tableAdmin);
-			fillDataTable("table_cot_v", 50);
+					tablebody += "</tr>";
+					$(".tableAdminv").append(tablebody);
+					tablebody = "";
+				});
+			}
 		});
-	
-
 }
 
 $(document).off("click", "#update_cotizacion").on("click", "#update_cotizacion", function(event){

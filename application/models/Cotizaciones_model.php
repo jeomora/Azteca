@@ -1559,6 +1559,101 @@ $this->db->select("c.id_cotizacion,
 			return false;
 		}
 	}
+
+	public function getCotzP($where = [],$fech, $directo){
+		$this->db->select("u.nombre")
+		->from("cotizaciones c")
+		->join("productos p", "c.id_producto = p.id_producto", "LEFT")
+		->join("usuarios u", " c.id_proveedor = u.id_usuario", "LEFT")
+		->where("WEEKOFYEAR(c.fecha_registro)",$this->weekNumber($fech))
+		->where("p.estatus", $directo)
+		->group_by("id_proveedor")
+		->order_by("id_proveedor", "DESC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+
+		if ($comparativa) {
+			if (is_array($where)) {
+				return $comparativa;
+			} else {
+				return $comparativa;
+			}
+		} else {
+			return false;
+		}
+
+	}
+
+	public function getCotzD($where = [],$fech, $directo){
+		$this->db->select("c.id_cotizacion,p.codigo,c.id_producto,p.nombre as producto,c.id_proveedor, u.nombre,c.precio,c.precio_promocion,c.fecha_registro,p.estatus,c.observaciones,c.descuento,c.num_one,c.num_two,u.nombre as proveedor,fam.nombre as familia, sist.precio_sistema, c.precio, c.precio_promocion, sist.precio_four")
+		->from("cotizaciones c")
+		->join("productos p", "c.id_producto = p.id_producto", "LEFT")
+		->join("usuarios u", " c.id_proveedor = u.id_usuario", "LEFT")
+		->join("familias fam", "p.id_familia = fam.id_familia", "LEFT")
+		->join("precio_sistema sist", "p.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
+		->where("WEEKOFYEAR(c.fecha_registro)",$this->weekNumber($fech))
+		->where("p.estatus", $directo)
+		->order_by("c.id_producto, c.precio_promocion", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if (isset($comparativaIndexada[$comparativa[$i]->id_producto])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_producto]				=	[];
+				$comparativaIndexada[$comparativa[$i]->id_producto]["producto"]	=	$comparativa[$i]->producto;
+				$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"]	=	[];
+			}
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["id_cotizacion"]	=	$comparativa[$i]->id_cotizacion;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["codigo"]	=	$comparativa[$i]->codigo;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["estatus"]		=	$comparativa[$i]->estatus;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["id_producto"]		=	$comparativa[$i]->id_producto;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["id_proveedor"]		=	$comparativa[$i]->id_proveedor;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["proveedor"]		=	$comparativa[$i]->proveedor;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["codigo"]			=	$comparativa[$i]->codigo;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio_promocion"]	=	$comparativa[$i]->precio_promocion;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio"]	=	$comparativa[$i]->precio;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["familia"]	=	$comparativa[$i]->familia;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio_sistema"]	=	$comparativa[$i]->precio_sistema;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio_four"]	=	$comparativa[$i]->precio_four;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["num_one"]	=	$comparativa[$i]->num_one;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["num_two"]	=	$comparativa[$i]->num_two;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["observaciones"]	=	$comparativa[$i]->observaciones;
+
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+
+	}
 }
 
 
