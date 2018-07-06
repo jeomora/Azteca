@@ -47,7 +47,7 @@ function setAdminTable(){
 					for (var i = 0; i < flag; i++) {
 						$.each(value.articulos, function(index, val){
 							if(i == 0 && tablebody == ""){
-								tablebody += "<tr><td>"+val.familia+"</td><td>"+val.codigo+"</td><td>"+val.producto+"</td><td>"+val.precio_sistema+"</td><td>"+val.precio_four+"</td>";
+								tablebody += "<tr><td>"+val.familia+"</td><td>"+val.codigo+"</td><td>"+val.producto+"</td><td> $"+formatNumber(parseFloat(val.precio_sistema), 2)+"</td><td>"+formatNumber(parseFloat(val.precio_four), 2)+"</td>";
 							}
 							if(i == proveedor.findIndex(x => x.name === val.proveedor) && flag2 == false){
 								flag2 = true;
@@ -55,7 +55,7 @@ function setAdminTable(){
 							}
 						});
 						if(flag2 == true){
-							tablebody += "<td>"+vals.precio_promocion+"</td><td>"+vals.observaciones+"</td>";
+							tablebody += "<td>$ "+formatNumber(parseFloat(vals.precio_promocion), 2)+"</td><td style='font-size:10px'>"+(vals.observaciones == null ? "Sin observaciones" : vals.observaciones)+"</td>";
 							flag2 = false;
 							vals = [];
 						}else{
@@ -64,7 +64,6 @@ function setAdminTable(){
 						}
 					}
 					tablebody += "</tr>";
-					console.log(tablebody+"\n");
 					$(".tableAdminv").append(tablebody);
 					tablebody = "";
 				});

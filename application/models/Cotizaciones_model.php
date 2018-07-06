@@ -1637,6 +1637,7 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio"]	=	$comparativa[$i]->precio;
 			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["familia"]	=	$comparativa[$i]->familia;
 			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio_sistema"]	=	$comparativa[$i]->precio_sistema;
+			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["precio_four"]	=	$comparativa[$i]->precio_four;
 			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["num_one"]	=	$comparativa[$i]->num_one;
 			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["num_two"]	=	$comparativa[$i]->num_two;
 			$comparativaIndexada[$comparativa[$i]->id_producto]["articulos"][$comparativa[$i]->id_cotizacion]["observaciones"]	=	$comparativa[$i]->observaciones;
