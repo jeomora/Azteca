@@ -3701,7 +3701,7 @@ class Cotizaciones extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function fill_directos(){
+	public function fill_directos($directos){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
@@ -3723,7 +3723,7 @@ class Cotizaciones extends MY_Controller {
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
-		$this->cellStyle("A1:AK2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:X2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
@@ -3740,7 +3740,7 @@ class Cotizaciones extends MY_Controller {
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
-		$cotPro = $this->ct_mdl->getCotzP(NULL, $fecha,4);
+		$cotPro = $this->ct_mdl->getCotzP(NULL, $fecha,$directos);
 		if ($cotPro){
 			foreach ($cotPro as $key => $value){
 				$hoja->setCellValueByColumnAndRow($col, 2, $value->nombre);
@@ -3754,23 +3754,47 @@ class Cotizaciones extends MY_Controller {
 		$maximo = 0;
 		$flag = 0;
 		$prueba = "";
-		$cotizacionesProveedor = $this->ct_mdl->getCotzD(NULL, $fecha,4);
+		$cotizacionesProveedor = $this->ct_mdl->getCotzD(NULL, $fecha,$directos);
 		if ($cotizacionesProveedor) {
 			foreach ($cotizacionesProveedor as $key => $value) {
 				foreach ($value["articulos"] as $key => $val) {
+					$hoja->getStyle("A{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("B{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("C{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("D{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("E{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("F{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("G{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("H{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("I{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("J{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("K{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("L{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("M{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("N{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("O{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("P{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("Q{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("R{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("S{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("T{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("U{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("W{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("V{$rws}")->applyFromArray($border_style);
+					$hoja->getStyle("X{$rws}")->applyFromArray($border_style);
 					if ($producto <> $value["producto"]) {
 						$hoja->setCellValue("B{$rws}", $value["producto"]);
 						$producto = $value["producto"];
 						$hoja->setCellValue("A{$rws}", $val["codigo"])->getStyle("A{$rws}")->getNumberFormat()->setFormatCode('# ???/???');
 						$hoja->setCellValue("C{$rws}", $val["precio_sistema"])->getStyle("C{$rws}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$hoja->setCellValue("D{$rws}", $val["precio_four"])->getStyle("D{$rws}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$prueba = $val["familia"];
 					}
 					$maximo = $maximo < $val["precio_promocion"] ? $val["precio_promocion"] : $maximo;
 					$costo =  $val["precio_promocion"] + $costo;
 					for ($i=0; $i < count($cotPro); $i++) {
-						$prueba = $prueba."".$cotPro[$i]->nombre." == ".$val["proveedor"]." on ".$col." and ".$rws."\n";
 						if ($cotPro[$i]->nombre == $val["proveedor"]) {
-							$hoja->setCellValueByColumnAndRow($col, $rws, $val["precio_promocion"]);
+							$hoja->setCellValueByColumnAndRow($col, $rws, $val["precio_promocion"])->getStyleByColumnAndRow($col, $rws)->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$col++;
 							$hoja->setCellValueByColumnAndRow($col, $rws, $val["observaciones"]);
 							$col++;
@@ -3795,7 +3819,7 @@ class Cotizaciones extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "DIRECTOS ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "DIRECTOS ".$prueba." ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
