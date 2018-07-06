@@ -113,7 +113,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<?php echo form_close(); ?>
 					</div>
 					<div class="btn-group">
-						<?php echo form_open("Cotizaciones/fill_excelD/3", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<?php echo form_open("Cotizaciones/fill_directos", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-danger" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar Excel Cuétara
 							</button>
