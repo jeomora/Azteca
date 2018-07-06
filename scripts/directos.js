@@ -26,28 +26,48 @@ function setAdminTable(){
 	var tablehead = "";
 	var proveedor = [];
 	var tablebody = "";
-	var producto = [];
+	
 	var flag = 0;
+	var flag2 = false;
 	getTableHead().done(function (resp){
 		if(resp.cotizados){
 			$.each(resp.cotizados, function(index, value){
 				flag += 1;
 				proveedor.push({id:flag, name:value.nombre})
-				$(".trdirectos").append("<th>"+value.nombre+"</th>");
+				$(".trdirectos").append("<th colspan='2'>"+value.nombre+"</th>");
 			});
 		}
 	});
-	console.log(flag);
+	var producto = [];
+	var vals = [];
 	getAdminTable()
 		.done(function (resp) {
 			if(resp.cotizados){
 				$.each(resp.cotizados, function(indx, value){
-					$("tableAdminv").append("<tr><td>"+val.articulos[0].familia+"</td><td>"+val.articulos[0].codigo+"</td><td>"+val.articulos[0].producto+"</td><td>"+val.articulos[0].precio_sistema+"</td><td>"+val.articulos[0].precio_four+"</td>");
-					for (var i = 0; i <= resp.articulos; i++) {
-						for(var e = 0;e <= flag; e++)
+					for (var i = 0; i < flag; i++) {
+						$.each(value.articulos, function(index, val){
+							if(i == 0 && tablebody == ""){
+								tablebody += "<tr><td>"+val.familia+"</td><td>"+val.codigo+"</td><td>"+val.producto+"</td><td>"+val.precio_sistema+"</td><td>"+val.precio_four+"</td>";
+							}
+							if(i == proveedor.findIndex(x => x.name === val.proveedor) && flag2 == false){
+								flag2 = true;
+								vals = val;
+							}
+						});
+						if(flag2 == true){
+							tablebody += "<td>"+vals.precio_promocion+"</td><td>"+vals.observaciones+"</td>";
+							flag2 = false;
+							vals = [];
+						}else{
+							tablebody += "<td></td><td></td>";
+							vals = [];
+						}
 					}
+					tablebody += "</tr>";
+					console.log(tablebody+"\n");
+					$(".tableAdminv").append(tablebody);
+					tablebody = "";
 				});
-				
 			}
 		});
 }
