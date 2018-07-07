@@ -97,33 +97,13 @@ class Cotizaciones_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		/*$this->db->select("c.id_cotizacion,p.codigo,p.nombre as descrip,p.precio_sistema, c.precio_promocion, c.id_proveedor,u.nombre, 
-			(p.precio_sistema - c.precio_promocion) AS diferencia, c.precio, c.fecha_registro, c.estatus, c.observaciones, 
-			c.descuento, c.num_one, c.num_two")
-		->from("prodandprice p")
-		->join("cotizaciones c", "p.id_producto = c.id_producto", "LEFT")
-		->join("usuarios u", "c.id_proveedor = u.id_usuario", "LEFT")		
-		->where("(p.precio_sistema - c.precio_promocion) >", "(p.precio_sistema * 0.2)")
-		->or_where("(c.precio_promocion - p.precio_sistema) >", "(p.precio_sistema * 0.2)")
-		->where("WEEKOFYEAR(c.fecha_registro) = ",$this->weekNumber($fecha->format("Y-m-d H:i:s")))
-		->where("c.estatus",1)
-		->group_by("c.id_cotizacion")
-		->order_by("p.id_producto", "ASC");
-		if ($where !== NULL) {
-			if (is_array($where)) {
-				foreach ($where as $field=>$value) {
-					$this->db->where($field, $value);
-				}
-			} else {
-				$this->db->where($this->PRI_INDEX, $where);
-			}
-		}*/
+
 		$result = $this->db->query("SELECT c.id_cotizacion,p.codigo,p.nombre as descrip,p.precio_sistema, c.precio_promocion, c.id_proveedor,u.nombre, (p.precio_sistema - c.precio_promocion) AS diferencia,
 c.precio, c.fecha_registro, c.estatus, c.observaciones, c.descuento, c.num_one, c.num_two
 FROM prodandprice p LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto and c.estatus = 1  
-LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = 27 AND 
+LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = 28 AND 
 (p.precio_sistema - c.precio_promocion) > (p.precio_sistema * 0.2) OR 
-WEEKOFYEAR(c.fecha_registro) = 27 AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY diferencia DESC")->result();
+WEEKOFYEAR(c.fecha_registro) = 28 AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY diferencia DESC")->result();
 		if ($result) {
 			if (is_array($where)) {
 				return $result;
