@@ -103,7 +103,8 @@ c.precio, c.fecha_registro, c.estatus, c.observaciones, c.descuento, c.num_one, 
 FROM prodandprice p LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto and c.estatus = 1  
 LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = 28 AND 
 (p.precio_sistema - c.precio_promocion) > (p.precio_sistema * 0.2) OR 
-WEEKOFYEAR(c.fecha_registro) = 28 AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY diferencia DESC")->result();
+WEEKOFYEAR(c.fecha_registro) = 28 AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY diferencia DESC")->result(); 
+
 		if ($result) {
 			if (is_array($where)) {
 				return $result;
