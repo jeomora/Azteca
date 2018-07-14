@@ -18,3 +18,23 @@ function uploadXML(formData) {
 		data: formData,
 	});
 }
+$(document).off("change", "#file_p").on("change", "#file_p", function(event) {
+	event.preventDefault();
+	var fdata = new FormData($("#upload_xml")[0]);
+	uploadXMLs(fdata)
+		.done(function (resp) {
+			$(".respuesta").html(resp);
+		});
+});
+
+function uploadXMLs(formData) {
+	return $.ajax({
+		url: site_url+"Contadores/upload_productos2",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
