@@ -94,7 +94,6 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/anteriores", $data);
-		//$this->jsonResponse($data["cotizados"]);
 	}
 
 	public function proveedorCots($ides){
@@ -3819,7 +3818,7 @@ class Cotizaciones extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "DIRECTOS ".$prueba." ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "DIRECTOS".$prueba." ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
