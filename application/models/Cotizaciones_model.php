@@ -861,7 +861,7 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
-		->group_by("prod.nombre")
+		->group_by("prod.id_cotizacion")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
 
 		if ($where !== NULL){
