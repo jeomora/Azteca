@@ -1102,8 +1102,8 @@ class Cotizaciones extends MY_Controller {
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
-		$this->jsonResponse($this->excelfile);
-		//$excel_Writer->save("php://output");
+		//$this->jsonResponse($this->excelfile);
+		$excel_Writer->save("php://output");
 	}
 
 	public function upload_cotizaciones($idesp){
