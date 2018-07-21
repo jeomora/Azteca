@@ -2201,8 +2201,8 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("C{$flag}", "=(".substr($sumall[7],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flag++;
 
-
-		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$this->jsonResponse($cotizacionesProveedor);
+		/*$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
@@ -2303,13 +2303,12 @@ class Cotizaciones extends MY_Controller {
                  ->getAlignment()
                  ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-		/*$file_name = "Formato Precios.xlsx"; //Nombre del documento con extención
+		$file_name = "Formato Precios.xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
-		$excel_Writer->save("php://output");*/
-		$this->jsonResponse($cotizacionesProveedor);
+		$excel_Writer->save("php://output");
 	}
 
 	public function archivo_cotizacion(){
