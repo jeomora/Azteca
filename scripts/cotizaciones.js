@@ -628,7 +628,7 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 				unblockPage();
 				setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
 			}
-		});
+		}); 
 });
 
 
