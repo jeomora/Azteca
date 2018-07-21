@@ -2018,6 +2018,7 @@ class Cotizaciones extends MY_Controller {
 									$hoja->setCellValue("AI{$flag}", "=D".$flag."*W".$flag)->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 									$hoja->setCellValue("AJ{$flag}", "=D".$flag."*Z".$flag)->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 									$hoja->setCellValue("AK{$flag}", "=D".$flag."*AC".$flag)->getStyle("AK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+									$flag = $flag + 1;
 								}else{
 									if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
 										$hoja->setCellValue("C{$flag}", $row['precio_first'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
