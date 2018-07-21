@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -1101,6 +1102,7 @@ class Cotizaciones extends MY_Controller {
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		//$this->jsonResponse($this->excelfile);
 		$excel_Writer->save("php://output");
 	}
 
