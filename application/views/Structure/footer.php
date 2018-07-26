@@ -24,11 +24,11 @@ label {
 </style>		
 				<!-- Page Footer-->
 						<div class="footer" style="color: white">
-							<a href="http://jeomora.com" style="color:white" target="_blank"><div class="pull-right">
-								<strong style="font-size: 1.5rem"><i class="fa fa-info-circle"></i>   Jeovany Mora Vieyra</strong>
+							<a href="mailto:abarrotesazteca_soportec@hotmail.com?subject=feedback" style="color:white" target="_blank"><div class="pull-right">
+								<strong style="font-size: 1.5rem"><i class="fa fa-info-circle"></i>   Desarrollado por el Área de Sistemas Abarrotes Azteca</strong>
 							</div></a>
 							<div>
-								<strong>ABARROTES AZTECA AUTOSERVICIOS S.A DE CV &copy; 2017-2018 </strong> 
+								<strong>ABARROTES AZTECA AUTOSERVICIOS S.A DE C.V. &copy; 2017-2018 </strong> 
 							</div>
 						</div>
 
