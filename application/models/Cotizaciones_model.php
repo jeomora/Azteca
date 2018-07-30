@@ -982,11 +982,11 @@ $this->db->select("c.id_cotizacion,
 						$e = "7";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["ped".$e]	=	$resu[$d]->pedido;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_cotizacion]["idped".$e]	=	$resu[$d]->id_pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["caja".$e]		=	$resu[$d]->cajas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["pz".$e]	=	$resu[$d]->piezas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tienda".$e]	=	$resu[$d]->id_tienda;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 		}
 		if ($comparativaIndexada) {
