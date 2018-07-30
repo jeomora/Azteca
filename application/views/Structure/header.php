@@ -46,6 +46,16 @@ $.src="https://v2.zopim.com/?5srbeJgRLHkZUr7aKgWBFZ7qZPEKH0hW";z.t=+new Date;$.
 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 </script>
 <!--End of Zendesk Chat Script-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122943105-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-122943105-1');
+</script>
+
 </head>
 
 	<!-- Estructura de la ventana modal par insertar, modificar y eliminar datos -->
