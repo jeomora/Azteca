@@ -1701,6 +1701,7 @@ class Cotizaciones extends MY_Controller {
 			$intervalo = new DateInterval('P2D');
 			$fecha->add($intervalo);
 			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
+				$this->jsonResponse($cotizacionesProveedor);
 				$difff = 0.01;
 				$flag2 = 3;
 
