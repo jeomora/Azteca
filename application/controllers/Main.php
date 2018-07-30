@@ -46,7 +46,7 @@ class Main extends MY_Controller {
 		$data["title"]="PROVEEDORES SIN COTIZAR";
 		$data["cotizados"] = $this->user_md->getCotizados();
 		$data["view"] = $this->load->view("Cotizaciones/no_cotizo", $data,TRUE);
-		$this->jsonResponse($data);
+		$this->jsonResponse($data["cotizados"]);
 	}
 
 	public function cambioContra(){
