@@ -23,7 +23,7 @@ if(!$this->session->userdata("username")){
 				<div class="ibox-title">
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
-				<!--<div class="ibox-content">
+				<div class="ibox-content">
 					<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
 							<i class="fa fa-plus"></i> Agregar Cotización
@@ -49,7 +49,7 @@ if(!$this->session->userdata("username")){
 								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones" value="" size="20" />
 							</div>
 						<?php echo form_close(); ?>
-					</div>-->
+					</div>
 					
 
 					<div class="table-responsive">
