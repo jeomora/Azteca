@@ -2017,7 +2017,6 @@ class Cotizaciones extends MY_Controller {
 						        if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
 									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-									$this->cellStyle("AD{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 								}
 								$flag ++;
 								$flag1 ++;
