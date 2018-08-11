@@ -10,6 +10,9 @@ if(!$this->session->userdata("username")){
 	.ibox-content {
     padding-top: 3rem;
  }
+.zopim {
+    display: none;
+}
  tr:hover {background-color: #21b9bb !important;}
 
 </style>

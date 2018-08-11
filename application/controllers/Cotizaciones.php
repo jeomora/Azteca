@@ -1592,6 +1592,7 @@ class Cotizaciones extends MY_Controller {
 			$intervalo = new DateInterval('P2D');
 			$fecha->add($intervalo);
 			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
+				
 				$difff = 0.01;
 				$flag2 = 3;
 				if ($cotizacionesProveedor){
@@ -1812,8 +1813,10 @@ class Cotizaciones extends MY_Controller {
 						if ($value['articulos']) {
 							foreach ($value['articulos'] as $key => $row){
 								//Existencias
+
 								$this->excelfile->setActiveSheetIndex(0);
 								$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								
 								$hoja1->setCellValue("D{$flag}", $row['codigo'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 								if($row['color'] == '#92CEE3'){
 									$this->cellStyle("D{$flag}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -1824,9 +1827,17 @@ class Cotizaciones extends MY_Controller {
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+						        if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
+									$this->cellStyle("A{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("B{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("C{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("D{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("E{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								}
 								//Pedidos
 								$this->excelfile->setActiveSheetIndex(1);
 								$this->cellStyle("A".$flag.":AC".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								
 								$hoja->setCellValue("A{$flag}", $row['codigo'])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 								if($row['color'] == '#92CEE3'){
 									$this->cellStyle("A{$flag}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -2002,6 +2013,11 @@ class Cotizaciones extends MY_Controller {
 								$hoja->getStyle("A{$flag}:G{$flag}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+						        if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
+									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								}
 								$flag ++;
 								$flag1 ++;
 							}
@@ -2080,6 +2096,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("B".$flag, "TIJERAS");
 		$hoja->setCellValue("C{$flag}", "=(".substr($sumall[7],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flag++;
+
 		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
