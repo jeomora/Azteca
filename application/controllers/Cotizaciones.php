@@ -1813,9 +1813,10 @@ class Cotizaciones extends MY_Controller {
 						if ($value['articulos']) {
 							foreach ($value['articulos'] as $key => $row){
 								//Existencias
-								
+
 								$this->excelfile->setActiveSheetIndex(0);
 								$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								
 								$hoja1->setCellValue("D{$flag}", $row['codigo'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 								if($row['color'] == '#92CEE3'){
 									$this->cellStyle("D{$flag}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -1826,9 +1827,17 @@ class Cotizaciones extends MY_Controller {
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+						        if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
+									$this->cellStyle("A{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("B{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("C{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("D{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("E{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								}
 								//Pedidos
 								$this->excelfile->setActiveSheetIndex(1);
 								$this->cellStyle("A".$flag.":AC".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								
 								$hoja->setCellValue("A{$flag}", $row['codigo'])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 								if($row['color'] == '#92CEE3'){
 									$this->cellStyle("A{$flag}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -2004,6 +2013,12 @@ class Cotizaciones extends MY_Controller {
 								$hoja->getStyle("A{$flag}:G{$flag}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+						        if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
+									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("AD{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								}
 								$flag ++;
 								$flag1 ++;
 							}
