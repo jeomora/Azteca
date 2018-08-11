@@ -914,12 +914,12 @@ class Cotizaciones extends MY_Controller {
 
 
 
-		$file_name = "Cotización ".$provs->nombre.".xls"; //Nombre del documento con extención
+		$file_name = "Cotización ".$provs->nombre.".xlsx"; //Nombre del documento con extención
 
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 	public function fill_excelV(){
