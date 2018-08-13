@@ -908,7 +908,7 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]	=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]	=	$comparativa[$i]->color;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->regitrazo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["caja0"]		=	"";
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["pz0"]	=	"";
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ped0"]	=	"";
