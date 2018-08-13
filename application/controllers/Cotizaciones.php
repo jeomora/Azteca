@@ -1828,6 +1828,10 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("AB".$flag, "PZAS");
 						$hoja->setCellValue("AC".$flag, "PEDIDO");
 						$hoja->setCellValue("AD".$flag, "PROMOCION");
+						if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
+							$this->cellStyle("A{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("B{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
 						$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AD'.$flag)->applyFromArray($styleArray);
 					}else{
 						$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
