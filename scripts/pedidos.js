@@ -202,7 +202,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 		$(".fill_form").css("display","block");
 
 		var sucur = "";
-		/*getSucursal()
+		getSucursal()
 			.done(function (response){
 				sucur = response == null ? 0 : response.nombre;
 				colors = response == null ? 0 : response.color;
@@ -238,7 +238,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 						});
 					}
 				}
-			});*/
+			});
 	}else{
 		$(".fill_form").css("display","none");
 	}
