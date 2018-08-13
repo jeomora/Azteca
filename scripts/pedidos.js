@@ -202,7 +202,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 		$(".fill_form").css("display","block");
 
 		var sucur = "";
-		getSucursal()
+		/*getSucursal()
 			.done(function (response){
 				sucur = response == null ? 0 : response.nombre;
 				colors = response == null ? 0 : response.color;
@@ -214,12 +214,12 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 							if(sucur == 0){
 								getAllPedidos(value.id_usuario)
 								.done(function (response){
-									tablePedidoAll(response,colors,sucur);
+									//tablePedidoAll(response,colors,sucur);
 								});
 							}else{
 								getPedidosSingle(value.id_usuario)
 								.done(function (response){
-									tablePedidoTienda(response,colors,sucur);
+									//tablePedidoTienda(response,colors,sucur);
 								});
 							}
 						});
@@ -228,17 +228,17 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 					if(sucur == 0){
 						getAllPedidos(id_cotizacion)
 						.done(function (response){
-							tablePedidoAll(response,colors,sucur);
+							//tablePedidoAll(response,colors,sucur);
 						});
 					}else{
 						console.log(id_cotizacion);
 						getPedidosSingle(id_cotizacion)
 						.done(function (response){
-							tablePedidoTienda(response,colors,sucur);
+							//tablePedidoTienda(response,colors,sucur);
 						});
 					}
 				}
-			});
+			});*/
 	}else{
 		$(".fill_form").css("display","none");
 	}
