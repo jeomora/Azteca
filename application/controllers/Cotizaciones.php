@@ -1937,7 +1937,7 @@ class Cotizaciones extends MY_Controller {
 								}
 								$hoja1->setCellValue("A{$flag}", $registrazo);
 								$hoja1->setCellValue("B{$flag}", $this->weekNumber($registrazo));
-								$hoja1->setCellValue("B{$flag}", $this->weekNumber());
+								$hoja1->setCellValue("C{$flag}", $this->weekNumber());
 								$hoja1->setCellValue("E{$flag}", $row['producto']);
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
