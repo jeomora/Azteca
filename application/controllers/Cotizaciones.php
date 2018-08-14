@@ -1936,6 +1936,8 @@ class Cotizaciones extends MY_Controller {
 									$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								}
 								$hoja1->setCellValue("A{$flag}", $registrazo);
+								$hoja1->setCellValue("B{$flag}", $this->weekNumber($registrazo));
+								$hoja1->setCellValue("B{$flag}", $this->weekNumber());
 								$hoja1->setCellValue("E{$flag}", $row['producto']);
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
