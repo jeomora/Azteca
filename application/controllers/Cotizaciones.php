@@ -1935,15 +1935,12 @@ class Cotizaciones extends MY_Controller {
 								}else{
 									$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								}
-								$hoja1->setCellValue("A{$flag}", $registrazo);
-								$hoja1->setCellValue("B{$flag}", $this->weekNumber($registrazo));
-								$hoja1->setCellValue("C{$flag}", $this->weekNumber());
 								$hoja1->setCellValue("E{$flag}", $row['producto']);
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 						         
-				                 if($this->weekNumber($registrazo) == ($this->weekNumber() + 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
+				                 if($this->weekNumber($registrazo) == ($this->weekNumber() -1 ) || $this->weekNumber($registrazo) == ($this->weekNumber())){
 									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 									$this->cellStyle("C{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -2134,7 +2131,7 @@ class Cotizaciones extends MY_Controller {
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-						        if($this->weekNumber($registrazo) == ($this->weekNumber() + 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
+						        if($this->weekNumber($registrazo) == ($this->weekNumber() - 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
 									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 								}
