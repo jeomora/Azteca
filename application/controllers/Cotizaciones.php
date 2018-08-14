@@ -1926,7 +1926,7 @@ class Cotizaciones extends MY_Controller {
 						if ($value['articulos']) {
 							foreach ($value['articulos'] as $key => $row){
 								//Existencias
-								
+								$registrazo = date('Y-m-d',$row['registrazo']);
 								$this->excelfile->setActiveSheetIndex(0);
 								$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								$hoja1->setCellValue("D{$flag}", $row['codigo'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
@@ -1935,11 +1935,12 @@ class Cotizaciones extends MY_Controller {
 								}else{
 									$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								}
+								$hoja1->setCellValue("A{$flag}", $registrazo);
 								$hoja1->setCellValue("E{$flag}", $row['producto']);
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-						         $registrazo = date('Y-m-d',strtotime($row['registrazo']));
+						         
 				                 if($this->weekNumber($registrazo) == ($this->weekNumber() + 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
 									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
