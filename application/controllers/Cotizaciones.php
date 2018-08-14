@@ -1828,10 +1828,6 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("AB".$flag, "PZAS");
 						$hoja->setCellValue("AC".$flag, "PEDIDO");
 						$hoja->setCellValue("AD".$flag, "PROMOCION");
-						if($this->weekNumber($row['regitrazo']) >= ($this->weekNumber() - 1)){
-							$this->cellStyle("A{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("B{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
 						$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AD'.$flag)->applyFromArray($styleArray);
 					}else{
 						$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -1943,6 +1939,13 @@ class Cotizaciones extends MY_Controller {
 								$hoja1->getStyle("A{$flag1}:E{$flag1}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+						                 
+				                 if($this->weekNumber($row['registrazo']) == ($this->weekNumber() + 1) || $this->weekNumber($row['registrazo']) == ($this->weekNumber())){
+									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("C{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("E{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								}
 								//Pedidos
 								$this->excelfile->setActiveSheetIndex(1);
 								$this->cellStyle("A".$flag.":AC".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -2127,6 +2130,11 @@ class Cotizaciones extends MY_Controller {
 								$hoja->getStyle("A{$flag}:G{$flag}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+						        if($this->weekNumber($row['registrazo']) == ($this->weekNumber() + 1) || $this->weekNumber($row['registrazo']) == ($this->weekNumber())){
+									$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+									$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								}
 								$flag ++;
 								$flag1 ++;
 							}
