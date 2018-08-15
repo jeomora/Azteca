@@ -5048,7 +5048,8 @@ body.skin-3 {
     height    : 60px !important;
 }
 
-body{font-family: 'Exo';font-size: 11px !important}
+body{font-family: 'Exo';font-size: 12px !important}
 h1{font-family: 'ExoBold'}
 button{font-family: 'ExoLight'}
 strong {font-family: "ExoBold";}
+.form-control{font-size: 12px}
