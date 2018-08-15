@@ -25,7 +25,7 @@
 	<!-- Toastr style -->
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/toastr/toastr.min.css') ?>" >
 	<!-- Favicon-->
-	<link rel="shortcut icon" href="<?php echo base_url('/assets/img/abarrotes.png') ?>" >
+	<link rel="shortcut icon" href="<?php echo base_url('/assets/img/abarrotes-min.ico') ?>" >
 	<?php if (isset($links) && $links): ?>
 		<?php foreach ($links as $link): ?>
 			<link rel="stylesheet" href="<?php echo base_url($link.'.css') ?>">
