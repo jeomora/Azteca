@@ -836,7 +836,7 @@ class Cotizaciones extends MY_Controller {
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "COTIZACIÓN ".$fecha.".xls"; //Nombre del documento con extención
+		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
@@ -944,12 +944,12 @@ class Cotizaciones extends MY_Controller {
 
 
 
-		$file_name = "Cotización ".$provs->nombre.".xls"; //Nombre del documento con extención
+		$file_name = "Cotización ".$provs->nombre.".xlsx"; //Nombre del documento con extención
 
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel5");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 	public function fill_excelV(){
@@ -2229,6 +2229,7 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
+
 	public function archivo_cotizacion(){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
