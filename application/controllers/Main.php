@@ -97,12 +97,10 @@ class Main extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->sub($intervalo);
-		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s'));
+		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
 
-
 		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
-
 		$i = 0;
 		$new_cotizacion = null;
 		if ($cotizaciones){
@@ -163,7 +161,7 @@ class Main extends MY_Controller {
 						"desc"	=>	'No hay cotizaciones de la semana pasada',
 						"type"	=>	'error'];
 		}
-		//$this->jsonResponse($mensaje);
+		$this->jsonResponse($mensaje);
 	}
 
 	public function uploadFoto(){
