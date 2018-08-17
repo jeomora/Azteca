@@ -272,6 +272,36 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
+
+	public function end_cotizacion($ides){
+		$data["title"]="ELIMINAR COTIZACION DE LA SEMANA";
+		$data["proveedor"] = $this->usua_mdl->get(NULL,["id_usuario" => $ides])[0];
+		$data["view"]=$this->load->view("Cotizaciones/end_cotizacion", $data, TRUE);
+		$data["button"]="<button class='btn btn-danger end_cotizacion' type='button'>
+							<span class='bold'><i class='fa fa-trash'></i></span> &nbsp;ELIMINAR
+						</button>";
+		$this->jsonResponse($data);
+	}
+
+	public function endCotizacion($ides){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		if($this->db->delete('cotizaciones', array('id_proveedor' => $ides, "WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))))){
+			$mensaje = [
+				"id" 	=> 'Éxito',
+				"desc"	=> 'Cotización registrada correctamente',
+				"type"	=> 'success'
+			];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+			"desc"	=>	'El Archivo esta sin precios',
+			"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+
 	public function save($idesp){
 		if($idesp == 0){
 			$proveedor = $this->session->userdata('id_usuario');

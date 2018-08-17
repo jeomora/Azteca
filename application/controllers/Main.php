@@ -144,7 +144,6 @@ class Main extends MY_Controller {
 			}
 		}
 		if (sizeof($new_cotizacion) > 0) {
-			$this->jsonResponse($new_cotizacion);
 			$data['cotizacion']=$this->cot_md->insert_batch($new_cotizacion);
 			$aprov = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_proveedor')])[0];
 			$cambios = [
