@@ -34,6 +34,7 @@
 							<td><?php echo strtoupper($value->precio_promocion) ?></td>
 							<td><?php echo strtoupper($value->num_one) ?></td>
 							<td><?php echo strtoupper($value->num_two) ?></td>
+							<td><?php echo strtoupper($value->descuento) ?></td>
 							<td><?php echo strtoupper($value->observaciones) ?></td>
 							<!--<td>
 								<div class='input-group m-b'>

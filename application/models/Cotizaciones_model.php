@@ -103,7 +103,9 @@ c.precio, c.fecha_registro, c.estatus, c.observaciones, c.descuento, c.num_one, 
 FROM prodandprice p LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto and c.estatus = 1  
 LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND 
 (p.precio_sistema - c.precio_promocion) > (p.precio_sistema * 0.2) OR 
+
 WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND (c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY diferencia DESC")->result();
+
 		if ($result) {
 			if (is_array($where)) {
 				return $result;
@@ -842,7 +844,9 @@ $this->db->select("c.id_cotizacion,
 	public function getPedidosAll($where=[],$fech=0,$tienda){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
+
 		$this->db->select("ctz_first.id_cotizacion,prod.registrazo,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
+
 			UPPER(proveedor_first.nombre) AS proveedor_first,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
@@ -908,7 +912,9 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]	=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]	=	$comparativa[$i]->color;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
+
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
+
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["caja0"]		=	"";
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["pz0"]	=	"";
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ped0"]	=	"";
