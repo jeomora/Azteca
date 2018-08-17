@@ -424,7 +424,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 }
 .white-bg .navbar-fixed-top,
 .white-bg .navbar-static-top {
-  background: #FF6805;
+  background: #000;
 }
 .top-navigation .navbar {
   margin-bottom: 0;
@@ -432,7 +432,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 .top-navigation .nav > li > a {
   padding: 15px 20px;
   color: #FFF;
-  background: #FF6805;
+  background: #000;
   
 }
 .top-navigation .nav > li a:hover,
@@ -446,7 +446,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 }
 .top-navigation .nav > li.active > a {
   color: #49B7E0;
-  background: #3F47CC;
+  background: #827f7f;
 
 }
 .top-navigation .navbar-right {
@@ -466,7 +466,7 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
   margin-top: 0px;
 }
 .top-navigation .navbar-brand {
-  background: #FF6805;
+  background: #000;
   color: #fff;
   padding: 15px 25px;
 }
@@ -2888,7 +2888,7 @@ ol.unstyled {
 }
 /* FOOTER */
 .footer {
-  background: none repeat scroll 0 0 #FF6805;
+  background: none repeat scroll 0 0 #000;
   border-top: 1px solid #e7eaec;
   bottom: 0;
   left: 0;
@@ -3134,7 +3134,7 @@ code {
   background-color: #FFF;
   color: inherit;
   padding: 15px 20px 20px 20px;
-  border-color: #FF6805;
+  border-color: #000;
   border-image: none;
   border-style: solid;
   border-width: 1px;
@@ -5055,3 +5055,5 @@ h1{font-family: 'ExoBold'}
 button{font-family: 'ExoLight'}
 strong {font-family: "ExoBold";}
 .form-control{font-size: 12px}
+label{background-color: #000 !important}
+input.form-control.input-sm{border: 2px solid #000 !important}

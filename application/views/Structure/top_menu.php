@@ -7,7 +7,7 @@
 	    border-radius: 9rem;
 	    height: 9rem;
 	    width: 9rem;
-	    border: 2px solid #ff6805;
+	    border: 2px solid #827f7f;
 	}
 	.navbar-header {display: inline-flex;}
 	.cambcontra{padding-top: 15px;
