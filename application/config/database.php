@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -75,11 +76,11 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	//	'hostname' => '192.168.5.246',
-	'hostname' => 'localhost',
+	'hostname' => '192.168.5.246',
+	//'hostname' => 'localhost',
 	'username' => 'root',
-	//	'password' => 'IRCcgv33478',
-	'password' => '',
+	'password' => 'IRCcgv33478',
+	//'password' => '',
 	'database' => 'azteca',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
