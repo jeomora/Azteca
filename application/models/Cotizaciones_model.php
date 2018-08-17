@@ -94,7 +94,7 @@ class Cotizaciones_model extends MY_Model {
 	}
 
 	public function getDiferences($where = []){
-		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$fecha = new DateTime(date('Y-m-d'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 

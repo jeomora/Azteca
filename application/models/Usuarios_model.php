@@ -43,7 +43,7 @@ class Usuarios_model extends MY_Model {
 	}
 
 	public function getCotizados($where = []){
-		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$fecha = new DateTime(date('Y-m-d'));
 		$intervalo = new DateInterval('P2D'); 
 		$fecha->add($intervalo);
 		$this->db->select("id_usuario as ides, nombre as proveedor")
