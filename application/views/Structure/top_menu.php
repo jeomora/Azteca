@@ -3,7 +3,7 @@
 		max-width: 125%;
 	    position: absolute;
 	    margin-top: 0rem;
-	    background-color: #000;
+	    background-color: #FFF;
 	    border-radius: 9rem;
 	    height: 9rem;
 	    width: 9rem;

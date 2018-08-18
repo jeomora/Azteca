@@ -50,6 +50,10 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	    border-radius: 5px;
 	    margin-left: 35%}
 	.fa-spin{margin-left: 4rem}
+	.wrapper.wrapper-content.animated.fadeInRight {
+	    height: 91vh;
+	    overflow-y: scroll;
+	}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -109,6 +113,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</div>
 					<?php echo form_close(); ?>
 
+
+					<div class="col-md-12">
+						<div class="ibox float-e-margins">
+							<div class="ibox-title">
+								<h5>LISTADO DE PEDIDOS</h5>
+							</div>
+							<div class="col-md-12 wonder">
+								
+							</div>
+						</div>
+					</div>
 					
 			<!--<div class="ibox float-e-margins">
 				<div class="ibox-title">
