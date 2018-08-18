@@ -290,9 +290,18 @@ class Cotizaciones extends MY_Controller {
 		if($this->db->delete('cotizaciones', array('id_proveedor' => $ides, "WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))))){
 			$mensaje = [
 				"id" 	=> 'Éxito',
-				"desc"	=> 'Cotización registrada correctamente',
+				"desc"	=> 'Cotizaciones eliminadas correctamente',
 				"type"	=> 'success'
 			];
+			$data["proveedor"] = $this->usua_mdl->get(NULL,["id_usuario" => $ides])[0];
+			$cambios = [
+				"id_usuario" => $this->session->userdata('id_usuario'),
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Elimina cotizaciones de ".$data["proveedor"]->nombre,
+				"antes" => "Eliminado",
+				"despues" => "Eliminado"
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 		}else{
 			$mensaje=[	"id"	=>	'Error',
 			"desc"	=>	'El Archivo esta sin precios',
