@@ -45,7 +45,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	<div class="row col-lg-12">
 		<?php if ($ides <> 2): ?>
 			<div class="col-md-4 cotizados">
-				<div class="ibox-content" style="border-color:#3f47cc">
+				<div class="ibox-content" style="border-color:#000">
 					<h2 class="text-navy" style="color:#3f47cc">
 						<i class="fa fa-cubes"></i> <strong>PRODUCTOS</strong> <br> SIN COTIZACIÓN
 					</h2>
@@ -55,7 +55,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 			</div>
 			<div class="col-md-4 cotizados">
-				<div class="ibox-content" style="border-color:#3f47cc">
+				<div class="ibox-content" style="border-color:#000">
 					<h2 class="text-navy" style="color:#3f47cc">
 						<i class="fa fa-group"></i> <strong>PROVEEDORES</strong> <br> SIN COTIZAR
 					</h2>
@@ -65,7 +65,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 			</div>
 			<div class="col-md-4 cotizados">
-				<div class="ibox-content" style="border-color:#3f47cc">
+				<div class="ibox-content" style="border-color:#000">
 					<h2 class="text-navy" style="color:#3f47cc">
 						<i class="fa fa-group"></i> <strong>COTIZACIONES</strong> <br> DIFERENCIA 20%
 					</h2>

@@ -58,13 +58,15 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						<?php echo form_close(); ?>
 					</div>
-					<?php echo form_open_multipart("", array("id" => "end_cotizaciones")); ?>
+					
 					<div class="btn-group">
+						<?php echo form_open_multipart("", array("id" => "end_cotizaciones")); ?>
 						<button class="btn btn-danger" data-toggle="tooltip" title="Eliminar" id="end_cotizacion" type="button">
 							<i class="fa fa-trash"></i> Eliminar Cotización Semana
 						</button>
+						<?php echo form_close(); ?>
 					</div>
-					<?php echo form_close(); ?>
+					
 					<div class="btn-group searchboxs">
 						<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
 					</div>

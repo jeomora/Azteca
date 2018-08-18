@@ -454,8 +454,8 @@ body.fixed-sidebar.mini-navbar .navbar-default .nav li a span {
 }
 .top-navigation .navbar-nav .dropdown-menu {
   box-shadow: none;
-  background: #0000FF;
-  color: #FFF;
+  background: #484747;
+  color: #F7AC59;
   border: 1px solid #e7eaec;
 }
 .top-navigation .dropdown-menu > li > a {
@@ -5053,7 +5053,10 @@ body.skin-3 {
 body{font-family: 'Exo';font-size: 12px !important}
 h1{font-family: 'ExoBold'}
 button{font-family: 'ExoLight'}
-strong {font-family: "ExoBold";}
+strong {font-family: "Exo";}
 .form-control{font-size: 12px}
 label{background-color: #000 !important}
 input.form-control.input-sm{border: 2px solid #000 !important}
+
+.modal-content.animated.flipInY{background-color: #827f7f !important;}
+/*|div#page-wrapper{background-color: #484747 !important;}
