@@ -304,7 +304,7 @@ $(document).off("click", ".end_cotizacion").on("click", ".end_cotizacion", funct
 			toastr.error(resp.desc, user_name);
 			unblockPage();
 		}else{
-			setTimeout("location.reload()", 1300, toastr.success(response.desc, user_name), "");
+			setTimeout("location.reload()", 1300, toastr.success(resp.desc, user_name), "");
 		}
 	});
 });
