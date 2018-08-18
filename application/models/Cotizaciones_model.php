@@ -1583,13 +1583,12 @@ $this->db->select("c.id_cotizacion,
 	}
 
 	public function getCotzD($where = [],$fech, $directo){
-		$this->db->select("c.id_cotizacion,p.codigo,c.id_producto,p.nombre as producto,c.id_proveedor, u.nombre,c.precio,c.precio_promocion,c.fecha_registro,p.estatus,c.observaciones,c.descuento,c.num_one,c.num_two,u.nombre as proveedor,fam.nombre as familia, sist.precio_sistema, c.precio, c.precio_promocion, sist.precio_four")
-		->from("cotizaciones c")
-		->join("productos p", "c.id_producto = p.id_producto", "LEFT")
+		$this->db->select("c.id_cotizacion,p.codigo,p.id_producto,p.nombre as producto,c.id_proveedor, u.nombre,c.precio,c.precio_promocion,c.fecha_registro,p.estatus,c.observaciones,c.descuento,c.num_one,c.num_two,u.nombre as proveedor,fam.nombre as familia, sist.precio_sistema, c.precio, c.precio_promocion, sist.precio_four")
+		->from("productos p")
+		->join("cotizaciones c", "p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech), "LEFT")
 		->join("usuarios u", " c.id_proveedor = u.id_usuario", "LEFT")
 		->join("familias fam", "p.id_familia = fam.id_familia", "LEFT")
 		->join("precio_sistema sist", "p.id_producto = sist.id_producto AND WEEKOFYEAR(sist.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
-		->where("WEEKOFYEAR(c.fecha_registro)",$this->weekNumber($fech))
 		->where("p.estatus", $directo)
 		->order_by("c.id_producto, c.precio_promocion", "ASC");
 		if ($where !== NULL){
