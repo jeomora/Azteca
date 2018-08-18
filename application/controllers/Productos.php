@@ -123,10 +123,18 @@ class Productos extends MY_Controller {
 	}
 
 	public function accion($param){
+		$estats = $this->input->post('estatus');
+		if($this->input->post('id_familia') =="75"){
+			$estats = 6;
+		}elseif ($this->input->post('id_familia') =="74") {
+			$estats = 5;
+		}elseif ($this->input->post('id_familia') =="73") {
+			$estats = 4;
+		}
 		$user = $this->session->userdata();
 		$producto = ['codigo'	=>	$this->input->post('codigo'),
 					'nombre'	=>	strtoupper($this->input->post('nombre')),
-					'estatus'	=>	$this->input->post('estatus'),
+					'estatus'	=>	$estats,
 					'colorp'	=>	$this->input->post('colorp'),
 					'id_familia'=>	($this->input->post('id_familia') !="-1") ? $this->input->post('id_familia') : NULL
 		];

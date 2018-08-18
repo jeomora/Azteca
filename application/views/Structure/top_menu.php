@@ -3,11 +3,11 @@
 		max-width: 125%;
 	    position: absolute;
 	    margin-top: 0rem;
-	    background-color: white;
+	    background-color: #000;
 	    border-radius: 9rem;
 	    height: 9rem;
 	    width: 9rem;
-	    border: 2px solid #827f7f;
+	    border: 4px solid #827f7f;
 	}
 	.navbar-header {display: inline-flex;}
 	.cambcontra{padding-top: 15px;
@@ -54,7 +54,7 @@
 				<div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="#" id="progress" style="color: #F7AC59; font-weight: bolder">BIENVENIDO</a>
+							<a href="#" id="progress" style="color: #F7AC59; font-weight: bolder">BIENVENIDA(O)</a>
 						</li>
 					<?php if ($usuario['id_grupo'] == 1 || $usuario['id_grupo'] == 4): ?><!--El grupo 1 es Administrador -->
 						<?php if ($main_menu):?>
