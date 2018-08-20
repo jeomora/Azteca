@@ -196,7 +196,7 @@ $(document).off("change", "#id_proves4").on("change", "#id_proves4", function() 
 	var proveedor = $("#id_proves4 option:selected").text();
 
 	var table_contain = "";
-	$(".wonder").html('<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>');
+	//$(".wonder").html('<div class="spinns"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span style="font-size:3rem;">Cargando...</span></div>');
 
 	if(id_cotizacion != "nope"){
 		$(".fill_form").css("display","block");
