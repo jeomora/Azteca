@@ -112,6 +112,13 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						</div>
 					<?php echo form_close(); ?>
+					<div class="col-md-4 prodiv">
+						<?php echo form_open("Productos/fill_productos2", array("id" => 'reporte_sat', "target" => '_blank')); ?>
+							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit" style="padding: 10px 30px;">
+								<i class="fa fa-download"></i> Descargar Todos Los Productos
+							</button>
+						<?php echo form_close(); ?>
+					</div>
 
 
 					<div class="col-md-12">

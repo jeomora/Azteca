@@ -1,3 +1,33 @@
+$(document).off("change", "#file_p").on("change", "#file_p", function(event) {
+	event.preventDefault();
+	//blockPage();
+	var fdata = new FormData($("#reporte_sat")[0]);
+	uploadProductos(fdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				setTimeout("location.reload()", 1700, toastr.error(resp.desc, user_name), "");
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
+
+
+
+
+function uploadProductos(formData) {
+	return $.ajax({
+		url: site_url+"Productos/upload_productos2",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
+
 $(function($) {
 	$("[data-toggle='tooltip']").tooltip({
 		placement:'top'

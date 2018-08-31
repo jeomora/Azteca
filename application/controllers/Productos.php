@@ -334,6 +334,35 @@ class Productos extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+
+	public function upload_productos2(){
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_p"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		
+		for ($i=2; $i<=$num_rows; $i++) {
+			$new_producto=[
+					"codigo" => $sheet->getCell('A'.$i)->getValue(),//Recupera el id_usuario activo
+					"codigo_pz" => $sheet->getCell('B'.$i)->getValue(),
+					"descripcion" => $sheet->getCell('C'.$i)->getValue(),
+					"codigo_sat" => $sheet->getCell('D'.$i)->getValue()];
+			$codigo = $this->pfact_md->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			if (sizeof($codigo) > 0) {
+				$data ['id_producto']=$this->pfact_md->update($new_producto, $codigo->id_producto);
+			}else{
+				$data ['id_producto']=$this->pfact_md->insert($new_producto);
+			}
+		}
+		$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Productos cargados correctamente en el Sistema',
+							"type"	=>	'success'];
+		$this->jsonResponse($mensaje);
+	}
+
 }
 
 /* End of file Productos.php */

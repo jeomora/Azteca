@@ -8,6 +8,7 @@ class Main extends MY_Controller {
 		$this->load->model("Familias_model", "fam_md");
 		$this->load->model("Productos_model", "pr_md");
 		$this->load->model("Cotizaciones_model", "cot_md");
+		$this->load->model("Cotizacionesback_model", "cotb_md");
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Faltantes_model", "falt_mdl");
@@ -145,6 +146,7 @@ class Main extends MY_Controller {
 		}
 		if (sizeof($new_cotizacion) > 0) {
 			$data['cotizacion']=$this->cot_md->insert_batch($new_cotizacion);
+			$data['cotizacin']=$this->cotb_md->insert_batch($new_cotizacion);
 			$aprov = $this->user_md->get(NULL, ['id_usuario'=>$this->input->post('id_proveedor')])[0];
 			$cambios = [
 				"id_usuario" => $user["id_usuario"],
