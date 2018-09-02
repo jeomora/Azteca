@@ -24,13 +24,6 @@ if(!$this->session->userdata("username")){
 					<h5>LISTADO DE COTIZACIONES</h5>
 				</div>
 				<div class="ibox-content">
-					<div class="col-md-4 prodiv">
-						<?php echo form_open("Productos/fill_productos2", array("id" => 'reporte_sat', "target" => '_blank')); ?>
-							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit" style="padding: 10px 30px;">
-								<i class="fa fa-download"></i> Descargar Todos Los Productos
-							</button>
-						<?php echo form_close(); ?>
-					</div>
 					<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_cotizacion">
 							<i class="fa fa-plus"></i> Agregar Cotización
