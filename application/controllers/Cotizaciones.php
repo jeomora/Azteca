@@ -883,6 +883,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("G1", "% DESCUENTO")->getColumnDimension('G')->setWidth(15);
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->mergeCells('E1:F1');
+		
 		$productos = $this->prod_mdl->getProdFam(NULL,$this->input->post("id_pro"));
 		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
 		$row_print = 2;
