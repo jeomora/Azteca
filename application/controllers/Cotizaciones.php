@@ -1569,7 +1569,7 @@ class Cotizaciones extends MY_Controller {
 		$id_proves = $this->input->post('id_proves4');
 		$proves = $this->input->post('id_proves2');
 		$prs = substr($id_proves,0,6);
-		if ($id_proves <> "3") {
+		if ($id_proves <> "388") {
 			if ($prs === "VARIOS") {
 				$array = $this->usua_mdl->get(NULL, ["conjunto" => $id_proves]);
 				$filenam = $id_proves;
