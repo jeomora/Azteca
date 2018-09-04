@@ -1783,8 +1783,8 @@ class Cotizaciones extends MY_Controller {
 							$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AG'.$flag)->applyFromArray($styleArray);
 							$flag++;
 							$hoja->mergeCells('B'.$flag.':G'.$flag);
-							$hoja->mergeCells('H'.$flag.':K'.$flag);
-							$hoja->mergeCells('L'.$flag.':N'.$flag);
+							$hoja->mergeCells('H'.$flag.':J'.$flag);
+							$hoja->mergeCells('K'.$flag.':N'.$flag);
 							$hoja->mergeCells('O'.$flag.':Q'.$flag);
 							$hoja->mergeCells('R'.$flag.':T'.$flag);
 							$hoja->mergeCells('U'.$flag.':W'.$flag);
@@ -1795,8 +1795,8 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("B".$flag, "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
 							$this->cellStyle("H".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("H".$flag, "CEDIS");
-							$this->cellStyle("L".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("L".$flag, "ABARROTES");
+							$this->cellStyle("K".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+							$hoja->setCellValue("K".$flag, "ABARROTES");
 							$this->cellStyle("O".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("O".$flag, "TIENDA");
 							$this->cellStyle("R".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -2079,7 +2079,7 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("AF{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 										$hoja->setCellValue("AG{$flag}", $row['promocion_first']);
 										$hoja->setCellValue("AH{$flag}", "=C".$flag."*J".$flag)->getStyle("AH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-										$hoja->setCellValue("AI{$flag}", "=C".$flag."*M".$flag)->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+										$hoja->setCellValue("AI{$flag}", "=C".$flag."*N".$flag)->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$hoja->setCellValue("AJ{$flag}", "=C".$flag."*Q".$flag)->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$hoja->setCellValue("AK{$flag}", "=C".$flag."*T".$flag)->getStyle("AK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$hoja->setCellValue("AL{$flag}", "=C".$flag."*W".$flag)->getStyle("AL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
