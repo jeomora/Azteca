@@ -37,9 +37,6 @@ if(!$this->session->userdata("username")){
 								</button>
 							<?php echo form_close(); ?>
 						</div>
-					
-					
-					
 					<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir formato de cotizaciones

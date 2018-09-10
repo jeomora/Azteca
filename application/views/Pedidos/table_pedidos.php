@@ -112,13 +112,18 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						</div>
 					<?php echo form_close(); ?>
-					<div class="col-md-4 prodiv">
-						<?php echo form_open("Productos/fill_productos2", array("id" => 'reporte_sat', "target" => '_blank')); ?>
-							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit" style="padding: 10px 30px;">
-								<i class="fa fa-download"></i> Descargar Todos Los Productos
-							</button>
+					<!--<div class="col-md-4 prodiv">
+						<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir formato duero
+						</div>
+						<?php echo form_open_multipart("", array('id' => 'reporte_sat')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info" type="file" id="file_p" name="file_p" value="" size="20" />
+							</div>
 						<?php echo form_close(); ?>
 					</div>
+					</div>-->
 
 
 					<div class="col-md-12">

@@ -9,6 +9,7 @@ class Productos extends MY_Controller {
 		$this->load->model("Familias_model", "fam_md");
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Usuarios_model", "usua_mdl");
+		$this->load->model("Prodcaja_model", "pcaja_md");
 	}
 
 	public function index(){
@@ -345,16 +346,21 @@ class Productos extends MY_Controller {
 		$num_rows = $sheet->getHighestDataRow();
 		
 		for ($i=2; $i<=$num_rows; $i++) {
-			$new_producto=[
-					"codigo" => $sheet->getCell('A'.$i)->getValue(),//Recupera el id_usuario activo
-					"codigo_pz" => $sheet->getCell('B'.$i)->getValue(),
-					"descripcion" => $sheet->getCell('C'.$i)->getValue(),
-					"codigo_sat" => $sheet->getCell('D'.$i)->getValue()];
-			$codigo = $this->pfact_md->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			$codigo = $this->pro_md->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 			if (sizeof($codigo) > 0) {
-				$data ['id_producto']=$this->pfact_md->update($new_producto, $codigo->id_producto);
-			}else{
-				$data ['id_producto']=$this->pfact_md->insert($new_producto);
+				$new_producto=[
+					"id_prodfactura" => $codigo->id_producto,
+					"id_proveedor" => 3,
+					"codigo" => $sheet->getCell('C'.$i)->getValue(),
+					"clave" => $sheet->getCell('E'.$i)->getValue(),
+					"descripcion" => $sheet->getCell('G'.$i)->getValue(),
+					"codigo_factura" => $sheet->getCell('D'.$i)->getValue()];
+					$codiga = $this->pcaja_md->get("id_prodcaja",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($codiga) > 0) {
+					$data ['id_prodcaja']=$this->pcaja_md->update($new_producto, $codiga->id_prodcaja);
+				}else{
+					$data ['id_prodcaja']=$this->pcaja_md->insert($new_producto);
+				}
 			}
 		}
 		$mensaje=[	"id"	=>	'Éxito',
