@@ -4059,7 +4059,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AN{$flag}", "=SUM(AN5:AN{$flag})")->getStyle("AN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$hoja->setCellValue("AO{$flag}", "=SUM(AO5:AO{$flag})")->getStyle("AO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$hoja->setCellValue("AP{$flag}", "=SUM(AP5:AP{$flag})")->getStyle("AP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flans = $flag;
+		$flans = $flag - 1;
 		$flag += 4;
 		$this->cellStyle("B".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("B".$flag, "CEDIS");
