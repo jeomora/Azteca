@@ -4051,15 +4051,16 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		$hoja->setCellValue("AI{$flag}", "=SUM(AI5:AI{$flag})")->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AJ{$flag}", "=SUM(AJ5:AJ{$flag})")->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AK{$flag}", "=SUM(AK5:AK{$flag})")->getStyle("AK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AL{$flag}", "=SUM(AL5:AL{$flag})")->getStyle("AL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AM{$flag}", "=SUM(AM5:AM{$flag})")->getStyle("AM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AN{$flag}", "=SUM(AN5:AN{$flag})")->getStyle("AN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AO{$flag}", "=SUM(AO5:AO{$flag})")->getStyle("AO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AP{$flag}", "=SUM(AP5:AP{$flag})")->getStyle("AP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flans = $flag - 1;
+		$hoja->setCellValue("AI{$flag}", "=SUM(AI5:AI{$flans})")->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AJ{$flag}", "=SUM(AJ5:AJ{$flans})")->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AK{$flag}", "=SUM(AK5:AK{$flans})")->getStyle("AK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AL{$flag}", "=SUM(AL5:AL{$flans})")->getStyle("AL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AM{$flag}", "=SUM(AM5:AM{$flans})")->getStyle("AM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AN{$flag}", "=SUM(AN5:AN{$flans})")->getStyle("AN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AO{$flag}", "=SUM(AO5:AO{$flans})")->getStyle("AO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AP{$flag}", "=SUM(AP5:AP{$flans})")->getStyle("AP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$flans = $flag;
 		$flag += 4;
 		$this->cellStyle("B".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("B".$flag, "CEDIS");
