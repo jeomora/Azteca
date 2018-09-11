@@ -251,9 +251,10 @@ class Compras extends MY_Controller {
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
 		$hoja->setCellValue("A1", "EMPRESA")->getColumnDimension('B')->setWidth(40);
-		$hoja->setCellValue("B1", "NOMBRE")->getColumnDimension('C')->setWidth(40);
-		$hoja->setCellValue("C1", "EMAIL")->getColumnDimension('D')->setWidth(40);
-		$hoja->setCellValue("D1", "CONTRASEÑA")->getColumnDimension('E')->setWidth(30);
+		$hoja->setCellValue("B1", "NOMBRE")->getColumnDimension('B')->setWidth(40);
+		$hoja->setCellValue("C1", "RESPONSABLE")->getColumnDimension('C')->setWidth(40);
+		$hoja->setCellValue("D1", "EMAIL")->getColumnDimension('D')->setWidth(40);
+		$hoja->setCellValue("E1", "CONTRASEÑA")->getColumnDimension('E')->setWidth(30);
 		$cotizacionesProveedor = $this->user_md->getUsuarios();
 		$row_print =2;
 		if ($cotizacionesProveedor){
@@ -261,19 +262,21 @@ class Compras extends MY_Controller {
 
 				$hoja->setCellValue("A{$row_print}", $row->nombre);
 				$hoja->setCellValue("B{$row_print}", $row->apellido);//Formto de moneda
-				$hoja->setCellValue("C{$row_print}", $row->email);
+				$hoja->setCellValue("D{$row_print}", $row->email);
+				$hoja->setCellValue("C{$row_print}", $row->cargo);
 				if ($row->grupo <> 'AZTECA') {
-					$hoja->setCellValue("D{$row_print}", $this->showPassword($row->password));
+					$hoja->setCellValue("E{$row_print}", $this->showPassword($row->password));
 				}
 				$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
 				$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
 				$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 				$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
+				$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
 				$row_print ++;
 			}
 		}
 
-		$file_name = "Proveedores.xlsx"; //Nombre del documento con extención
+		$file_name = "Usuarios.xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
