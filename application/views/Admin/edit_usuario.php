@@ -30,7 +30,7 @@
 					<input type="text" name="correo" value="<?php echo $usuario->email ?>" class="form-control" placeholder="ejemplo@email.com">
 				</div>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-3">
 				<div class="form-group">
 					<label for="password">Contraseña</label> <!-- $password trae la contraseña desencritada -->
 					<input type="text" name="password" class="form-control" placeholder="*********">
@@ -56,7 +56,7 @@
 			
 			<div class="col-sm-3 conj" <?php if($usuario->id_grupo <> 2): ?> style="display: none" <?php endif; ?>>
 				<div class="form-group">
-					<label for="conjunto">conjunto</label>
+					<label for="conjunto">Conjunto</label>
 					<select name="conjunto" class="form-control chosen-select">
 						<option value="SIN" <?php echo $usuario->conjunto == 'SIN' ? 'selected' : '' ?>>SIN FORMATO PEDIDOS</option>
 						<option value="INDIVIDUAL" <?php echo $usuario->conjunto == 'INDIVIDUAL' ? 'selected' : '' ?>>INDIVIDUAL</option>
@@ -64,6 +64,18 @@
 						<option value="VARIOS2" <?php echo $usuario->conjunto == 'VARIOS2' ? 'selected' : '' ?>>VARIOS 2°</option>
 						<option value="VARIOS3" <?php echo $usuario->conjunto == 'VARIOS3' ? 'selected' : '' ?>>VARIOS 3°</option>
 						<option value="VARIOS4" <?php echo $usuario->conjunto == 'VARIOS4' ? 'selected' : '' ?>>VARIOS 4°</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-sm-3 conj" <?php if($usuario->id_grupo <> 2): ?> style="display: none" <?php endif; ?>>
+				<div class="form-group">
+					<label for="cargo">Responsable</label>
+					<select name="cargo" class="form-control chosen-select">
+						<option value="SIN" <?php echo $usuario->cargo == 'SIN' ? 'selected' : '' ?>>---SELECCIONE---</option>
+						<?php if ($cargos):foreach ($cargos as $key => $value): ?>
+							<option value="<?php echo $value->nombre ?>" <?php echo $usuario->cargo == $value->nombre ? 'selected' : '' ?>><?php echo $value->nombre ?></option>
+						<?php endforeach; endif ?>
 					</select>
 				</div>
 			</div>

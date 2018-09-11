@@ -88,6 +88,7 @@ class Compras extends MY_Controller {
 		$data["grupos"] = $this->gr_md->get();
 		$user = $this->session->userdata();
 		$data["grupo"] = $user['id_grupo'];
+		$data["cargos"] = $this->user_md->get(NULL, ['id_grupo'=>4]);
 		$data["view"] = $this->load->view("Admin/new_usuario", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_usuario' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
@@ -100,6 +101,7 @@ class Compras extends MY_Controller {
 		$data["usuario"] = $this->user_md->get(NULL, ['id_usuario'=>$id])[0];
 		$data["password"]= $this->showPassword($data["usuario"]->password);//Para mostrar la contraseña
 		$data["grupos"] = $this->gr_md->get();
+		$data["cargos"] = $this->user_md->get(NULL, ['id_grupo'=>4]);
 		$user = $this->session->userdata();
 		$data["grupo"] = $user['id_grupo'];
 		$data["view"] =$this->load->view("Admin/edit_usuario", $data, TRUE);
@@ -123,8 +125,10 @@ class Compras extends MY_Controller {
 		$gr = $this->input->post('id_grupo');
 		if ($gr <> 2) {
 			$conjunto = "";
+			$cargos = "";
 		}else{
 			$conjunto = $this->input->post('conjunto');
+			$cargos = $this->input->post('cargo');
 		}
 		$usuario = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
@@ -133,7 +137,9 @@ class Compras extends MY_Controller {
 			"email"		=>	$this->input->post('correo'),
 			"password"	=>	$this->encryptPassword($this->input->post('password')),
 			"id_grupo"	=>	$this->input->post('id_grupo'),
-			"conjunto"	=>	$conjunto];
+			"conjunto"	=>	$conjunto,
+			"cargo"	=>	$cargos
+		];
 
 		$getUsuario = $this->user_md->get(NULL, ['email'=>$usuario['email']])[0];
 
@@ -165,8 +171,10 @@ class Compras extends MY_Controller {
 		$gr = $this->input->post('id_grupo');
 		if ($gr <> 2) {
 			$conjunto = "";
+			$cargos = "";
 		}else{
 			$conjunto = $this->input->post('conjunto');
+			$cargos = $this->input->post('cargo');
 		}
 		$usuario = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
@@ -175,7 +183,9 @@ class Compras extends MY_Controller {
 			"email"		=>	$this->input->post('correo'),
 			"password"	=>	$this->encryptPassword($this->input->post('password')),
 			"id_grupo"	=>	$this->input->post('id_grupo'),
-			"conjunto"	=>	$conjunto];
+			"conjunto"	=>	$conjunto,
+			"cargo"	=>	$cargos
+		];
 
 		$data ['id_usuario'] = $this->user_md->update($usuario, $this->input->post('id_usuario'));
 		$cambios = [

@@ -26,7 +26,7 @@
 					<input type="text" name="correo" value="" class="form-control" placeholder="ejemplo@email.com">
 				</div>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-3">
 				<div class="form-group">
 					<label for="password">Contraseña</label>
 					<input type="text" name="password" value="" class="form-control" placeholder="*********">
@@ -58,6 +58,17 @@
 						<option value="VARIOS2">VARIOS 2°</option>
 						<option value="VARIOS3">VARIOS 3°</option>
 						<option value="VARIOS4">VARIOS 4°</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-3 conj" style="display: none">
+				<div class="form-group">
+					<label for="cargo">Responsable</label>
+					<select name="cargo" class="form-control chosen-select">
+						<option value="SIN" selected>---SELECCIONE---</option>
+						<?php if ($cargos):foreach ($cargos as $key => $value): ?>
+							<option value="<?php echo $value->nombre ?>"><?php echo $value->nombre ?></option>
+						<?php endforeach; endif ?>
 					</select>
 				</div>
 			</div>
