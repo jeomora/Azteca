@@ -28,11 +28,6 @@
 	<div id="page-wrapper" class="blue-bg">
 		<div class="row border-bottom white-bg">
 			<nav class="navbar navbar-static-top" role="navigation">
-				<!--
-				<div class="navbar-header">
-					<img alt="image" width="50px;" style="margin:auto; padding: 5px;" class="img-responsive" src="<?php echo base_url('/assets/img/avatar-3.jpg'); ?>" />
-				</div>
-				-->
 				<div class="navbar-header">
 					<div class="logo_img">
 						<?php if ($usuario['id_grupo'] == 2): ?>

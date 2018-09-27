@@ -205,6 +205,32 @@ class Cotizaciones extends MY_Controller {
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/directos", $data);
 	}
+	public function pendientes(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/pendientes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["usuar"]  = $this->session->userdata();
+		$this->estructura("Cotizaciones/pendientes", $data);
+	}
 	public function proveedor(){
 		ini_set("memory_limit", "-1");
 		$data['links'] = [
@@ -272,7 +298,6 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
-
 	public function end_cotizacion($ides){
 		$data["title"]="ELIMINAR COTIZACION DE LA SEMANA";
 		$data["proveedor"] = $this->usua_mdl->get(NULL,["id_usuario" => $ides])[0];
@@ -282,7 +307,6 @@ class Cotizaciones extends MY_Controller {
 						</button>";
 		$this->jsonResponse($data);
 	}
-
 	public function endCotizacion($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -309,8 +333,6 @@ class Cotizaciones extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
-
-
 	public function save($idesp){
 		if($idesp == 0){
 			$proveedor = $this->session->userdata('id_usuario');
@@ -2080,6 +2102,16 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("G{$flag}", $row['proveedor_next']);
 										$this->cellStyle("H".$flag.":AU".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 										$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+
+										$hoja->setCellValue("K{$flag}", $row['cedis']);
+										$hoja->setCellValue("P{$flag}", $row['abarrotes']);
+										$hoja->setCellValue("T{$flag}", $row['tienda']);
+										$hoja->setCellValue("X{$flag}", $row['ultra']);
+										$hoja->setCellValue("AB{$flag}", $row['trincheras']);
+										$hoja->setCellValue("AF{$flag}", $row['mercado']);
+										$hoja->setCellValue("AJ{$flag}", $row['tenencia']);
+										$hoja->setCellValue("AN{$flag}", $row['tijeras']);
+
 										$hoja->setCellValue("H{$flag}", $row['caja0']);
 										$hoja->setCellValue("I{$flag}", $row['pz0']);
 
@@ -3797,7 +3829,6 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
-
 	private function fill_duerazo(){
 		$flag =1;
 		$array = "";
@@ -3821,18 +3852,19 @@ class Cotizaciones extends MY_Controller {
 		);
 		$hoja->getColumnDimension('A')->setWidth("20");
 		$hoja->getColumnDimension('B')->setWidth("20");
-		$hoja->getColumnDimension('D')->setWidth("20");
+		$hoja->getColumnDimension('D')->setWidth("15");
 		$hoja->getColumnDimension('C')->setWidth("70");
 		$hoja->getColumnDimension('E')->setWidth("15");
 		$hoja->getColumnDimension('F')->setWidth("15");
 		$hoja->getColumnDimension('G')->setWidth("15");
+		$hoja->getColumnDimension('H')->setWidth("20");
+		$hoja->getColumnDimension('AZ')->setWidth("70");
+		
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
 		$hoja1->getColumnDimension('C')->setWidth("6");
 		$hoja1->getColumnDimension('D')->setWidth("25");
 		$hoja1->getColumnDimension('E')->setWidth("47");
-		$hoja->getColumnDimension('AV')->setWidth("70");
-		$hoja->getColumnDimension('H')->setWidth("20");
 
 		$this->excelfile->setActiveSheetIndex(0);
 
@@ -3863,8 +3895,8 @@ class Cotizaciones extends MY_Controller {
 		$flag = 1;
 		$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("A".$flag, "CEDIS,CD INDUSTRIAL, ABARROTES, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
-		$hoja->mergeCells('A'.$flag.':AV'.$flag);
-		$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AV'.$flag)->applyFromArray($styleArray);
+		$hoja->mergeCells('A'.$flag.':AZ'.$flag);
+		$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
 		$flag++;
 		$hoja->mergeCells('B'.$flag.':H'.$flag);
 		$hoja->mergeCells('I'.$flag.':M'.$flag);
@@ -3876,30 +3908,33 @@ class Cotizaciones extends MY_Controller {
 		$hoja->mergeCells('AI'.$flag.':AL'.$flag);
 		$hoja->mergeCells('AM'.$flag.':AP'.$flag);
 		$hoja->mergeCells('AQ'.$flag.':AU'.$flag);
+		$hoja->mergeCells('AV'.$flag.':AY'.$flag);
 		$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("B".$flag, "PEDIDOS A 'DUERO' ".date("d-m-Y"));
 		$this->cellStyle("I".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("I".$flag, "CEDIS");
-		$this->cellStyle("N".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("N".$flag, "ABARROTES");
-		$this->cellStyle("S".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("S".$flag, "TIENDA");
-		$this->cellStyle("W".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("W".$flag, "ULTRAMARINOS");
-		$this->cellStyle("AA".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AA".$flag, "TRINCHERAS");
-		$this->cellStyle("AE".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AE".$flag, "AZT MERCADO");
-		$this->cellStyle("AI".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AI".$flag, "TENENCIA");
-		$this->cellStyle("AM".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AM".$flag, "TIJERAS");
-		$this->cellStyle("AQ".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AQ".$flag, "CD INDUSTRIAL");
-		$this->cellStyle("A3:AV4", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("N".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("N".$flag, "SUPER INDUSTRIAL");
+		$this->cellStyle("S".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("S".$flag, "V. PEDREGAL");
+		$this->cellStyle("W".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("W".$flag, "ABARROTES");
+		$this->cellStyle("AA".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AA".$flag, "TIENDA");
+		$this->cellStyle("AE".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AE".$flag, "ULTRAMARINOS");
+		$this->cellStyle("AI".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AI".$flag, "TRINCHERAS");
+		$this->cellStyle("AM".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AM".$flag, "AZT MERCADO");
+		$this->cellStyle("AQ".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AQ".$flag, "TENENCIA");
+		$this->cellStyle("AV".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AV".$flag, "TIJERAS");
+		$this->cellStyle("A3:AZ4", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AV'.$flag)->applyFromArray($styleArray);
 		$flag++;
-		$this->cellStyle("A".$flag.":AV".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A".$flag.":AZ".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("B".$flag, "DESCRIPCIÓN");
 		$hoja->mergeCells('I'.$flag.':L'.$flag);
 		$hoja->setCellValue("I".$flag, "EXISTENCIAS");
@@ -3919,8 +3954,10 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AM".$flag, "EXISTENCIAS");
 		$hoja->mergeCells('AQ'.$flag.':AU'.$flag);
 		$hoja->setCellValue("AQ".$flag, "EXISTENCIAS");
+		$hoja->mergeCells('AV'.$flag.':AY'.$flag);
+		$hoja->setCellValue("AV".$flag, "EXISTENCIAS");
 		$flag++;
-		$this->cellStyle("A".$flag.":AV".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A".$flag.":AZ".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("A".$flag, "CODIGO");
 		$hoja->setCellValue("B".$flag, "FACTURA");
 		$hoja->setCellValue("D".$flag, "COSTO");

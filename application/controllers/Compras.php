@@ -255,7 +255,7 @@ class Compras extends MY_Controller {
 		$hoja->setCellValue("C1", "RESPONSABLE")->getColumnDimension('C')->setWidth(40);
 		$hoja->setCellValue("D1", "EMAIL")->getColumnDimension('D')->setWidth(40);
 		$hoja->setCellValue("E1", "CONTRASEÑA")->getColumnDimension('E')->setWidth(30);
-		$cotizacionesProveedor = $this->user_md->getUsuarios();
+		$cotizacionesProveedor = $this->user_md->getUsuarios(); 
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $row){

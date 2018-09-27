@@ -14,6 +14,11 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Existenciasback_model", "exb_mdl");
 		$this->load->model("Precio_sistema_model", "pre_mdl");
 		$this->load->model("Stocks_model", "sto_mdl");
+		$this->load->model("Pendientes_model", "pend_mdl");
+		$this->load->model("Productos_model","prod_mdl");
+		$this->load->model("Usuarios_model","usua_mdl");
+		$this->load->model("Usuarios_model","usua_mdl");
+		$this->load->model("Cambios_model", "cambio_md");
 	}
 
 	public function index(){
@@ -345,6 +350,91 @@ class Pedidos extends MY_Controller {
 		$data["detallePedido"] = $this->det_ped_mdl->getDetallePedido(["detalles_pedidos.id_pedido"=>$data["pedido"]->id_pedido]);
 		$data["view"]=$this->load->view("Pedidos/detalle_pedido", $data, TRUE);
 		$data["button"]="";
+		$this->jsonResponse($data);
+	}
+
+	public function upload_pendientes(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$filen = "Pedidos Pendientes".rand();
+		$config['upload_path']          = base_url('/assets/uploads/pedidos/');
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_pendientes',$filen);
+        $file = $_FILES["file_pendientes"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$new_pendientes = [];
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) {
+			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+
+			if (sizeof($productos) > 0) {
+				$exis = $this->pend_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_producto"=>$productos->id_producto])[0];
+				$cedis = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
+				$abarrotes = $sheet->getCell('D'.$i)->getValue() == "" ? 0 : $sheet->getCell('D'.$i)->getValue();
+				$pedregal = $sheet->getCell('E'.$i)->getValue() == "" ? 0 : $sheet->getCell('E'.$i)->getValue();
+				$tienda = $sheet->getCell('F'.$i)->getValue() == "" ? 0 : $sheet->getCell('F'.$i)->getValue();
+				$ultra = $sheet->getCell('G'.$i)->getValue() == "" ? 0 : $sheet->getCell('G'.$i)->getValue();
+				$trincheras = $sheet->getCell('H'.$i)->getValue() == "" ? 0 : $sheet->getCell('H'.$i)->getValue();
+				$mercado = $sheet->getCell('I'.$i)->getValue() == "" ? 0 : $sheet->getCell('I'.$i)->getValue();
+				$tenencia = $sheet->getCell('J'.$i)->getValue() == "" ? 0 : $sheet->getCell('J'.$i)->getValue();
+				$tijeras = $sheet->getCell('K'.$i)->getValue() == "" ? 0 : $sheet->getCell('K'.$i)->getValue();
+				$new_pendientes[$i]=[
+					"id_producto" => $productos->id_producto,
+					"cedis" => $cedis,
+					"abarrotes" => $abarrotes,
+					"pedregal" => $pedregal,
+					"tienda" => $tienda,
+					"trincheras" => $trincheras,
+					"ultra" => $ultra,
+					"mercado" => $mercado,
+					"tenencia" => $tenencia,
+					"tijeras" => $tijeras,
+					"fecha_registro" => $fecha->format('Y-m-d H:i:s')
+				];
+				if($exis){
+					$data['pendientes']=$this->pend_mdl->update($new_pendientes[$i], ['id_pendiente' => $exis->id_pendiente]);
+				}else{
+					$data['pendientes']=$this->pend_mdl->insert($new_pendientes[$i]);
+				}
+			}
+		}
+		if (sizeof($new_pendientes) > 0) {
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$tienda])[0];
+			$cambios=[
+					"id_usuario"		=>	$this->session->userdata('id_usuario'),
+					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+					"antes"			=>	"El usuario sube pedidos pendientes ",
+					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
+					"accion"			=>	"Sube Pedidos Pendientes"
+				];
+			$data['cambios']=$this->cambio_md->insert($cambios);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Pedidos Pendientes cargados correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Los Pedidos Pendientes no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function getPendientes(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		$data["pendientes"] =  $this->pend_mdl->getThem(["WEEKOFYEAR(pp.fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))]);
 		$this->jsonResponse($data);
 	}
 
