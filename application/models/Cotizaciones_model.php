@@ -981,6 +981,11 @@ $this->db->select("c.id_cotizacion,
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ped8"]	=	"";
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tienda8"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped8"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["caja9"]		=	"";
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["pz9"]	=	"";
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ped9"]	=	"";
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tienda9"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped9"]	=	0;
 			$pedidos = $this->db->select('id_pedido,
 				  id_producto,
 				  id_tienda,
@@ -1001,29 +1006,32 @@ $this->db->select("c.id_cotizacion,
 					case '57':
 						$e = "1";
 						break;
-					case '58':
+					case '90':
 						$e = "2";
 						break;
-					case '59':
+					case '58':
 						$e = "3";
 						break;
-					case '60':
+					case '59':
 						$e = "4";
 						break;
-					case '61':
+					case '60':
 						$e = "5";
 						break;
-					case '62':
+					case '61':
 						$e = "6";
 						break;
-					case '63':
+					case '62':
 						$e = "7";
 						break;
-					case '89':
+					case '63':
 						$e = "8";
 						break;
-					default:
+					case '89':
 						$e = "9";
+						break;
+					default:
+						$e = "10";
 						break;
 				}
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["caja".$e]		=	$resu[$d]->cajas;
