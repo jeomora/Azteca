@@ -71,7 +71,8 @@ p {
 
 </head>
 <?php
-redirect("Compras/Login", "");
+header("Location: http://abarrotesazteca.com/");
+die();
 ?>
 <body>
 
