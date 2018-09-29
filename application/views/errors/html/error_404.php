@@ -71,11 +71,7 @@ p {
 
 </head>
 <?php
-if (isset($this->session)) {
-	if(!$this->session->userdata("username")){
-		redirect("Compras/Login", "");
-	}
-}
+redirect("Compras/Login", "");
 ?>
 <body>
 
