@@ -108,7 +108,7 @@ class Main extends MY_Controller {
 			foreach ($cotizaciones as $key => $value){
 				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
 				$fecha = new DateTime(date('Y-m-d H:i:s'));
-				$intervalo = new DateInterval('P2D');
+				$intervalo = new DateInterval('P3D');
 				$num_one = $value->num_one == '' ? 0 : $value->num_one;
 				$num_two = $value->num_two == '' ? 0 : $value->num_two;
 				$descuento = $value->descuento == '' ? 0 : $value->descuento;
@@ -186,7 +186,7 @@ class Main extends MY_Controller {
 		];
 
 		$this->upload->initialize($imagen);
-
+		
 		if (! $this->upload->do_upload('file')){
 			$data = ["id"	=>	"Error",
         			"desc"	=>	$this->upload->display_errors(),

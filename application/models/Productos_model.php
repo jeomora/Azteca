@@ -155,7 +155,7 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 				  observaciones,
 				  descuento')
 				->from('cotizaciones')
-				->where('WEEKOFYEAR(fecha_registro)',($this->weekNumber()-1))
+				->where('WEEKOFYEAR(fecha_registro)',($this->weekNumber()))
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->where('id_proveedor',$prove)
 				->group_by("id_proveedor");
