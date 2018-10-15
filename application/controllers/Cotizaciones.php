@@ -2553,7 +2553,7 @@ class Cotizaciones extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
-	}
+	}x
 	public function registro_fltnts(){
 		$user = $this->session->userdata();
 		$size = sizeof($this->input->post('id_producto[]'));
