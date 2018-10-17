@@ -2149,10 +2149,10 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("I".$flag.":AX".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("D{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-										$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+										$this->cellStyle("D".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 
 										$hoja->setCellValue("F{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-										$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+										$this->cellStyle("F".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
 										$hoja->setCellValue("R{$flag}", $row['abarrotes']);
@@ -2233,8 +2233,8 @@ class Cotizaciones extends MY_Controller {
 										PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 									$this->excelfile->setActiveSheetIndex(1);
 									if ($id_proves <> "VOLUMEN"){
-										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AX'.$flag)->applyFromArray($styleArray);
-										$this->excelfile->getActiveSheet()->getStyle('BH'.$flag)->applyFromArray($styleArray);
+										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
+										$this->excelfile->getActiveSheet()->getStyle('BJ'.$flag)->applyFromArray($styleArray);
 									}else{
 										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AX'.$flag)->applyFromArray($styleArray);
 										$this->excelfile->getActiveSheet()->getStyle('BI'.$flag)->applyFromArray($styleArray);
