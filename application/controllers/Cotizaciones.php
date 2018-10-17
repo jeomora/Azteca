@@ -1637,6 +1637,8 @@ class Cotizaciones extends MY_Controller {
 			}else{
 				$hoja->getColumnDimension('AZ')->setWidth("70");
 				$hoja->getColumnDimension('I')->setWidth("20");
+				$hoja->getColumnDimension('F')->setWidth("8");
+				$hoja->getColumnDimension('D')->setWidth("8");
 			}
 			$flagBorder = 0;
 			$flagBorder1 = 1;
@@ -2147,10 +2149,10 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("I".$flag.":AX".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("D{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-										$this->cellStyle("D".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+										$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 
 										$hoja->setCellValue("F{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-										$this->cellStyle("F".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+										$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
 										$hoja->setCellValue("R{$flag}", $row['abarrotes']);
