@@ -3917,6 +3917,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('G')->setWidth("8");
 		$hoja->getColumnDimension('J')->setWidth("20");
 		$hoja->getColumnDimension('BA')->setWidth("70");
+		$hoja->getColumnDimension('I')->setWidth("15");
 		
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
