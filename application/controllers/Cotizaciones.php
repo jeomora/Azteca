@@ -2146,10 +2146,10 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("I{$flag}", $row['proveedor_next']);
 										$this->cellStyle("H".$flag.":AX".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-										$hoja->setCellValue("D{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']));
+										$hoja->setCellValue("D{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
 										$this->cellStyle("D".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-										$hoja->setCellValue("F{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']));
+										$hoja->setCellValue("F{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
 										$this->cellStyle("F".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
