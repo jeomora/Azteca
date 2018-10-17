@@ -3915,8 +3915,8 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('E')->setWidth("8");
 		$hoja->getColumnDimension('F')->setWidth("15");
 		$hoja->getColumnDimension('G')->setWidth("8");
-		$hoja->getColumnDimension('H')->setWidth("20");
-		$hoja->getColumnDimension('AY')->setWidth("70");
+		$hoja->getColumnDimension('J')->setWidth("20");
+		$hoja->getColumnDimension('BA')->setWidth("70");
 		
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
@@ -3992,7 +3992,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("A3:AZ4", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
 		$flag++;
-		$this->cellStyle("A".$flag.":AZ".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A".$flag.":BA".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("B".$flag, "DESCRIPCIÓN");
 		$hoja->mergeCells('K'.$flag.':O'.$flag);
 		$hoja->setCellValue("K".$flag, "EXISTENCIAS");
@@ -4015,7 +4015,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->mergeCells('AX'.$flag.':AZ'.$flag);
 		$hoja->setCellValue("AX".$flag, "EXISTENCIAS");
 		$flag++;
-		$this->cellStyle("A".$flag.":AY".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A".$flag.":BA".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("A".$flag, "CODIGO");
 		$hoja->setCellValue("B".$flag, "FACTURA");
 		$hoja->setCellValue("D".$flag, "COSTO");
@@ -4180,7 +4180,7 @@ class Cotizaciones extends MY_Controller {
 						$this->cellStyle("J".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 
 						$hoja->setCellValue("K{$flag}", $row['caja0']);
-						$hoja->setCellValue("J{$flag}", $row['pz0']);
+						$hoja->setCellValue("L{$flag}", $row['pz0']);
 						$hoja->setCellValue("N{$flag}", $row['cedis']);
 
 						$hoja->setCellValue("O{$flag}", $row['ped0']);
