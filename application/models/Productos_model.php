@@ -104,7 +104,7 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 
 	public function getProdFam($where = [],$prove){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$this->db->select("
 			productos.id_producto,
@@ -149,13 +149,14 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
+			
 			$precios2 = $this->db->select('precio,
 				  num_one,
 				  num_two,
 				  observaciones,
 				  descuento')
 				->from('cotizaciones')
-				->where('WEEKOFYEAR(fecha_registro)',($this->weekNumber($fecha)-1))
+				->where('WEEKOFYEAR(fecha_registro)',($this->weekNumber($fecha->format('Y-m-d H:i:s'))-1))
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->where('id_proveedor',$prove)
 				->group_by("id_proveedor");
