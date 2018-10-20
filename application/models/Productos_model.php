@@ -104,7 +104,7 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 
 	public function getProdFam($where = [],$prove){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$this->db->select("
 			productos.id_producto,
