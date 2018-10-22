@@ -2148,12 +2148,7 @@ class Cotizaciones extends MY_Controller {
 										}
 										$hoja->setCellValue("I{$flag}", $row['proveedor_next']);
 										$this->cellStyle("I".$flag.":AX".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-										$hoja->setCellValue("D{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-										$this->cellStyle("D".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
-
-										$hoja->setCellValue("F{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-										$this->cellStyle("F".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
+										
 
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
 										$hoja->setCellValue("R{$flag}", $row['abarrotes']);
@@ -2239,6 +2234,19 @@ class Cotizaciones extends MY_Controller {
 									}else{
 										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AX'.$flag)->applyFromArray($styleArray);
 										$this->excelfile->getActiveSheet()->getStyle('BI'.$flag)->applyFromArray($styleArray);
+										if($row['precio_sistema'] == 0){
+											$row['precio_sistema'] = 1;
+										}
+										if($row['precio_four'] == 0){
+											$row['precio_four'] = 1;
+										}
+										
+
+										$hoja->setCellValue("D{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+										$this->cellStyle("D".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
+
+										$hoja->setCellValue("F{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+										$this->cellStyle("F".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 									}
 									
 									$this->excelfile->setActiveSheetIndex(0);
@@ -4132,12 +4140,8 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("A{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja->setCellValue("C{$flag}", $row['producto']);
-
-						$hoja->setCellValue("E{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-						$this->cellStyle("E".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
-
-						$hoja->setCellValue("G{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-						$this->cellStyle("G".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
+						
+						
 
 						
 						if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
@@ -4270,6 +4274,18 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 							$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
+						if($row['precio_sistema'] == 0){
+							$row['precio_sistema'] = 1;
+						}
+						if($row['precio_four'] == 0){
+							$row['precio_four'] = 1;
+						}
+
+						$hoja->setCellValue("E{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+						$this->cellStyle("E".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
+
+						$hoja->setCellValue("G{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+						$this->cellStyle("G".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 						$flag ++;
 						$flag1 ++;
 					}
