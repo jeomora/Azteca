@@ -643,7 +643,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function getAdminTable(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P1D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
