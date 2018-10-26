@@ -184,7 +184,7 @@ function setAdminTable(){
 							'<i class="fa fa-eye"></i></button><button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 							'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
 							'<i class="fa fa-trash"></i></button></td></tr>';
-				$(".tableAdmin").append(tableAdmin);
+				$('.tableAdmin tr:last').after(tableAdmin);
 			});	
 			fillDataTable("table_cot_admin", 50);
 			$(".cuatro").inputmask("currency", {radixPoint: ".", prefix: ""});
