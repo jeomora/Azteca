@@ -1831,8 +1831,11 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AZ".$flag, "PEDIDO");
 							$hoja->setCellValue("BA".$flag, "PROMOCIÓN");
 							$hoja->setCellValue("BK".$flag, "TOTAL");
+							$hoja->setCellValue("BL".$flag, "SUMA PEDIDOS");
 							$this->cellStyle("BK".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+							$this->cellStyle("BL".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 							$this->excelfile->getActiveSheet()->getStyle('BK'.$flag)->applyFromArray($styleArray);
+							$this->excelfile->getActiveSheet()->getStyle('BL'.$flag)->applyFromArray($styleArray);
 							$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AS'.$flag)->applyFromArray($styleArray);
 						}else{
 							$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -2122,6 +2125,8 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("BJ{$flag}", "=C".$flag."*AW".$flag)->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$this->cellStyle("BK{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
 										$hoja->setCellValue("BK{$flag}", "=SUM(BB".$flag.":BJ".$flag.")")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+										$this->cellStyle("BL{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
+										$hoja->setCellValue("BL{$flag}", "=".$row['ped0']."+".$row['ped1']."+".$row['ped2']."+".$row['ped3']."+".$row['ped4']."+".$row['ped5']."+".$row['ped6']."+".$row['ped7']."+".$row['ped8']"+".$row['ped9']."");
 									}else{
 										if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
 											$hoja->setCellValue("C{$flag}", $row['precio_first'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -2241,7 +2246,7 @@ class Cotizaciones extends MY_Controller {
 									$this->excelfile->setActiveSheetIndex(1);
 									if ($id_proves === "VOLUMEN"){
 										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BA'.$flag)->applyFromArray($styleArray);
-										$this->excelfile->getActiveSheet()->getStyle('BK'.$flag)->applyFromArray($styleArray);
+										$this->excelfile->getActiveSheet()->getStyle('BK'.$flag.':BL'.$flag)->applyFromArray($styleArray);
 										if($row['precio_sistema'] == 0){
 											$row['precio_sistema'] = 1;
 										}
