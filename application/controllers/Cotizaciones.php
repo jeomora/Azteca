@@ -2137,7 +2137,7 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("BK{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
 										$hoja->setCellValue("BK{$flag}", "=SUM(BB".$flag.":BJ".$flag.")")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$this->cellStyle("BL{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-										$hoja->setCellValue("BL{$flag}", "=AZ".$flag."+AW".$flag."+AS".$flag."+AO".$flag."+AK".$flag."+AG".$flag."+AC".$flag."+Y".$flag."+U".$flag."+N".$flag."");
+										$hoja->setCellValue("BL{$flag}", "=AW".$flag."+AS".$flag."+AO".$flag."+AK".$flag."+AG".$flag."+AC".$flag."+Y".$flag."+U".$flag."+N".$flag."");
 									}else{
 										if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
 											$hoja->setCellValue("C{$flag}", $row['precio_first'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -2256,7 +2256,7 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("BM{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
 										$hoja->setCellValue("BM{$flag}", "=SUM(BD".$flag.":BL".$flag.")")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$this->cellStyle("BN{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-										$hoja->setCellValue("BN{$flag}", "=N".$flag."+V".$flag."+AA".$flag."+AE".$flag."+AI".$flag."+AM".$flag."+AQ".$flag."+AU".$flag."+AY".$flag."+BB".$flag."");
+										$hoja->setCellValue("BN{$flag}", "=N".$flag."+V".$flag."+AA".$flag."+AE".$flag."+AI".$flag."+AM".$flag."+AQ".$flag."+AU".$flag."+AY".$flag."");
 									}
 									$border_style= array('borders' => array('right' => array('style' =>
 										PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
