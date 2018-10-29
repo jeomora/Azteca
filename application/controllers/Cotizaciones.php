@@ -4139,6 +4139,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("BL".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
 		$this->cellStyle("BM".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
 		$this->cellStyle("BN".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BO".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$this->excelfile->getActiveSheet()->getStyle('BD'.$flag)->applyFromArray($styleArray);
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$where=["ctz_first.id_proveedor" => 3,"prod.estatus" => 1];//Semana actual
