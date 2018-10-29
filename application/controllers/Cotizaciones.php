@@ -3370,7 +3370,7 @@ class Cotizaciones extends MY_Controller {
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
-		$hoja->mergeCells('C1:E1')
+		$hoja->mergeCells('C1:E1');
 		$hoja->mergeCells('F1:H1');
 		$hoja->mergeCells('I1:K1');
 		$hoja->mergeCells('L1:N1');
