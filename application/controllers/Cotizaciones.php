@@ -3370,29 +3370,34 @@ class Cotizaciones extends MY_Controller {
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
-		$hoja->mergeCells('C1:E1');
-		$this->cellStyle("C1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("C1", "ABARROTES");
+		$hoja->mergeCells('C1:E1')
 		$hoja->mergeCells('F1:H1');
-		$this->cellStyle("F1", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("F1", "TIENDA");
 		$hoja->mergeCells('I1:K1');
-		$this->cellStyle("I1", "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("I1", "ULTRAMARINOS");
 		$hoja->mergeCells('L1:N1');
-		$this->cellStyle("L1", "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("L1", "TRINCHERAS");
 		$hoja->mergeCells('O1:Q1');
-		$this->cellStyle("O1", "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("O1", "AZT MERCADO");
 		$hoja->mergeCells('R1:T1');
-		$this->cellStyle("R1", "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("R1", "TENENCIA");
 		$hoja->mergeCells('U1:W1');
-		$this->cellStyle("U1", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->mergeCells('X1:Z1');
+		$hoja->mergeCells('AA1:AC1');
+		$this->cellStyle("C1", "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("C1", "CEDIS/SUPER");
+		$this->cellStyle("F1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("F1", "ABARROTES");
+		$this->cellStyle("I1", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("I1", "TIENDA");
+		$this->cellStyle("L1", "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("L1", "ULTRAMARINOS");
+		$this->cellStyle("O1", "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("O1", "TRINCHERAS");
+		$this->cellStyle("R1", "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("R1", "AZT MERCADO");
+		$this->cellStyle("U1", "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("U1", "TENENCIA");
 		$this->cellStyle("X1", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("U1", "TIJERAS");
+		$hoja->setCellValue("X1", "TIJERAS");
+		$this->cellStyle("AA1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AA1", "SUPER INDUSTRIAL");
+
 		$hoja->setCellValue("C2", "CAJAS");
 		$hoja->setCellValue("D2", "PZAS");
 		$hoja->setCellValue("E2", "PEDIDO");
@@ -3414,6 +3419,12 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("U2", "CAJAS");
 		$hoja->setCellValue("V2", "PZAS");
 		$hoja->setCellValue("W2", "PEDIDO");
+		$hoja->setCellValue("X2", "CAJAS");
+		$hoja->setCellValue("Y2", "PZAS");
+		$hoja->setCellValue("Z2", "PEDIDO")
+		$hoja->setCellValue("AA2", "CAJAS");
+		$hoja->setCellValue("AB2", "PZAS");
+		$hoja->setCellValue("AC2", "PEDIDO")
 		$cotizacionesProveedor = $this->ct_mdl->fill_ex(NULL, date('Y-m-d'));
 		$row_print =2;
 		if ($cotizacionesProveedor){
@@ -3474,6 +3485,14 @@ class Cotizaciones extends MY_Controller {
  						$hoja->setCellValue("V{$row_print}", $row['pz6']);
  						$hoja->setCellValue("W{$row_print}", $row['ped6']);
  						$this->cellStyle("W{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("X{$row_print}", $row['caja7']);
+ 						$hoja->setCellValue("Y{$row_print}", $row['pz7']);
+ 						$hoja->setCellValue("Z{$row_print}", $row['ped7']);
+ 						$this->cellStyle("Z{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("AA{$row_print}", $row['caja8']);
+ 						$hoja->setCellValue("AB{$row_print}", $row['pz8']);
+ 						$hoja->setCellValue("AC{$row_print}", $row['pe8']);
+ 						$this->cellStyle("AC{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
@@ -3495,6 +3514,12 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("U{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("V{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("W{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("X{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("Y{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("Z{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AA{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AB{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AC{$row_print}")->applyFromArray($border_style);
 						$row_print ++;
 					}
 				}
