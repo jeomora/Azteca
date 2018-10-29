@@ -2126,7 +2126,7 @@ class Cotizaciones extends MY_Controller {
 										$this->cellStyle("BK{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
 										$hoja->setCellValue("BK{$flag}", "=SUM(BB".$flag.":BJ".$flag.")")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 										$this->cellStyle("BL{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-										$hoja->setCellValue("BL{$flag}", "=".$row['ped0']+$row['ped1']+$row['ped2']+$row['ped3']+$row['ped4']+$row['ped5']+$row['ped6']+$row['ped7']+$row['ped8']+$row['ped9']."");
+										$hoja->setCellValue("BL{$flag}", "=SUM(AZ".$flag.";AW".$flag.";AS".$flag.";AO".$flag.";AK".$flag.";AG".$flag.";AC".$flag.";Y".$flag.";U".$flag.";N".$flag.")");
 									}else{
 										if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
 											$hoja->setCellValue("C{$flag}", $row['precio_first'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
