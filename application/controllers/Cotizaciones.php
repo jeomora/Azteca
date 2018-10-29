@@ -2333,9 +2333,6 @@ class Cotizaciones extends MY_Controller {
 						}else{
 							$flagf = $flag;
 							$flagfs = $flag - 1;
-							$hoja->setCellValue("BA{$flagf}", "=SUM(BA".$flage.":BA".$flagfs.")")->getStyle("BA{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$hoja->setCellValue("BB{$flagf}", "=SUM(BB".$flage.":BB".$flagfs.")")->getStyle("BB{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$hoja->setCellValue("BC{$flagf}", "=SUM(BC".$flage.":BC".$flagfs.")")->getStyle("BC{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("BD{$flagf}", "=SUM(BD".$flage.":BD".$flagfs.")")->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("BE{$flagf}", "=SUM(BE".$flage.":BE".$flagfs.")")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("BF{$flagf}", "=SUM(BF".$flage.":BF".$flagfs.")")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -2343,18 +2340,21 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BH{$flagf}", "=SUM(BH".$flage.":BH".$flagfs.")")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("BI{$flagf}", "=SUM(BI".$flage.":BI".$flagfs.")")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("BJ{$flagf}", "=SUM(BJ".$flage.":BJ".$flagfs.")")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("BJ{$flagf}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("BJ{$flagf}", "=SUM(BJ".$flage.":BJ".$flagfs.")")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$sumall[1] .= "BA".$flagf."+";
-							$sumall[2] .= "BB".$flagf."+";
-							$sumall[3] .= "BC".$flagf."+";
-							$sumall[4] .= "BD".$flagf."+";
-							$sumall[5] .= "BE".$flagf."+";
-							$sumall[6] .= "BF".$flagf."+";
-							$sumall[7] .= "BG".$flagf."+";
-							$sumall[8] .= "BH".$flagf."+";
-							$sumall[9] .= "BI".$flagf."+";
-							$sumall[10] .= "BJ".$flagf."+";
+							$hoja->setCellValue("BK{$flagf}", "=SUM(BK".$flage.":BK".$flagfs.")")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BL{$flagf}", "=SUM(BL".$flage.":BL".$flagfs.")")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BM{$flagf}", "=SUM(BM".$flage.":BM".$flagfs.")")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("BM{$flagf}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+							$hoja->setCellValue("BM{$flagf}", "=SUM(BM".$flage.":BM".$flagfs.")")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$sumall[1] .= "BD".$flagf."+";
+							$sumall[2] .= "BE".$flagf."+";
+							$sumall[3] .= "BF".$flagf."+";
+							$sumall[4] .= "BG".$flagf."+";
+							$sumall[5] .= "BH".$flagf."+";
+							$sumall[6] .= "BI".$flagf."+";
+							$sumall[7] .= "BJ".$flagf."+";
+							$sumall[8] .= "BK".$flagf."+";
+							$sumall[9] .= "BL".$flagf."+";
+							$sumall[10] .= "BM".$flagf."+";
 							$flage = $flag + 7;
 						}
 						if ($id_proves <> "VOLUMEN"){
