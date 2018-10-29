@@ -3424,7 +3424,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("Z2", "PEDIDO");
 		$hoja->setCellValue("AA2", "CAJAS");
 		$hoja->setCellValue("AB2", "PZAS");
-		$hoja->setCellValue("AC2", "PEDIDO")
+		$hoja->setCellValue("AC2", "PEDIDO");
 		$cotizacionesProveedor = $this->ct_mdl->fill_ex(NULL, date('Y-m-d'));
 		$row_print =2;
 		if ($cotizacionesProveedor){
