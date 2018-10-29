@@ -2073,9 +2073,9 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("N{$flag}", $row['ped0']);
 										$this->cellStyle("N{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-										$hoja->setCellValue("O{$flag}", ($row['caja0']+$row['caja9']));
-										$hoja->setCellValue("P{$flag}", ($row['pz0']+$row['pz9']));
-										$hoja->setCellValue("Q{$flag}", ($row['ped0']+$row['ped9']));
+										$hoja->setCellValue("O{$flag}", "=K".$flag."+AX".$flag);
+										$hoja->setCellValue("P{$flag}", "=L".$flag."+AY".$flag);
+										$hoja->setCellValue("Q{$flag}", "=N".$flag."+AZ".$flag);
 										$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("R{$flag}", $row['caja1']);
@@ -2192,9 +2192,9 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("N{$flag}", $row['ped0']);
 										$this->cellStyle("N{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-										$hoja->setCellValue("O{$flag}", ($row['caja0']+$row['caja9']));
-										$hoja->setCellValue("P{$flag}", ($row['pz0']+$row['pz9']));
-										$hoja->setCellValue("Q{$flag}", ($row['ped0']+$row['ped9']));
+										$hoja->setCellValue("O{$flag}", "=J".$flag."+AZ".$flag);
+										$hoja->setCellValue("P{$flag}", "=K".$flag."+BA".$flag);
+										$hoja->setCellValue("Q{$flag}", "=N".$flag."+BB".$flag);
 										$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("R{$flag}", $row['caja1']);
@@ -4246,9 +4246,9 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("O{$flag}", $row['ped0']);
 						$this->cellStyle("O{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-						$hoja->setCellValue("P{$flag}", $row['caja0']+$row['caja9']);
-						$hoja->setCellValue("Q{$flag}", $row['pz0']+$row['pz9']);
-						$hoja->setCellValue("R{$flag}", $row['ped0']+$row['ped9']);
+						$hoja->setCellValue("P{$flag}", "=K".$flag."+BA".$flag);
+						$hoja->setCellValue("Q{$flag}", "=L".$flag."+BB".$flag);
+						$hoja->setCellValue("R{$flag}", "=O".$flag."+BC".$flag);
 						$this->cellStyle("R{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 						$hoja->setCellValue("S{$flag}", $row['caja1']);
