@@ -97,7 +97,7 @@ class Main extends MY_Controller {
 	public function repeat_cotizacion(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
-		$fecha->sub($intervalo);
+		$fecha->add($intervalo);
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
 
