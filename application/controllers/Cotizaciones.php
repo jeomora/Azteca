@@ -3421,7 +3421,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("W2", "PEDIDO");
 		$hoja->setCellValue("X2", "CAJAS");
 		$hoja->setCellValue("Y2", "PZAS");
-		$hoja->setCellValue("Z2", "PEDIDO")
+		$hoja->setCellValue("Z2", "PEDIDO");
 		$hoja->setCellValue("AA2", "CAJAS");
 		$hoja->setCellValue("AB2", "PZAS");
 		$hoja->setCellValue("AC2", "PEDIDO")
