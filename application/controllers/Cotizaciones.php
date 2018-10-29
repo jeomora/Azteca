@@ -2041,8 +2041,8 @@ class Cotizaciones extends MY_Controller {
 											$this->cellStyle("I{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 										}
 										$this->cellStyle("K".$flag.":AR".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-										$hoja->setCellValue("H{$flag}", $row['proveedor_next']);
-										$this->cellStyle("H".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+										$hoja->setCellValue("J{$flag}", $row['proveedor_next']);
+										$this->cellStyle("J".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
 										$hoja->setCellValue("T{$flag}", $row['abarrotes']);
