@@ -4317,6 +4317,8 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("BM{$flag}", "=D".$flag."*AZ".$flag)->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$this->cellStyle("BN{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
 						$hoja->setCellValue("BN{$flag}", "=SUM(BE".$flag.":BM".$flag.")")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->cellStyle("BO{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("BO{$flag}", "=O".$flag."+W".$flag."+AB".$flag."+AF".$flag."+AJ".$flag."+AN".$flag."+AR".$flag."+AV".$flag."+AZ".$flag."");
 						
 						$border_style= array('borders' => array('right' => array('style' =>
 							PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
