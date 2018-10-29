@@ -2228,7 +2228,7 @@ class Cotizaciones extends MY_Controller {
 									$border_style= array('borders' => array('right' => array('style' =>
 										PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 									$this->excelfile->setActiveSheetIndex(1);
-									if ($id_proves <> "VOLUMEN"){
+									if ($id_proves === "VOLUMEN"){
 										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
 										$this->excelfile->getActiveSheet()->getStyle('BJ'.$flag)->applyFromArray($styleArray);
 									}else{
