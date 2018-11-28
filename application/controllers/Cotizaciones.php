@@ -28,6 +28,7 @@ class Cotizaciones extends MY_Controller {
 		];
 		$data['scripts'] = [
 			'/scripts/cotizaciones',
+			'/scripts/crel',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
