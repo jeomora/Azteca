@@ -952,7 +952,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("G{$row_print}", $row['descuento']);
 						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
-						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)){
+						if( $this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1) && date('Y') === date('Y',strtotime($row['fecha_registro'])) ){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -962,6 +962,7 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("G{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$hoja->setCellValue("H{$row_print}", "NUEVO");
 						}
+						//$this->jsonResponse($row['producto']." - ".date("Y")." - ".(date('Y',strtotime($row['fecha_registro']))+1)." - ".$this->weekNumber($row['fecha_registro'])." - ".$this->weekNumber()." / ");
 						$row_print++;
 					}
 				}
@@ -2491,7 +2492,7 @@ class Cotizaciones extends MY_Controller {
 						}
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
-						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)){
+						if( $this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1) && date('Y') === date('Y',strtotime($row['fecha_registro'])) ){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -2585,7 +2586,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
-						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)){
+						if( $this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1) && date('Y') === date('Y',strtotime($row['fecha_registro'])) )){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Book");
