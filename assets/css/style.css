@@ -5059,4 +5059,10 @@ label{background-color: #000 !important}
 input.form-control.input-sm{border: 2px solid #000 !important}
 
 .modal-content.animated.flipInY{background-color: #827f7f !important;}
-/*|div#page-wrapper{background-color: #484747 !important;}
+table{  
+ -webkit-box-shadow: 9px 9px 5px 0px rgba(0,0,0,0.75);  
+ -moz-box-shadow: 9px 9px 5px 0px rgba(0,0,0,0.75); 
+ box-shadow: 9px 9px 5px 0px rgba(0,0,0,0.75);  
+ }
+
+

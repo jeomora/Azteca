@@ -963,7 +963,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("H{$row_print}", "NUEVO");
 						}
 						$row_print++;
-					}
+					} 
 				}
 			}
 		}

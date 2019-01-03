@@ -126,7 +126,7 @@ class Main extends MY_Controller {
 						"observaciones"		=>	strtoupper($value->observaciones),
 						'estatus' => 0
 					];
-				}else{
+				}else{ 
 					$new_cotizacion[$i] = [
 						"id_producto"		=>	$value->id_producto,
 						"id_proveedor"		=>	$this->input->post('id_proveedor'),
