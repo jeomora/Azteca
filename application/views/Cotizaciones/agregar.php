@@ -5,7 +5,7 @@
 	.searchboxs{display: none}
 	.top-navigation #page-wrapper {margin-left: 0;overflow-y: scroll;}
 </style>
-<?php 
+<?php
 if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
 	redirect("Compras/Login", "");
 }
@@ -14,7 +14,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 
 <div class="col-md-12 ibox-content" style="padding: 4%">
 	<div class="row">
-		<h3>Seleccione un proveedor</h3>
+		<h3>Seleccione un proveedors</h3>
 	</div>
 	<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 	<div class="row">
@@ -26,9 +26,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<?php endforeach ?>
 			</select>
 		</div>
-		
+
 	</div>
-	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="ibox float-e-margins" style="display: none">
@@ -58,7 +58,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						<?php echo form_close(); ?>
 					</div>
-					
+
 					<div class="btn-group">
 						<?php echo form_open_multipart("", array("id" => "end_cotizaciones")); ?>
 						<button class="btn btn-danger" data-toggle="tooltip" title="Eliminar" id="end_cotizacion" type="button">
@@ -66,11 +66,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</button>
 						<?php echo form_close(); ?>
 					</div>
-					
+
 					<div class="btn-group searchboxs">
 						<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
 					</div>
-					
+
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_cot_proveedores">
 							<thead>
@@ -87,7 +87,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</tr>
 							</thead>
 							<tbody class="cot-prov">
-								
+
 							</tbody>
 						</table>
 					</div>
