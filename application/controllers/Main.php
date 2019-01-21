@@ -101,7 +101,7 @@ class Main extends MY_Controller {
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
 
-		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
+		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => 4]);
 		$i = 0;
 		$new_cotizacion = null;
 		if ($cotizaciones){
