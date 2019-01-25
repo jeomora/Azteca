@@ -464,9 +464,9 @@ $(document).off("click", "#add_me").on("click", "#add_me", function() {
 		var precio = tr.find(".precio").val().replace(/[^0-9\.]+/g,"");
 		table.row.add( [ tr.children('td:first').text(),tr.find(".precio").val(), tr.find(".cantidad").val(),"$ "+(tr.find(".cantidad").val() * precio).toFixed(2)] ).draw();
 		var total = $("#totals").val();
-		console.log(jQuery.type(total));
+		
 		total = parseFloat(total) + (tr.find(".cantidad").val() * precio);
-		console.log(tr.find(".cantidad").val() * precio);
+		
 		$("#totals").val((total*1).toFixed(2));
 		tr.remove();
 	}
