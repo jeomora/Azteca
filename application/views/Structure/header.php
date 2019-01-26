@@ -38,24 +38,6 @@
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/chosen/chosen.css')?>" >
 
 	<!--Start of Zendesk Chat Script-->
-<script type="text/javascript">
-window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-$.src="https://v2.zopim.com/?5srbeJgRLHkZUr7aKgWBFZ7qZPEKH0hW";z.t=+new Date;$.
-type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-</script>
-<!--End of Zendesk Chat Script-->
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122943105-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-122943105-1');
-</script>
-
 </head>
 
 	<!-- Estructura de la ventana modal par insertar, modificar y eliminar datos -->
