@@ -3499,6 +3499,10 @@ class Cotizaciones extends MY_Controller {
  						$hoja->setCellValue("AB{$row_print}", $row['pz8']);
  						$hoja->setCellValue("AC{$row_print}", $row['ped8']);
  						$this->cellStyle("AC{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("AD{$row_print}", $row['caja9']);
+ 						$hoja->setCellValue("AE{$row_print}", $row['pz9']);
+ 						$hoja->setCellValue("AF{$row_print}", $row['ped9']);
+ 						$this->cellStyle("AF{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
