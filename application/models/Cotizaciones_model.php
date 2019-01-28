@@ -1404,7 +1404,7 @@ $this->db->select("c.id_cotizacion,
 					case '89':
 						$e = "8";
 						break;
-					case '95':
+					case '90':
 						$e = "9";
 						break;
 					default:
@@ -1445,7 +1445,7 @@ $this->db->select("c.id_cotizacion,
 					case '89':
 						$e = "8";
 						break;
-					case '95':
+					case '90':
 						$e = "9";
 						break;
 					default:
