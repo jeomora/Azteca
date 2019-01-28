@@ -1370,6 +1370,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped8"]	=	"";
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda8"]	=	0;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped8"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja9"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["pz9"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["ped9"]	=	"";
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["tienda9"]	=	0;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["idped9"]	=	0;
 
 				switch ($comparativa[$i]->id_tienda) {
 					case '87':
@@ -1399,8 +1404,11 @@ $this->db->select("c.id_cotizacion,
 					case '89':
 						$e = "8";
 						break;
-					default:
+					case '95':
 						$e = "9";
+						break;
+					default:
+						$e = "10";
 						break;
 				}
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja".$e]		=	$comparativa[$i]->cajas;
@@ -1437,8 +1445,11 @@ $this->db->select("c.id_cotizacion,
 					case '89':
 						$e = "8";
 						break;
-					default:
+					case '95':
 						$e = "9";
+						break;
+					default:
+						$e = "10";
 						break;
 				}
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["caja".$e]		=	$comparativa[$i]->cajas;

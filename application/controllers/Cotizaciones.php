@@ -3379,6 +3379,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->mergeCells('U1:W1');
 		$hoja->mergeCells('X1:Z1');
 		$hoja->mergeCells('AA1:AC1');
+		$hoja->mergeCells('AD1:AF1');
 		$this->cellStyle("C1", "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("C1", "CEDIS/SUPER");
 		$this->cellStyle("F1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -3397,6 +3398,8 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("X1", "TIJERAS");
 		$this->cellStyle("AA1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("AA1", "SUPER INDUSTRIAL");
+		$this->cellStyle("AD1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AD1", "VILLAS");
 
 		$hoja->setCellValue("C2", "CAJAS");
 		$hoja->setCellValue("D2", "PZAS");
@@ -3425,6 +3428,9 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AA2", "CAJAS");
 		$hoja->setCellValue("AB2", "PZAS");
 		$hoja->setCellValue("AC2", "PEDIDO");
+		$hoja->setCellValue("AD2", "CAJAS");
+		$hoja->setCellValue("AE2", "PZAS");
+		$hoja->setCellValue("AF2", "PEDIDO");
 		$cotizacionesProveedor = $this->ct_mdl->fill_ex(NULL, date('Y-m-d'));
 		$row_print =2;
 		if ($cotizacionesProveedor){
@@ -3520,6 +3526,9 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("AA{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AB{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AC{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AD{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AE{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AF{$row_print}")->applyFromArray($border_style);
 						$row_print ++;
 					}
 				}
