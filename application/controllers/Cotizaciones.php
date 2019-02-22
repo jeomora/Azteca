@@ -876,7 +876,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function fill_excel_pro(){
 		if ($this->input->post('id_pro') == 3 || $this->input->post('id_pro') == "3") {
-			fill_excel_duero();
+			$this->fill_excel_duero();
 		}else{
 			ini_set("memory_limit", "-1");
 			$this->load->library("excelfile");
