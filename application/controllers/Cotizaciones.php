@@ -963,7 +963,7 @@ class Cotizaciones extends MY_Controller {
 								$this->cellStyle("E{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 								$this->cellStyle("F{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 								$this->cellStyle("G{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
-								$hoja->setCellValue("H{$row_print}", "NUEVO");
+								$hoja->setCellValue("H{$row_print}", date('Y', strtotime($row['fecha_registro'])));
 							}
 							$row_print++;
 						}
