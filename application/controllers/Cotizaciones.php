@@ -4544,7 +4544,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("H{$row_print}", $row['descuento']);
 						$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
-						if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) == '2019'){
+						if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1))  && date('Y', strtotime($row['fecha_registro'])) == '2019'){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
