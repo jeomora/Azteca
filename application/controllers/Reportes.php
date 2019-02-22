@@ -8,6 +8,8 @@ class Reportes extends MY_Controller {
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Usuarios_model", "user_mdl");
 		$this->load->model("Cambios_model", "cam_mdl");
+		$this->load->model("Prodcaja_model", "prodc_mdl");
+		$this->load->model("Cambios_model", "cambio_md");
 	}
 
 	public function precios_bajos(){
@@ -38,6 +40,38 @@ class Reportes extends MY_Controller {
 		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
 		$data["preciosBajos"] = $this->ct_mdl->preciosBajos($where);
 		$this->estructura("Reportes/table_precios_bajos", $data);
+	}
+
+	public function duero(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/duero',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+
+		$where=["WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];//Semana actual
+		$data["preciosBajos"] = $this->ct_mdl->preciosBajos($where);
+		$data["productos"] = $this->prodc_mdl->getProds(NULL);
+		//$this->jsonResponse($data["productos"]);
+		$this->estructura("Reportes/duero", $data);
 	}
 
 	public function precios_iguales(){
@@ -218,6 +252,34 @@ class Reportes extends MY_Controller {
 		$where=["usuarios.id_grupo" => 2];
 		$data["proveedores"] = $this->user_mdl->getUsuarios($where);
 		$this->estructura("Reportes/expo", $data);
+	}
+
+	public function edit_prods(){
+		$value = json_decode($this->input->post('values'), true);
+		$new_prod = [
+			"codigo" => $value["codigo"],
+			"descripcion" => strtoupper($value["descripcion"]),
+			"clave" => $value["clave"],
+			"codigo_factura" => $value["codigo_factura"],
+		];
+		$gets = $this->prodc_mdl->update($new_prod, $value["id_prodcaja"]);
+		
+		$cambios = [
+			"id_usuario" => $this->session->userdata('id_usuario'),
+			"fecha_cambio" => date('Y-m-d H:i:s'),
+			"accion" => "Cambia código duero ".strtoupper($value["descripcion"]),
+			"antes" => "El usuario edita códifo Duero",
+			"despues" => "Código->".$value["codigo"]."/ ".strtoupper($value["descripcion"])."/ Clave->".$value["clave"]."/ Cod Factura ->".$value["codigo_factura"]
+		];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
+		
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Código editado correctamente',
+			"type"	=> 'success'
+		];
+
+		$this->jsonResponse($mensaje);
 	}
 
 }
