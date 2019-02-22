@@ -117,8 +117,7 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 			productos.color,
 			productos.fecha_registro")
 		->from($this->TABLE_NAME)
-		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
-		->join("prodcaja pc", $this->TABLE_NAME.".id_producto = pc.id_prodfactura", "LEFT")
+		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")		
 		->where("productos.estatus <> 0")
 		->order_by("f.id_familia,productos.nombre", "ASC");
 		if ($where !== NULL){
@@ -203,6 +202,7 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 			pc.codigo_factura")
 		->from($this->TABLE_NAME)
 		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
+		->join("prodcaja pc", $this->TABLE_NAME.".id_producto = pc.id_prodfactura", "LEFT")
 		->where("productos.estatus <> 0")
 		->order_by("f.id_familia,productos.nombre", "ASC");
 		if ($where !== NULL){
