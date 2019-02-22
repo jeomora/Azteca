@@ -2495,7 +2495,7 @@ class Cotizaciones extends MY_Controller {
 						}
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
-						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)){
+						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)  && date("Y") == substr($row['fecha_registro'],4)){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -2589,7 +2589,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
-						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)){
+						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)  && date("Y") == substr($row['fecha_registro'],4)){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -3383,6 +3383,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->mergeCells('U1:W1');
 		$hoja->mergeCells('X1:Z1');
 		$hoja->mergeCells('AA1:AC1');
+		$hoja->mergeCells('AD1:AF1');
 		$this->cellStyle("C1", "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("C1", "CEDIS/SUPER");
 		$this->cellStyle("F1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -3401,6 +3402,8 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("X1", "TIJERAS");
 		$this->cellStyle("AA1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("AA1", "SUPER INDUSTRIAL");
+		$this->cellStyle("AD1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AD1", "VILLAS");
 
 		$hoja->setCellValue("C2", "CAJAS");
 		$hoja->setCellValue("D2", "PZAS");
@@ -3429,6 +3432,9 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AA2", "CAJAS");
 		$hoja->setCellValue("AB2", "PZAS");
 		$hoja->setCellValue("AC2", "PEDIDO");
+		$hoja->setCellValue("AD2", "CAJAS");
+		$hoja->setCellValue("AE2", "PZAS");
+		$hoja->setCellValue("AF2", "PEDIDO");
 		$cotizacionesProveedor = $this->ct_mdl->fill_ex(NULL, date('Y-m-d'));
 		$row_print =2;
 		if ($cotizacionesProveedor){
@@ -3497,6 +3503,10 @@ class Cotizaciones extends MY_Controller {
  						$hoja->setCellValue("AB{$row_print}", $row['pz8']);
  						$hoja->setCellValue("AC{$row_print}", $row['ped8']);
  						$this->cellStyle("AC{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("AD{$row_print}", $row['caja9']);
+ 						$hoja->setCellValue("AE{$row_print}", $row['pz9']);
+ 						$hoja->setCellValue("AF{$row_print}", $row['ped9']);
+ 						$this->cellStyle("AF{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
@@ -3524,6 +3534,9 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("AA{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AB{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AC{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AD{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AE{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AF{$row_print}")->applyFromArray($border_style);
 						$row_print ++;
 					}
 				}
