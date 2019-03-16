@@ -2010,13 +2010,7 @@ class Cotizaciones extends MY_Controller {
 							                 ->getAlignment()
 							                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 							         
-					                 if($this->weekNumber($registrazo) == ($this->weekNumber() -1 ) || $this->weekNumber($registrazo) == ($this->weekNumber())){
-										$this->cellStyle("A{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-										$this->cellStyle("B{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-										$this->cellStyle("C{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-										$this->cellStyle("E{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-
-									}
+					                 
 									//Pedidos
 									$this->excelfile->setActiveSheetIndex(1);
 									$this->cellStyle("A".$flag.":AF".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -2301,10 +2295,7 @@ class Cotizaciones extends MY_Controller {
 							                 ->getAlignment()
 							                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-							   if($this->weekNumber($registrazo) == ($this->weekNumber() - 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
-										$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-										$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-									}
+							   
 									$flag ++;
 									$flag1 ++;
 								}
