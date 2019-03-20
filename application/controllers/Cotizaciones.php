@@ -2215,8 +2215,8 @@ class Cotizaciones extends MY_Controller {
 
 										$hoja->setCellValue("Z{$flag}", $row['caja2']);
 										$hoja->setCellValue("AA{$flag}", $row['pz2']);
-										$hoja->setCellValue("AC{$flag}", $row['ped2']);
-										$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+										$hoja->setCellValue("AD{$flag}", $row['ped2']);
+										$this->cellStyle("AD{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 										$hoja->setCellValue("AE{$flag}", $row['caja3']);
 										$hoja->setCellValue("AF{$flag}", $row['pz3']);
@@ -4220,13 +4220,7 @@ class Cotizaciones extends MY_Controller {
 				                 ->getAlignment()
 				                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				         
-		                 if($this->weekNumber($registrazo) == ($this->weekNumber() -1 ) || $this->weekNumber($registrazo) == ($this->weekNumber())){
-							$this->cellStyle("A{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("B{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("C{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("E{$flag1}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-
-						}
+		                
 						//Pedidos
 						$this->excelfile->setActiveSheetIndex(1);
 						$this->cellStyle("A".$flag.":BA".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
