@@ -2323,7 +2323,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BI{$flagf}", "=SUM(BI5:BI".$flagfs.")")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$hoja->setCellValue("BJ{$flagf}", "=SUM(BJ5:BJ".$flagfs.")")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$this->cellStyle("BK{$flagf}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("BK{$flagf}", "=SUM(BF5:BF".$flagfs.")")->getStyle("BK{$flagf}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BK{$flagf}", "=SUM(BK5:BK".$flagfs.")")->getStyle("BK{$flagf}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$sumall[1] .= "BB".$flagf."+";
 							$sumall[2] .= "BC".$flagf."+";
 							$sumall[3] .= "BD".$flagf."+";
