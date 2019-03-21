@@ -25,6 +25,7 @@
 							<td style="text-align: center;"><?php echo $value->familia ?></td>
 							<td style="text-align: center;"><?php echo $value->codigo ?></td>
 							<td style="text-align: center;"><?php echo $value->producto ?></td>
+							
 						</tr>
 					<?php endforeach ?>
 				</tbody>

@@ -38,7 +38,7 @@ class Main extends MY_Controller {
 
 	public function getNotCotizados(){
 		$data["title"]="PRODUCTOS NO COTIZADOS";
-		$data["cotizados"] = $this->pr_md->getCotizados();
+		$data["cotizados"] = $this->pr_md->getCotizadillos();
 		$data["view"] = $this->load->view("Cotizaciones/no_cotizados", $data,TRUE);
 		$this->jsonResponse($data);
 	}
