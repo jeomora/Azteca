@@ -153,13 +153,13 @@ function setAdminTable(){
 				}
 				
 
-				tableAdmin.push('<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>');
+				tableAdmin.push('<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'<br>');
 				if(value.precio_first >= value.precio_sistema){
-					tableAdmin.push('<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>');
+					tableAdmin.push('<div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'');
 				}else{
-					tableAdmin.push('<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>');
+					tableAdmin.push('<div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'');
 				}
-				tableAdmin.push('<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>'+
+				tableAdmin.push('<br>'+value.proveedor_first+'<br>'+value.promocion_first+'</div></td>'+
 							'<td>$ '+formatNumber(parseFloat(value.precio_maximo), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_promedio), 2)+'</td>');
 
 				tableAdmin.push(value.precio_nexto == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nexto), 2)+'</td>');					
