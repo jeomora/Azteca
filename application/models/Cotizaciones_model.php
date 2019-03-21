@@ -203,7 +203,7 @@ $this->db->select("c.id_cotizacion,
 		->order_by("prod.id_familia,prod.nombre", "ASC");
 */
 	public function getCotz($where = [],$fech){
-		$this->db->select("c.id_cotizacion,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
+		$this->db->select("c.id_cotizacion,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.producto AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,ctz_first.precio AS precio_firsto,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
