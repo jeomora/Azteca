@@ -171,7 +171,10 @@ if(!$this->session->userdata("username")){
 									<th>DESCRIPCIÓN</th>
 									<th>SISTEMA</th>
 									<th>PRECIO 4</th>
-									<th>1ER PROVEEDOR</th>
+									<th>FACTURA</th>
+									<th>C/PROMOCIÓN</th>
+									<th>PROVEEDOR</th>
+									<th>OBSERVACIÓN</th>
 									<th>PRECIO MAXIMO</th>
 									<th>PRECIO PROMEDIO</th>
 									<th>FACTURA</th>
