@@ -221,7 +221,7 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
-		->group_by("prod.nombre")
+		->group_by("prod.producto")
 		->order_by("prod.id_familia,prod.producto", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
