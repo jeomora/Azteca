@@ -55,7 +55,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					Subir formato de faltantes
 				</div>
 			</div>
-			<div class="col-lg-4"></div>
+			<div class="col-lg-2"></div>
+			<div class="col-lg-2">
+				<button class="btn btn-danger" name="nuevo_fal" data-toggle="tooltip" title="Agregar Faltante" type="button" id="del_fal" style="display: none">
+					<i class="fa fa-trash"></i> Eliminar todos
+				</button>
+			</div>
 			<div class="col-lg-3 searchboxs">
 				<label>Buscar:<input class="form-control input-sm" type="text" id="myInput" onkeyup="myFunction()" placeholder="Nombre..."></label>
 			</div>

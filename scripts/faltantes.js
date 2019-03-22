@@ -34,12 +34,14 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 		$("#id_pro").prop('disabled', 'disabled');
 		$("#camb").css("display","block");
 		$("#nuevo_fal").css("display","block");
+		$("#del_fal").css("display","block");
 		$("#falts").css("display","block");
 		$(".searchboxs").css("display","block");
 		renderTable(proveedor);
 	}else{
 		$("#camb").css("display","none");
 		$("#nuevo_fal").css("display","none");
+		$("#del_fal").css("display","none");
 		$("#falts").css("display","none");
 		$(".searchboxs").css("display","none");
 		$(".cot-prov").html("");
@@ -151,6 +153,25 @@ $(document).off("click", "#nuevo_fal").on("click", "#nuevo_fal", function(event)
 		getChosen();
 	});
 });
+
+
+$(document).off("click", "#del_fal").on("click", "#del_fal", function(event) {
+	event.preventDefault();
+	var values = {'id_proveedor': $("#id_pro option:selected").val()};
+	delFalt(JSON.stringify(values)).done(function(resp){});
+	
+});
+
+function delFalt(values){
+    return $.ajax({
+        url: site_url+"/Cotizaciones/delete_falta",
+        type: "POST",
+        dataType: "JSON",
+        data: {
+            values : values
+        },
+    });
+}
 
 $(document).off("click", ".new_falta").on("click", ".new_falta", function(event) {
 	if($("#id_producto").val() !== ''){
