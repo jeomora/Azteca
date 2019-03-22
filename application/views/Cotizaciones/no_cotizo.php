@@ -21,7 +21,7 @@
 							<td style="text-align: center;"><?php echo $value->id_usuario ?></td>
 							<td style="text-align: center;"><?php echo $value->nombre ?></td>
 							<td style="text-align: center;">
-								<?php echo $dias[date('w',strtotime($value->fecha))]." ".date('d',strtotime($value->fecha))." DE ".$meses[date('n',strtotime($value->fecha))-1]." ".date('H:i:s', strtotime($value->fecha_registro)) ?><br>
+								<?php echo $dias[date('w',strtotime($value->fecha))]." ".date('d',strtotime($value->fecha))." DE ".$meses[date('n',strtotime($value->fecha))-1]." ".date('H:i:s', strtotime($value->fecha)) ?><br>
 							</td>
 						</tr>
 					<?php endforeach ?>
