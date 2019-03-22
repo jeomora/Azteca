@@ -47,6 +47,8 @@ class Main extends MY_Controller {
 
 	public function getNotCotizo(){
 		$data["title"]="PROVEEDORES SIN COTIZAR";
+		$data["dias"] = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$data["meses"] = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$data["cotizados"] = $this->user_md->getCotizadillos();
 		$data["view"] = $this->load->view("Cotizaciones/no_cotizo", $data,TRUE);
 		$this->jsonResponse($data);
