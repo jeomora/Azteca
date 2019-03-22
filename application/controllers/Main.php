@@ -38,6 +38,8 @@ class Main extends MY_Controller {
 
 	public function getNotCotizados(){
 		$data["title"]="PRODUCTOS NO COTIZADOS";
+		$data["dias"] = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$data["meses"] = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$data["cotizados"] = $this->pr_md->getCotizadillos();
 		$data["view"] = $this->load->view("Cotizaciones/no_cotizados", $data,TRUE);
 		$this->jsonResponse($data);
