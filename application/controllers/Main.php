@@ -47,7 +47,7 @@ class Main extends MY_Controller {
 
 	public function getNotCotizo(){
 		$data["title"]="PROVEEDORES SIN COTIZAR";
-		$data["cotizados"] = $this->user_md->getCotizados();
+		$data["cotizados"] = $this->user_md->getCotizadillos();
 		$data["view"] = $this->load->view("Cotizaciones/no_cotizo", $data,TRUE);
 		$this->jsonResponse($data);
 	}

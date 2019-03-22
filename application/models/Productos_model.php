@@ -51,7 +51,7 @@ class Productos_model extends MY_Model {
 		->from($this->TABLE_NAME)
 		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
 		->where("productos.id_producto NOT IN (SELECT cotizaciones.id_producto FROM cotizaciones WHERE 
-WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND cotizaciones.estatus = 1)")
+				WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND cotizaciones.estatus = 1)")
 		->where($this->TABLE_NAME.".estatus", 1);
 		if ($where !== NULL) {
 			if (is_array($where)) {

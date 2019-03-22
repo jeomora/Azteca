@@ -76,6 +76,32 @@ class Usuarios_model extends MY_Model {
 		}
 	}
 
+	public function getCotizadillos($where = []){
+		$this->db->select("u.id_usuario,u.nombre,c.fecha FROM usuarios u LEFT JOIN (SELECT c.id_proveedor,MAX(c.fecha_registro) AS fecha FROM cotizaciones c 
+			GROUP BY c.id_proveedor) c ON u.id_usuario = c.id_proveedor WHERE u.id_grupo = 2 AND u.id_usuario NOT IN(SELECT c.id_proveedor FROM cotizaciones 
+			c WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(DATE_ADD(CURDATE(), INTERVAL 2 DAY)) GROUP BY c.id_proveedor )")
+		->order_by("c.fecha","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return array_shift($result);
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public function login($where=[]){
 		if($where !== NULL){
 			if(is_array($where)){
