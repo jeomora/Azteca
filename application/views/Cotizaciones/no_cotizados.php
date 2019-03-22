@@ -26,9 +26,12 @@
 							<td style="text-align: center;"><?php echo $value->familia ?></td>
 							<td style="text-align: center;"><?php echo $value->codigo ?></td>
 							<td style="text-align: center;"><?php echo $value->producto ?></td>
-							<td style="text-align: center;">
+							<?php if($value->fecha == NULL): ?> 
 								<?php echo $dias[date('w',strtotime($value->fecha))]." ".date('d',strtotime($value->fecha))." DE ".$meses[date('n',strtotime($value->fecha))-1]." ".date('H:i:s', strtotime($value->fecha)) ?><br>
-							</td>
+								<?php $now=time();$datediff=$now-strtotime($value->fecha);echo "(".number_format((round($datediff / (60 * 60 * 24)) / 7),2,".",",")." semanas)"; ?>
+							<?php else: ?>
+								MAS DE 16 SEMANAS 
+							<?php endif; ?> 
 						</tr>
 					<?php endforeach ?>
 				</tbody>
