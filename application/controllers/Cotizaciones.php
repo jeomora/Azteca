@@ -1665,8 +1665,8 @@ class Cotizaciones extends MY_Controller {
 						$where=["ctz_first.id_proveedor" => $value->id_usuario,"prod.estatus" => 1];//Semana actual
 					}
 				$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
-				
-					$difff = 0.01;
+				$this->jsonResponse($cotizacionesProveedor);
+				/*	$difff = 0.01;
 					$flag2 = 3;
 					$cargo = "";
 					if ($cotizacionesProveedor){
@@ -2429,7 +2429,7 @@ class Cotizaciones extends MY_Controller {
 			header("Content-Disposition: attachment;filename=".$file_name);
 			header("Cache-Control: max-age=0");
 			$excel_Writer->save("php://output");
-			/*$excel_Writer = new PHPExcel_Writer_Excel2007($this->excelfile);
+			$excel_Writer = new PHPExcel_Writer_Excel2007($this->excelfile);
 			$excel_Writer->setOffice2003Compatibility(true);
 			$excel_Writer->save("php://output");*/
 		}else{

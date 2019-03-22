@@ -852,10 +852,8 @@ $this->db->select("c.id_cotizacion,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
-
 			UPPER(proveedor_nxts.nombre) AS proveedor_nxts,ctz_nxts.fecha_registro AS fecha_nxts,ctz_nxts.observaciones AS promocion_nxts,
 			ctz_nxts.precio AS precio_nxtso,IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
-
 			ctz_maxima.precio AS precio_maximo,
 			AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia")
 		->from("prodandprice prod")
