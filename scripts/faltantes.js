@@ -158,7 +158,9 @@ $(document).off("click", "#nuevo_fal").on("click", "#nuevo_fal", function(event)
 $(document).off("click", "#del_fal").on("click", "#del_fal", function(event) {
 	event.preventDefault();
 	var values = {'id_proveedor': $("#id_pro option:selected").val()};
-	delFalt(JSON.stringify(values)).done(function(resp){});
+	delFalt(JSON.stringify(values)).done(function(resp){
+		$(".cot-prov").html("<tr><td colspan='5'><h2 style='text-align:center'>PROVEEDOR SIN FALTANTES</td></tr>");
+	});
 	
 });
 
