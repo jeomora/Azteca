@@ -848,7 +848,7 @@ $this->db->select("c.id_cotizacion,
 
 		$this->db->select("abarrotes,cedis,mercado,pedregal,tienda,trincheras,tenencia,ultra,tijeras,ctz_first.id_cotizacion,prod.registrazo,fac.codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
-			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
+			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,my.id_mayoreo,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
@@ -869,6 +869,7 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
 		->join("prodcaja fac", "prod.id_producto = fac.id_prodfactura", "LEFT")
+		->join("mayoreo my","prod.codigo = my.codigo","LEFT")
 		->group_by("prod.nombre")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
 
@@ -926,6 +927,7 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["id_mayoreo"]	=	$comparativa[$i]->id_mayoreo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["abarrotes"]	=	$comparativa[$i]->abarrotes;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cedis"]	=	$comparativa[$i]->cedis;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tienda"]	=	$comparativa[$i]->tienda;
