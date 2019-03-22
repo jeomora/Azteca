@@ -12,6 +12,7 @@
 					<tr>
 						<th>ID PROVEEDOR</th>
 						<th>PROVEEDOR</th>
+						<th>ÚLTIMA COTIZACIÓN</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -19,6 +20,10 @@
 						<tr>
 							<td style="text-align: center;"><?php echo $value->ides ?></td>
 							<td style="text-align: center;"><?php echo $value->proveedor ?></td>
+							<td style="text-align: center;">
+								<?php echo $dias[date('w',strtotime($value->fecha))]." ".date('d',strtotime($value->fecha))." DE ".$meses[date('n',strtotime($value->fecha))-1]." ".date('H:i:s', strtotime($value->fecha_registro)) ?><br>
+								<?php $now=time();$datediff=$now-strtotime($value->fecha);echo "(".number_format((round($datediff / (60 * 60 * 24))/7),2,".",",")." semanas)"; ?>
+							</td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>
