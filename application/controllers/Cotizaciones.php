@@ -1665,7 +1665,7 @@ class Cotizaciones extends MY_Controller {
 						$where=["ctz_first.id_proveedor" => $value->id_usuario,"prod.estatus" => 1];//Semana actual
 					}
 				$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
-				$this->jsonResponse($cotizacionesProveedor);
+				$this->jsonResponse($cotizacionesProveedor);}
 				/*	$difff = 0.01;
 					$flag2 = 3;
 					$cargo = "";
