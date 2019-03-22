@@ -76,7 +76,10 @@ WEEKOFYEAR(cotizaciones.fecha_registro) = ".$this->weekNumber($fecha->format('Y-
 
 
 	public function getCotizadillos($where = []){
-		$this->db->select("p.id_producto,p.nombre AS producto,p.codigo,(DATEDIFF(CURDATE(),MAX(c.fecha_registro))/7) AS DI,MAX(c.fecha_registro) as fecha FROM productos p LEFT JOIN cotizaciones c on p.id_producto = c.id_producto AND c.estatus = 1 WHERE p.estatus <> 0 AND p.id_producto NOT IN (SELECT id_producto FROM cotizaciones where WEEKOFYEAR(fecha_registro) <> WEEKOFYEAR(CURDATE()) AND YEAR(fecha_registro) <> YEAR(CURDATE())) GROUP BY p.id_producto")
+		$this->db->select("p.id_producto,p.nombre as producto,p.codigo,p.fecha_registro,c.fechirri,f.nombre AS familia FROM productos p LEFT JOIN 
+			(SELECT c.id_producto,MAX(c.fecha_registro) AS fechirri FROM cotizaciones c GROUP BY c.id_producto ) c ON p.id_producto = c.id_producto 
+			LEFT JOIN familias f ON p.id_familia = f.id_familia WHERE p.estatus <> 0 AND p.id_producto NOT IN(SELECT c.id_producto FROM cotizaciones c 
+			WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(DATE_ADD(CURDATE(), INTERVAL 2 DAY)) GROUP BY c.id_producto )")
 		->order_by("p.id_producto","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
