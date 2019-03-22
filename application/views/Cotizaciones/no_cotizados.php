@@ -28,7 +28,7 @@
 							<td style="text-align: center;"><?php echo $value->producto ?></td>
 							<td style="text-align: center;">
 								<?php echo $dias[date('w',strtotime($value->fecha))]." ".date('d',strtotime($value->fecha))." DE ".$meses[date('n',strtotime($value->fecha))-1]." ".date('H:i:s', strtotime($value->fecha_registro)) ?><br>
-								<?php $now=time();$datediff=$now-strtotime($value->fecha);echo "(".number_format((round($datediff / (60 * 60 * 24))/7),2,".",",")." semanas)"; ?>
+								<?php $now=time();$datediff=$now-strtotime($value->fecha);echo "(".(round($datediff / (60 * 60 * 24))/7)." días)"; ?>
 							</td>
 						</tr>
 					<?php endforeach ?>
