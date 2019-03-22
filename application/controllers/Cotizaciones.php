@@ -2925,6 +2925,34 @@ class Cotizaciones extends MY_Controller {
 		];
 		$this->jsonResponse($mensaje);
 	}
+
+	public function delete_falta(){
+		$user = $this->session->userdata();
+		$val = json_decode($this->input->post('values'), true);
+		$antes =  $this->falt_mdl->get(NULL, ['fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $val['id_proveedor']]);
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->sub($intervalo);
+		$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=> $val['id_proveedor']])[0];
+		if($antes){
+			foreach ($antes as $key => $value) {
+				$data ['id_faltante'] = $this->falt_mdl->update(["no_semanas" => 0,"fecha_termino" => $fecha->format('Y-m-d H:i:s')], $value->id_faltante);
+			}
+		}
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Faltantes eliminados correctamente',
+			"type"	=> 'success'
+		];
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Elimina faltantes",
+				"antes" => "El usuario elimina los faltantes ",
+				"despues" => ""];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
+		$this->jsonResponse($mensaje);
+	}
 	public function upload_expos($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -4193,7 +4221,7 @@ class Cotizaciones extends MY_Controller {
 		$this->excelfile->getActiveSheet()->getStyle('BD'.$flag)->applyFromArray($styleArray);
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$where=["ctz_first.id_proveedor" => 3,"prod.estatus" => 1];//Semana actual
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
 		$flag1 = 5;
