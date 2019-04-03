@@ -134,20 +134,15 @@ class Productos_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
-		$this->db->select("
-			productos.id_producto,
-			productos.nombre AS producto,
-			productos.codigo,
-			productos.estatus,
-			f.nombre AS familia,
-			f.id_familia,
-			productos.colorp,
-			productos.color,
-			productos.fecha_registro")
-		->from($this->TABLE_NAME)
-		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")		
-		->where("productos.estatus <> 0")
-		->order_by("f.id_familia,productos.nombre", "ASC");
+		$this->db->select("f.id_producto AS SEM1,f2.id_producto AS SEM2,f3.id_producto AS SEM3,f4.id_producto AS SEM4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
+			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
+			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
+			WEEKOFYEAR(CURDATE()) AND c.id_proveedor = 2 LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
+			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
+			FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY))) f2 ON c.id_producto = f2.id_producto AND c.id_proveedor = 
+			f2.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY))) 
+			f3 ON c.id_producto = f3.id_producto AND c.id_proveedor = f3.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino)
+			 = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY))) f4 ON c.id_producto = f4.id_producto AND c.id_proveedor = f4.id_proveedor WHERE p.estatus <> 0");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -177,30 +172,11 @@ class Productos_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
-			$precios2 = $this->db->select('precio,
-				  num_one,
-				  num_two,
-				  observaciones,
-				  descuento')
-				->from('cotizaciones')
-				->where('WEEKOFYEAR(fecha_registro)',($this->weekNumber($fecha->format('Y-m-d H:i:s'))-1))
-				->where('id_producto',$comparativa[$i]->id_producto)
-				->where('id_proveedor',$prove)
-				->group_by("id_proveedor");
-				$precios = $this->db->get()->result();
-			if($precios){
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	$precios[0]->precio;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	$precios[0]->num_one;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	$precios[0]->num_two;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	$precios[0]->observaciones;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	$precios[0]->descuento;
-			}else{
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	0;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	"";
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	"";
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	"";
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	"";
-			}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	$comparativa[$i]->precio == NULL ? "" : $comparativa[$i]->precio;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	$comparativa[$i]->num_one == NULL ? "" : $comparativa[$i]->num_one;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	$comparativa[$i]->num_two == NULL ? "" : $comparativa[$i]->num_two;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	$comparativa[$i]->observaciones == NULL ? "" : $comparativa[$i]->observaciones;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	$comparativa[$i]->descuento == NULL ? "" : $comparativa[$i]->descuento;
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {
