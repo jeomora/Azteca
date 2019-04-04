@@ -945,9 +945,9 @@ class Cotizaciones extends MY_Controller {
 							}else{
 								$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 							}
-							if($row['sem4'] <> NULL){
+							if($row['sem4'] <> NULL && ($row['sem2'] <> NULL && $row['sem1'] <> NULL)){
 								$this->cellStyle("C{$row_print}", "8064A2", "000000", FALSE, 10, "Franklin Gothic Book");
-							}elseif ($row['sem3'] <> NULL) {
+							}elseif ($row['sem3'] <> NULL && ($row['sem2'] <> NULL && $row['sem1'] <> NULL)){
 								$this->cellStyle("C{$row_print}", "8064A2", "000000", FALSE, 10, "Franklin Gothic Book");
 							}elseif ($row['sem2'] <> NULL) {
 								$this->cellStyle("C{$row_print}", "F79646", "000000", FALSE, 10, "Franklin Gothic Book");
