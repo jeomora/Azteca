@@ -4232,7 +4232,7 @@ class Cotizaciones extends MY_Controller {
 		$where=["ctz_first.id_proveedor" => 3,"prod.estatus" => 1];//Semana actual
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
-		$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
+		$cotizacionesProveedor = $this->ct_mdl->($where, $fecha->format('Y-m-d H:i:s'), 0);
 		$flag1 = 5;
 		if($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value) {
