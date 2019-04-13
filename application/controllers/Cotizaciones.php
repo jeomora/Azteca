@@ -4590,9 +4590,9 @@ class Cotizaciones extends MY_Controller {
 								$this->cellStyle("D{$row_print}", "8064A2", "000000", FALSE, 10, "Franklin Gothic Book");
 							}elseif ($row['sem3'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
 								$this->cellStyle("D{$row_print}", "8064A2", "000000", FALSE, 10, "Franklin Gothic Book");
-							}elseif ($row['sem2'] <> NULL) {
-								$this->cellStyle("D{$row_print}", "F79646", "000000", FALSE, 10, "Franklin Gothic Book");
 							}elseif ($row['sem1'] <> NULL) {
+								$this->cellStyle("D{$row_print}", "F79646", "000000", FALSE, 10, "Franklin Gothic Book");
+							}elseif ($row['sem2'] <> NULL) {
 								$this->cellStyle("D{$row_print}", "F79646", "000000", FALSE, 10, "Franklin Gothic Book");
 							}
 						if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1))  && date('Y', strtotime($row['fecha_registro'])) == '2019'){
