@@ -95,7 +95,7 @@ class Cotizacionesback_model extends MY_Model {
 
 	public function getDiferences($where = []){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		/*$this->db->select("c.id_cotizacion,p.codigo,p.nombre as descrip,p.precio_sistema, c.precio_promocion, c.id_proveedor,u.nombre, 
 			(p.precio_sistema - c.precio_promocion) AS diferencia, c.precio, c.fecha_registro, c.estatus, c.observaciones, 

@@ -85,7 +85,7 @@ class Main extends MY_Controller {
 
 	public function getCotzUsuario($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$data["prueba"] = $semana;

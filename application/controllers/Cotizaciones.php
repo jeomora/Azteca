@@ -90,7 +90,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function proveedorCots($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$where=["cotizaciones.id_proveedor" => $ides, "cotizaciones.estatus <> " => 0 ,
 				"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))];
@@ -309,7 +309,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function endCotizacion($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		if($this->db->delete('cotizaciones', array('id_proveedor' => $ides, "WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))))){
 			$mensaje = [
@@ -494,7 +494,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function hacer_pedido($value=''){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$size = sizeof($this->input->post('id_producto[]'));
 		$productos = $this->input->post('id_producto[]');
@@ -524,7 +524,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function get_update($id){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
@@ -548,7 +548,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function get_update2($id,$idpros){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
@@ -566,7 +566,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function get_delete($id){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
@@ -590,7 +590,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function get_delete2($id,$idpros){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
@@ -607,7 +607,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function detallazos($id){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
 		$data["producto"] = $this->prod_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
@@ -643,7 +643,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function getAdminTable(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
@@ -651,7 +651,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function getVolTable(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$data["cotizados"] = $this->ct_mdl->getCotzV(NULL,$fecha);
@@ -659,7 +659,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function getDirTable($directo){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$data["cotizados"] = $this->ct_mdl->getCotzD(NULL,$fecha,$directo);
@@ -667,7 +667,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function getDirProv($directo){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$data["cotizados"] = $this->ct_mdl->getCotzP(NULL,$fecha,$directo);
@@ -734,7 +734,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("S1", "3ER PROVEEDOR")->getColumnDimension('S')->setWidth(15);
 		$hoja->setCellValue("T1", "3ER OBSERVACIÓN")->getColumnDimension('T')->setWidth(30);
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2(NULL, $fecha,0);
@@ -1034,7 +1034,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("N1", "2DA OBSERVACIÓN")->getColumnDimension('N')->setWidth(30);
 		$where=["prod.estatus"=>2];//Semana actual
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones2($where, $fecha,0);
@@ -1232,7 +1232,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function upload_pedidos($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
@@ -1371,7 +1371,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function upload_precios(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$config['upload_path']          = './assets/uploads/precios/';
@@ -1436,7 +1436,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function set_pedido_provs($id){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		ini_set("memory_limit", "-1");
 		$search = ["productos.nombre", "cotizaciones.precio", "cotizaciones.observaciones"];
@@ -1484,7 +1484,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function cotizaciones_dataTable(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fech = $fecha->format('Y-m-d H:i:s');
 		ini_set("memory_limit", "-1");
@@ -1578,7 +1578,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function getProveedorBajos($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$data["cotizaciones"] =  $this->ct_mdl->getProveedorBajos(NULL,$fecha->format('Y-m-d H:i:s'),$ides);
 		$this->jsonResponse($data);
@@ -1664,7 +1664,7 @@ class Cotizaciones extends MY_Controller {
 			if ($array){
 				foreach ($array as $key => $value){
 					$fecha = new DateTime(date('Y-m-d H:i:s'));
-					$intervalo = new DateInterval('P2D');
+					$intervalo = new DateInterval('P3D');
 					$fecha->add($intervalo);
 					if ($value->nombre === "AMARILLOS") {
 						$where=["prod.estatus" => 3];//Semana actual
@@ -2435,7 +2435,7 @@ class Cotizaciones extends MY_Controller {
 			$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 			$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 			$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-			$file_name = "FORMATO ".$filenam." ".$fecha.".xlsx"; //Nombre del documento con extención
+			$file_name = "FORMATO PEDIDOS PLÁSTICOS ".$fecha.".xlsx"; //Nombre del documento con extención
 			$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 			header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 			header("Content-Disposition: attachment;filename=".$file_name);
@@ -2730,7 +2730,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->mergeCells('B2:F2');
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$productos =  $this->ct_mdl->getProveedorBajos(NULL,$fecha->format('Y-m-d H:i:s'),$this->input->post('id_pro'));
 		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$this->input->post('id_pro')])[0];
@@ -2940,7 +2940,7 @@ class Cotizaciones extends MY_Controller {
 		$val = json_decode($this->input->post('values'), true);
 		$antes =  $this->falt_mdl->get(NULL, ['fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $val['id_proveedor']]);
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->sub($intervalo);
 		$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=> $val['id_proveedor']])[0];
 		if($antes){
@@ -2964,7 +2964,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function upload_expos($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		if($idesp == 0){
 			$proveedor = $this->session->userdata('id_usuario');
@@ -3055,7 +3055,7 @@ class Cotizaciones extends MY_Controller {
 			$proveedor = $idesp;
 		}
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$cotiz =  $this->expo_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
 		$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
@@ -3097,7 +3097,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function proveedorExpos($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$where=["expocotz.id_proveedor" => $ides, "expocotz.estatus <> " => 0 ,
 				"WEEKOFYEAR(expocotz.fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))];
@@ -3197,7 +3197,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("AU1", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$this->cellStyle("AU2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->sub($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$where = ["expo.id_proveedor"=>$this->input->post("id_pro")];
@@ -3825,7 +3825,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function upload_fullpedidos($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
@@ -3936,7 +3936,7 @@ class Cotizaciones extends MY_Controller {
 		$col = 6;
 		$rws = 3;
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$cotPro = $this->ct_mdl->getCotzP(NULL, $fecha,$directos);
@@ -4230,7 +4230,7 @@ class Cotizaciones extends MY_Controller {
 		$this->excelfile->getActiveSheet()->getStyle('BD'.$flag)->applyFromArray($styleArray);
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$where=["ctz_first.id_proveedor" => 3,"prod.estatus" => 1];//Semana actual
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
 		$flag1 = 5;

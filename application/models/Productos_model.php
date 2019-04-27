@@ -40,7 +40,7 @@ class Productos_model extends MY_Model {
 
 	public function getCotizados($where = []){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$this->db->select("
 			productos.id_producto,

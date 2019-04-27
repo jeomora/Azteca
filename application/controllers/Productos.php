@@ -235,12 +235,12 @@ class Productos extends MY_Controller {
 		$hoja->setCellValue("F1", "FAMILIA")->getColumnDimension('F')->setWidth(35);
 		$hoja->setCellValue("G1", "NÚMERO")->getColumnDimension('G')->setWidth(18);
 		$hoja->setCellValue("G2", "FAMILIA")->getColumnDimension('G')->setWidth(18);
-		$productos = $this->pro_md->getProdFam(NULL,0);
+		$productos = $this->fam_md->get(NULL,["estatus <> " => 0]);
 		$row_print = 3;
 		if ($productos){
 			foreach ($productos as $key => $value){
-				$hoja->setCellValue("F{$row_print}", $value['familia']);
-				$hoja->setCellValue("G{$row_print}", $value['id_familia']);
+				$hoja->setCellValue("F{$row_print}", $value->nombre);
+				$hoja->setCellValue("G{$row_print}", $value->id_familia);
 				$row_print +=1;
 			}
 		}

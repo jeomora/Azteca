@@ -33,7 +33,7 @@
 						<?php if ($usuario['id_grupo'] == 2): ?>
 							<a href="#" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
 						<?php else: ?>
-							<a href="/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
+							<a href="/Azteca/Main/" class="logo_img"><img  src="<?php echo base_url('/assets/img/abarrotes.png') ?>" /></a>
 						<?php endif ?>
 					</div>
 					<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
@@ -43,7 +43,7 @@
 					<?php if ($usuario['id_grupo'] == 2): ?>
 						<a href="#" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
 					<?php else: ?>
-						<a href="/Main/" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
+						<a href="/Azteca/Main/" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
 					<?php endif ?>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">

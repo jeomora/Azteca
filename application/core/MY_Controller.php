@@ -57,7 +57,7 @@ class MY_Controller extends CI_Controller {
 	public function weekNumber($date=NULL){
 		if (empty($date)) {
 			$fecha = new DateTime(date('Y-m-d H:i:s'));
-			$intervalo = new DateInterval('P2D');
+			$intervalo = new DateInterval('P3D');
 			$fecha->add($intervalo);
 			$date = $fecha->format('Y-m-d H:i:s');
 		}

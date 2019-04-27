@@ -155,7 +155,7 @@ class Pedidos extends MY_Controller {
 
 	public function get_pedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
@@ -174,7 +174,7 @@ class Pedidos extends MY_Controller {
 
 	public function get_allpedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
@@ -200,7 +200,7 @@ class Pedidos extends MY_Controller {
 
 	public function get_pedidosingle(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$id_proveedor = $this->input->post('id_proveedor');
 		$user = $this->session->userdata();
@@ -219,7 +219,7 @@ class Pedidos extends MY_Controller {
 
 	public function get_cotizaciones(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$id_proveedor = $this->input->post('id_proveedor');
 		$where=["ctz_first.id_proveedor" => $this->input->post('id_proves')];
@@ -230,7 +230,7 @@ class Pedidos extends MY_Controller {
 
 	public function guardaSistema(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$values = json_decode($this->input->post('values'), true);
@@ -266,7 +266,7 @@ class Pedidos extends MY_Controller {
 
 	public function guardaPedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 		$values = json_decode($this->input->post('values'), true);
@@ -305,7 +305,7 @@ class Pedidos extends MY_Controller {
 
 	public function save_pedido(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$pedido = [
 			"id_sucursal"		=>	$this->input->post('id_sucursal'),
