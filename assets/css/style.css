@@ -5050,10 +5050,7 @@ body.skin-3 {
     height    : 60px !important;
 }
 
-body{font-family: 'Exo';font-size: 12px !important}
-h1{font-family: 'ExoBold'}
-button{font-family: 'ExoLight'}
-strong {font-family: "Exo";}
+
 .form-control{font-size: 12px}
 label{background-color: #000 !important}
 input.form-control.input-sm{border: 2px solid #000 !important}
