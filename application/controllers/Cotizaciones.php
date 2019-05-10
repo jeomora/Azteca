@@ -1736,13 +1736,13 @@ class Cotizaciones extends MY_Controller {
 							$hoja->mergeCells('AK'.$flag.':AM'.$flag);
 							
 							$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("B".$flag, "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
+							$hoja->setCellValue("B".$flag, "".$value->nombre."' ".date("d-m-Y"));
 							$this->cellStyle("J".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("J".$flag, "CEDIS/SUPER");
+							$hoja->setCellValue("J".$flag, "CEDIS");
 							$this->cellStyle("M".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("M".$flag, "CD INDUSTRIAL");
+							$hoja->setCellValue("M".$flag, "SUPER");
 							$this->cellStyle("P".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("P".$flag, "PEDREGAL");
+							$hoja->setCellValue("P".$flag, "VILLAS");
 							$this->cellStyle("S".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("S".$flag, "ABARROTES");
 							$this->cellStyle("V".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -2060,7 +2060,7 @@ class Cotizaciones extends MY_Controller {
 			$hoja->setCellValue("C{$flag}", "=(".substr($sumall[1],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 			$flag++;
 			$this->cellStyle("B".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-			$hoja->setCellValue("B".$flag, "SUPER INDUSTRIAL");
+			$hoja->setCellValue("B".$flag, "SUPER");
 			$hoja->setCellValue("C{$flag}", "=(".substr($sumall[2],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 			$flag++;
 			$this->cellStyle("B".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
