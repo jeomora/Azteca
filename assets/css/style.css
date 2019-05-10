@@ -5058,4 +5058,4 @@ input.form-control.input-sm{border: 2px solid #000 !important}
 .modal-content.animated.flipInY{background-color: #827f7f !important;}
 /*|div#page-wrapper{background-color: #484747 !important;}*/
 .table-responsive{overflow-x: scroll !important;}
-.table-responsive::-webkit-scrollbar{position:fixed;bottom: 5rem}
+.table-responsive::-webkit-scrollbar{position:fixed;top: 5rem;z-index:10000000000000000000000}
