@@ -693,12 +693,10 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+		$this->excelfile->PHPExcel_IOFactory::createReader('Excel2007');
 
-		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
-		$hoja->setActiveSheetIndex(0);
-
-		$hoja->getActiveSheet();
+		$hoja = $this->excelfile->load("./assets/uploads/cotiz.xlsx");
+		$hoja = $this->excelfile->getActiveSheet();
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -752,10 +750,10 @@ class Cotizaciones extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
-		header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($hoja, "Excel2007");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 	public function fill_excel_pro(){
