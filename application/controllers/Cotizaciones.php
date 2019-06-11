@@ -693,7 +693,7 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		$this->excelfile->PHPExcel_IOFactory::createReader('Excel2007');
+		$this->excelfile = PHPExcel_IOFactory::createReader('Excel2007');
 
 		$hoja = $this->excelfile->load("./assets/uploads/cotiz.xlsx");
 		$hoja = $this->excelfile->getActiveSheet();
