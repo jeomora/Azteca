@@ -107,7 +107,7 @@ function setAdminTable(){
 	//move();
 	var tableAdmin = [];
 	$(".tableAdmin").html();
-	getAdminTable()
+	/*getAdminTable()
 		.done(function (resp) {
 			$.each(resp.cotizaciones, function(indx, value){
 				value.precio_next = value.precio_next == null ? 0 : value.precio_next;
@@ -191,7 +191,7 @@ function setAdminTable(){
 			$("html").unblock();
 		});
 	
-
+*/
 }
 
 function move() {
