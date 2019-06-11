@@ -634,7 +634,7 @@ $this->db->select("c.id_cotizacion,
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." AND c.estatus = 1", "LEFT")
 		->join("usuarios proveedor", "c.id_proveedor = proveedor.id_usuario", "LEFT")
 		->group_by("c.id_cotizacion")
-		->order_by("prod.id_familia,prod.productoc.precio_promocion", "ASC");
+		->order_by("prod.id_familia,prod.producto,c.precio_promocion", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
