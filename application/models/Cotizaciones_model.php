@@ -657,7 +657,8 @@ $this->db->select("c.id_cotizacion,
 			}else{
 				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
 				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
-				if (isset($comparativaIndexada[$comparativa[$i]->id_familia]["articulos"])) {
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
+				if (isset($comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto])) {
 					if ($flag == 1) {
 						$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_nexto"]		=	$comparativa[$i]->precio;
 						$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_next"]		=	$comparativa[$i]->precio_promocion;
@@ -673,7 +674,6 @@ $this->db->select("c.id_cotizacion,
 					}
 					
 				}else{
-					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["id_cotizacion"]	=	$comparativa[$i]->id_cotizacion;
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["producto"]			=	$comparativa[$i]->producto;
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["estatus"]			=	$comparativa[$i]->estatus;
