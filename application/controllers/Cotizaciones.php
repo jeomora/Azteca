@@ -694,45 +694,8 @@ class Cotizaciones extends MY_Controller {
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
 		$hoja = $this->excelfile->getActiveSheet();
-				$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getTop()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getBottom()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getLeft()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$hoja->getDefaultStyle()
-		    ->getBorders()
-		    ->getRight()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$this->cellStyle("A1:T2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$border_style= array('borders' => array('right' => array('style' =>
-			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
-		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
-		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(12);
-		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(12);
-		$hoja->setCellValue("E1", "DIFERENCIA 1")->getColumnDimension('E')->setWidth(12);
-		$hoja->setCellValue("F1", "PRECIO MENOR")->getColumnDimension('F')->setWidth(12);
-		$hoja->setCellValue("G1", "PRECIO PROMOCIÓN")->getColumnDimension('G')->setWidth(12);
-		$hoja->setCellValue("H1", "PROVEEDOR")->getColumnDimension('H')->setWidth(15);
-		$hoja->setCellValue("I1", "OBSERVACIÓN")->getColumnDimension('I')->setWidth(30);
-		$hoja->setCellValue("J1", "PRECIO MÁXIMO")->getColumnDimension('J')->setWidth(12);
-		$hoja->setCellValue("K1", "PRECIO PROMEDIO")->getColumnDimension('K')->setWidth(12);
-		$hoja->setCellValue("L1", "DIFERENCIA 2")->getColumnDimension('L')->setWidth(12);
-		$hoja->setCellValue("M1", "2DO PRECIO")->getColumnDimension('M')->setWidth(12);
-		$hoja->setCellValue("N1", "PRECIO PROMOCIÓN")->getColumnDimension('N')->setWidth(12);
-		$hoja->setCellValue("O1", "2DO PROVEEDOR")->getColumnDimension('O')->setWidth(15);
-		$hoja->setCellValue("P1", "2DA OBSERVACIÓN")->getColumnDimension('P')->setWidth(30);
-		$hoja->setCellValue("Q1", "3ER PRECIO")->getColumnDimension('Q')->setWidth(12);
-		$hoja->setCellValue("R1", "PRECIO PROMOCIÓN")->getColumnDimension('R')->setWidth(12);
-		$hoja->setCellValue("S1", "3ER PROVEEDOR")->getColumnDimension('S')->setWidth(15);
-		$hoja->setCellValue("T1", "3ER OBSERVACIÓN")->getColumnDimension('T')->setWidth(30);
+		$hoja->PHPExcel_IOFactory::load("./assets/upload/cotiz.xlsx");
+		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
@@ -746,45 +709,17 @@ class Cotizaciones extends MY_Controller {
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
-						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						/*if($row['color'] == '#92CEE3'){
+						if($row['color'] == '#92CEE3'){
 							$this->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
 						}else{
 							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 						}
-
-						//$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("B{$row_print}", $row['producto']);
-
 						if($row['colorp'] == 1){
 							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
 						}else{
 							$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						
-						//$hoja->setCellValue("C{$row_print}", $row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
-						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("D{$row_print}", $row['precio_four'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
-						$dif1 = $row["precio_sistema"] - $row["precio_first"];
-						if($row['precio_first'] !== NULL){
-							if ($dif1 >= ($row["precio_sistema"] * .30) || $dif1 <= (($row["precio_sistema"] * .30) * (-1))) {
-								//$hoja->setCellValue("E{$row_print}", $dif1)->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-								$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
-								$this->cellStyle("E{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
-							}else{
-								//$hoja->setCellValue("E{$row_print}", $dif1)->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-								$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
-								$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
-							}
-						}else{
-							$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
-							$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						
-						//$hoja->setCellValue("F{$row_print}", $row['precio_firsto'])->getStyle("F{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
+
 						if($row['estatus'] == 2){
 							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
@@ -794,71 +729,7 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] >= 4){
 							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
-						if($row['precio_sistema'] < $row['precio_first']){
-							//$hoja->setCellValue("G{$row_print}", $row['precio_first'])->getStyle("G{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("G{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							//$hoja->setCellValue("G{$row_print}", $row['precio_first'])->getStyle("G{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("G{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-						}
-						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
-						
-						//$hoja->setCellValue("H{$row_print}", $row['proveedor_first'])->getStyle("H{$row_print}");
-						$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("I{$row_print}", $row['promocion_first'])->getStyle("I{$row_print}");
-						$hoja->getStyle("I{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("J{$row_print}", $row['precio_maximo'])->getStyle("J{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->getStyle("J{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("K{$row_print}", $row['precio_promedio'])->getStyle("K{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->getStyle("K{$row_print}")->applyFromArray($border_style);
-						$dif1 = $row["precio_sistema"] - $row["precio_next"];
-						if($row['precio_next'] !== NULL){
-							if ($dif1 >= ($row["precio_sistema"] * .30) || $dif1 <= (($row["precio_sistema"] * .30) * (-1))) {
-								//$hoja->setCellValue("L{$row_print}", $dif1)->getStyle("L{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-								$hoja->getStyle("L{$row_print}")->applyFromArray($border_style);
-								$this->cellStyle("L{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
-							}else{
-								//$hoja->setCellValue("L{$row_print}", $dif1)->getStyle("L{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-								$hoja->getStyle("L{$row_print}")->applyFromArray($border_style);
-								$this->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
-							}
-						}else{
-							$hoja->getStyle("L{$row_print}")->applyFromArray($border_style);
-							$this->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						
-						//$hoja->setCellValue("M{$row_print}", $row['precio_nexto'])->getStyle("M{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->getStyle("M{$row_print}")->applyFromArray($border_style);
-						if($row['precio_sistema'] < $row['precio_next']){
-							//$hoja->setCellValue("N{$row_print}", $row['precio_next'])->getStyle("N{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("N{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-						}else if($row['precio_next'] !== NULL){
-							//$hoja->setCellValue("N{$row_print}", $row['precio_next'])->getStyle("N{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("N{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							//$hoja->setCellValue("N{$row_print}", $row['precio_next'])->getStyle("N{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("N{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						
-						$hoja->getStyle("N{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("O{$row_print}", $row['proveedor_next'])->getStyle("O{$row_print}");
-						$hoja->getStyle("O{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("P{$row_print}", $row['promocion_next'])->getStyle("P{$row_print}");
-						$hoja->getStyle("P{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("Q{$row_print}", $row['precio_nxtso'])->getStyle("Q{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->getStyle("Q{$row_print}")->applyFromArray($border_style);
-						if($row['precio_sistema'] < $row['precio_nxts']){
-							//$hoja->setCellValue("R{$row_print}", $row['precio_nxts'])->getStyle("R{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("R{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-						}else if($row['precio_next'] !== NULL){
-							//$hoja->setCellValue("R{$row_print}", $row['precio_nxts'])->getStyle("R{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("R{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							//$hoja->setCellValue("R{$row_print}", $row['precio_nxts'])->getStyle("R{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("R{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}*/
-						$dif1 = $row["precio_sistema"] - $row["precio_next"];
+
 						$arrayData = array(
 							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$dif1,$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$dif1,$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
 						);
@@ -867,14 +738,7 @@ class Cotizaciones extends MY_Controller {
 						    NULL,
 						    'A'.$row_print
 						);
-						$hoja->getStyle("R{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("S{$row_print}", $row['proveedor_nxts'])->getStyle("S{$row_print}");
-						$hoja->getStyle("S{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("T{$row_print}", $row['promocion_nxts'])->getStyle("T{$row_print}");
-						$hoja->getStyle("T{$row_print}")->applyFromArray($border_style);
-						$hoja->getStyle("A{$row_print}:T{$row_print}")
-			                 ->getAlignment()
-			                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+						
 						$row_print ++;
 					}
 				}
