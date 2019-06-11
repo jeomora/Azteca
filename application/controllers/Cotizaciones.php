@@ -695,8 +695,8 @@ class Cotizaciones extends MY_Controller {
 		$this->load->library("excelfile");
 		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 
-		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
-		$hoja = $objReader->getActiveSheet();
+		$hoja = $this->excelfile->load("./assets/uploads/cotiz.xlsx");
+		$hoja = $this->excelfile->getActiveSheet();
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -753,7 +753,7 @@ class Cotizaciones extends MY_Controller {
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($objReader, "Excel2007");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 	public function fill_excel_pro(){
