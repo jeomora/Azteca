@@ -707,8 +707,8 @@ class Cotizaciones extends MY_Controller {
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->setCellValue("B{$row_print}", $value['familia']);
-				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				//$hoja->setCellValue("B{$row_print}", $value['familia']);
+				//$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
