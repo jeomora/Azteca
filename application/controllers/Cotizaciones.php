@@ -733,7 +733,7 @@ class Cotizaciones extends MY_Controller {
 						}
 
 						$arrayData = array(
-							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$dif1,$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$dif1,$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
+							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],"",$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],"",$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
 						);
 						$hoja->fromArray(
 						    $arrayData,
