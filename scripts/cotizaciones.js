@@ -89,7 +89,7 @@ function getGrupo() {
 
 function setAdminTable(){
 	event.preventDefault();
-	$("html").block({
+	/*$("html").block({
 		centerY: 0,
 		message: '<div style="width:80rem;height:50rem;background-image:url(assets/img/clock.gif)"><h1 style="margin:0;padding-top:5rem">Cargando cotizaciones</h1>'+
 		'<img src="assets/img/waits.gif" /></div>',
@@ -103,7 +103,7 @@ function setAdminTable(){
 	    height: "50rem",
 	    border: '0',
 		padding:'0'},
-	});
+	});*/
 	//move();
 	var tableAdmin = [];
 	$(".tableAdmin").html();
