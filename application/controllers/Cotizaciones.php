@@ -693,11 +693,10 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		$hoja = PHPExcel_IOFactory::createReader('Excel2007');
-		$hoja = $hoja->load('./assets/uploads/cotiz.xlsx'); // Empty Sheet
-		$hoja->setActiveSheetIndex(0);
+		$this->excelfile = PHPExcel_IOFactory::createReader('Excel2007');
 
-		$hoja->getActiveSheet();
+		$this->excelfile->load("./assets/uploads/cotiz.xlsx");
+		$hoja = $this->excelfile->getActiveSheet();
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -707,8 +706,8 @@ class Cotizaciones extends MY_Controller {
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				//$hoja->setCellValue("B{$row_print}", $value['familia']);
-				//$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("B{$row_print}", $value['familia']);
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
@@ -754,7 +753,7 @@ class Cotizaciones extends MY_Controller {
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
-		$excel_Writer = PHPExcel_IOFactory::createWriter($hoja, "Excel2007");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
 	public function fill_excel_pro(){
