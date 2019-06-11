@@ -693,8 +693,10 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
+		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+
+		$hoja = $objReader->load("assets/upload/cotiz.xlsx");
 		$hoja = $this->excelfile->getActiveSheet();
-		$hoja->PHPExcel_IOFactory::load("./assets/upload/cotiz.xlsx");
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
