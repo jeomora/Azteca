@@ -696,7 +696,7 @@ class Cotizaciones extends MY_Controller {
 		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 
 		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
-		$hoja = $this->excelfile->getActiveSheet();
+		$hoja = $objReader->getActiveSheet();
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
