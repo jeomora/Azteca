@@ -697,6 +697,8 @@ class Cotizaciones extends MY_Controller {
 
 		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
 		$hoja->setActiveSheetIndex(0);
+
+		$hoja->getActiveSheet();
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
@@ -750,7 +752,7 @@ class Cotizaciones extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
-		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($hoja, "Excel2007");
