@@ -706,7 +706,7 @@ class Cotizaciones extends MY_Controller {
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->setCellValue("B{$row_print}", $value['familia']);
+				$hoja->getActiveSheet()->setCellValue("B{$row_print}", $value['familia']);
 				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$row_print +=1;
 				if ($value['articulos']) {
@@ -735,7 +735,7 @@ class Cotizaciones extends MY_Controller {
 						$arrayData = array(
 							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],"",$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],"",$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
 						);
-						$hoja->fromArray(
+						$hoja->getActiveSheet()->fromArray(
 						    $arrayData,
 						    NULL,
 						    'A'.$row_print
