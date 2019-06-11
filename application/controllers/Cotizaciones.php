@@ -747,7 +747,7 @@ class Cotizaciones extends MY_Controller {
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						if($row['color'] == '#92CEE3'){
+						/*if($row['color'] == '#92CEE3'){
 							$this->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
 						}else{
 							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -857,7 +857,8 @@ class Cotizaciones extends MY_Controller {
 						}else{
 							//$hoja->setCellValue("R{$row_print}", $row['precio_nxts'])->getStyle("R{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							$this->cellStyle("R{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
+						}*/
+						$dif1 = $row["precio_sistema"] - $row["precio_next"];
 						$arrayData = array(
 							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$dif1,$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$dif1,$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
 						);
