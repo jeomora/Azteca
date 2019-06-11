@@ -629,7 +629,7 @@ $this->db->select("c.id_cotizacion,
 	}
 
 	public function comparaCotizaciones2($where=[], $fech, $tienda){
-		$this->db->select("c.id_cotizacion,c.id_proveedor,c.precio,c.precio_promocion,c.observaciones,c.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.producto AS producto,prod.id_producto,UPPER(proveedor.nombre) AS proveedor, MAX(c.precio) AS precio_maximo, AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia")
+		$this->db->select("c.id_cotizacion,c.id_proveedor,c.precio,c.precio_promocion,c.observaciones,c.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.producto AS producto,prod.id_producto,UPPER(proveedor.nombre) AS proveedor, MAX(c.precio) AS precio_maximo, AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia,prod.precio_sistema,prod.precio_four")
 		->from("prodis prod")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." AND c.estatus = 1", "LEFT")
 		->join("usuarios proveedor", "c.id_proveedor = proveedor.id_usuario", "LEFT")
