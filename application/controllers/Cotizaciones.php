@@ -693,7 +693,11 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		$hoja = $this->excelfile->getActiveSheet();
+		$objReader = PHPExcel_IOFactory::createReader("Excel2007");
+		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
+		$hoja->->setActiveSheetIndex(0);
+
+		/*$hoja = $this->excelfile->getActiveSheet();
 				$hoja->getDefaultStyle()
 		    ->getBorders()
 		    ->getTop()
@@ -878,7 +882,14 @@ class Cotizaciones extends MY_Controller {
 					}
 				}
 			}
-		}
+		}*/
+		$hoja->getActiveSheet()
+			->setCellValue('A1', 'EDITED Last Name')
+			->setCellValue('B1', 'EDITED First Name')
+			->setCellValue('C1', 'EDITED Age')
+			->setCellValue('D1', 'EDITED Sex')
+			->setCellValue('E1', 'EDITED Location')
+			;
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
