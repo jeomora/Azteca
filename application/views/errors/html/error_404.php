@@ -71,18 +71,18 @@ p {
 
 </head>
 <?php
-header("Location: http://Aztecas/Compras/Login");
+header("Location: http://abarrotesazteca.com/Compras/Login");
 die();
 ?>
 <body>
 
 	<div id="container">
 		<div class="logo_img">
-			<img  src="http://Aztecas/assets/img/abarrotes.png" />
+			<img  src="http://abarrotesazteca.com/assets/img/abarrotes.png" />
 		</div>
 		<h1>Página no encontrada</h1>
 		<p>Sí esta seguro que es la url correcta contacte a soporte técnico</p>
-		<p>Ir a <a href="http://Aztecas/Compras/Login">inicio</a> para empezar a navegar en el sitio.</p>
+		<p>Ir a <a href="http://abarrotesazteca.com/Compras/Login">inicio</a> para empezar a navegar en el sitio.</p>
 	</div>
 </body>
 </html>
