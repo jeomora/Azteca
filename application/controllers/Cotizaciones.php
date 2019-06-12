@@ -706,13 +706,19 @@ class Cotizaciones extends MY_Controller {
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->getActiveSheet()->setCellValue('B'.$row_print, $value['familia'])
-				$this->cellStyle->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->getActiveSheet()->setCellValue('B'.$row_print, $value['familia']);
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->getActiveSheet()->getStyle("B{$row_print}")->applyFromArray(
+					array(
+						'font' => array('size' => 12,'bold' => true,'color' => array('rgb' => 'FFFFFF')),
+						'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '000000'))
+					)
+				);
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$arrayData = array(
-							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$row["precio_sistema"] - $row["precio_first"],$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$row["precio_sistema"] - $row["precio_next"],$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
+							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$row["precio_sistema"] - $row["precio_first"],$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$row["precio_sistema"] - $row["precio_next"],$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['proveedor_nxts'],$row['promocion_nxts'])
 						);
 						$hoja->getActiveSheet()->fromArray(
 						    $arrayData,
@@ -720,68 +726,172 @@ class Cotizaciones extends MY_Controller {
 						    'A'.$row_print
 						);
 
-						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						if($row['color'] == '#92CEE3'){
-							$this->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("A{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => true,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '92CEE3'))
+								)
+							);
 						}else{
-							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("A{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => true,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
+								)
+							);
 						}
 
 						if($row['colorp'] == 1){
-							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("C{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'D6DCE4'))
+								)
+							);
 						}else{
-							$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("C{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
+								)
+							);
 						}
 						$dif1 = $row["precio_sistema"] - $row["precio_first"];
 						if($row['precio_first'] !== NULL){
 							if ($dif1 >= ($row["precio_sistema"] * .30) || $dif1 <= (($row["precio_sistema"] * .30) * (-1))) {
 								$this->cellStyle("E{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
+								$hoja->getActiveSheet()->getStyle("E{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF0066'))
+									)
+								);
 							}else{
-								$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+								$hoja->getActiveSheet()->getStyle("E{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFE6F0'))
+									)
+								);
 							}
 						}else{
-							$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("E{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFE6F0'))
+								)
+							);
 						}
-						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						if($row['estatus'] == 2){
-							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("B{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '00B0F0'))
+								)
+							);
 						}
 						if($row['estatus'] == 3){
-							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("B{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFF900'))
+								)
+							);
 						}
 						if($row['estatus'] >= 4){
-							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("B{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '04B486'))
+								)
+							);
 						}
 						if($row['precio_sistema'] < $row['precio_first']){
-							$this->cellStyle("G{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("G{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => 'E21111')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FDB2B2'))
+								)
+							);
 						}else{
-							$this->cellStyle("G{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("G{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '0C800C')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '96EAA8'))
+								)
+							);
 						}
 						$dif1 = $row["precio_sistema"] - $row["precio_next"];
 						if($row['precio_next'] !== NULL){
 							if ($dif1 >= ($row["precio_sistema"] * .30) || $dif1 <= (($row["precio_sistema"] * .30) * (-1))) {
-								$this->cellStyle("L{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
+								$hoja->getActiveSheet()->getStyle("L{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF0066'))
+									)
+								);
 							}else{
-								$this->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+								$hoja->getActiveSheet()->getStyle("L{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFE6F0'))
+									)
+								);
 							}
 						}else{
-							$this->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("L{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFE6F0'))
+									)
+								);
 						}
 						
 						if($row['precio_sistema'] < $row['precio_next']){
-							$this->cellStyle("N{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("N{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => 'E21111')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FDB2B2'))
+									)
+								);
 						}else if($row['precio_next'] !== NULL){
-							$this->cellStyle("N{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("N{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '0C800C')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '96EAA8'))
+									)
+								);
 						}else{
-							$this->cellStyle("N{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("N{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
+									)
+								);
 						}
 						
 						if($row['precio_sistema'] < $row['precio_nxts']){
-							$this->cellStyle("R{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("R{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => 'E21111')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FDB2B2'))
+									)
+								);
 						}else if($row['precio_next'] !== NULL){
-							$this->cellStyle("R{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("R{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '0C800C')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '96EAA8'))
+									)
+								);
 						}else{
-							$this->cellStyle("R{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->getActiveSheet()->getStyle("R{$row_print}")->applyFromArray(
+									array(
+										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
+									)
+								);
 						}
 						$row_print ++;
 					}

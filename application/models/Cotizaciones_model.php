@@ -668,7 +668,7 @@ $this->db->select("c.id_cotizacion,
 					$flag = 2;
 				} elseif ($flag == 2) {
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_nxtso"]		=	$comparativa[$i]->precio;
-					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_nxts"]	=	$comparativa[$i]->precio_promocion;
+					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio_nxts"]		=	$comparativa[$i]->precio_promocion;
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["proveedor_nxts"]	=	$comparativa[$i]->proveedor;
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["promocion_nxts"]	=	$comparativa[$i]->observaciones;
 					$flag = 3;
