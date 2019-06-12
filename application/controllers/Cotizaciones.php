@@ -695,7 +695,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->library("excelfile");
 		$objReader = PHPExcel_IOFactory::createReader("Excel2007");
 		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
-		$hoja->->setActiveSheetIndex(0);
+		$hoja->setActiveSheetIndex(0);
 
 		/*$hoja = $this->excelfile->getActiveSheet();
 				$hoja->getDefaultStyle()
