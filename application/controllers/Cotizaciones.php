@@ -706,8 +706,8 @@ class Cotizaciones extends MY_Controller {
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
-				$hoja->getActiveSheet()->setCellValue('B'.$row_print, $value['familia']);
-				$hoja->getActiveSheet()->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->getActiveSheet()->setCellValue('B'.$row_print, $value['familia'])
+				$this->cellStyle->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
@@ -719,67 +719,69 @@ class Cotizaciones extends MY_Controller {
 						    NULL,
 						    'A'.$row_print
 						);
+
+						$this->cellStyle("B{$row_print}:L{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						if($row['color'] == '#92CEE3'){
-							$hoja->getActiveSheet()->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
+							$this->cellStyle("A{$row_print}", "92CEE3", "000000", TRUE, 12, "Franklin Gothic Book");
 						}else{
-							$hoja->getActiveSheet()->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+							$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 						}
 
 						if($row['colorp'] == 1){
-							$hoja->getActiveSheet()->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
 						}else{
-							$hoja->getActiveSheet()->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$dif1 = $row["precio_sistema"] - $row["precio_first"];
 						if($row['precio_first'] !== NULL){
 							if ($dif1 >= ($row["precio_sistema"] * .30) || $dif1 <= (($row["precio_sistema"] * .30) * (-1))) {
-								$hoja->getActiveSheet()->cellStyle("E{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("E{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
 							}else{
-								$hoja->getActiveSheet()->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
 						}else{
-							$hoja->getActiveSheet()->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("E{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
 						if($row['estatus'] == 2){
-							$hoja->getActiveSheet()->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						if($row['estatus'] == 3){
-							$hoja->getActiveSheet()->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						if($row['estatus'] >= 4){
-							$hoja->getActiveSheet()->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						if($row['precio_sistema'] < $row['precio_first']){
-							$hoja->getActiveSheet()->cellStyle("G{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("G{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
 						}else{
-							$hoja->getActiveSheet()->cellStyle("G{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("G{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
 						}
 						$dif1 = $row["precio_sistema"] - $row["precio_next"];
 						if($row['precio_next'] !== NULL){
 							if ($dif1 >= ($row["precio_sistema"] * .30) || $dif1 <= (($row["precio_sistema"] * .30) * (-1))) {
-								$hoja->getActiveSheet()->cellStyle("L{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("L{$row_print}", "FF0066", "000000", FALSE, 12, "Franklin Gothic Book");
 							}else{
-								$hoja->getActiveSheet()->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
 						}else{
-							$hoja->getActiveSheet()->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("L{$row_print}", "FFE6F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						
 						if($row['precio_sistema'] < $row['precio_next']){
-							$hoja->getActiveSheet()->cellStyle("N{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("N{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
 						}else if($row['precio_next'] !== NULL){
-							$hoja->getActiveSheet()->cellStyle("N{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("N{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
 						}else{
-							$hoja->getActiveSheet()->cellStyle("N{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("N{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						
 						if($row['precio_sistema'] < $row['precio_nxts']){
-							$hoja->getActiveSheet()->cellStyle("R{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("R{$row_print}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
 						}else if($row['precio_next'] !== NULL){
-							$hoja->getActiveSheet()->cellStyle("R{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("R{$row_print}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
 						}else{
-							$hoja->getActiveSheet()->cellStyle("R{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("R{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$row_print ++;
 					}
