@@ -719,14 +719,6 @@ class Cotizaciones extends MY_Controller {
 						    NULL,
 						    'A'.$row_print
 						);
-						$hoja->getStyle("R{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("S{$row_print}", $row['proveedor_nxts'])->getStyle("S{$row_print}");
-						$hoja->getStyle("S{$row_print}")->applyFromArray($border_style);
-						//$hoja->setCellValue("T{$row_print}", $row['promocion_nxts'])->getStyle("T{$row_print}");
-						$hoja->getStyle("T{$row_print}")->applyFromArray($border_style);
-						$hoja->getStyle("A{$row_print}:T{$row_print}")
-			                 ->getAlignment()
-			                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 						$row_print ++;
 					}
 				}
