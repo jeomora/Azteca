@@ -67,7 +67,7 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 	if (buscale.val().length > 3) {
 		buscaProdis(JSON.stringify(values))
 		.done(function (resp) {
-			if (resp) {
+			if (resp.cotizaciones) {
 				$('.tableAdmin').html("");
 				$.each(resp.cotizaciones, function(indx, value){
 					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
