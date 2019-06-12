@@ -67,88 +67,93 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 	if (buscale.val().length > 3) {
 		buscaProdis(JSON.stringify(values))
 		.done(function (resp) {
-			$('.tableAdmin').html("");
-			$.each(resp.cotizaciones, function(indx, value){
-				value.precio_next = value.precio_next == null ? 0 : value.precio_next;
-				value.precio_four = value.precio_four == null ? 0 : value.precio_four;
-				value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
-				value.precio_first = value.precio_first == null ? 0 : value.precio_first;
-				value.precio_firsto = value.precio_firsto == null ? 0 : value.precio_firsto;
-				value.precio_next = value.precio_next == null ? 0 : value.precio_next;
-				value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
-				value.precio_nxts = value.precio_nxts == null ? 0 : value.precio_nxts;
-				value.precio_nxtso = value.precio_nxtso == null ? 0 : value.precio_nxtso;
-				value.proveedor_first = value.proveedor_first == null ? "" : value.proveedor_first;
-				value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
-				value.proveedor_nxts = value.proveedor_nxts == null ? "" : value.proveedor_nxts;
-				value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
-				value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
-				value.promocion_nxts = value.promocion_nxts == null ? "" : value.promocion_nxts;
-				value.precio_promedio = value.precio_promedio == null ? 0 : value.precio_promedio;
-				value.precio_maximo = value.precio_maximo == null ? 0 : value.precio_maximo;
-				
-				tableAdmin.push('<tr>');
-				if(value.color == "#92CEE3"){
-					tableAdmin.push('<td style="background-color: #92CEE3">'+value.codigo+'</td>');
-				}else{
-					tableAdmin.push('<td>'+value.codigo+'</td>');
-				}
-				if(value.estatus == 2){
-					tableAdmin.push('<td style="background-color: #00b0f0">'+value.producto+'</td>');
-				}else if(value.status == 3){
-					tableAdmin.push('<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.producto+'</td>');
-				}else{
-					tableAdmin.push('<td>'+value.producto+'</td>');
-				}
+			if (resp) {
+				$('.tableAdmin').html("");
+				$.each(resp.cotizaciones, function(indx, value){
+					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
+					value.precio_four = value.precio_four == null ? 0 : value.precio_four;
+					value.precio_sistema = value.precio_sistema == null ? 0 : value.precio_sistema;
+					value.precio_first = value.precio_first == null ? 0 : value.precio_first;
+					value.precio_firsto = value.precio_firsto == null ? 0 : value.precio_firsto;
+					value.precio_next = value.precio_next == null ? 0 : value.precio_next;
+					value.precio_nexto = value.precio_nexto == null ? 0 : value.precio_nexto;
+					value.precio_nxts = value.precio_nxts == null ? 0 : value.precio_nxts;
+					value.precio_nxtso = value.precio_nxtso == null ? 0 : value.precio_nxtso;
+					value.proveedor_first = value.proveedor_first == null ? "" : value.proveedor_first;
+					value.proveedor_next = value.proveedor_next == null ? "" : value.proveedor_next;
+					value.proveedor_nxts = value.proveedor_nxts == null ? "" : value.proveedor_nxts;
+					value.promocion_first = value.promocion_first == null ? "" : value.promocion_first;
+					value.promocion_next = value.promocion_next == null ? "" : value.promocion_next;
+					value.promocion_nxts = value.promocion_nxts == null ? "" : value.promocion_nxts;
+					value.precio_promedio = value.precio_promedio == null ? 0 : value.precio_promedio;
+					value.precio_maximo = value.precio_maximo == null ? 0 : value.precio_maximo;
 
-				if(value.colorp == 1){
-					tableAdmin.push('<td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-							'</div><button id="update_cotizacion" style="display:none" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
-							'<i class="fa fa-pencil"></i></button></td><td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>');
-				}else{
-					tableAdmin.push('<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
-							'</div><button id="update_cotizacion" style="display:none" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
-							'<i class="fa fa-pencil"></i></button></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>');
-				}
-				
+					tableAdmin.push('<tr>');
+					if(value.color == "#92CEE3"){
+						tableAdmin.push('<td style="background-color: #92CEE3">'+value.codigo+'</td>');
+					}else{
+						tableAdmin.push('<td>'+value.codigo+'</td>');
+					}
+					if(value.estatus == 2){
+						tableAdmin.push('<td style="background-color: #00b0f0">'+value.producto+'</td>');
+					}else if(value.status == 3){
+						tableAdmin.push('<td style="background-color: #fff900">'+value.codigo+'</td><td style="background-color: #fff900">'+value.producto+'</td>');
+					}else{
+						tableAdmin.push('<td>'+value.producto+'</td>');
+					}
 
-				tableAdmin.push('<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>');
-				if(value.precio_first >= value.precio_sistema){
-					tableAdmin.push('<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>');
-				}else{
-					tableAdmin.push('<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>');
-				}
-				tableAdmin.push('<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>'+
-							'<td>$ '+formatNumber(parseFloat(value.precio_maximo), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_promedio), 2)+'</td>');
+					if(value.colorp == 1){
+						tableAdmin.push('<td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
+								'</div><button id="update_cotizacion" style="display:none" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-pencil"></i></button></td><td style="background-color: #D6DCE4"><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>');
+					}else{
+						tableAdmin.push('<td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_sistema), 2)+'" class="form-control precio_sistema numeric">'+
+								'</div><button id="update_cotizacion" style="display:none" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-pencil"></i></button></td><td><div class="input-group m-b"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input type="text" value="'+formatNumber(parseFloat(value.precio_four), 2)+'" class="form-control precio_four numeric"></div></td>');
+					}
+					
 
-				tableAdmin.push(value.precio_nexto == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nexto), 2)+'</td>');					
-				if(value.precio_next >= value.precio_sistema){
-					tableAdmin.push(value.precio_next > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>');
-				}else{
-					tableAdmin.push(value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>');
-				}
-				tableAdmin.push('<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td>');
+					tableAdmin.push('<td>$ '+formatNumber(parseFloat(value.precio_firsto), 2)+'</td>');
+					if(value.precio_first >= value.precio_sistema){
+						tableAdmin.push('<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>');
+					}else{
+						tableAdmin.push('<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_first), 2)+'</div></td>');
+					}
+					tableAdmin.push('<td>'+value.proveedor_first+'</td><td>'+value.promocion_first+'</td>'+
+								'<td>$ '+formatNumber(parseFloat(value.precio_maximo), 2)+'</td><td>$ '+formatNumber(parseFloat(value.precio_promedio), 2)+'</td>');
 
-				tableAdmin.push(value.precio_nxtso == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nxtso), 2)+'</td>');				
-				if(value.precio_nxts >= value.precio_sistema){
-					tableAdmin.push(value.precio_nxts > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_nxts), 2)+'</div></td>' : '<td></td>');
-				}else{
-					tableAdmin.push(value.precio_nxts > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_nxts), 2)+'</div></td>' : '<td></td>');
-				}
-				tableAdmin.push('<td>'+value.proveedor_nxts+'</td><td>'+value.promocion_nxts+'</td>');
+					tableAdmin.push(value.precio_nexto == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nexto), 2)+'</td>');					
+					if(value.precio_next >= value.precio_sistema){
+						tableAdmin.push(value.precio_next > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>');
+					}else{
+						tableAdmin.push(value.precio_next > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_next), 2)+'</div></td>' : '<td></td>');
+					}
+					tableAdmin.push('<td>'+value.proveedor_next+'</td><td>'+value.promocion_next+'</td>');
+
+					tableAdmin.push(value.precio_nxtso == 0 ? '<td></td>' :'<td>$ '+formatNumber(parseFloat(value.precio_nxtso), 2)+'</td>');				
+					if(value.precio_nxts >= value.precio_sistema){
+						tableAdmin.push(value.precio_nxts > 0 ? '<td><div class="preciomas">$ '+formatNumber(parseFloat(value.precio_nxts), 2)+'</div></td>' : '<td></td>');
+					}else{
+						tableAdmin.push(value.precio_nxts > 0 ? '<td><div class="preciomenos">$ '+formatNumber(parseFloat(value.precio_nxts), 2)+'</div></td>' : '<td></td>');
+					}
+					tableAdmin.push('<td>'+value.proveedor_nxts+'</td><td>'+value.promocion_nxts+'</td>');
 
 
-				tableAdmin.push('<td><button id="detallazos" class="btn btn-success" data-toggle="tooltip" title="Detalles" data-id-cotizacion="'+value.id_cotizacion+'">'+
-							'<i class="fa fa-eye"></i></button><button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
-							'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
-							'<i class="fa fa-trash"></i></button></td></tr>');
-			});	
-			$('.tableAdmin').append(tableAdmin.join(""));
-			$(".cuatro").inputmask("currency", {radixPoint: ".", prefix: ""});
-			$(".sistema").inputmask("currency", {radixPoint: ".", prefix: ""});
+					tableAdmin.push('<td><button id="detallazos" class="btn btn-success" data-toggle="tooltip" title="Detalles" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-eye"></i></button><button id="update_cotizacion" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-pencil"></i></button><button id="delete_cotizacion" class="btn btn-warning" data-toggle="tooltip" title="Eliminar" data-id-cotizacion="'+value.id_cotizacion+'">'+
+								'<i class="fa fa-trash"></i></button></td></tr>');
+				});	
+				$('.tableAdmin').append(tableAdmin.join(""));
+				$(".cuatro").inputmask("currency", {radixPoint: ".", prefix: ""});
+				$(".sistema").inputmask("currency", {radixPoint: ".", prefix: ""});
+			} else {
+				$('.tableAdmin').html("<tr><td colspan='19'>Sin Resultados</td></tr>");
+			}
 		});
 	} else {
-		$('.tableAdmin').html("");
+		$('.tableAdmin').html("<tr><td colspan='19'>Introduzca mas de 4 caracteres en el recuadro de busqueda</td></tr>");
+
 	}
 });
 function getAdminTable() {
