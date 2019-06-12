@@ -649,6 +649,15 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizaciones"] = $this->ct_mdl->getCotz(NULL,$fecha);
 		$this->jsonResponse($data);
 	}
+	public function buscaProdis(){
+		$busca = $this->input->post("values");
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$data["cotizaciones"] = $this->ct_mdl->getCotiz(NULL,$fecha,$busca);
+		$this->jsonResponse($data);
+	}
 	public function getVolTable(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
