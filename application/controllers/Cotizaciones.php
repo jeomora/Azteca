@@ -712,12 +712,28 @@ class Cotizaciones extends MY_Controller {
 					foreach ($value['articulos'] as $key => $row){
 						
 						$arrayData = array(
-							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$row["precio_sistema"] - $row["precio_first"],$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$row["precio_sistema"] - $row["precio_next"],$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
+							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'])
 						);
 						$hoja->getActiveSheet()->fromArray(
 						    $arrayData,
 						    NULL,
 						    'A'.$row_print
+						);
+						$arrayData = array(
+							array($row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'])
+						);
+						$hoja->getActiveSheet()->fromArray(
+						    $arrayData,
+						    NULL,
+						    'F'.$row_print
+						);
+						$arrayData = array(
+							array($row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['promocion_nxts'])
+						);
+						$hoja->getActiveSheet()->fromArray(
+						    $arrayData,
+						    NULL,
+						    'M'.$row_print
 						);
 						$row_print ++;
 					}
