@@ -1763,7 +1763,7 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->producto]["precio_four"]		=	$comparativa[$i]->precio_four;
 				$flag = 1;
 				$comparativaIndexada[$comparativa[$i]->producto]["precio_firsto"]	=	$comparativa[$i]->precio;
-				$comparativaIndexada[$comparativa[$i]->producto]["precio_first"]		=	$comparativa[$i]->precio_promocion;
+				$comparativaIndexada[$comparativa[$i]->producto]["precio_first"]	=	$comparativa[$i]->precio_promocion;
 				$comparativaIndexada[$comparativa[$i]->producto]["proveedor_first"]	=	$comparativa[$i]->proveedor;
 				$comparativaIndexada[$comparativa[$i]->producto]["promocion_first"]	=	$comparativa[$i]->observaciones;
 
