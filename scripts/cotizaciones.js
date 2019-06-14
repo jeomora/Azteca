@@ -14,8 +14,6 @@ $(document).off("change", "#file_p").on("change", "#file_p", function(event) {
 });
 
 
-
-
 function uploadProductos(formData) {
 	return $.ajax({
 		url: site_url+"Productos/upload_productos2",
@@ -148,7 +146,7 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 				$(".cuatro").inputmask("currency", {radixPoint: ".", prefix: ""});
 				$(".sistema").inputmask("currency", {radixPoint: ".", prefix: ""});
 			} else {
-				$('.tableAdmin').html("<tr><td colspan='19'>Sin Resultados</td></tr>");
+				$('.tableAdmin').html("<tr><td colspan='19' style='font-size:20px;color:red'>Sin Resultados</td></tr>");
 			}
 		});
 	} else {
