@@ -39,17 +39,17 @@ function renderTable(){
 
 $(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones", function(event) {
 	event.preventDefault();
-	//blockPage();
+	blockPage();
 	var proveedor = $("#id_pro option:selected").val();
 	var fdata = new FormData($("#upload_cotizaciones")[0]);
 	uploadCotizaciones(fdata,proveedor)
 		.done(function (resp) {
-			/*if (resp.type == 'error'){
+			if (resp.type == 'error'){
 				toastr.error(resp.desc, user_name);
 			}else{
 				unblockPage();
 				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
-			}*/
+			}
 		});
 });
 function uploadCotizaciones(formData,ides) {
