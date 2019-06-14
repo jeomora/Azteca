@@ -60,7 +60,7 @@ if(!$this->session->userdata("username")){
 						<?php echo form_close(); ?>
 					</div>
 					<div class="btn-group">
-						<?php echo form_open(base_url("/Azteca/Cotizaciones/fill_excel"), array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+						<?php echo form_open("Cotizaciones/fill_excel", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 								<i class="fa fa-file-excel-o"></i> Descargar Excel Cotizaciones
 							</button>
