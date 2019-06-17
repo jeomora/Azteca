@@ -726,6 +726,12 @@ class Cotizaciones extends MY_Controller {
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
+						$hoja->getActiveSheet()->getStyle("B{$row_print}")->applyFromArray(
+								array(
+									'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
+									'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
+								)
+							);
 						$arrayData = array(
 							array($row['codigo'],$row['producto'],$row['precio_sistema'],$row['precio_four'],$row["precio_sistema"] - $row["precio_first"],$row['precio_firsto'],$row['precio_first'],$row['proveedor_first'],$row['promocion_first'],$row['precio_maximo'],$row['precio_promedio'],$row["precio_sistema"] - $row["precio_next"],$row['precio_nexto'],$row['precio_next'],$row['proveedor_next'],$row['promocion_next'],$row['precio_nxtso'],$row['precio_nxts'],$row['proveedor_nxts'],$row['promocion_nxts'])
 						);
