@@ -282,7 +282,7 @@ class Productos_model extends MY_Model {
 		}*/
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
-		$fecha->add($intervalo);
+		$fecha->sub($intervalo);
 		$this->db->select("pc.codigo_factura,c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2,f3.id_producto AS sem3,f4.id_producto AS sem4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
 			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN prodcaja pc ON p.id_producto = pc.id_prodfactura LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
