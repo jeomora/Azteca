@@ -9,6 +9,7 @@ class Lunes extends MY_Controller {
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Prove_model", "prove_md");
 		$this->load->model("Prolunes_model", "prolu_md");
+		$this->load->model("Suclunes_model", "suc_md");
 	}
 
 	public function index(){
@@ -361,7 +362,36 @@ class Lunes extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}*/
 
+	public function exislunes(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
 
+		$data['scripts'] = [
+			'/scripts/produl',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["dias"] = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$data["meses"] = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$data["fecha"] =  $data["dias"][date('w')]." ".date('d')." DE ".$data["meses"][date('n')-1]. " DEL ".date('Y') ;
+		$data["existencias"] = $this->prolu_md->getProductos();
+		$data["tiendas"] = $this->suc_md->get(NULL);
+		$this->estructura("Lunes/existencias", $data);
+	}
 
 }
 
