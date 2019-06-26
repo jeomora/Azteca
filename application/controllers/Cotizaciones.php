@@ -1817,10 +1817,14 @@ class Cotizaciones extends MY_Controller {
 			}elseif ($id_proves === "VOLUMEN" || $id_proves === "AMARILLOS") {
 				$filenam = $id_proves;
 				$array = (object)['0'=>(object)['nombre' => $id_proves]];
+			}elseif ($id_proves === "6" || $id_proves === 6) {
+				$filenam = "19 HERMANOS & ORSA";
+				$array = $this->usua_mdl->get19hnos(NULL);
 			}else{
 				$array = $this->user_md->get(NULL, ["id_usuario" => $id_proves]);
 				$filenam = $array[0]->nombre;
 			}
+			//$this->jsonResponse($array);
 			ini_set("memory_limit", "-1");
 			ini_set("max_execution_time", "-1");
 			$this->load->library("excelfile");
