@@ -13,6 +13,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.top-navigation .navbar-brand{background:#fff;color:#000;}
 	#progress{color:#FFF !important;background:#008b8b !important;}
 	.logo_img>img{border: 4px solid #008b8b;}
+	.top-navigation .navbar-nav .dropdown-menu{background:#004479;color:#ffffff;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">

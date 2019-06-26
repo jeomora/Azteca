@@ -303,7 +303,67 @@ class Lunes extends MY_Controller {
 	}
 
 
+	/*public function upload_prods(){
+		$nams = preg_replace('/\s+/', '_', "Topazo");
+		$filen = "Cotizacion".$nams."".rand();
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_otizaciones',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=2; $i<=$num_rows; $i++) {
+			if($sheet->getCell('A'.$i)->getValue() > 0){
+				$precio=0; $sistema=0; $codigo=""; $desc=""; $unidad=0;
+				$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue()));
+				$sistema = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue()));
+				$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
+				$desc = $sheet->getCell('B'.$i)->getValue();
+				$unidad = $sheet->getCell('E'.$i)->getValue();
+				$prove = $sheet->getCell('F'.$i)->getValue();
+				$new_cotizacion=[
+					"codigo"			=>	$codigo,
+					"id_proveedor"		=>	$prove,//Recupera el id_usuario activo
+					"precio"			=>	$precio,
+					"sistema"			=>	$sistema,
+					"descripcion"			=>	$desc,
+					"unidad"			=>	$unidad,
+					"estatus" => 1];
+				$data['cotizacion']=$this->prolu_md->insert($new_cotizacion);
+			}
+		}
+		if (!isset($new_cotizacion)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin precios',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_cotizacion) > 0) {
+				
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}*/
+
+
+
 }
 
-/* End of file Familias.php */
-/* Location: ./application/controllers/Familias.php */
+/* End of file Lunes.php */
+/* Location: ./application/controllers/Lunes.php */

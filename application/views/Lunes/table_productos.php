@@ -13,6 +13,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.top-navigation .navbar-brand{background:#fff;color:#000;}
 	#progress{color:#FFF !important;background:#008b8b !important;}
 	.logo_img>img{border: 4px solid #008b8b;}
+	.top-navigation .navbar-nav .dropdown-menu{background:#004479;color:#ffffff;}
+}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -28,6 +30,16 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</button>
 
 					</div>
+					<!--<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir formato de cotizaciones
+						</div>
+						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones"/>
+							</div>
+						<?php echo form_close(); ?>
+					</div>-->
 					<table class="table table-striped table-bordered table-hover" id="table_usuarios">
 						<thead>
 							<tr>

@@ -13,7 +13,7 @@ class Prove_model extends MY_Model {
 		$this->db->select("id_proveedor,nombre,alias")
 		->from($this->TABLE_NAME)
 		->where("estatus","1")
-		->order_by($this->TABLE_NAME.".nombre","ASC");
+		->order_by($this->TABLE_NAME.".id_proveedor","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
