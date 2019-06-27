@@ -1,19 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Suclunes_model extends MY_Model {
+class Exislunes_model extends MY_Model {
 
 	function __construct(){
 		parent::__construct();
-		$this->TABLE_NAME = "suc_lunes";
-		$this->PRI_INDEX = "id_sucursal";
+		$this->TABLE_NAME = "ex_lunes";
+		$this->PRI_INDEX = "id_existencia";
 	}
 
 
-	public function getByOrder($where=[]){
-		$this->db->select("*")
-		->from("suc_lunes")
-		->order_by($this->TABLE_NAME.".orden", "ASC");;
+	public function getCuantas($where=[]){
+		$this->db->select("s.id_sucursal,s.nombre,count(xl.id_existencia) as cuantas from suc_lunes s left join ex_lunes xl on s.id_sucursal = xl.id_tienda and WEEKOFYEAR(xl.fecha_registro) = WEEKOFYEAR(CURDATE()) where s.estatus = 1 group by s.id_sucursal ORDER BY s.orden ASC");
 		
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -35,9 +33,9 @@ class Suclunes_model extends MY_Model {
 			return false;
 		}
 	}
-	public function getCount($where=[]){
-		$this->db->select("count(*) as total from suc_lunes")
-		->order_by($this->TABLE_NAME.".orden", "ASC");;
+
+	public function getCuanto($where=[],$tienda){
+		$this->db->select("s.id_sucursal,s.nombre,count(xl.id_existencia) as cuantas from suc_lunes s left join ex_lunes xl on s.id_sucursal = xl.id_tienda and WEEKOFYEAR(xl.fecha_registro) = WEEKOFYEAR(CURDATE()) where s.estatus = 1 and s.id_sucursal = ".$tienda." group by s.id_sucursal ORDER BY s.orden ASC");
 		
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -60,6 +58,3 @@ class Suclunes_model extends MY_Model {
 		}
 	}
 }
-
-/* End of file Sucursales_model.php */
-/* Location: ./application/models/Sucursales_model.php */
