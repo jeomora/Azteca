@@ -3,7 +3,6 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	var proveedor = $("#id_pro option:selected").val();
 	if(proveedor != "nope"){
 		renderTable();
-		$("#id_pro").prop('disabled', 'disabled');
 		$("#camb").css("display","block");
     $(".dude").css("display","block");
 	}else{
@@ -238,7 +237,6 @@ $(document).off("click", "#new_cotizacion").on("click", "#new_cotizacion", funct
 });
 $(document).off("click", "#camb").on("click", "#camb", function(event) {
 	event.preventDefault();
-	$("#id_pro").removeAttr("disabled");
 	$("#camb").css("display","none");
 });
 

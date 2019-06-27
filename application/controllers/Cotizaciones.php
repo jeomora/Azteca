@@ -3408,8 +3408,8 @@ class Cotizaciones extends MY_Controller {
 		$intervalo = new DateInterval('P2D');
 		$fecha->sub($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
-		$where = ["expo.id_proveedor"=>$this->input->post("id_pro")];
-		$cotizacionesProveedor = $this->expo_mdl->comparaCotizaciones2($where, $fecha);
+		//$where = ["expo.id_proveedor"=>$this->input->post("id_pro")];
+		$cotizacionesProveedor = $this->expo_mdl->comparaCotizaciones2(NULL, $fecha,$this->input->post("id_pro"));
 		$row_print =2;
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){

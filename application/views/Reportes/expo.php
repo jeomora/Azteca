@@ -29,11 +29,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<?php endforeach ?>
 			</select>
 		</div>
-		<div class="col-lg-2" style="margin-bottom: 1rem">
-			<button class="btn btn-info" name="camb" data-toggle="tooltip" title="Cambiar" type="button" id="camb" style="display: none">
-				<i class="fa fa-refresh"></i> Cambiar Proveedor
-			</button>
-		</div>
+		
     <div class="btn-group dude" style="display:none">
       <button class="btn btn-primary" name="excel" id="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
         <i class="fa fa-file-excel-o"></i> Descargar Comparaciones
