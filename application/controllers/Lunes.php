@@ -10,6 +10,7 @@ class Lunes extends MY_Controller {
 		$this->load->model("Prove_model", "prove_md");
 		$this->load->model("Prolunes_model", "prolu_md");
 		$this->load->model("Suclunes_model", "suc_md");
+		$this->load->model("Exislunes_model", "ex_lun_md");
 	}
 
 	public function index(){
@@ -371,7 +372,7 @@ class Lunes extends MY_Controller {
 		];
 
 		$data['scripts'] = [
-			'/scripts/produl',
+			'/scripts/exilu',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
@@ -388,9 +389,98 @@ class Lunes extends MY_Controller {
 		$data["dias"] = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$data["meses"] = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$data["fecha"] =  $data["dias"][date('w')]." ".date('d')." DE ".$data["meses"][date('n')-1]. " DEL ".date('Y') ;
-		$data["existencias"] = $this->prolu_md->getProductos();
-		$data["tiendas"] = $this->suc_md->get(NULL);
+		$data["cuantas"] = $this->ex_lun_md->getCuantas(NULL);
+		$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
+		$data["tiendas"] = $this->suc_md->getByOrder(NULL);
 		$this->estructura("Lunes/existencias", $data);
+		//$this->jsonResponse($data["noprod"]);
+	}
+
+	public function buscaProdis(){
+		$busca = $this->input->post("values");
+		$tiendas = $this->suc_md->getCount(NULL)[0];
+		$data["prods"] = $this->prolu_md->buscaProdis(NULL,$busca,(int)$tiendas->total);
+		$this->jsonResponse($data);
+	}
+
+	public function getCuantas($tienda){
+		$busca = $this->input->post("values");
+		$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
+		$data["cuantas"] = $this->ex_lun_md->getCuanto(NULL,$tienda);
+		$this->jsonResponse($data);
+	}
+
+	public function upload_existencias($idesp){
+		$tienda = $idesp;
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$cfile =  $this->suc_md->get(NULL, ['id_sucursal' => $idesp])[0];
+		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
+		$filen = "Existencias".$nams."".rand();
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_otizaciones',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=2; $i<=$num_rows; $i++) {
+			if(strlen($sheet->getCell('D'.$i)->getValue()) > 0){
+				$productos = $this->prolu_md->get("codigo",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$caja=0; $pieza=0; $ped=0;
+					$caja = $sheet->getCell('A'.$i)->getValue();
+					$pieza = $sheet->getCell('B'.$i)->getValue();
+					$ped = $sheet->getCell('C'.$i)->getValue();
+					$codigo = htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
+					$exist =  $this->ex_lun_md->get(NULL, ['id_producto' => $codigo, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_tienda' => $idesp])[0];
+					$new_existencia=[
+							"id_producto"		=>	$codigo,
+							"id_tienda"			=>	$idesp,
+							"cajas"				=>	$caja,
+							"piezas"		 	=>	$pieza,
+							"pedido"			=>	$ped,
+						];
+					if($exist){
+						$data['existencia']=$this->ex_lun_md->update($new_existencia, ['id_existencia' => $exist->id_existencia]);
+					}else{
+						$data['existencia']=$this->ex_lun_md->insert($new_existencia);
+					}
+				}
+			}
+		}
+		if (!isset($new_existencia)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin precios',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_existencia) > 0) {
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"			=>	"El usuario sube archivo de existencias de ".$cfile->nombre,
+						"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Existencias cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Las Existencias no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
 	}
 
 }

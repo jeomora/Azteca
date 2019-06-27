@@ -7,6 +7,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 }
 ?>
 <style>
+	.buscale {width: 50vw;padding: 5px 10px;border: 2px solid #23c6c8;font-size: 16px;border-radius: 5px;}
 	div#page-wrapper{background: #008b8b;}
 	.top-navigation .nav>li>a{color:#000;background:#fff;}
 	.white-bg .navbar-fixed-top, .white-bg .navbar-static-top{background: #fff;}
@@ -25,16 +26,31 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<h5>LISTADO DE EXISTENCIAS</h5>
 				</div>
 				<div class="ibox-content">
-					<table class="table table-striped table-bordered table-hover" id="table_usuarios">
+					<!--<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+							Subir cotizaciones de varios proveedores
+						</div>
+						<?php //echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value=""/>
+							</div>
+						<?php //echo form_close(); ?>
+					</div> -->
+					<br>
+					<div class="btn-group" style="margin-top:20px;margin-bottom:20px;">
+						<input type="text" name="buscale" id="buscale" class="buscale" placeholder="Ingrese la descripción o código del producto"><br>
+						<p>A partir de 4 caracteres se mostrarán los resultados en la tabla </p>
+					</div>
+					<table class="table table-striped table-bordered table-hover" style="font-size:10px">
 						<thead>
 							<tr>
-								<th>Subir Exictencias</th>
+								<th colspan="3" width="200px !important">Subir Existencias</th>
 								<?php foreach ($tiendas as $key => $value):?>
 									<th colspan="3" style="background-color:<?php echo $value->color."99" ?>;border:1px solid <?php echo $value->color."99" ?>;">
 										<div class="btn-group">
-											<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
+											<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones'.$value->id_sucursal)); ?>
 												<div>
-													<input style="width:118px" type="file" id="file_otizaciones" name="file_otizaciones" data-id-proveedor="<?php echo $value->id_sucursal ?>"/>
+													<input style="width:118px" type="file" id="file_otizaciones" name="file_otizaciones" data-id-tienda="<?php echo $value->id_sucursal ?>"/>
 												</div>
 											<?php echo form_close(); ?>
 										</div>
@@ -42,234 +58,25 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<?php endforeach; ?>
 							</tr>
 							<tr>
-								<th><?php echo $fecha ?></th>
+								<th colspan="3" width="200px !important"><?php echo $fecha ?></th>
 								<?php foreach ($tiendas as $key => $value):?>
 									<th colspan="3" style="text-align:center;border:1px solid <?php echo $value->color."99" ?>;background-color:<?php echo $value->color."99" ?>"><?php echo $value->nombre ?></th>
 								<?php endforeach; ?>
 							</tr>
 							<tr>
-								<th></th>
+								<th colspan="3" width="200px !important">Existencias Subidas</th>
 								<?php foreach ($tiendas as $key => $value):?>
-									<th style="border:1px solid <?php echo $value->color."99" ?>;background-color:<?php echo $value->color."99" ?>">
-										Cjs
-									</th>
-									<th style="border:1px solid <?php echo $value->color."99" ?>;background-color:<?php echo $value->color."99" ?>">
-										Pzs
-									</th>
-									<th style="border:1px solid <?php echo $value->color."99" ?>;background-color:<?php echo $value->color."99" ?>">
-										Pdo
+									<th colspan="3" style="text-align:center;border:2px solid <?php echo $value->color."99" ?>;" id="ths<?php echo $value->id_sucursal ?>">
+										<?php echo $cuantas[$key]->cuantas." de ".$noprod->noprod ?>
 									</th>
 								<?php endforeach; ?>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tbody_exist">
 							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 1</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">3</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">34</td>
-								<?php endforeach; ?>
-							</tr>
-							<tr>
-								<td>producto 2</td>
-								<?php foreach ($tiendas as $key => $value):?>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">32</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">1</td>
-									<td style="border:1px solid <?php echo $value->color."99" ?>;">2</td>
-								<?php endforeach; ?>
+								<td colspan='12'>
+									Introduzca mas de 4 caracteres en el recuadro de busqueda
+								</td>
 							</tr>
 						</tbody>
 					</table>
