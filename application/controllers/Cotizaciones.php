@@ -3029,6 +3029,11 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
+		$mensaje = [
+			"id" 	=> 'Error',
+			"desc"	=> 'No se pudo subir el archivo',
+			"type"	=> 'error'
+		];
 		for ($i=1; $i<=$num_rows; $i++) {
 			if($sheet->getCell('B'.$i)->getValue() !=''){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
