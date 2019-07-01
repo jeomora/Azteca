@@ -3453,7 +3453,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("AZ2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
-		$fecha->sub($intervalo);
+		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		//$where = ["expo.id_proveedor"=>$this->input->post("id_pro")];
 		$cotizacionesProveedor = $this->expo_mdl->comparaCotizaciones2(NULL, $fecha,$this->input->post("id_pro"));
