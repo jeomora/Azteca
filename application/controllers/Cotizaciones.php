@@ -3029,6 +3029,11 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
+		$mensaje = [
+			"id" 	=> 'Error',
+			"desc"	=> 'No se pudo subir el archivo',
+			"type"	=> 'error'
+		];
 		for ($i=1; $i<=$num_rows; $i++) {
 			if($sheet->getCell('B'.$i)->getValue() !=''){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
@@ -3333,11 +3338,11 @@ class Cotizaciones extends MY_Controller {
 		    ->getBorders()
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$this->cellStyle("A1:AM2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:AY2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
-		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
+		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(60);
 		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(12);
 		$hoja->setCellValue("D2", "PRECIO 4")->getColumnDimension('D')->setWidth(12);
 		$hoja->setCellValue("E1", "PRECIO")->getColumnDimension('E')->setWidth(12);
@@ -3358,27 +3363,56 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("P1", "2DO PRECIO")->getColumnDimension('P')->setWidth(12);
 		$hoja->setCellValue("Q1", "2DO PROVEEDOR")->getColumnDimension('Q')->setWidth(15);
 		$hoja->setCellValue("R1", "2DA OBSERVACIÓN")->getColumnDimension('R')->setWidth(30);
+
+
 		$hoja->mergeCells('S1:U1');
-		$this->cellStyle("S1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("S1", "ABARROTES");
+		$this->cellStyle("S1", "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("S1", "CEDIS/SUPER");
 		$hoja->mergeCells('V1:X1');
-		$this->cellStyle("V1", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("V1", "TIENDA");
+		$hoja->setCellValue("V1", "CD INDUSTRIAL");
+		$this->cellStyle("V1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->mergeCells('Y1:AA1');
-		$this->cellStyle("Y1", "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("Y1", "ULTRAMARINOS");
+		$this->cellStyle("Y1", "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("Y1", "SUMA CEDIS/SUPER");
 		$hoja->mergeCells('AB1:AD1');
-		$this->cellStyle("AB1", "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AB1", "TRINCHERAS");
+		$this->cellStyle("AB1", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AB1", "ABARROTES");
 		$hoja->mergeCells('AE1:AG1');
-		$this->cellStyle("AE1", "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AE1", "AZT MERCADO");
+		$this->cellStyle("AE1", "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AE1", "PEDREGAL");
 		$hoja->mergeCells('AH1:AJ1');
-		$this->cellStyle("AH1", "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AH1", "TENENCIA");
+		$this->cellStyle("AH1", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AH1", "TIENDA");
 		$hoja->mergeCells('AK1:AM1');
-		$this->cellStyle("AK1", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AK1", "TIJERAS");
+		$this->cellStyle("AK1", "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AK1", "ULTRAMARINOS");
+		$hoja->mergeCells('AN1:AP1');
+		$this->cellStyle("AN1", "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AN1", "TRINCHERAS");
+		$hoja->mergeCells('AQ1:AS1');
+		$this->cellStyle("AQ1", "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AQ1", "AZT MERCADO");
+		$hoja->mergeCells('AT1:AV1');
+		$this->cellStyle("AT1", "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AT1", "TENENCIA");
+		$hoja->mergeCells('AW1:AY1');
+		$this->cellStyle("AW1", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AW1", "TIJERAS");
+
+		$this->cellStyle("AZ2", "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BA2", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BB2", "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BC2", "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BD2", "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BE2", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BF2", "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BG2", "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BH2", "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BI2", "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("BJ2", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+
+
+		
 		$hoja->setCellValue("S2", "CAJAS");
 		$hoja->setCellValue("T2", "PZAS");
 		$hoja->setCellValue("U2", "PEDIDO");
@@ -3400,10 +3434,23 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AK2", "CAJAS");
 		$hoja->setCellValue("AL2", "PZAS");
 		$hoja->setCellValue("AM2", "PEDIDO");
-		$hoja->setCellValue("AU1", "TOTAL POR");
-		$hoja->setCellValue("AU2", "PRODUCTO");
-		$this->cellStyle("AU1", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("AU2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AN2", "CAJAS");
+		$hoja->setCellValue("AO2", "PZAS");
+		$hoja->setCellValue("AP2", "PEDIDO");
+		$hoja->setCellValue("AQ2", "CAJAS");
+		$hoja->setCellValue("AR2", "PZAS");
+		$hoja->setCellValue("AS2", "PEDIDO");
+		$hoja->setCellValue("AT2", "CAJAS");
+		$hoja->setCellValue("AU2", "PZAS");
+		$hoja->setCellValue("AV2", "PEDIDO");
+		$hoja->setCellValue("AW2", "CAJAS");
+		$hoja->setCellValue("AX2", "PZAS");
+		$hoja->setCellValue("AY2", "PEDIDO"); 
+		$hoja->mergeCells('AZ1:BJ1');
+		
+		$hoja->setCellValue("AZ1", "TOTAL POR PRODUCTO");
+		$this->cellStyle("AZ1", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("AZ2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->sub($intervalo);
@@ -3514,38 +3561,66 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] >= 4){
 							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
-						$hoja->getStyle("A{$row_print}:AT{$row_print}")
+						$hoja->getStyle("B{$row_print}:BA{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("A{$row_print}:BA{$row_print}")
 			                 ->getAlignment()
 			                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
 						$hoja->setCellValue("S{$row_print}", $row['caja0']);
- 						$hoja->setCellValue("T{$row_print}", $row['pz0']);
- 						$hoja->setCellValue("U{$row_print}", $row['ped0']);
- 						$this->cellStyle("U{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
- 						$hoja->setCellValue("V{$row_print}", $row['caja1']);
- 						$hoja->setCellValue("W{$row_print}", $row['pz1']);
- 						$hoja->setCellValue("X{$row_print}", $row['ped1']);
- 						$this->cellStyle("X{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
- 						$hoja->setCellValue("Y{$row_print}", $row['caja2']);
- 						$hoja->setCellValue("Z{$row_print}", $row['pz2']);
- 						$hoja->setCellValue("AA{$row_print}", $row['ped2']);
- 						$this->cellStyle("AA{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
- 						$hoja->setCellValue("AB{$row_print}", $row['caja3']);
- 						$hoja->setCellValue("AC{$row_print}", $row['pz3']);
- 						$hoja->setCellValue("AD{$row_print}", $row['ped3']);
- 						$this->cellStyle("AD{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
- 						$hoja->setCellValue("AE{$row_print}", $row['caja4']);
- 						$hoja->setCellValue("AF{$row_print}", $row['pz4']);
- 						$hoja->setCellValue("AG{$row_print}", $row['ped4']);
- 						$this->cellStyle("AG{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
- 						$hoja->setCellValue("AH{$row_print}", $row['caja5']);
- 						$hoja->setCellValue("AI{$row_print}", $row['pz5']);
- 						$hoja->setCellValue("AJ{$row_print}", $row['ped5']);
- 						$this->cellStyle("AJ{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$hoja->setCellValue("AK{$row_print}", $row['caja6']);
- 						$hoja->setCellValue("AL{$row_print}", $row['pz6']);
- 						$hoja->setCellValue("AM{$row_print}", $row['ped6']);
- 						$this->cellStyle("AM{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("T{$row_print}", $row['pz0']);
+						$hoja->setCellValue("U{$row_print}", $row['ped0']);
+						$this->cellStyle("U{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("V{$row_print}", $row['caja9']);
+						$hoja->setCellValue("W{$row_print}", $row['pz9']);
+						$hoja->setCellValue("X{$row_print}", $row['ped9']);
+						$this->cellStyle("X{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("Y{$row_print}", "=S".$row_print."+Y".$row_print);
+						$hoja->setCellValue("Z{$row_print}", "=T".$row_print."+W".$row_print);
+						$hoja->setCellValue("AA{$row_print}", "=U".$row_print."+X".$row_print);
+						$this->cellStyle("AA{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AB{$row_print}", $row['caja1']);
+						$hoja->setCellValue("AC{$row_print}", $row['pz1']);
+						$hoja->setCellValue("AD{$row_print}", $row['ped1']);
+						$this->cellStyle("AD{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AE{$row_print}", $row['caja2']);
+						$hoja->setCellValue("AF{$row_print}", $row['pz2']);
+						$hoja->setCellValue("AG{$row_print}", $row['ped2']);
+						$this->cellStyle("AG{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AH{$row_print}", $row['caja3']);
+						$hoja->setCellValue("AI{$row_print}", $row['pz3']);
+						$hoja->setCellValue("AJ{$row_print}", $row['ped3']);
+						$this->cellStyle("AJ{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AK{$row_print}", $row['caja4']);
+						$hoja->setCellValue("AL{$row_print}", $row['pz4']);
+						$hoja->setCellValue("AM{$row_print}", $row['ped4']);
+						$this->cellStyle("AM{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AN{$row_print}", $row['caja5']);
+						$hoja->setCellValue("AO{$row_print}", $row['pz5']);
+						$hoja->setCellValue("AP{$row_print}", $row['ped5']);
+						$this->cellStyle("AP{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AQ{$row_print}", $row['caja6']);
+						$hoja->setCellValue("AR{$row_print}", $row['pz6']);
+						$hoja->setCellValue("AS{$row_print}", $row['ped6']);
+						$this->cellStyle("AS{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AT{$row_print}", $row['caja7']);
+						$hoja->setCellValue("AU{$row_print}", $row['pz7']);
+						$hoja->setCellValue("AV{$row_print}", $row['ped7']);
+						$this->cellStyle("AV{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+						$hoja->setCellValue("AW{$row_print}", $row['caja8']);
+						$hoja->setCellValue("AX{$row_print}", $row['pz8']);
+						$hoja->setCellValue("AY{$row_print}", $row['ped8']);
+						$this->cellStyle("AY{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
 						$hoja->getStyle("S{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("T{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("U{$row_print}")->applyFromArray($border_style);
@@ -3567,28 +3642,66 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("AK{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AL{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("AM{$row_print}")->applyFromArray($border_style);
-						$hoja->setCellValue("AN{$row_print}", "=(K".$row_print."*U".$row_print.")")->getStyle("AN{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AO{$row_print}", "=(K".$row_print."*X".$row_print.")")->getStyle("AO{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AP{$row_print}", "=(K".$row_print."*AA".$row_print.")")->getStyle("AP{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AQ{$row_print}", "=(K".$row_print."*AD".$row_print.")")->getStyle("AQ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AR{$row_print}", "=(K".$row_print."*AG".$row_print.")")->getStyle("AR{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AS{$row_print}", "=(K".$row_print."*AJ".$row_print.")")->getStyle("AS{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AT{$row_print}", "=(K".$row_print."*AM".$row_print.")")->getStyle("AT{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("AU{$row_print}", "=SUM(AN{$row_print}:AT{$row_print})")->getStyle("AU{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$this->cellStyle("AU{$row_print}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+						$hoja->getStyle("AN{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AO{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AP{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AQ{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AR{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AS{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AT{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AU{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AV{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AW{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AX{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AY{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AZ{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BA{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BB{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BC{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BD{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BE{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BF{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BG{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BH{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BI{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("BJ{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("B{$row_print}")->applyFromArray($border_style);
+
+
+
+						$hoja->getStyle("S{$row_print}:AW{$row_print}")->applyFromArray($border_style);
+
+						$hoja->setCellValue("AZ{$row_print}", "=(K".$row_print."*U".$row_print.")")->getStyle("AZ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BA{$row_print}", "=(K".$row_print."*X".$row_print.")")->getStyle("BA{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BB{$row_print}", "=(K".$row_print."*AA".$row_print.")")->getStyle("BB{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BC{$row_print}", "=(K".$row_print."*AD".$row_print.")")->getStyle("BC{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BD{$row_print}", "=(K".$row_print."*AG".$row_print.")")->getStyle("BD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BE{$row_print}", "=(K".$row_print."*AJ".$row_print.")")->getStyle("BE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BF{$row_print}", "=(K".$row_print."*AM".$row_print.")")->getStyle("BF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BG{$row_print}", "=(K".$row_print."*AP".$row_print.")")->getStyle("BG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BH{$row_print}", "=(K".$row_print."*AS".$row_print.")")->getStyle("BH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BI{$row_print}", "=(K".$row_print."*AV".$row_print.")")->getStyle("BI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BJ{$row_print}", "=(K".$row_print."*AY".$row_print.")")->getStyle("BJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("BK{$row_print}", "=SUM(AZ{$row_print}:BJ{$row_print})")->getStyle("AK{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->cellStyle("BK{$row_print}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 						$row_print ++;
 					}
 				}
 			}
 		}
 		$flags = $row_print - 1;
-		$hoja->setCellValue("AN{$row_print}", "=SUM(AN3:AN".$flags.")")->getStyle("AN{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AO{$row_print}", "=SUM(AO3:AO".$flags.")")->getStyle("AO{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AP{$row_print}", "=SUM(AP3:AP".$flags.")")->getStyle("AP{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AQ{$row_print}", "=SUM(AQ3:AQ".$flags.")")->getStyle("AQ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AR{$row_print}", "=SUM(AR3:AR".$flags.")")->getStyle("AR{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AS{$row_print}", "=SUM(AS3:AS".$flags.")")->getStyle("AS{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("AT{$row_print}", "=SUM(AT3:AT".$flags.")")->getStyle("AT{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("AZ{$row_print}", "=SUM(AZ3:AZ".$flags.")")->getStyle("AZ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BA{$row_print}", "=SUM(BA3:BA".$flags.")")->getStyle("BA{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BB{$row_print}", "=SUM(BB3:BB".$flags.")")->getStyle("BB{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BC{$row_print}", "=SUM(BC3:BC".$flags.")")->getStyle("BC{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BD{$row_print}", "=SUM(BD3:BD".$flags.")")->getStyle("BD{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BE{$row_print}", "=SUM(BE3:BE".$flags.")")->getStyle("BE{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BF{$row_print}", "=SUM(BF3:BF".$flags.")")->getStyle("BF{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BG{$row_print}", "=SUM(BG3:BG".$flags.")")->getStyle("BG{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BH{$row_print}", "=SUM(BH3:BH".$flags.")")->getStyle("BH{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BI{$row_print}", "=SUM(BI3:BI".$flags.")")->getStyle("BI{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BJ{$row_print}", "=SUM(BJ3:BJ".$flags.")")->getStyle("BJ{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$hoja->setCellValue("BK{$row_print}", "=SUM(BK3:BK".$flags.")")->getStyle("BK{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
