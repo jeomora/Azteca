@@ -75,7 +75,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</thead>
 						<tbody id="tbody_exist">
 							<tr>
-								<td colspan='36'>
+								<td colspan='12'>
 									Introduzca mas de 4 caracteres en el recuadro de busqueda
 								</td>
 							</tr>
