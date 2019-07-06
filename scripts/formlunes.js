@@ -30,7 +30,13 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 					$('#tbody_exist').html("");
 					$.each(resp.prods, function(indx, value){
 						html += "<tr><td style='width:300px !important;'>"+value.codigo+"<br>"+value.descripcion+"</td>";
-						html += "<td>$ "+formatMoney(value.precio)+"</td><td>$ "+formatMoney(value.sistema)+"</td><td>"+value.unidad+"</td>";
+						html += "<td>$ "+formatMoney(value.precio)+"</td>";
+						if (value.sis == value.cur) {
+							html += "<td>$ "+formatMoney(value.sistema)+"</td>";
+						} else {
+							html += "<td style='background-color:red'>$ "+formatMoney(value.sistema)+"</td>";
+						}
+						html += "<td>"+value.unidad+"</td>";
 						$.each(value.existencias, function(inx,vals){							
 							if (inx == 2) {
 								anterior =( parseFloat(value.exist[1].cja)+parseFloat(value.exist[1].ped)+(parseFloat(value.exist[1].pzs) / parseFloat(value.unidad)))+( parseFloat(value.exist[3].cja)+parseFloat(value.exist[3].ped)+(parseFloat(value.exist[3].pzs) / parseFloat(value.unidad)));

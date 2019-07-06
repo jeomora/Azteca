@@ -4005,6 +4005,16 @@ class Cotizaciones extends MY_Controller {
 		$hoja->mergeCells('U1:W1');
 		$this->cellStyle("U1", "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("U1", "TIJERAS");
+		$hoja->mergeCells('X1:Z1');
+		$this->cellStyle("X1", "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("X1", "CEDIS/SUPER");
+		$hoja->mergeCells('AA1:AC1');
+		$hoja->setCellValue("AA1", "CD INDUSTRIAL");
+		$this->cellStyle("AA1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->mergeCells('AD1:AF1');
+		$this->cellStyle("AD1", "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("AD1", "PEDREGAL");
+
 		$hoja->setCellValue("C2", "CAJAS");
 		$hoja->setCellValue("D2", "PZAS");
 		$hoja->setCellValue("E2", "PEDIDO");
@@ -4026,6 +4036,15 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("U2", "CAJAS");
 		$hoja->setCellValue("V2", "PZAS");
 		$hoja->setCellValue("W2", "PEDIDO");
+		$hoja->setCellValue("X2", "CAJAS");
+		$hoja->setCellValue("Y2", "PZAS");
+		$hoja->setCellValue("Z2", "PEDIDO");
+		$hoja->setCellValue("AA2", "CAJAS");
+		$hoja->setCellValue("AB2", "PZAS");
+		$hoja->setCellValue("AC2", "PEDIDO");
+		$hoja->setCellValue("AD2", "CAJAS");
+		$hoja->setCellValue("AE2", "PZAS");
+		$hoja->setCellValue("AF2", "PEDIDO");
 		$cotizacionesProveedor = $this->ct_mdl->fill_exNot(NULL, date('Y-m-d'));
 		$row_print =2;
 		if ($cotizacionesProveedor){
@@ -4111,6 +4130,21 @@ class Cotizaciones extends MY_Controller {
  						$hoja->setCellValue("V{$row_print}", $row['pz6']);
  						$hoja->setCellValue("W{$row_print}", $row['ped6']);
  						$this->cellStyle("W{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+ 						$hoja->setCellValue("X{$row_print}", $row['caja7']);
+ 						$hoja->setCellValue("Y{$row_print}", $row['pz7']);
+ 						$hoja->setCellValue("Z{$row_print}", $row['ped7']);
+ 						$this->cellStyle("Z{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+ 						$hoja->setCellValue("AA{$row_print}", $row['caja8']);
+ 						$hoja->setCellValue("AB{$row_print}", $row['pz8']);
+ 						$hoja->setCellValue("AC{$row_print}", $row['ped8']);
+ 						$this->cellStyle("AC{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("AD{$row_print}", $row['caja9']);
+ 						$hoja->setCellValue("AE{$row_print}", $row['pz9']);
+ 						$hoja->setCellValue("AF{$row_print}", $row['ped9']);
+ 						$this->cellStyle("AF{$row_print}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
@@ -4132,6 +4166,16 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("U{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("V{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("W{$row_print}")->applyFromArray($border_style);
+
+						$hoja->getStyle("X{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("Y{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("Z{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AA{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AB{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AC{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AD{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AE{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("AF{$row_print}")->applyFromArray($border_style);
 						$row_print ++;
 					}
 				}

@@ -29,20 +29,31 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<h5>LISTADO DE EXISTENCIAS</h5>
 				</div>
 				<div class="ibox-content" style="overflow-x:scroll;">
-					<!--<div class="btn-group">
-						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
-							Subir cotizaciones de varios proveedores
+					<div class="btn-group col-sm-3" style="border:1px solid #bb2152;margin-right:30px;">
+						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#bb2152;margin-top: 2rem;">
+							Subir precios de sistema
 						</div>
 						<?php //echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value=""/>
+								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value="" style="background-color:#bb2152;border-color:#bb2152" />
 							</div>
 						<?php //echo form_close(); ?>
-					</div> -->
+					</div> 
+					<div class="btn-group col-sm-3" style="border:1px solid #af23c8;margin-right:30px;">
+						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#af23c8;margin-top: 2rem;">
+							Subir precios proveedor
+						</div>
+						<?php //echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value="" style="background-color:#af23c8;border-color:#af23c8" />
+							</div>
+						<?php //echo form_close(); ?>
+					</div> 
 					<br>
 					<div class="btn-group" style="margin-top:20px;margin-bottom:20px;">
 						<input type="text" name="buscale" id="buscale" class="buscale" placeholder="Ingrese la descripción o código del producto"><br>
 						<p>A partir de 4 caracteres se mostrarán los resultados en la tabla </p>
+						<p>Sí el precio sistema aparece en <span style="color:red">rojo</span>, significará que el precio no se ha actualizado y se tomo el de la semana pasada.</p>
 					</div>
 					<table class="table table-striped table-bordered table-hover" style="font-size:12px;text-align:right;">
 						<thead>
