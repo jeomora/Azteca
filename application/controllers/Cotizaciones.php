@@ -4101,7 +4101,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->getStyle("A{$row_print}:AT{$row_print}")
 			                 ->getAlignment()
 			                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-			            $this->cellStyle("C".$row_print.":W".$row_print, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			            $this->cellStyle("C".$row_print.":AF".$row_print, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja->setCellValue("C{$row_print}", $row['caja0']);
  						$hoja->setCellValue("D{$row_print}", $row['pz0']);
  						$hoja->setCellValue("E{$row_print}", $row['ped0']);
