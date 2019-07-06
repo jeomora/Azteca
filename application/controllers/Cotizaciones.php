@@ -4061,7 +4061,7 @@ class Cotizaciones extends MY_Controller {
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$this->excelfile->setActiveSheetIndex(0);
-						$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$this->cellStyle("A".$flag1.":AF".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						if($row['color'] == '#92CEE3'){
 							$this->cellStyle("D{$flag1}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
