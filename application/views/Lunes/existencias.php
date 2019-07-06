@@ -47,15 +47,21 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<tr>
 								<th colspan="3" width="200px !important">Subir Existencias</th>
 								<?php foreach ($tiendas as $key => $value):?>
-									<th colspan="3" style="background-color:<?php echo $value->color."99" ?>;border:1px solid <?php echo $value->color."99" ?>;">
-										<div class="btn-group">
-											<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones'.$value->id_sucursal)); ?>
-												<div>
-													<input style="width:118px" type="file" id="file_otizaciones" name="file_otizaciones" data-id-tienda="<?php echo $value->id_sucursal ?>"/>
-												</div>
-											<?php echo form_close(); ?>
-										</div>
-									</th>
+									<?php if ($value->id_sucursal == 2): ?>
+										<th colspan="3" style="background-color:<?php echo $value->color."99" ?>;border:1px solid <?php echo $value->color."99" ?>;">
+											
+										</th>
+									<?php else: ?>
+										<th colspan="3" style="background-color:<?php echo $value->color."99" ?>;border:1px solid <?php echo $value->color."99" ?>;">
+											<div class="btn-group">
+												<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones'.$value->id_sucursal)); ?>
+													<div>
+														<input style="width:118px" type="file" id="file_otizaciones" name="file_otizaciones" data-id-tienda="<?php echo $value->id_sucursal ?>"/>
+													</div>
+												<?php echo form_close(); ?>
+											</div>
+										</th>
+									<?php endif; ?>		
 								<?php endforeach; ?>
 							</tr>
 							<tr>
