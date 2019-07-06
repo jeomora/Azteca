@@ -4069,7 +4069,7 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
 						$hoja1->setCellValue("E{$flag1}", $row['producto']);
-						$hoja1->getStyle("A{$flag1}:E{$flag1}")
+						$hoja1->getStyle("A{$flag1}:AF{$flag1}")
 				                 ->getAlignment()
 				                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				        $hoja1->getStyle("A{$flag1}")->applyFromArray($border_style);
