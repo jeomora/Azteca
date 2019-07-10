@@ -74,7 +74,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<th colspan="3" width="200px !important">Existencias Subidas</th>
 								<?php foreach ($tiendas as $key => $value):?>
 									<th colspan="3" style="text-align:center;border:2px solid <?php echo $value->color."99" ?>;" id="ths<?php echo $value->id_sucursal ?>">
-										<?php echo $cuantas[$key]->cuantas." de ".$noprod->noprod ?>
+										<?php if ($value->id_sucursal <> 2): ?>
+											<?php echo $cuantas[$key]->cuantas." de ".$noprod->noprod ?>
+										<?php endif; ?>
 									</th>
 								<?php endforeach; ?>
 							</tr>
