@@ -73,10 +73,9 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 
 $(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones", function(event) {
 	event.preventDefault();
-	var tienda = $(this).data("idTienda");
 	blockPage();
-	var fdata = new FormData($("#upload_cotizaciones"+tienda)[0]);
-	uploadExistencias(fdata,tienda)
+	var fdata = new FormData($("#upload_sistema")[0]);
+	uploadSistema(fdata)
 	.done(function (resp) {
 		if (resp.type == 'error'){
 			unblockPage();
@@ -85,19 +84,16 @@ $(document).off("change", "#file_otizaciones").on("change", "#file_otizaciones",
 			unblockPage();
 			setTimeout("", 700, toastr.success(resp.desc, user_name), "");
 			setTimeout(function(){
-				getCuantas(tienda).done(function (resp) {
-					$("#ths"+tienda).html(resp.cuantas[0].cuantas+" de "+resp.noprod.noprod);
-				})
-				$('#tbody_exist').html("<tr><td colspan='36' style='font-size:24px;font-weight:bold;'>Se cargarón las existencias</td></tr>");
+				$('#tbody_exist').html("<tr><td colspan='36' style='font-size:24px;font-weight:bold;'>Se cargarón los precios sistema</td></tr>");
 				$("#buscale").val("");
 			})
 		}
 	});
 });
 
-function uploadExistencias(formData,ides) {
+function uploadSistema(formData) {
 	return $.ajax({
-		url: site_url+"Lunes/upload_existencias/"+ides,
+		url: site_url+"Lunes/upload_sistema/",
 		type: "POST",
 		cache: false,
 		contentType: false,
@@ -107,10 +103,34 @@ function uploadExistencias(formData,ides) {
 	});
 }
 
-function getCuantas(values){
-    return $.ajax({
-        url: site_url+"/Lunes/getCuantas/"+values,
-        type: "POST",
-        dataType: "JSON",
-    });
+$(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_precios")[0]);
+	uploadPrecios(fdata)
+	.done(function (resp) {
+		if (resp.type == 'error'){
+			unblockPage();
+			setTimeout("", 700, toastr.error(resp.desc, user_name), "");
+		}else{
+			unblockPage();
+			setTimeout("", 700, toastr.success(resp.desc, user_name), "");
+			setTimeout(function(){
+				$('#tbody_exist').html("<tr><td colspan='36' style='font-size:24px;font-weight:bold;'>Se cargarón los precios proveedor</td></tr>");
+				$("#buscale").val("");
+			})
+		}
+	});
+});
+
+function uploadPrecios(formData) {
+	return $.ajax({
+		url: site_url+"Lunes/upload_precios/",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
 }

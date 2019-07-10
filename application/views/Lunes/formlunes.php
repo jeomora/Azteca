@@ -33,22 +33,31 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#bb2152;margin-top: 2rem;">
 							Subir precios de sistema
 						</div>
-						<?php //echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
+						<?php echo form_open_multipart("", array('id' => 'upload_sistema')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value="" style="background-color:#bb2152;border-color:#bb2152" />
+								<input class="btn btn-info" type="file" name="file_otizaciones" id="file_otizaciones" value="" style="background-color:#bb2152;border-color:#bb2152" />
 							</div>
-						<?php //echo form_close(); ?>
+						<?php echo form_close(); ?>
 					</div> 
 					<div class="btn-group col-sm-3" style="border:1px solid #af23c8;margin-right:30px;">
 						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#af23c8;margin-top: 2rem;">
 							Subir precios proveedor
 						</div>
-						<?php //echo form_open_multipart("", array('id' => 'upload_allcotizaciones')); ?>
+						<?php echo form_open_multipart("", array('id' => 'upload_precios')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info file_cotizaciones" type="file" name="file_cotizaciones" value="" style="background-color:#af23c8;border-color:#af23c8" />
+								<input class="btn btn-info file_cotizaciones" type="file" id="file_cotizaciones" name="file_cotizaciones" value="" style="background-color:#af23c8;border-color:#af23c8" />
 							</div>
-						<?php //echo form_close(); ?>
+						<?php echo form_close(); ?>
 					</div> 
+					<div class="btn-group col-sm-3">
+						<div class="col-sm-2">
+							<?php echo form_open("Lunes/excel_semana", array("id" => 'archivo_precios', "target" => '_blank')); ?>
+								<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+									<i class="fa fa-cloud-download"></i> Descargar formato
+								</button>
+							<?php echo form_close(); ?>
+						</div>
+					</div>
 					<br>
 					<div class="btn-group" style="margin-top:20px;margin-bottom:20px;">
 						<input type="text" name="buscale" id="buscale" class="buscale" placeholder="Ingrese la descripción o código del producto"><br>
