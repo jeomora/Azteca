@@ -9,7 +9,7 @@
 		<?php echo form_open("", array("id"=>'form_producto_edit')); ?>
 		<input type="hidden" name="id_producto" id="id_producto" value="<?php echo $producto->id_producto ?>">
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-6" style="display:none">
 				<div class="form-group">
 					<label for="codigo">Código</label>
 					<input type="text" name="codigo" value="<?php echo $producto->codigo ?>" class="form-control" placeholder="7500000000">
