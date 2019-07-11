@@ -4,6 +4,8 @@
 <?php 
 if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
 	redirect("Compras/Login", "");
+}elseif ( $this->session->userdata("id_grupo") == 3) {
+	redirect("Pedidos", "");
 }
 ?>
 <div class="wrapper wrapper-content animated fadeInRight" id="welcome_container">

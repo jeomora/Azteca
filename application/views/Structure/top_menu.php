@@ -41,9 +41,9 @@
 					</button>
 					
 					<?php if ($usuario['id_grupo'] == 2): ?>
-						<a href="#" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
+						<a href="<?php echo base_url('/Main') ?>" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
 					<?php else: ?>
-						<a href="/Main/" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
+						<a href="<?php echo base_url('/Main') ?>" class="navbar-brand" style="padding-left: 12rem !important;"><?php echo strtoupper($usuario['username']) ?></a>
 					<?php endif ?>
 				</div>
 				<div class="navbar-collapse collapse" id="navbar">

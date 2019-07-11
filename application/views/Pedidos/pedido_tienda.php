@@ -45,56 +45,90 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	}
 	.numeric {width: 70px !important;}
 </style>
-<div class="wrapper wrapper-content animated fadeInRight">
-	<div class="row">
-		<div class="col-lg-12">
-					<?php echo form_open("Cotizaciones/fill_formato", array("id" => 'reporte_form', "target" => '_blank',"class" => 'btn-group')); ?>
-					<div class="btn-group btng1">
-						<label for="id_proveedor" class="lblget">Proveedor</label>
-						<select name="id_proves2" id="id_proves2" class="form-control">
-							<option value="nope">Seleccionar...</option>
-							<option value="VARIOS1">VARIOS 1°</option>
-							<option value="VARIOS2">VARIOS 2°</option>
-							<option value="VARIOS3">VARIOS 3°</option>
-							<option value="VARIOS4">VARIOS 4°</option>
-							<option value="VOLUMEN">VOLUMEN</option>
-							<option value="AMARILLOS">AMARILLOS</option>
-							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
-								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
-							<?php endforeach;endif; ?>
-						</select>
-						<select name="id_proves4" id="id_proves4" class="form-control">
-							<option value="nope">Seleccionar...</option>
-							<option value="VARIOS1">VARIOS 1°</option>
-							<option value="VARIOS2">VARIOS 2°</option>
-							<option value="VARIOS3">VARIOS 3°</option>
-							<option value="VARIOS4">VARIOS 4°</option>
-							<option value="VOLUMEN">VOLUMEN</option>
-							<option value="AMARILLOS">AMARILLOS</option>
-							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
-								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
-							<?php endforeach;endif; ?>
-						</select>
-						<div class="btn-group">
-							<button class="btn btn-primary fill_form" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-file-excel-o"></i>
-							</button>
+<div class="col-md-12 wrapper wrapper-content animated fadeInRight">
+	<div class="col-md-12 row">
+		<div class="col-md-12">
+			<div class="col-lg-4">
+				<div class="ibox">
+					<div class="ibox-content ">
+						<h3 class="m-b-md">ARTICULOS FORMATO LUNES</h3>
+						<h2 class="text-navy">
+							<i class="fa fa-play fa-rotate-45"></i> <?php if ($cuantas):echo $cuantas->cuantas;else:echo 0;endif;?> de 
+							<?php echo $noprod->noprod; ?>
+						</h2>
+						<small>Presione <a id="luninfo" style="color:red;font-size:17px">aquí</a> para ver los productos sin existencia.</small>
+					</div> 
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="ibox">
+					<div class="ibox-content ">
+						<h3 class="m-b-md">ARTICULOS FORMATO VOLUMEN</h3>
+						<h2 class="text-navy">
+							<i class="fa fa-play fa-rotate-45"></i> <?php if ($volcuantas):echo $volcuantas->cuantas;else:echo 0;endif;?> de 
+							<?php echo $novol->total; ?>
+						</h2>
+						<small>Presione <a style="color:red;font-size:17px" id="volinfo">aquí</a> para ver los productos sin existencia.</small>
+					</div> 
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="ibox">
+					<div class="ibox-content ">
+						<h3 class="m-b-md">ARTICULOS COMPRAS</h3>
+						<h2 class="text-navy">
+							<i class="fa fa-play fa-rotate-45"></i> <?php if ($allcuantas):echo $allcuantas->cuantas;else:echo 0;endif;?> de 
+							<?php echo $noall->total; ?>
+						</h2>
+						<small>Presione <a id="allinfo" style="color:red;font-size:17px">aquí</a> para ver los productos sin existencia.</small>
+					</div> 
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12" style="box-shadow:inset 0px 0px 0px #000,0px 5px 0px 0px #000,0px 10px 5px #000;border:1px solid #000;padding:20px">
+			<?php echo form_open_multipart("", array('id' => 'upload_pedidos')); ?>
+			<div class="col-md-12">
+				<h2 style="text-align:center;padding-bottom: 20px">SUBIR EXISTENCIAS Y PEDIDOS DE PRODUCTOS</h2>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2"></div>
+				<div class="btn-group btng1 col-md-3">
+					<label for="id_proveedor" class="lblget">FORMATO</label>
+					<select name="id_proves2" id="id_proves2" class="form-control">
+						<option value="nope">Seleccionar...</option>
+						<option value="LUNES">FORMATO LUNES</option>
+						<option value="VOLUMEN">VOLÚMENES</option>
+						<option value="GENERAL">GENERAL</option>
+					</select>
+					<select name="id_proves4" id="id_proves4" class="form-control">
+						<option value="nope">Seleccionar...</option>
+						<option value="LUNES">FORMATO LUNES</option>
+						<option value="VOLUMEN">VOLÚMENES</option>
+						<option value="GENERAL">GENERAL</option>
+					</select>
+				</div>
+				<div class="col-md-3">
+					<div class="btn-group" style="margin-top: 5px;">
+						<div class="col-sm-4">
+							<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
 						</div>
 					</div>
-					<?php echo form_close(); ?>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<p>Para subir archivo de existencias, seleccione en la parte izquierda el tipo de formato al que corresponde. Sí selecciona "Formato de los lunes" y en el archivo que seleccione contiene productos del formato "Volúmenes" no se producira ningún cambio en las existencias.</p>
+					<p>¡Importante!, al guardarse existencias de un producto, no podrá editar las existencias y/o pedido de tal producto incluso subiendo nuevamente los formatos. En tal caso le pedimos comunicarse con el área de compras en CEDIS GRUPO AZTECA para solicitar el cambio de las existencias.</p>
+				</div>
+				<div class="col-md-2"></div>
+			</div>
 			<div class="col-md-12 wonder" style="padding: 0">
 
 			</div>
-			<div class="btn-group" style="margin-left: 5rem;margin-top: -1rem;">
-				<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
-					Subir formato de pedidos
-				</div>
-				<?php echo form_open_multipart("", array('id' => 'upload_pedidos')); ?>
-					<div class="col-sm-4">
-						<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
-					</div>
-				<?php echo form_close(); ?>
-			</div>
+			
+			<?php echo form_close(); ?>
 
 
 

@@ -19,6 +19,8 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Usuarios_model","usua_mdl");
 		$this->load->model("Usuarios_model","usua_mdl");
 		$this->load->model("Cambios_model", "cambio_md");
+		$this->load->model("Prolunes_model", "prolu_md");
+		$this->load->model("Exislunes_model", "ex_lun_md");
 	}
 
 	public function index(){
@@ -36,7 +38,36 @@ class Pedidos extends MY_Controller {
 			'/assets/css/plugins/dataTables/buttons.dataTables.min',
 		];
 
-		$data['scripts'] = [
+		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
+		$data["proveedores"] = $this->user_mdl->getUsuarios();
+		$data["conjuntos"] = $this->user_mdl->get(NULL, ["conjunto" => "INDIVIDUAL"]);
+
+		if($user['id_grupo'] == 3){
+			$data['scripts'] = [
+			'/scripts/pedtienda',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+			$data["cuantas"] = $this->ex_lun_md->getCuantasTienda(NULL,$user["id_usuario"])[0];
+			$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
+			$data["novol"] = $this->prod_mdl->getVolCount(NULL)[0];
+			$data["noall"] = $this->prod_mdl->getAllCount(NULL)[0];
+			$data["volcuantas"] = $this->ex_lun_md->getVolTienda(NULL,$user["id_usuario"])[0];
+			$data["allcuantas"] = $this->ex_lun_md->getAllTienda(NULL,$user["id_usuario"])[0];
+			//$this->jsonResponse($data["cuantas"]);
+			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
+		}else{
+			$data['scripts'] = [
 			'/scripts/pedidos',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
@@ -51,13 +82,6 @@ class Pedidos extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["pedidos"] = $this->ped_mdl->getPedidos($where);
-		$data["proveedores"] = $this->user_mdl->getUsuarios();
-		$data["conjuntos"] = $this->user_mdl->get(NULL, ["conjunto" => "INDIVIDUAL"]);
-
-		if($user['id_grupo'] == 3){
-			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
-		}else{
 			$this->estructura("Pedidos/table_pedidos", $data, FALSE);
 		}
 
