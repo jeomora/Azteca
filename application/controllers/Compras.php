@@ -44,7 +44,9 @@ class Compras extends MY_Controller {
 			$user = $this->session->userdata();
 			if($user['id_grupo'] ==2){
 				redirect("cotizaciones/", $data);
-			}else{
+			}elseif($user['id_grupo'] ==3){
+				redirect("Pedidos/tiendas", $data);
+			
 				redirect("Main/", $data);
 			}
 
