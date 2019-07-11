@@ -178,7 +178,7 @@ class Productos extends MY_Controller {
 
 			default:
 				$antes = $this->pro_md->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
-				$data ['id_producto'] = $this->pro_md->update(["estatus" => 0], $this->input->post('id_producto'));
+				$data ['id_producto'] = $this->pro_md->update(["estatus" => 0,"codigo"=>"Eliminado"], $this->input->post('id_producto'));
 				$cambios = [
 						"id_usuario" => $user["id_usuario"],
 						"fecha_cambio" => date('Y-m-d H:i:s'),
