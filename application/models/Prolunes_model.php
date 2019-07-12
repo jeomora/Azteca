@@ -63,7 +63,7 @@ class Prolunes_model extends MY_Model {
 
 
 	public function buscaProdis($where=[],$values,$tiendas){
-		$arrayName = $arrayName = [0=>87,1=>0,2=>89,3=>57,4=>90,5=>58,6=>59,7=>60,8=>61,9=>62,10=>63];
+		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
 		$value = json_decode($values);
 		$this->db->select("p.codigo,p.descripcion,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) WHERE (p.codigo LIKE '%".$value->busca."%' OR p.descripcion LIKE '%".$value->busca."%')")
 		->order_by("p.codigo","ASC");
@@ -100,15 +100,15 @@ class Prolunes_model extends MY_Model {
 				
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
-				for($key = 0; $key < $tiendas; $key++) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["ped"]	=	0;
+				foreach ($arrayName as $k => $v) {
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["ped"]	=	0;
 				}
-				for($key = 0; $key < $tiendas; $key++) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["ped"]	=	0;
+				foreach ($arrayName as $k => $v) {
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["ped"]	=	0;
 				}
 				if (isset($comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda])) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda]["pzs"]	=	$comparativa[$i]->epiezas;
@@ -141,7 +141,7 @@ class Prolunes_model extends MY_Model {
 
 
 	public function printProdis($where=[],$prove,$tiendas){
-		$arrayName = [0=>87,1=>0,2=>89,3=>57,4=>90,5=>58,6=>59,7=>60,8=>61,9=>62,10=>63];
+		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
 		$this->db->select("p.codigo,p.descripcion,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) WHERE p.id_proveedor = ".$prove." ")
 		->order_by("p.codigo","ASC");
 		if ($where !== NULL) {
@@ -177,15 +177,15 @@ class Prolunes_model extends MY_Model {
 				
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
-				for($key = 0; $key < $tiendas; $key++) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["ped"]	=	0;
+				foreach ($arrayName as $k => $v) {
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["ped"]	=	0;
 				}
-				for($key = 0; $key < $tiendas; $key++) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["ped"]	=	0;
+				foreach ($arrayName as $k => $v) {
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["ped"]	=	0;
 				}
 				if (isset($comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda])) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda]["pzs"]	=	$comparativa[$i]->epiezas;
