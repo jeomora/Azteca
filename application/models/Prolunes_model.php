@@ -101,14 +101,12 @@ class Prolunes_model extends MY_Model {
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
 				foreach ($arrayName as $k => $v) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["ped"]	=	0;
-				}
-				foreach ($arrayName as $k => $v) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["ped"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v]["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v]["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v]["ped"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v]["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v]["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v]["ped"]	=	0;
 				}
 				if (isset($comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda])) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda]["pzs"]	=	$comparativa[$i]->epiezas;
@@ -178,14 +176,12 @@ class Prolunes_model extends MY_Model {
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
 				foreach ($arrayName as $k => $v) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v["ped"]	=	0;
-				}
-				foreach ($arrayName as $k => $v) {
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["pzs"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["cja"]	=	0;
-					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v["ped"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v]["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v]["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$v]["ped"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v]["pzs"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v]["cja"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$v]["ped"]	=	0;
 				}
 				if (isset($comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda])) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->id_tienda]["pzs"]	=	$comparativa[$i]->epiezas;
