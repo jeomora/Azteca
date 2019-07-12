@@ -1457,7 +1457,7 @@ class Lunes extends MY_Controller {
 
 	public function upload_pedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P1D');
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
@@ -1530,8 +1530,8 @@ class Lunes extends MY_Controller {
 		$data["cuantas"] = $this->ex_lun_md->getCuantasTienda(NULL,$user["id_usuario"])[0];
 		$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
 		$tienda = $this->suc_md->get(NULL,["sucu"=> $user["id_usuario"]])[0];
-		$data["existencias"] = $this->ex_lun_md->getLunExist(NULL,$tienda->id_sucursal);
-		$data["existenciasnot"] = $this->ex_lun_md->getLunExistNot(NULL,$tienda->id_sucursal);
+		$data["existencias"] = $this->ex_lun_md->getLunExist(NULL,$user["id_usuario"]);
+		$data["existenciasnot"] = $this->ex_lun_md->getLunExistNot(NULL,$user["id_usuario"]);
 		$data["view"]=$this->load->view("Lunes/lunpedido", $data, TRUE);
 		
 		$this->jsonResponse($data);
