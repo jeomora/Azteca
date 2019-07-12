@@ -59,7 +59,7 @@ class Exislunes_model extends MY_Model {
 	}
 
 	public function getCuantasTienda($where=[],$tienda){
-		$this->db->select("count(xl.id_existencia) as cuantas from ex_lunes xl where xl.id_tienda = ".$id_tienda." and WEEKOFYEAR(xl.fecha_registro) = WEEKOFYEAR(CURDATE()) group by xl.id_tienda");
+		$this->db->select("count(xl.id_existencia) as cuantas from ex_lunes xl where xl.id_tienda = ".$tienda." and WEEKOFYEAR(xl.fecha_registro) = WEEKOFYEAR(CURDATE()) group by xl.id_tienda");
 		
 		if ($where !== NULL) {
 			if (is_array($where)) {
