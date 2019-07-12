@@ -65,8 +65,8 @@ class Prolunes_model extends MY_Model {
 	public function buscaProdis($where=[],$values,$tiendas){
 		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
 		$value = json_decode($values);
-		$this->db->select("p.codigo,p.descripcion,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) WHERE (p.codigo LIKE '%".$value->busca."%' OR p.descripcion LIKE '%".$value->busca."%')")
-		->order_by("p.codigo","ASC");
+		$this->db->select("p.codigo,p.descripcion,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal WHERE (p.codigo LIKE '%".$value->busca."%' OR p.descripcion LIKE '%".$value->busca."%')")
+		->order_by("ss.orden","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
@@ -140,8 +140,8 @@ class Prolunes_model extends MY_Model {
 
 	public function printProdis($where=[],$prove,$tiendas){
 		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
-		$this->db->select("p.codigo,p.descripcion,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) WHERE p.id_proveedor = ".$prove." ")
-		->order_by("p.codigo","ASC");
+		$this->db->select("p.codigo,p.descripcion,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal WHERE p.id_proveedor = ".$prove." ")
+		->order_by("ss.orden","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
