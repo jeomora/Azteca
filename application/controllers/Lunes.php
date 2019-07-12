@@ -685,30 +685,6 @@ class Lunes extends MY_Controller {
 		$this->excelfile->createSheet();
 		$anterior = $this->excelfile->setActiveSheetIndex($last)->setTitle("ANTERIOR");
 
-		/*$this->excelfile->setActiveSheetIndex(0)->setTitle("QUIROZ");
-		$this->excelfile->createSheet();
-        $hoja1 = $this->excelfile->setActiveSheetIndex(1)->setTitle("AGYDSA");
-        $this->excelfile->createSheet();
-        $hoja2 = $this->excelfile->setActiveSheetIndex(2)->setTitle("DON VASCO");
-        $this->excelfile->createSheet();
-        $hoja3 = $this->excelfile->setActiveSheetIndex(3)->setTitle("TEAM");
-        $this->excelfile->createSheet();
-        $hoja1 = $this->excelfile->setActiveSheetIndex(4)->setTitle("FRUTIMEX");
-        $this->excelfile->createSheet();
-        $hoja2 = $this->excelfile->setActiveSheetIndex(5)->setTitle("PURINA");
-        $this->excelfile->createSheet();
-        $hoja3 = $this->excelfile->setActiveSheetIndex(6)->setTitle("JLC");
-        $this->excelfile->createSheet();
-        $hoja1 = $this->excelfile->setActiveSheetIndex(7)->setTitle("NAREMO");
-        $this->excelfile->createSheet();
-        $hoja2 = $this->excelfile->setActiveSheetIndex(8)->setTitle("SAPORIS");
-        $this->excelfile->createSheet();
-        $hoja3 = $this->excelfile->setActiveSheetIndex(9)->setTitle("H24");
-        $this->excelfile->createSheet();
-        $hoja1 = $this->excelfile->setActiveSheetIndex(10)->setTitle("DAM");
-        $this->excelfile->createSheet();
-        $hoja1 = $this->excelfile->setActiveSheetIndex(11)->setTitle("ANTERIOR");*/
-
         $flag = 1; $flag1 = 1;
 		$tiendas = $this->suc_md->getCount(NULL)[0];
         
