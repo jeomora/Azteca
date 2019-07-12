@@ -39,13 +39,13 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 						html += "<td>"+value.unidad+"</td>";
 						$.each(value.existencias, function(inx,vals){							
 							if (inx == 2) {
-								anterior =( parseFloat(value.exist[1].cja)+parseFloat(value.exist[1].ped)+(parseFloat(value.exist[1].pzs) / parseFloat(value.unidad)))+( parseFloat(value.exist[3].cja)+parseFloat(value.exist[3].ped)+(parseFloat(value.exist[3].pzs) / parseFloat(value.unidad)));
+								anterior = ((parseFloat(value.exist[1].cja)+parseFloat(value.exist[1].ped))+(parseFloat(value.exist[1].pzs)) / parseFloat(value.unidad))+( ((parseFloat(value.exist[3].cja)+parseFloat(value.exist[3].ped))+(parseFloat(value.exist[3].pzs)) / parseFloat(value.unidad)));
 								sugerido = ((parseFloat(anterior) * parseFloat(value.unidad)) - (((parseFloat(value.existencias[1].cja)+parseFloat(value.existencias[3].cja)) * parseFloat(value.unidad)) + (parseFloat(value.existencias[1].pzs)+parseFloat(value.existencias[3].pzs))))/ parseFloat(value.unidad);
 								html +='<td style="border-left-width:5px;">'+formatMoney(anterior)+'</td><td style="background:#da9694">'+formatMoney(sugerido)+'</td><td>'+formatMon((parseFloat(value.existencias[1].cja)+parseFloat(value.existencias[3].cja)))+
 								'</td><td>'+formatMon((parseFloat(value.existencias[1].pzs)+parseFloat(value.existencias[3].pzs)))+
 								'</td><td style="background:#dce6f1;border-right-width:5px;">'+formatMon((parseFloat(value.existencias[1].ped)+parseFloat(value.existencias[3].ped)))+'</td>';
 							}else{
-								anterior = parseFloat(value.exist[inx].cja)+parseFloat(value.exist[inx].ped)+(parseFloat(value.exist[inx].pzs) / parseFloat(value.unidad));
+								anterior = ((parseFloat(value.exist[inx].cja)+parseFloat(value.exist[inx].ped))+(parseFloat(value.exist[inx].pzs) )/ parseFloat(value.unidad));
 								sugerido = ((parseFloat(anterior) * parseFloat(value.unidad)) - ((parseFloat(vals.cja) * parseFloat(value.unidad)) + parseFloat(vals.pzs)))/ parseFloat(value.unidad);
 								html +='<td style="border-left-width:5px;">'+formatMoney(anterior)+'</td><td style="background:#da9694">'+formatMoney(sugerido)+'</td><td>'+formatMon(vals.cja)+'</td><td>'+formatMon(vals.pzs)+
 								'</td><td style="background:#dce6f1;border-right-width:5px;">'+formatMon(vals.ped)+'</td>';
