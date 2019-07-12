@@ -100,12 +100,12 @@ class Prolunes_model extends MY_Model {
 				
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
-				for($key = 1; $key <= $tiendas; $key++) {
+				for($key = 0; $key <= $tiendas; $key++) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["pzs"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["cja"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["ped"]	=	0;
 				}
-				for($key = 1; $key <= $tiendas; $key++) {
+				for($key = 0; $key <= $tiendas; $key++) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["pzs"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["cja"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["ped"]	=	0;
@@ -177,12 +177,12 @@ class Prolunes_model extends MY_Model {
 				
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
-				for($key = 1; $key <= $tiendas; $key++) {
+				for($key = 0; $key <= $tiendas; $key++) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["pzs"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["cja"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$arrayName[$key]]["ped"]	=	0;
 				}
-				for($key = 1; $key <= $tiendas; $key++) {
+				for($key = 0; $key <= $tiendas; $key++) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["pzs"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["cja"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$arrayName[$key]]["ped"]	=	0;
