@@ -39,12 +39,31 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 						html += "<td>"+value.unidad+"</td>";
 						$.each(value.existencias, function(inx,vals){							
 							if (inx == 2) {
+								value.exist[1].ped = value.exist[1].ped == null ? 0 : value.exist[1].ped;
+								value.exist[1].cja = value.exist[1].cja == null ? 0 : value.exist[1].cja;
+								value.exist[1].pzs = value.exist[1].pzs == null ? 0 : value.exist[1].pzs;
+								value.exist[3].ped = value.exist[3].ped == null ? 0 : value.exist[3].ped;
+								value.exist[3].cja = value.exist[3].cja == null ? 0 : value.exist[3].cja;
+								value.exist[3].pzs = value.exist[3].pzs == null ? 0 : value.exist[3].pzs;
+								value.existencias[1].ped = value.existencias[1].ped == null ? 0 : value.existencias[1].ped;
+								value.existencias[1].cja = value.existencias[1].cja == null ? 0 : value.existencias[1].cja;
+								value.existencias[1].pzs = value.existencias[1].pzs == null ? 0 : value.existencias[1].pzs;
+								value.existencias[3].ped = value.existencias[3].ped == null ? 0 : value.existencias[3].ped;
+								value.existencias[3].cja = value.existencias[3].cja == null ? 0 : value.existencias[3].cja;
+								value.existencias[3].pzs = value.existencias[3].pzs == null ? 0 : value.existencias[3].pzs;
+								
 								anterior = (((parseFloat(value.exist[1].cja)+parseFloat(value.exist[1].ped))+parseFloat(value.exist[1].pzs)) / parseFloat(value.unidad))+(((parseFloat(value.exist[3].cja)+parseFloat(value.exist[3].ped))+parseFloat(value.exist[3].pzs)) / parseFloat(value.unidad));
 								sugerido = ((parseFloat(anterior) * parseFloat(value.unidad)) - (((parseFloat(value.existencias[1].cja)+parseFloat(value.existencias[3].cja)) * parseFloat(value.unidad)) + (parseFloat(value.existencias[1].pzs)+parseFloat(value.existencias[3].pzs))))/ parseFloat(value.unidad);
 								html +='<td style="border-left-width:5px;">'+formatMoney(anterior)+'</td><td style="background:#da9694">'+formatMoney(sugerido)+'</td><td>'+formatMon((parseFloat(value.existencias[1].cja)+parseFloat(value.existencias[3].cja)))+
 								'</td><td>'+formatMon((parseFloat(value.existencias[1].pzs)+parseFloat(value.existencias[3].pzs)))+
 								'</td><td style="background:#dce6f1;border-right-width:5px;">'+formatMon((parseFloat(value.existencias[1].ped)+parseFloat(value.existencias[3].ped)))+'</td>';
 							}else{
+								value.exist[inx].ped = value.exist[inx].ped == null ? 0 : value.exist[inx].ped;
+								value.exist[inx].cja = value.exist[inx].cja == null ? 0 : value.exist[inx].cja;
+								value.exist[inx].pzs = value.exist[inx].pzs == null ? 0 : value.exist[inx].pzs;
+								vals.cja = vals.cja == null ? 0 : vals.cja;
+								vals.pzs = vals.pzs == null ? 0 : vals.pzs;
+								vals.ped = vals.ped == null ? 0 : vals.ped;
 								anterior = ((parseFloat(value.exist[inx].cja)+parseFloat(value.exist[inx].ped))+parseFloat(value.exist[inx].pzs))/ parseFloat(value.unidad);
 								sugerido = ((parseFloat(anterior) * parseFloat(value.unidad)) - ((parseFloat(vals.cja) * parseFloat(value.unidad)) + parseFloat(vals.pzs)))/ parseFloat(value.unidad);
 								console.log(value.exist[inx].cja)
