@@ -5045,7 +5045,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		if (sizeof($new_existencias) > 0) {
+		if (isset($new_existencias)) {
 			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$tienda])[0];
 			$cambios=[
 					"id_usuario"		=>	$this->session->userdata('id_usuario'),

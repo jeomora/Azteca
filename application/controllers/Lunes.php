@@ -1489,7 +1489,7 @@ class Lunes extends MY_Controller {
 				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
 				$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 				$new_existencias[$i]=[
-					"id_producto"			=>	$productos->id_producto,
+					"id_producto"			=>	$productos->codigo,
 					"id_tienda"			=>	$tienda,
 					"cajas"			=>	$column_one,
 					"piezas"			=>	$column_two,
