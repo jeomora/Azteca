@@ -47,8 +47,10 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 							}else{
 								anterior = ((parseFloat(value.exist[inx].cja)+parseFloat(value.exist[inx].ped))+parseFloat(value.exist[inx].pzs))/ parseFloat(value.unidad);
 								sugerido = ((parseFloat(anterior) * parseFloat(value.unidad)) - ((parseFloat(vals.cja) * parseFloat(value.unidad)) + parseFloat(vals.pzs)))/ parseFloat(value.unidad);
-								console.log(anterior)
-								console.log(sugerido)
+								console.log(value.exist[inx].cja)
+								console.log(value.exist[inx].ped)
+								console.log(value.exist[inx].pzs)
+								console.log("-------------------")
 								html +='<td style="border-left-width:5px;">'+formatMoney(anterior)+'</td><td style="background:#da9694">'+formatMoney(sugerido)+'</td><td>'+formatMon(vals.cja)+'</td><td>'+formatMon(vals.pzs)+
 								'</td><td style="background:#dce6f1;border-right-width:5px;">'+formatMon(vals.ped)+'</td>';
 							}
