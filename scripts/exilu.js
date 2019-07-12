@@ -32,7 +32,7 @@ $(document).off("keyup", "#buscale").on("keyup", "#buscale", function () {
 							if (inx == 2) {
 								html+='<td>'+formatMon((parseFloat(value.existencias[1].cja)+parseFloat(value.existencias[3].cja)))+'</td><td>'+formatMon((parseFloat(value.existencias[1].pzs)+parseFloat(value.existencias[3].pzs)))+'</td><td style="background:#dce6f1">'+formatMon((parseFloat(value.existencias[1].ped)+parseFloat(value.existencias[3].ped)))+'</td>';
 							} else {
-								html+='<td>'+formatMon(vals.pzs)+'</td><td>'+formatMon(vals.cja)+'</td><td style="background:#dce6f1">'+formatMon(vals.ped)+'</td>';
+								html+='<td>'+formatMon(vals.cja)+'</td><td>'+formatMon(vals.pzs)+'</td><td style="background:#dce6f1">'+formatMon(vals.ped)+'</td>';
 							}
 						})
 						html+="</tr>";
