@@ -78,7 +78,90 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 			</div>
 		<?php endif; ?>
 	</div>
-	
+	<div class="col-lg-12" style="height: 20px"></div>
+	<div class="row col-lg-12">
+		<div class="col-lg-12">
+			<div class="ibox">
+				<div class="ibox-content ">
+					<h2 class="m-b-md">EXISTENCIAS TIENDAS</h2>
+					<div style="width:50%">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th style="color:#FFF;background:#000;width:20%">TIENDA</th>
+									<th style="color:#FFF;background:#000">GENERAL</th>
+									<th style="color:#FFF;background:#000">VOLÚMENES</th>
+									<th style="color:#FFF;background:#000">LUNES</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="border:1px solid #63FFFB99;background:#63FFFB99;font-weight:bold">CEDIS</td>
+									<td id="gen0"></td>
+									<td id="vol0"></td>
+									<td id="lun0"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #CC009999;background:#CC009999;font-weight:bold">SUPER</td>
+									<td id="gen1"></td>
+									<td id="vol1"></td>
+									<td id="lun1"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #00B0F099;background:#00B0F099;font-weight:bold">ABARROTES</td>
+									<td id="gen2"></td>
+									<td id="vol2"></td>
+									<td id="lun2"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #FF000099;background:#FF000099;font-weight:bold">V. PEDREGAL</td>
+									<td id="gen3"></td>
+									<td id="vol3"></td>
+									<td id="lun3"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #E26B0A99;background:#E26B0A99;font-weight:bold">TIENDA</td>
+									<td id="gen4"></td>
+									<td id="vol4"></td>
+									<td id="lun4"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #C5C5C599;background:#C5C5C599;font-weight:bold">ULTRAMARINOS</td>
+									<td id="gen5"></td>
+									<td id="vol5"></td>
+									<td id="lun5"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #92D05099;background:#92D05099;font-weight:bold">TRINCHERAS</td>
+									<td id="gen6"></td>
+									<td id="vol6"></td>
+									<td id="lun6"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #B1A0C799;background:#B1A0C799;font-weight:bold">AZT. MERCADO</td>
+									<td id="gen7"></td>
+									<td id="vol7"></td>
+									<td id="lun7"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #DA969499;background:#DA969499;font-weight:bold">TENENCIA</td>
+									<td id="gen8"></td>
+									<td id="vol8"></td>
+									<td id="lun8"></td>
+								</tr>
+								<tr>
+									<td style="border:1px solid #4BACC699;background:#4BACC699;font-weight:bold">TIJERAS</td>
+									<td id="gen9"></td>
+									<td id="vol9"></td>
+									<td id="lun9"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript" src="<?php echo base_url('/assets/js/jquery-2.1.1.js') ?>"></script>
 

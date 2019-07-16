@@ -12,6 +12,7 @@ class Lunes extends MY_Controller {
 		$this->load->model("Suclunes_model", "suc_md");
 		$this->load->model("Exislunes_model", "ex_lun_md");
 		$this->load->model("Productos_model", "prod_mdl");
+		$this->load->model("Pendlunes_model", "pend_mdl");
 	}
 
 	public function index(){
@@ -671,16 +672,13 @@ class Lunes extends MY_Controller {
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
 		$proveedor = $this->prove_md->get(NULL);
-		$last = 0;
+		$last = 1;
+		$this->excelfile->createSheet();
+		$totales = $this->excelfile->setActiveSheetIndex(0)->setTitle("TOTALES");
 		foreach ($proveedor as $ke => $value) {
 			$last++;
-			if ($ke == 0) {
-				$proveedor[$ke]->estatus = $this->excelfile->setActiveSheetIndex($ke);
-				$this->excelfile->setActiveSheetIndex($ke)->setTitle($value->alias);
-			}else{
-				$this->excelfile->createSheet();
-        		$proveedor[$ke]->estatus = $this->excelfile->setActiveSheetIndex($ke)->setTitle($value->alias);
-			}
+			$this->excelfile->createSheet();
+        	$proveedor[$ke]->estatus = $this->excelfile->setActiveSheetIndex($ke+1)->setTitle($value->alias);
 		}
 		$this->excelfile->createSheet();
 		$anterior = $this->excelfile->setActiveSheetIndex($last)->setTitle("ANTERIOR");
@@ -720,30 +718,31 @@ class Lunes extends MY_Controller {
 			$infos = $this->prolu_md->printProdis(NULL,$va->id_proveedor,$tiendas->total);
 			if ($infos) {
 				if (1 == 1) {
-					$this->excelfile->setActiveSheetIndex($key);
+					$this->excelfile->setActiveSheetIndex($key+1
+					);
 					$proveedor[$key]->estatus = $this->excelfile->getActiveSheet();
 					$flag = 1;
-					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BJ'.$flag);
+					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BU'.$flag);
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", "CEDIS, ABARROTES,PEDREGAL, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BJ'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BJ'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->getColumnDimension('A')->setWidth("25");
 					$proveedor[$key]->estatus->getColumnDimension('B')->setWidth("70");
 					$proveedor[$key]->estatus->getColumnDimension('F')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('K')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('P')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('U')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('Z')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('AE')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('L')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('R')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('X')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('AD')->setWidth("15");
 					$proveedor[$key]->estatus->getColumnDimension('AJ')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('AO')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('AT')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('AY')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BD')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BI')->setWidth("40");
-					$proveedor[$key]->estatus->getColumnDimension('BJ')->setWidth("40");
+					$proveedor[$key]->estatus->getColumnDimension('AP')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('AV')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BB')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BH')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BN')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BT')->setWidth("40");
+					$proveedor[$key]->estatus->getColumnDimension('BU')->setWidth("40");
 					$proveedor[$key]->estatus->getColumnDimension('C')->setWidth("15");
 					$proveedor[$key]->estatus->getColumnDimension('D')->setWidth("15");
 					$proveedor[$key]->estatus->getColumnDimension('E')->setWidth("15");
@@ -754,88 +753,87 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("C".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("C".$flag."", $fecha);
 
-					$proveedor[$key]->estatus->mergeCells('F'.$flag.':J'.$flag);
+					$proveedor[$key]->estatus->mergeCells('F'.$flag.':K'.$flag);
 					$this->cellStyle("F".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F".$flag, "CEDIS/SUPER");
-					$proveedor[$key]->estatus->mergeCells('K'.$flag.':O'.$flag);
-					$this->cellStyle("K".$flag, "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("K".$flag, "SUMA CEDIS/SUPER");
-					$proveedor[$key]->estatus->mergeCells('P'.$flag.':T'.$flag);
-					$proveedor[$key]->estatus->setCellValue("P".$flag, "CD INDUSTRIAL");
-					$this->cellStyle("P".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-					
-					$proveedor[$key]->estatus->mergeCells('U'.$flag.':Y'.$flag);
-					$this->cellStyle("U".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("U".$flag, "ABARROTES");
-					$proveedor[$key]->estatus->mergeCells('Z'.$flag.':AD'.$flag);
-					$this->cellStyle("Z".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("Z".$flag, "PEDREGAL");
-					$proveedor[$key]->estatus->mergeCells('AE'.$flag.':AI'.$flag);
-					$this->cellStyle("AE".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AE".$flag, "TIENDA");
-					$proveedor[$key]->estatus->mergeCells('AJ'.$flag.':AN'.$flag);
-					$this->cellStyle("AJ".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AJ".$flag, "ULTRAMARINOS");
-					$proveedor[$key]->estatus->mergeCells('AO'.$flag.':AS'.$flag);
-					$this->cellStyle("AO".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AO".$flag, "TRINCHERAS");
-					$proveedor[$key]->estatus->mergeCells('AT'.$flag.':AX'.$flag);
-					$this->cellStyle("AT".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AT".$flag, "AZT MERCADO");
-					$proveedor[$key]->estatus->mergeCells('AY'.$flag.':BC'.$flag);
-					$this->cellStyle("AY".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AY".$flag, "TENENCIA");
-					$proveedor[$key]->estatus->mergeCells('BD'.$flag.':BH'.$flag);
-					$this->cellStyle("BD".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BD".$flag, "TIJERAS");
-					$this->cellStyle("BI".$flag, "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BI".$flag, "PROMOCIÓN");
-					$this->cellStyle("BJ".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BJ".$flag, "NOTA");
+					$proveedor[$key]->estatus->mergeCells('L'.$flag.':Q'.$flag);
+					$this->cellStyle("L".$flag, "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("L".$flag, "SUMA CEDIS/SUPER");
+					$proveedor[$key]->estatus->mergeCells('R'.$flag.':W'.$flag);
+					$proveedor[$key]->estatus->setCellValue("R".$flag, "CD INDUSTRIAL");
+					$this->cellStyle("R".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->mergeCells('X'.$flag.':AC'.$flag);
+					$this->cellStyle("X".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("X".$flag, "ABARROTES");
+					$proveedor[$key]->estatus->mergeCells('AD'.$flag.':AI'.$flag);
+					$this->cellStyle("AD".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AD".$flag, "PEDREGAL");
+					$proveedor[$key]->estatus->mergeCells('AJ'.$flag.':AO'.$flag);
+					$this->cellStyle("AJ".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AJ".$flag, "TIENDA");
+					$proveedor[$key]->estatus->mergeCells('AP'.$flag.':AU'.$flag);
+					$this->cellStyle("AP".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AP".$flag, "ULTRAMARINOS");
+					$proveedor[$key]->estatus->mergeCells('AV'.$flag.':BA'.$flag);
+					$this->cellStyle("AV".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AV".$flag, "TRINCHERAS");
+					$proveedor[$key]->estatus->mergeCells('BB'.$flag.':BG'.$flag);
+					$this->cellStyle("BB".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BB".$flag, "AZT MERCADO");
+					$proveedor[$key]->estatus->mergeCells('BH'.$flag.':BM'.$flag);
+					$this->cellStyle("BH".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BH".$flag, "TENENCIA");
+					$proveedor[$key]->estatus->mergeCells('BN'.$flag.':BS'.$flag);
+					$this->cellStyle("BN".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BN".$flag, "TIJERAS");
+					$this->cellStyle("BT".$flag, "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BT".$flag, "PROMOCIÓN");
+					$this->cellStyle("BU".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BU".$flag, "NOTA");
 
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BJ'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':E'.$flag);
 					$this->cellStyle("A".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", "DESCRIPCIÓN");
-					$proveedor[$key]->estatus->mergeCells('F'.$flag.':J'.$flag);
+					$proveedor[$key]->estatus->mergeCells('F'.$flag.':K'.$flag);
 					$this->cellStyle("F".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('K'.$flag.':O'.$flag);
-					$this->cellStyle("K".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("K".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('P'.$flag.':T'.$flag);
-					$this->cellStyle("P".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("P".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('U'.$flag.':Y'.$flag);
-					$this->cellStyle("U".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("U".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('Z'.$flag.':AD'.$flag);
-					$this->cellStyle("Z".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("Z".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('AE'.$flag.':AI'.$flag);
-					$this->cellStyle("AE".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AE".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('AJ'.$flag.':AN'.$flag);
+					$proveedor[$key]->estatus->mergeCells('L'.$flag.':Q'.$flag);
+					$this->cellStyle("L".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("L".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('R'.$flag.':W'.$flag);
+					$this->cellStyle("R".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("R".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('X'.$flag.':AC'.$flag);
+					$this->cellStyle("X".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("X".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('AD'.$flag.':AI'.$flag);
+					$this->cellStyle("AD".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AD".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('AJ'.$flag.':AO'.$flag);
 					$this->cellStyle("AJ".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("AJ".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('AO'.$flag.':AS'.$flag);
-					$this->cellStyle("AO".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AO".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('AT'.$flag.':AX'.$flag);
-					$this->cellStyle("AT".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AT".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('AY'.$flag.':BC'.$flag);
-					$this->cellStyle("AY".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AY".$flag."", "EXISTENCIAS");
-					$proveedor[$key]->estatus->mergeCells('BD'.$flag.':BH'.$flag);
-					$this->cellStyle("BD".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BD".$flag."", "EXISTENCIAS");
-					$this->cellStyle("BI".$flag, "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BJ".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->mergeCells('AP'.$flag.':AU'.$flag);
+					$this->cellStyle("AP".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AP".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('AV'.$flag.':BA'.$flag);
+					$this->cellStyle("AV".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AV".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('BB'.$flag.':BG'.$flag);
+					$this->cellStyle("BB".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BB".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('BH'.$flag.':BM'.$flag);
+					$this->cellStyle("BH".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BH".$flag."", "EXISTENCIAS");
+					$proveedor[$key]->estatus->mergeCells('BN'.$flag.':BS'.$flag);
+					$this->cellStyle("BN".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BN".$flag."", "EXISTENCIAS");
+					$this->cellStyle("BT".$flag, "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BU".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
 					
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BJ'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':B'.$flag);
 					$this->cellStyle("A".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("C".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
@@ -849,55 +847,55 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("G".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("G".$flag."", "Sugerido");
 					$this->cellStyle("H".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("H".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("H".$flag."", "Pendiente");
 					$this->cellStyle("I".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("I".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("I".$flag."", "Cajas");
 					$this->cellStyle("J".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("J".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("J".$flag."", "Pzs");
 					$this->cellStyle("K".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("K".$flag."", "Pedido anterior");
-					$this->cellStyle("L".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("L".$flag."", "Sugerido");
-					$this->cellStyle("M".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("M".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("K".$flag."", "Pedido");
+					$this->cellStyle("L".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("L".$flag."", "Pedido anterior");
+					$this->cellStyle("M".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("M".$flag."", "Sugerido");
 					$this->cellStyle("N".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("N".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("N".$flag."", "Pendiente");
 					$this->cellStyle("O".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("O".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("O".$flag."", "Cajas");
 					$this->cellStyle("P".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("P".$flag."", "Pedido anterior");
-					$this->cellStyle("Q".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("Q".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("P".$flag."", "Pzs");
+					$this->cellStyle("Q".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("Q".$flag."", "Pedido");
 					$this->cellStyle("R".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("R".$flag."", "Cajas");
-					$this->cellStyle("S".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("S".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("R".$flag."", "Pedido anterior");
+					$this->cellStyle("S".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("S".$flag."", "Sugerido");
 					$this->cellStyle("T".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("T".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("T".$flag."", "Pendiente");
 					$this->cellStyle("U".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("U".$flag."", "Pedido anterior");
-					$this->cellStyle("V".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("V".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("U".$flag."", "Cajas");
+					$this->cellStyle("V".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("V".$flag."", "Pzs");
 					$this->cellStyle("W".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("W".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("W".$flag."", "Pedido");
 					$this->cellStyle("X".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("X".$flag."", "Pzs");
-					$this->cellStyle("Y".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("Y".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("X".$flag."", "Pedido anterior");
+					$this->cellStyle("Y".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("Y".$flag."", "Sugerido");
 					$this->cellStyle("Z".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("Z".$flag."", "Pedido anterior");
-					$this->cellStyle("AA".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AA".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("Z".$flag."", "Pendiente");
+					$this->cellStyle("AA".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AA".$flag."", "Cajas");
 					$this->cellStyle("AB".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AB".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("AB".$flag."", "Pzs");
 					$this->cellStyle("AC".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AC".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("AC".$flag."", "Pedido");
 					$this->cellStyle("AD".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AD".$flag."", "Pedido");
-					$this->cellStyle("AE".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AE".$flag."", "Pedido anterior");
-					$this->cellStyle("AF".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AF".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("AD".$flag."", "Pedido anterior");
+					$this->cellStyle("AE".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AE".$flag."", "Sugerido");
+					$this->cellStyle("AF".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AF".$flag."", "Pendiente");
 					$this->cellStyle("AG".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("AG".$flag."", "Cajas");
 					$this->cellStyle("AH".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
@@ -909,81 +907,103 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("AK".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("AK".$flag."", "Sugerido");
 					$this->cellStyle("AL".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AL".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("AL".$flag."", "Pendiente");
 					$this->cellStyle("AM".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AM".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("AM".$flag."", "Cajas");
 					$this->cellStyle("AN".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AN".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("AN".$flag."", "Pzs");
 					$this->cellStyle("AO".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AO".$flag."", "Pedido anterior");
-					$this->cellStyle("AP".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AP".$flag."", "Sugerido");
-					$this->cellStyle("AQ".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AQ".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("AO".$flag."", "Pedido");
+					$this->cellStyle("AP".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AP".$flag."", "Pedido anterior");
+					$this->cellStyle("AQ".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AQ".$flag."", "Sugerido");
 					$this->cellStyle("AR".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AR".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("AR".$flag."", "Pendiente");
 					$this->cellStyle("AS".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AS".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("AS".$flag."", "Cajas");
 					$this->cellStyle("AT".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AT".$flag."", "Pedido anterior");
-					$this->cellStyle("AU".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AU".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("AT".$flag."", "Pzs");
+					$this->cellStyle("AU".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AU".$flag."", "Pedido");
 					$this->cellStyle("AV".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AV".$flag."", "Cajas");
-					$this->cellStyle("AW".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AW".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("AV".$flag."", "Pedido anterior");
+					$this->cellStyle("AW".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AW".$flag."", "Sugerido");
 					$this->cellStyle("AX".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AX".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("AX".$flag."", "Pendiente");
 					$this->cellStyle("AY".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AY".$flag."", "Pedido anterior");
-					$this->cellStyle("AZ".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("AZ".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("AY".$flag."", "Cajas");
+					$this->cellStyle("AZ".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("AZ".$flag."", "Pzs");
 					$this->cellStyle("BA".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BA".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("BA".$flag."", "Pedido");
 					$this->cellStyle("BB".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BB".$flag."", "Pzs");
-					$this->cellStyle("BC".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BC".$flag."", "Pedido");
+					$proveedor[$key]->estatus->setCellValue("BB".$flag."", "Pedido anterior");
+					$this->cellStyle("BC".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BC".$flag."", "Sugerido");
 					$this->cellStyle("BD".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BD".$flag."", "Pedido anterior");
-					$this->cellStyle("BE".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BE".$flag."", "Sugerido");
+					$proveedor[$key]->estatus->setCellValue("BD".$flag."", "Pendiente");
+					$this->cellStyle("BE".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BE".$flag."", "Cajas");
 					$this->cellStyle("BF".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BF".$flag."", "Cajas");
+					$proveedor[$key]->estatus->setCellValue("BF".$flag."", "Pzs");
 					$this->cellStyle("BG".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BG".$flag."", "Pzs");
+					$proveedor[$key]->estatus->setCellValue("BG".$flag."", "Pedido");
 					$this->cellStyle("BH".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BH".$flag."", "Pedido");
-					$this->cellStyle("BI".$flag, "FFFF00", "FF0000", FALSE, 10, "Franklin Gothic Book");
-					$this->cellStyle("BJ".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BH".$flag."", "Pedido anterior");
+					$this->cellStyle("BI".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BI".$flag."", "Sugerido");
+					$this->cellStyle("BJ".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BJ".$flag."", "Pendiente");
+					$this->cellStyle("BK".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BK".$flag."", "Cajas");
+					$this->cellStyle("BL".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BL".$flag."", "Pzs");
+					$this->cellStyle("BM".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BM".$flag."", "Pedido");
+					$this->cellStyle("BN".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BN".$flag."", "Pedido anterior");
+					$this->cellStyle("BO".$flag, "000000", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BO".$flag."", "Sugerido");
+					$this->cellStyle("BP".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BP".$flag."", "Pendiente");
+					$this->cellStyle("BQ".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BQ".$flag."", "Cajas");
+					$this->cellStyle("BR".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BR".$flag."", "Pzs");
+					$this->cellStyle("BS".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BS".$flag."", "Pedido");
+					$this->cellStyle("BT".$flag, "FFFF00", "FF0000", FALSE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BU".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
 
-					$this->excelfile->getActiveSheet()->getStyle('BL'.$flag.':BV'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('BW'.$flag.':CG'.$flag)->applyFromArray($styleArray);
 
-					$this->cellStyle("BL".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BM".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BN".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BO".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BP".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BQ".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BR".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BS".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BT".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BU".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-					$this->cellStyle("BV".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BW".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BX".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BY".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BZ".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CA".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CB".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CC".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CD".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CE".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CF".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("CG".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					
-					$proveedor[$key]->estatus->setCellValue("AZ".$flag."", "TOTAL");
+					$proveedor[$key]->estatus->setCellValue("CG".$flag."", "TOTAL");
 					
-					$proveedor[$key]->estatus->getColumnDimension('BL')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BM')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BN')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BO')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BP')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BQ')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BR')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BS')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BT')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BU')->setWidth("15");
-					$proveedor[$key]->estatus->getColumnDimension('BV')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BW')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BX')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BY')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BZ')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CA')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CB')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CC')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CD')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CE')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CF')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('CG')->setWidth("15");
 				}
 
 				if (2 == 2) {
@@ -1321,11 +1341,11 @@ class Lunes extends MY_Controller {
 					 
 
 
-					$this->excelfile->setActiveSheetIndex($key);
+					$this->excelfile->setActiveSheetIndex($key+1);
 					$proveedor[0]->estatus = $this->excelfile->getActiveSheet();
 					$flag++;
-					$this->excelfile->setActiveSheetIndex($key);
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BJ'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->setActiveSheetIndex($key+1);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", $v["codigo"])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("B".$flag."", $v["descripcion"]);
@@ -1337,84 +1357,161 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("E{$flag}", $v["unidad"]);
 					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 
-					$proveedor[$key]->estatus->setCellValue("F{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,55,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("P{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,56,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("U{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,57,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("Z{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,58,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("AE{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,59,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("AJ{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,60,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("AO{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,61,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("AT{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,62,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("AY{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,63,FALSE)");
-					$proveedor[$key]->estatus->setCellValue("BD{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,64,FALSE)");
 
-					$proveedor[$key]->estatus->setCellValue("G{$flag}", "=((F{$flag}*E{$flag})-(((H{$flag}*E{$flag})+I{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("Q{$flag}", "=((P{$flag}*E{$flag})-(((R{$flag}*E{$flag})+S{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("V{$flag}", "=((U{$flag}*E{$flag})-(((W{$flag}*E{$flag})+X{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("AA{$flag}", "=((Z{$flag}*E{$flag})-(((AB{$flag}*E{$flag})+AC{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("AF{$flag}", "=((AE{$flag}*E{$flag})-(((AG{$flag}*E{$flag})+AH{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("AK{$flag}", "=((AJ{$flag}*E{$flag})-(((AL{$flag}*E{$flag})+AM{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("AP{$flag}", "=((AO{$flag}*E{$flag})-(((AQ{$flag}*E{$flag})+AR{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("AU{$flag}", "=((AT{$flag}*E{$flag})-(((AV{$flag}*E{$flag})+AW{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("AZ{$flag}", "=((AY{$flag}*E{$flag})-(((BA{$flag}*E{$flag})+BB{$flag})))/E{$flag}");
-					$proveedor[$key]->estatus->setCellValue("BE{$flag}", "=((BD{$flag}*E{$flag})-(((BF{$flag}*E{$flag})+BG{$flag})))/E{$flag}");
+
+					$proveedor[$key]->estatus->setCellValue("F{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,55,FALSE)")->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("R{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,56,FALSE)")->getStyle("R{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("X{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,57,FALSE)")->getStyle("X{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AD{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,58,FALSE)")->getStyle("AD{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AJ{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,59,FALSE)")->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AP{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,60,FALSE)")->getStyle("AP{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AV{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,61,FALSE)")->getStyle("AV{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("BB{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,62,FALSE)")->getStyle("BB{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("BH{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,63,FALSE)")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("BN{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,64,FALSE)")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+
+					$proveedor[$key]->estatus->setCellValue("G{$flag}", "=((F{$flag}*E{$flag})-(((I{$flag}*E{$flag})+J{$flag})))/E{$flag}")->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("S{$flag}", "=((R{$flag}*E{$flag})-(((U{$flag}*E{$flag})+V{$flag})))/E{$flag}")->getStyle("S{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("Y{$flag}", "=((X{$flag}*E{$flag})-(((AA{$flag}*E{$flag})+AB{$flag})))/E{$flag}")->getStyle("Y{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AE{$flag}", "=((AD{$flag}*E{$flag})-(((AG{$flag}*E{$flag})+AH{$flag})))/E{$flag}")->getStyle("AE{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AK{$flag}", "=((AJ{$flag}*E{$flag})-(((AM{$flag}*E{$flag})+AN{$flag})))/E{$flag}")->getStyle("AK{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AQ{$flag}", "=((AP{$flag}*E{$flag})-(((AS{$flag}*E{$flag})+AT{$flag})))/E{$flag}")->getStyle("AQ{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("AW{$flag}", "=((AV{$flag}*E{$flag})-(((AY{$flag}*E{$flag})+AZ{$flag})))/E{$flag}")->getStyle("AW{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("BC{$flag}", "=((BB{$flag}*E{$flag})-(((BE{$flag}*E{$flag})+BF{$flag})))/E{$flag}")->getStyle("BC{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=((BH{$flag}*E{$flag})-(((BK{$flag}*E{$flag})+BL{$flag})))/E{$flag}")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
+					$proveedor[$key]->estatus->setCellValue("BO{$flag}", "=((BN{$flag}*E{$flag})-(((BQ{$flag}*E{$flag})+BR{$flag})))/E{$flag}")->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
 					
 					
 
-					$this->cellStyle("F{$flag}:BH{$flag}", "FFFFFF", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("J".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("O".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("T".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("Y".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("AD".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("F{$flag}:BU{$flag}", "FFFFFF", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("K".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("Q".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("W".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AC".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
 					$this->cellStyle("AI".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("AN".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("AS".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("AX".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("BC".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
-					$this->cellStyle("BH".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AO".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AU".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BA".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BG".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BM".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BS".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
 
-					$this->excelfile->getActiveSheet()->getStyle('BL'.$flag.':BV'.$flag)->applyFromArray($styleArray);
-					$this->cellStyle("BL".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BL{$flag}", "=C{$flag}*J{$flag}")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BM".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BM{$flag}", "=C{$flag}*T{$flag}")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BN".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BN{$flag}", "=C{$flag}*Y{$flag}")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BO".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BO{$flag}", "=C{$flag}*AD{$flag}")->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BP".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BP{$flag}", "=C{$flag}*AI{$flag}")->getStyle("BP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BQ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BQ{$flag}", "=C{$flag}*AN{$flag}")->getStyle("BQ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BR".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BR{$flag}", "=C{$flag}*AS{$flag}")->getStyle("BR{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BS".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BS{$flag}", "=C{$flag}*AX{$flag}")->getStyle("BS{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BT".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BT{$flag}", "=C{$flag}*BC{$flag}")->getStyle("BT{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BU".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BU{$flag}", "=C{$flag}*BH{$flag}")->getStyle("BU{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-					$this->cellStyle("BV".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BV{$flag}", "=SUM(BL{$flag}:BU{$flag})")->getStyle("BV{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
-					$col = 7;
+					$this->cellStyle("G".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("M".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("S".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("Y".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AE".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AK".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AQ".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("AW".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BC".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BI".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("BO".$flag, "FFFF00", "FF0000", TRUE, 10, "Franklin Gothic Book");
+
+					$this->cellStyle("H".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("N".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("T".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("Z".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("AF".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("AL".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("AR".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("AX".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BD".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BJ".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BP".$flag, "92D050", "000000", TRUE, 12, "Franklin Gothic Book");
+
+					$this->excelfile->getActiveSheet()->getStyle('BW'.$flag.':CG'.$flag)->applyFromArray($styleArray);
+					$this->cellStyle("BW".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BW{$flag}", "=C{$flag}*K{$flag}")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("BX".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BX{$flag}", "=C{$flag}*W{$flag}")->getStyle("BX{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("BY".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BY{$flag}", "=C{$flag}*AC{$flag}")->getStyle("BY{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("BZ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BZ{$flag}", "=C{$flag}*AI{$flag}")->getStyle("BZ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CA".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CA{$flag}", "=C{$flag}*AO{$flag}")->getStyle("CA{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CB".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CB{$flag}", "=C{$flag}*AU{$flag}")->getStyle("CB{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CC".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CC{$flag}", "=C{$flag}*BA{$flag}")->getStyle("CC{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CD".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CD{$flag}", "=C{$flag}*BG{$flag}")->getStyle("CD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CE".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CE{$flag}", "=C{$flag}*BM{$flag}")->getStyle("CE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CF".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CF{$flag}", "=C{$flag}*BS{$flag}")->getStyle("CF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$this->cellStyle("CG".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("CG{$flag}", "=SUM(BW{$flag}:CF{$flag})")->getStyle("CG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+					$col = 8;
 					 foreach ($v["existencias"] as $k => $vs) {
 						$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["cja"]);
 						$col++;
 						$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["pzs"]);
 						$col++;
 						$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["ped"]);
-						$col+=3;
+						$col+=4;
 					 }
 
-					 $proveedor[$key]->estatus->setCellValue("K{$flag}", "=F{$flag}+P{$flag}");
-					 $proveedor[$key]->estatus->setCellValue("L{$flag}", "=G{$flag}+Q{$flag}");
-					 $proveedor[$key]->estatus->setCellValue("M{$flag}", "=H{$flag}+R{$flag}");
-					 $proveedor[$key]->estatus->setCellValue("N{$flag}", "=I{$flag}+S{$flag}");
-					 $proveedor[$key]->estatus->setCellValue("O{$flag}", "=J{$flag}+T{$flag}");
+					 $proveedor[$key]->estatus->setCellValue("L{$flag}", "=F{$flag}+R{$flag}");
+					 $proveedor[$key]->estatus->setCellValue("M{$flag}", "=G{$flag}+S{$flag}");
+					 $proveedor[$key]->estatus->setCellValue("N{$flag}", "=I{$flag}+U{$flag}");
+					 $proveedor[$key]->estatus->setCellValue("O{$flag}", "=J{$flag}+V{$flag}");
+					 $proveedor[$key]->estatus->setCellValue("P{$flag}", "=K{$flag}+W{$flag}");
+					 $proveedor[$key]->estatus->setCellValue("N{$flag}", "=H{$flag}+T{$flag}");
 					
 				}
+				$flag++;
+				$this->cellStyle("K".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("K{$flag}", "=SUM(K5:K".($flag-1).")")->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("Q".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("Q{$flag}", "=SUM(Q5:Q".($flag-1).")")->getStyle("Q{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("W".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("W{$flag}", "=SUM(W5:W".($flag-1).")")->getStyle("W{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("AC".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("AC{$flag}", "=SUM(AC5:AC".($flag-1).")")->getStyle("AC{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("AI".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("AI{$flag}", "=SUM(AI5:AI".($flag-1).")")->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("AI".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("AI{$flag}", "=SUM(AI5:AI".($flag-1).")")->getStyle("AI{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("AO".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("AO{$flag}", "=SUM(AO5:AO".($flag-1).")")->getStyle("AO{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("AU".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("AU{$flag}", "=SUM(AU5:AU".($flag-1).")")->getStyle("AU{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("BA".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BA{$flag}", "=SUM(BA5:BA".($flag-1).")")->getStyle("BA{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("BG".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BG{$flag}", "=SUM(BG5:BG".($flag-1).")")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("BM".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BM{$flag}", "=SUM(BM5:BM".($flag-1).")")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("BS".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BS{$flag}", "=SUM(BS5:BS".($flag-1).")")->getStyle("BS{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$this->cellStyle("BW".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BW{$flag}", "=SUM(BW5:BW".($flag-1).")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("BX".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BX{$flag}", "=SUM(BX5:BX".($flag-1).")")->getStyle("BX{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("BY".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BY{$flag}", "=SUM(BY5:BY".($flag-1).")")->getStyle("BY{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("BZ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("BZ{$flag}", "=SUM(BZ5:BZ".($flag-1).")")->getStyle("BZ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CA".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CA{$flag}", "=SUM(CA5:CA".($flag-1).")")->getStyle("CA{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CB".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CB{$flag}", "=SUM(CB5:CB".($flag-1).")")->getStyle("CB{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CC".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CC{$flag}", "=SUM(CC5:CC".($flag-1).")")->getStyle("CC{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CD".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CD{$flag}", "=SUM(CD5:CD".($flag-1).")")->getStyle("CD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CE".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CE{$flag}", "=SUM(CE5:CE".($flag-1).")")->getStyle("CE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CF".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CF{$flag}", "=SUM(CF5:CF".($flag-1).")")->getStyle("CF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CG".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CG{$flag}", "=SUM(CG5:CG".($flag-1).")")->getStyle("CG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				
+				
 			$flag1 += 5;
 			}
 		}
@@ -1537,6 +1634,117 @@ class Lunes extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	public function pendientes(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/pendlunes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+
+		$data["usuarios"] = $this->user_md->getUsuarios();
+		$this->estructura("Lunes/pendientes", $data);
+	}
+
+	public function upload_pendientes(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$filen = "Pedidos Pendientes".rand();
+		$config['upload_path']          = base_url('/assets/uploads/pedidos/');
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+        $config['max_height']           = 768;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_pendientes',$filen);
+        $file = $_FILES["file_pendientes"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$new_pendientes = [];
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) {
+			$productos = $this->prolu_md->get("codigo",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+
+			if (sizeof($productos) > 0) {
+				$exis = $this->pend_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_producto"=>$productos->codigo])[0];
+				$cedis = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
+				$abarrotes = $sheet->getCell('D'.$i)->getValue() == "" ? 0 : $sheet->getCell('D'.$i)->getValue();
+				$pedregal = $sheet->getCell('E'.$i)->getValue() == "" ? 0 : $sheet->getCell('E'.$i)->getValue();
+				$tienda = $sheet->getCell('F'.$i)->getValue() == "" ? 0 : $sheet->getCell('F'.$i)->getValue();
+				$ultra = $sheet->getCell('G'.$i)->getValue() == "" ? 0 : $sheet->getCell('G'.$i)->getValue();
+				$trincheras = $sheet->getCell('H'.$i)->getValue() == "" ? 0 : $sheet->getCell('H'.$i)->getValue();
+				$mercado = $sheet->getCell('I'.$i)->getValue() == "" ? 0 : $sheet->getCell('I'.$i)->getValue();
+				$tenencia = $sheet->getCell('J'.$i)->getValue() == "" ? 0 : $sheet->getCell('J'.$i)->getValue();
+				$tijeras = $sheet->getCell('K'.$i)->getValue() == "" ? 0 : $sheet->getCell('K'.$i)->getValue();
+				$new_pendientes[$i]=[
+					"id_producto" => $productos->codigo,
+					"cedis" => $cedis,
+					"abarrotes" => $abarrotes,
+					"pedregal" => $pedregal,
+					"tienda" => $tienda,
+					"trincheras" => $trincheras,
+					"ultra" => $ultra,
+					"mercado" => $mercado,
+					"tenencia" => $tenencia,
+					"tijeras" => $tijeras,
+					"fecha_registro" => $fecha->format('Y-m-d H:i:s')
+				];
+				if($exis){
+					$data['pendientes']=$this->pend_mdl->update($new_pendientes[$i], ['id_pendiente' => $exis->id_pendiente]);
+				}else{
+					$data['pendientes']=$this->pend_mdl->insert($new_pendientes[$i]);
+				}
+			}
+		}
+		if (sizeof($new_pendientes) > 0) {
+			$cambios=[
+					"id_usuario"		=>	$this->session->userdata('id_usuario'),
+					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+					"antes"			=>	"El usuario sube pedidos pendientes LUNES",
+					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
+					"accion"			=>	"Sube Pedidos Pendientes"
+				];
+			$data['cambios']=$this->cambio_md->insert($cambios);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Pedidos Pendientes LUNES cargados correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'Los Pedidos Pendientes LUNES no se cargaron al Sistema',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function getPendientes(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		$data["pendientes"] =  $this->pend_mdl->getThem(["WEEKOFYEAR(pp.fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))]);
+		$this->jsonResponse($data);
+	}
 }
 
 /* End of file Lunes.php */

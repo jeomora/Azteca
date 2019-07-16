@@ -1,3 +1,4 @@
+var tiendas = [87,89,57,90,58,59,60,61,62,63];
 $(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event){
 	event.preventDefault();
 	var ides = $(this).attr("data-id-producto");
@@ -85,3 +86,19 @@ $(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
 		tr.find(".precio_promocion").val(precio - (precio * (descuento / 100)));
 	}
 });
+
+$(function($) {
+	$.each(tiendas, function(indx, value){
+		getPedidos(value).done(function(resp){
+			console.log(resp)
+		})
+	});
+});
+
+function getPedidos(tienda){
+	return $.ajax({
+		url: site_url+"/Pedidos/getPeds/"+tienda,
+		type: "POST",
+		dataType: "JSON",
+	});
+}
