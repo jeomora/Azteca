@@ -1908,6 +1908,42 @@ class Lunes extends MY_Controller {
 		$data["pendientes"] =  $this->pend_mdl->getThem(["WEEKOFYEAR(pp.fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s'))]);
 		$this->jsonResponse($data);
 	}
+
+	public function lunpedid($id_tienda){
+		$user = $this->session->userdata();
+		$data["title"]="LISTADO EXISTENCIAS FORMATO LUNES";
+		$data["cuantas"] = $this->ex_lun_md->getCuantasTienda(NULL,$id_tienda)[0];
+		$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
+		$tienda = $this->suc_md->get(NULL,["sucu"=> $id_tienda])[0];
+		$data["existencias"] = $this->ex_lun_md->getLunExist(NULL,$id_tienda);
+		$data["existenciasnot"] = $this->ex_lun_md->getLunExistNot(NULL,$id_tienda);
+		$data["view"]=$this->load->view("Lunes/lunpedido", $data, TRUE);
+		$this->jsonResponse($data);
+	}
+
+	public function volpedid($id_tienda){
+		$user = $this->session->userdata();
+		$data["title"]="LISTADO EXISTENCIAS VOLÚMENES";
+		$data["noprod"] = $this->prod_mdl->getVolCount(NULL)[0];
+		$data["cuantas"] = $this->ex_lun_md->getVolTienda(NULL,$id_tienda)[0];
+		$data["existencias"] = $this->ex_lun_md->getVolExist(NULL,$id_tienda);
+		$data["existenciasnot"] = $this->ex_lun_md->getVolExistNot(NULL,$id_tienda);
+		$data["view"]=$this->load->view("Lunes/volpedido", $data, TRUE);
+		
+		$this->jsonResponse($data);
+	}
+
+	public function allpedid($id_tienda){
+		$user = $this->session->userdata();
+		$data["title"]="LISTADO EXISTENCIAS GENERAL";
+		$data["noprod"] = $this->prod_mdl->getAllCount(NULL)[0];
+		$data["cuantas"] = $this->ex_lun_md->getAllTienda(NULL,$id_tienda)[0];
+		$data["existencias"] = $this->ex_lun_md->getAllExist(NULL,$id_tienda);
+		$data["existenciasnot"] = $this->ex_lun_md->getAllExistNot(NULL,$id_tienda);
+		$data["view"]=$this->load->view("Lunes/allpedido", $data, TRUE);
+		
+		$this->jsonResponse($data);
+	}
 }
 
 /* End of file Lunes.php */

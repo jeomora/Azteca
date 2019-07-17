@@ -90,7 +90,14 @@ $(document).off("keyup", ".descuento").on("keyup", ".descuento", function () {
 $(function($) {
 	$.each(tiendas, function(indx, value){
 		getPedidos(value).done(function(resp){
-			console.log(resp)
+			if (resp.cuantas == null) {
+				$("#lun"+indx).html("<a id='luninfo' data-id-cot='"+value+"'>0 de "+resp.noprod.noprod+"</a>");
+			} else {
+				$("#lun"+indx).html("<a id='luninfo' data-id-cot='"+value+"'>"+resp.cuantas.cuantas+" de "+resp.noprod.noprod+"</a>");
+			}
+			$("#gen"+indx).html("<a id='allinfo' data-id-cot='"+value+"'>"+resp.allcuantas.cuantas+" de "+resp.noall.total+"</a>");
+			$("#vol"+indx).html("<a id='volinfo' data-id-cot='"+value+"'>"+resp.volcuantas.cuantas+" de "+resp.novol.total+"</a>");
+
 		})
 	});
 });
@@ -102,3 +109,33 @@ function getPedidos(tienda){
 		dataType: "JSON",
 	});
 }
+
+$(document).off("click", "#luninfo").on("click", "#luninfo", function(event) {
+	event.preventDefault();
+	getModal("Lunes/lunpedid/"+$(this).data("idCot"), function (){
+		setTimeout(function() {
+			fillDataTable("exislun", 10)
+			fillDataTable("exislunnot", 10)
+		}, 2000);		
+	});
+});
+
+$(document).off("click", "#volinfo").on("click", "#volinfo", function(event) {
+	event.preventDefault();
+	getModal("Lunes/volpedid/"+$(this).data("idCot"), function (){
+		setTimeout(function() {
+			fillDataTable("exislun", 10)
+			fillDataTable("exislunnot", 10)
+		}, 2000);		
+	});
+});
+
+$(document).off("click", "#allinfo").on("click", "#allinfo", function(event) {
+	event.preventDefault();
+	getModal("Lunes/allpedid/"+$(this).data("idCot"), function (){
+		setTimeout(function() {
+			fillDataTable("exislun", 10)
+			fillDataTable("exislunnot", 10)
+		}, 2000);		
+	});
+});
