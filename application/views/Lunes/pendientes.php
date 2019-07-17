@@ -26,7 +26,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		<div class="col-lg-12" style="padding: 0">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>INGRESAR PEDIDOS PENDIENTES</h5>
+					<h5>INGRESAR PEDIDOS PENDIENTES (LUNES)</h5>
 				</div>
 				<div class="ibox-content" style="padding-top: 4rem;">
 					<div class="btn-group">
