@@ -182,6 +182,7 @@ class Prolunes_model extends MY_Model {
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$k+1]["pzs"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$k+1]["cja"]	=	0;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$k+1]["ped"]	=	0;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][$k+1]["pend"]	=	0;
 				}
 				if (isset($comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->orden])) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["existencias"][$comparativa[$i]->orden]["pzs"]	=	$comparativa[$i]->epiezas;
@@ -198,7 +199,22 @@ class Prolunes_model extends MY_Model {
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$comparativa2[$e]->orden]["cja"]	=	$comparativa2[$e]->ecajas;
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$comparativa2[$e]->orden]["ped"]	=	$comparativa2[$e]->epedido;
 				}
+
+				$this->db->select("id_producto,cedis,abarrotes,pedregal,tienda,ultra,trincheras,mercado,tenencia,tijeras FROM pendlunes WHERE id_producto = '".$comparativa[$i]->codigo."' and WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE())");
+				$comparativa3 = $this->db->get()->result();
+				if ($comparativa3) {
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][1]["pend"]	=	$comparativa3[0]->cedis;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][4]["pend"]	=	$comparativa3[0]->abarrotes;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][5]["pend"]	=	$comparativa3[0]->pedregal;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][6]["pend"]	=	$comparativa3[0]->tienda;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][7]["pend"]	=	$comparativa3[0]->ultra;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][8]["pend"]	=	$comparativa3[0]->trincheras;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][9]["pend"]	=	$comparativa3[0]->mercado;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][10]["pend"]	=	$comparativa3[0]->tenencia;
+					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][11]["pend"]	=	$comparativa3[0]->tijeras;
+				}
 			}
+
 		}
 
 		if ($comparativaIndexada) {

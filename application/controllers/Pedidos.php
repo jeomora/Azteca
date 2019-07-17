@@ -462,6 +462,17 @@ class Pedidos extends MY_Controller {
 		$this->jsonResponse($data);
 	}
 
+	public function getPeds($id_tienda){
+		$data["cuantas"] = $this->ex_lun_md->getCuantasTienda(NULL,$id_tienda)[0];
+		$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
+		$data["novol"] = $this->prod_mdl->getVolCount(NULL)[0];
+		$data["noall"] = $this->prod_mdl->getAllCount(NULL)[0];
+		$data["volcuantas"] = $this->ex_lun_md->getVolTienda(NULL,$id_tienda)[0];
+		$data["allcuantas"] = $this->ex_lun_md->getAllTienda(NULL,$id_tienda)[0];
+		$this->jsonResponse($data);
+	}
+	
+
 }
 
 /* End of file Pedidos.php */
