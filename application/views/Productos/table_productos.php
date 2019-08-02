@@ -36,7 +36,6 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 						<?php echo form_close(); ?>
 					</div>
-						<table
 						<table class="table table-striped table-bordered table-hover" id="table_productos">
 							<thead>
 								<tr>
