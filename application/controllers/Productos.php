@@ -369,6 +369,95 @@ class Productos extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function codigos(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/codigos',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["proveedores"]=$this->usua_mdl->get(NULL,["estatus <>"=>0,"id_grupo"=>2]);
+		$this->estructura("Productos/codigos", $data);
+	}
+
+	public function buscaCodigos(){
+		$busca = $this->input->post("values");
+		$busca2 = $this->input->post("values2");
+		$productos = $this->pro_md->buscaCodigos(NULL,$busca,$busca2);
+		$this->jsonResponse($productos);
+	}
+
+	public function upload_codigos(){
+		$arrays = array();
+		$array = array();
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_codigos"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		$proveedor = $this->input->post('proveedor');
+		for ($i=3; $i<=$num_rows; $i++) {
+			$codigo = $this->pro_md->get(NULL,["codigo"=>htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			$cellB = $this->getOldVal($sheet,$i,"B");
+			$cellC = $this->getOldVal($sheet,$i,"C");
+			if (sizeof($codigo) > 0 && $cellB <> 0) {
+				$new_producto=[
+					"id_prodfactura" => $codigo->id_producto,
+					"id_proveedor" => $proveedor,
+					"codigo_factura" => $cellB,
+					"descripcion" => $cellC
+				];
+
+				$codiga = $this->pcaja_md->get(NULL,['id_prodfactura'=> $codigo->id_producto,"id_proveedor"=>$proveedor,"codigo_factura"=>$cellB])[0];
+				if (sizeof($codiga) > 0) {
+					$new_codis=[
+						"nombre"=>$codigo->nombre,
+						"id_producto"=>$codigo->id_producto,
+						"id_prodfactura"=>$cellB,
+						"id_proveedor"=>$proveedor,
+						"codigo"=>$codigo->codigo
+					];
+					array_push($arrays, $new_codis);
+				}else{
+					array_push($arrays, $new_producto);
+					$data ['id_prodcaja']=$this->pcaja_md->insert($new_producto);
+				}
+			}
+		}
+		$mensaje=[	
+			"id"	=>	'Éxito',
+			"desc"	=>	'Productos cargados correctamente en el Sistema',
+			"type"	=>	'success'];
+
+		$this->jsonResponse(array($arrays,$array,$num_rows));
+	}
+
+	public function getOldVal($sheets,$i,$le){
+		$cellB = $sheets->getCell($le.$i)->getValue();
+		if(strstr($cellB,'=')==true){
+		    $cellB = $sheets->getCell($le.$i)->getOldCalculatedValue();
+		}
+		return $cellB;
+	}
+
 }
 
 /* End of file Productos.php */

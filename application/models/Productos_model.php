@@ -452,6 +452,37 @@ class Productos_model extends MY_Model {
 		}
 	}
 
+	public function buscaCodigos($where = [],$values,$values2){
+		$value = json_decode($values);
+		$value2 = json_decode($values2);
+		if (isset($value2->proveedor)) {
+			$this->db->select("p.codigo,p.nombre,pc.codigo_factura,pc.descripcion,u.nombre as proveedor FROM prodcaja pc LEFT JOIN productos p ON pc.id_prodfactura = p.id_producto LEFT JOIN usuarios u ON pc.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND AND pc.id_proveedor = ".$value2->proveedor." ORDER BY p.codigo");
+		} else {
+			$this->db->select("p.codigo,p.nombre,pc.codigo_factura,pc.descripcion,u.nombre as proveedor FROM prodcaja pc LEFT JOIN productos p ON pc.id_prodfactura = p.id_producto LEFT JOIN usuarios u ON pc.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') ORDER BY p.codigo");
+		}
+		
+		
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Productos_model.php */
