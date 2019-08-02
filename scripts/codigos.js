@@ -16,7 +16,6 @@ $(document).off("keyup", "#producto").on("keyup", "#producto", function (){
 			buscaCodigos(JSON.stringify(values,values2)).done(function(resp){
 				if(resp){
 					$.each(resp,function(indx,vals){
-						vals.proveedor
 						str += "<tr><td>"+vals.codigo+"</td><td>"+vals.nombre+"</td><td>"+vals.proveedor+"</td><td>"+vals.codigo_factura+"</td><td>"+vals.descripcion+"</td><td>"+
 						"<button class='btn btn-info' name='excel' type='button' data-id-code='"+vals.codigo+"'><i class='fa fa-edit'></i></button></td></tr>";
 					});
@@ -61,7 +60,6 @@ $(document).off("change", "#provs").on("change", "#provs", function (){
 			buscaCodigos(JSON.stringify(values,values2)).done(function(resp){
 				if(resp){
 					$.each(resp,function(indx,vals){
-						vals.proveedor
 						str += "<tr><td>"+vals.codigo+"</td><td>"+vals.nombre+"</td><td>"+vals.proveedor+"</td><td>"+vals.codigo_factura+"</td><td>"+vals.descripcion+"</td><td>"+
 						"<button class='btn btn-info' name='excel' type='button' data-id-code='"+vals.codigo+"'><i class='fa fa-edit'></i></button></td></tr>";
 					});
@@ -73,7 +71,7 @@ $(document).off("change", "#provs").on("change", "#provs", function (){
 		},1000)
 	}else{
 		$("#tbodys").html("<tr><td colspan='6'>Ingrese una palabra clave o seleccione un proveedor para iniciar la busqueda</td></tr>");
-	}
+	} 
 	
 })
 
