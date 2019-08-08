@@ -456,7 +456,7 @@ class Productos_model extends MY_Model {
 		$value = json_decode($values);
 		$value2 = json_decode($values2);
 		if (isset($value2->proveedor)) {
-			$this->db->select("p.codigo,p.nombre,pc.codigo_factura,pc.descripcion,u.nombre as proveedor FROM prodcaja pc LEFT JOIN productos p ON pc.id_prodfactura = p.id_producto LEFT JOIN usuarios u ON pc.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND AND pc.id_proveedor = ".$value2->proveedor." ORDER BY p.codigo");
+			$this->db->select("p.codigo,p.nombre,pc.codigo_factura,pc.descripcion,u.nombre as proveedor FROM prodcaja pc LEFT JOIN productos p ON pc.id_prodfactura = p.id_producto LEFT JOIN usuarios u ON pc.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND pc.id_proveedor = ".$value2->proveedor." ORDER BY p.codigo");
 		} else {
 			$this->db->select("p.codigo,p.nombre,pc.codigo_factura,pc.descripcion,u.nombre as proveedor FROM prodcaja pc LEFT JOIN productos p ON pc.id_prodfactura = p.id_producto LEFT JOIN usuarios u ON pc.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') ORDER BY p.codigo");
 		}
