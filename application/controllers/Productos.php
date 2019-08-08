@@ -458,6 +458,8 @@ class Productos extends MY_Controller {
 		return $cellB;
 	}
 
+	
+
 }
 
 /* End of file Productos.php */

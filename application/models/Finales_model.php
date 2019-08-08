@@ -1,0 +1,43 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Finales_model extends MY_Model {
+
+	function __construct(){
+		parent::__construct();
+		$this->TABLE_NAME = "finales";
+		$this->PRI_INDEX = "id_final";
+	}
+
+	public function buscaCodigos($where = [],$values,$values2){
+		$value = json_decode($values);
+		$value2 = json_decode($values2);
+		if (isset($value2->proveedor)) {
+			$this->db->select("p.codigo,p.nombre,u.nombre as proveedor,f.cedis,f.abarrotes,f.costo,f.tienda,f.villas,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND f.id_proveedor = ".$value2->proveedor." ORDER BY p.codigo");
+		} else {
+			$this->db->select("p.codigo,p.nombre,u.nombre as proveedor,f.cedis,f.abarrotes,f.costo,f.tienda,f.villas,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') ORDER BY p.codigo");
+		}
+		
+		
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
+}
