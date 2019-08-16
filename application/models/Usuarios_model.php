@@ -43,6 +43,35 @@ class Usuarios_model extends MY_Model {
 			return false;
 		}
 	}
+
+	public function getColors($where=[]){
+		$this->db->select("u.nombre,u.id_usuario,s.color")
+		->from($this->TABLE_NAME." u")
+		->join("suc_lunes s", "u.id_usuario = s.id_sucursal", "LEFT")
+		->where("u.id_grupo","3")
+		->where("u.estatus",1)
+		->where("u.id_usuario <> 89")
+		->order_by("s.orden","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
 	public function get19hnos($where = []){
 		$this->db->select("id_usuario,id_grupo,nombre,apellido,cargo,orden,conjunto from usuarios where (id_usuario = 6 OR id_usuario = 22)")
 		->order_by($this->TABLE_NAME.".id_usuario", "ASC");
