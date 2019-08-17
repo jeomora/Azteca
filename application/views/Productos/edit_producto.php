@@ -30,6 +30,9 @@
 						<option value="1" <?php echo $producto->estatus == 1 ? 'selected' : '' ?> >NORMAL</option>
 						<option value="2" <?php echo $producto->estatus == 2 ? 'selected' : '' ?> >VOLUMEN</option>
 						<option value="3" <?php echo $producto->estatus == 3 ? 'selected' : '' ?> >AMARILLO</option>
+						<option value="4" <?php echo $producto->estatus == 5 ? 'selected' : '' ?> >MODERNA</option>
+						<option value="5" <?php echo $producto->estatus == 5 ? 'selected' : '' ?> >COSTEÑA</option>
+						<option value="6" <?php echo $producto->estatus == 6 ? 'selected' : '' ?> >CUETARA</option>
 					</select>
 				</div>
 			</div>

@@ -23,6 +23,9 @@
 						<option value="1">NORMAL</option>
 						<option value="2">VOLUMEN</option>
 						<option value="3">AMARILLO</option>
+						<option value="4">MODERNA</option>
+						<option value="5">COSTEÑA</option>
+						<option value="6">CUETARA</option>
 					</select>
 				</div>
 			</div>

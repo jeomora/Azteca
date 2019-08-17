@@ -30,7 +30,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.fixdiv{padding:0;border:1px solid #0b73ce;position:fixed;right:20px;top:72px;overflow-y:scroll;height:50vh;}
 	.pedsist{background:#279c9173;font-size:14px;padding:15px 10px;border:1px solid #0b73ce}
 	.witheblock {border:1px dotted#000;font-size:14px;text-align:center;padding:20px;}
-	.checkhim{display:none}
+	.checkhim{display:}
 	.cerra{position:absolute;top:-22px;right:-1px;background:#279c9173;cursor:pointer;display:none;padding:0px 10px;border:1px solid #0b73ce;}
 	.cantu{font-family:monospace;}
 	.fixdiv2{padding:0;position:fixed;right:20px;top:60vh;height:25vh;}
@@ -38,6 +38,14 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.btnnel{background:#d07979;font-size:20px;padding:10px;border:1px solid red;border-radius:3px;width:250px}
 	.devolucion{position:absolute;font-size:20px;background:#efff00;border-radius:10px;cursor:pointer;z-index:10000000;}
 	.devolucion:hover{color:#efff00;background:#FFF}
+	#difis {
+    width: 30px;
+    height: 20px;
+    border: 1px solid #000;
+    color: #000;
+    padding: 3px;
+    font-size: 14px;
+}
 
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -162,7 +170,14 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<div class="col-md-4 col-lg-4 head4">PEDIDOS SISTEMA</div>
 				</div>
 				<div class="col-md-12 col-lg-12" style="padding:0;" id="cuerpo">
-					
+					<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i class="fa fa-retweet" aria-hidden="true"></i><input type="text" name="difis" id="difis" value="" /></div><div class="col-md-2 col-lg-2 body2">'+val.factu+'</div><div class="'+
+						'col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;background:'+col2+
+						';" id="precio">$ '+formatMoney(val.precio)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;background:'+col1+
+						';">'+formatMoney(val.cantidad,1)+'</div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)"'+
+						' id="pedidodiv"><div class="col-lg-12 col-md-12 pedsist" ondragstart="drag(event)" id="'+val.codigo+'" style="padding:5px"><h4>'+val.codigo+' - '+val.nombre+
+						'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+val.codigo+'" value="'+val.costo+'" id="costo'+val.codigo+'" style="width:100%"></div><div class='+
+						'"col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(val.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '+val.promocion+'</div><div class="cerra"'+
+						' id="cerra'+val.codigo+'" style="display:block"><i class="fa fa-times" aria-hidden="true"></i></div></div></div></div>
 				</div>
 			</div>
 			<div class="col-md-4 col-lg-4 fixdiv">

@@ -8,6 +8,9 @@ $(window).on('beforeunload', function(){
 	}*/
 	
 });
+var obj = [];
+var folis = "";
+var tiendis =  "";
 
 var tiendas = {87:"cedis",57:"abarrotes",90:"villas",58:"tienda",59:"ultra",60:"trincheras",61:"mercado",61:"tenencia",63:"tijeras"}
 $(document).off("change", "#proveedor").on("change", "#proveedor", function (){
@@ -53,6 +56,7 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 	event.preventDefault();
 	if ($(this).val() !== ""){
 		blockPage();
+		tiendis = $(this).data("idTienda");
 		var tienda = $(this).data("idTienda");
 		var fdata = new FormData($("#upload_facturas"+tienda)[0]);
 		uploadFactura(fdata,$("#proveedor option:selected").val(),tienda,tiendas[tienda])
@@ -64,6 +68,7 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 				unblockPage();
 				$(".checkhim").css("display","block");
 				toastr.success(resp.desc, user_name)
+				folis = resp[3];
 				$(".h1folio").html("RESULTADOS DE LA FACTURA CON FOLIO "+resp[3]);
 				var bod = "";var bods = "";
 				$.each(resp[0],function(indx,val) {
@@ -187,8 +192,8 @@ $(document).off("click", ".cerra").on("click", ".cerra", function (){
 	var pedsist = $(this).closest(".pedsist");
 	var uno = pedsist.closest(".body4").closest(".col-md-12").find("#precio");
 	var dos = pedsist.closest(".body4").closest(".col-md-12").find(".body1");
-	uno.css({"background":"white","color":"black"})
-	dos.css({"background":"white","color":"black"})
+	uno.css({"background":"transparent","color":"black"})
+	dos.css({"background":"transparent","color":"black"})
 	pedsist.attr("draggable","true");
 	pedsist.closest(".body4").attr("ondrop","drop(event)");
 	pedsist.closest(".body4").html("SOLTAR RECUADRO AQUÍ");
@@ -235,14 +240,34 @@ $(document).off("click", ".btnnel").on("click", ".btnnel", function (){
 
 $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	event.preventDefault();
+	var devs = 0;var costu = null;var produ = null;var body4 = "";
+	
 	for (var i = 0; i < $(".cuerpodiv").length; i++) {
-		console.log($("#cuerpodiv"+i).find(".body2").html())
-		console.log($("#cuerpodiv"+i).find(".body3").html())
-		console.log($("#cuerpodiv"+i).find("#precio").html())
-		console.log($("#cuerpodiv"+i).find(".body1").html())
-		console.log($("#cuerpodiv"+i).find(".body4").html())
-		console.log(" AH PERRO")
+		if ($("#cuerpodiv"+i).css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $("#cuerpodiv"+i).css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
+			devs = 0;
+		}else{
+			devs = 1;
+		}
+		body4 = $("#cuerpodiv"+i).find(".body4");
+		if (body4.html() === "SOLTAR RECUADRO AQUÍ") {
+			costo = null;
+			produ = null;
+		}else{
+			produ = body4.find(".pedsist").attr('id');
+			costu = body4.find(".pedsist").find(".costod").val();
+		}	
+		
+		obj.push({"folio":folis,
+				"factura":$("#cuerpodiv"+i).find(".body2").html(),
+				"descripcion":$("#cuerpodiv"+i).find(".body3").html(),
+				"producto":produ,
+				"id_tienda":tiendis,
+				"id_proveedor":$("#proveedor option:selected").val(),
+				"costo":costu,
+				"devolucion":devs
+			})
 	}
+	
 })
 
 $(document).off("click", ".devolucion").on("click", ".devolucion", function (){
