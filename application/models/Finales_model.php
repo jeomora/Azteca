@@ -40,4 +40,29 @@ class Finales_model extends MY_Model {
 		}
 	}
 
+	public function getPedidos($where = [],$values){
+		$value = json_decode($values);
+		$this->db->select("(f.cedis+f.abarrotes+f.villas+f.tienda+f.ultra+f.trincheras+f.mercado+f.tenencia+f.tijeras) as totalp,u.id_usuario,f.promocion, f.costo,f.cedis,f.abarrotes,f.villas,f.tienda,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion,p.nombre,p.codigo, u.nombre as proveedor FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) AND f.id_proveedor = ".$value->proveedor." ORDER BY p.nombre");
+		
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }

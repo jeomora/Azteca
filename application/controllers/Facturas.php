@@ -11,6 +11,8 @@ class Facturas extends MY_Controller {
 		$this->load->model("Usuarios_model", "usua_mdl");
 		$this->load->model("Prodcaja_model", "pcaja_md");
 		$this->load->model("Finales_model", "final_md");
+		$this->load->model("Facturas_model", "fact_md");
+		$this->load->model("Compara_model", "comp_md");
 	}
 
 	public function comparar(){
@@ -23,6 +25,7 @@ class Facturas extends MY_Controller {
 
 		$data['scripts'] = [
 			'/scripts/facturas',
+			'/scripts/dragscroll',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
@@ -36,8 +39,15 @@ class Facturas extends MY_Controller {
 			'/assets/js/plugins/dataTables/dataTables.responsive',
 			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
 		];
-		$data["proveedores"]=$this->usua_mdl->get(NULL,["estatus <>"=>0,"id_grupo"=>2]);
+		$data["proveedores"] = $this->usua_mdl->get(NULL,["estatus <>"=>0,"id_grupo"=>2]);
+		$data["tiendas"]	 = $this->usua_mdl->getColors(NULL);
 		$this->estructura("Facturas/Comparar", $data);
+	}
+
+	public function getPedidos(){
+		$busca = $this->input->post("values");
+		$productos = $this->final_md->getPedidos(NULL,$busca);
+		$this->jsonResponse($productos);
 	}
 
 	public function pedidos(){
@@ -195,6 +205,98 @@ class Facturas extends MY_Controller {
 		$busca2 = $this->input->post("values2");
 		$productos = $this->final_md->buscaCodigos(NULL,$busca,$busca2);
 		$this->jsonResponse($productos);
+	}
+
+	public function uploadFacturas($id_proveedor,$id_tienda,$tend){
+		$user = $this->session->userdata();
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_factura"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		$proveedor = $id_proveedor;
+		$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');
+		for ($i=3; $i<=$num_rows; $i++) {
+			$codigo = $this->getOldVal($sheet,$i,"A");
+			$cellB = $this->getOldVal($sheet,$i,"B");
+			$cellC = $this->getOldVal($sheet,$i,"C");
+			$cellD = $this->getOldVal($sheet,$i,"D");
+			
+			if (sizeof($codigo) > 0) {
+				$new_producto=[
+					"folio" => $folio,
+					"id_proveedor" => $proveedor,
+					"precio" => $cellD,
+					"codigo" => $codigo,
+					"descripcion" => $cellB,
+					"cantidad" => $cellC,
+					"id_tienda"=> $id_tienda
+				];
+
+				$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$cellD,$cellC);
+				//$this->jsonResponse($codiga);
+				if ($codiga) {
+				}else{
+					$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+				}
+			}
+		}
+		$query = "pd.nombre,pd.codigo,fc.descripcion,fc.folio,fc.codigo as factu,fc.cantidad,fc.precio,fc.estatus,fc.fecha_registro,fc.id_tienda,fc.id_proveedor,pc.id_prodcaja,pc.id_prodfactura, f.".$tend." as total,f.costo,f.promocion,f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor LEFT JOIN productos pd ON pc.id_prodfactura = pd.id_producto WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."' ORDER BY fc.id_factura ASC";
+		$factus = $this->fact_md->getFactos(NULL,json_encode($query));
+		$query2 = "f2.id_final,f2.costo,f2.promocion,pd.nombre,pd.codigo,pd.id_producto,f2.".$tend." as total from finales f2 LEFT JOIN productos pd ON f2.id_producto = pd.id_producto WHERE f2.id_final NOT IN(SELECT f1.id_final from finales f1 WHERE f1.id_final IN (SELECT f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."')) AND id_proveedor = ".$proveedor." AND WEEKOFYEAR(f2.fecha_registro) = WEEKOFYEAR(CURDATE()) AND f2.".$tend." > 0 ORDER BY f2.id_final ASC";
+		$factus2 = $this->fact_md->getFactos(NULL,json_encode($query2));
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "El usuario registro factura",
+				"despues" => "FOLIO : ".$folio];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
+		$mensaje=[	
+			"id"	=>	'Éxito',
+			"desc"	=>	'Factura se cargó correctamente en el Sistema',
+			"type"	=>	'success'];
+
+		$this->jsonResponse(array($factus,$factus2,$num_rows,$folio));
+	}
+
+	public function guardaComparacion(){
+		$user = $this->session->userdata();
+		$value = json_decode($this->input->post('values'), true);
+		$prodcod = "";
+		foreach ($value as $key => $v) {
+			$producto = $this->pro_md->get(NULL,["codigo"=>$v["producto"]])[0];
+			if ($producto) {
+				$prodcaja=$this->pcaja_md->get(NULL,["codigo_factura"=>$v["factura"],"id_proveedor"=>$v["id_proveedor"],"estatus"=>1,"id_prodfactura"=>$producto->id_producto])[0];
+				if(!$prodcaja) {
+					$new_prodcaja=[
+						"id_prodfactura" => $producto->id_producto,
+						"id_proveedor" => $v["id_proveedor"],
+						"codigo_factura" => $v["factura"],
+						"descripcion"	=> $v["descripcion"]
+					];
+					$data['prodcaja'] = $this->pcaja_md->insert($new_prodcaja);
+				}
+			}
+			$compara=$this->comp_md->get(NULL,["folio"=>$v["folio"],"id_proveedor"=>$v["id_proveedor"],"id_tienda"=>$v["id_tienda"],"factura"=>$v["factura"]])[0];
+			$new_compara=[
+				"folio"	=> $v["folio"],
+				"factura" => $v["factura"],
+				"producto" => $v["producto"],
+				"id_tienda" => $v["id_tienda"],
+				"id_proveedor" => $v["id_proveedor"],
+				"costo" => $v["costo"],
+				"devolucion" => $v["devolucion"],
+				"devueltos" => $v["devueltos"]
+			];
+			if ($compara) {
+				$data['prodcaja'] = $this->comp_md->update($new_compara,$compara->id_comparacion);
+			}else{
+				$data['prodcaja'] = $this->comp_md->insert($new_compara);
+			}
+		}
+		
 	}
 }
 
