@@ -1,11 +1,11 @@
 $(window).on('beforeunload', function(){
 	var c=confirm();
-	/*if( $(".checkhim").css('display') == 'block'){
+	if( $(".checkhim").css('display') == 'block'){
 		if(c){
 	  		return true;
 		}else
 			return false;
-	}*/
+	}
 	
 });
 var obj = [];
@@ -79,7 +79,8 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 					val.total = val.total == null ? "" : val.total;
 					val.promocion = val.promocion == null ? "" : val.promocion;
 					if (val.costo == "") {
-						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i class="fa fa-retweet" aria-hidden="true"></i></div><div class="col-md-2 col-lg-2 body2">'+val.factu+
+						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i '+
+						'class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text" name="difis" id="difis" value="" /></div><div class="col-md-2 col-lg-2 body2">'+val.factu+
 						'</div><div class="col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;" id="precio">$ '+
 						formatMoney(val.precio,2)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;">'+formatMoney(val.cantidad,1)+
 						'</div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)" id="pedidodiv">SOLTAR RECUADRO AQUÍ</div></div>';
@@ -88,7 +89,9 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 						col1 = cantidades(parseFloat(val.cantidad),parseFloat(val.total));
 						col2 = costos(parseFloat(val.precio),parseFloat(val.costo));
 						
-						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i class="fa fa-retweet" aria-hidden="true"></i></div><div class="col-md-2 col-lg-2 body2">'+val.factu+'</div><div class="'+
+						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i '+
+						'class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text" name="difis" id="difis" value=""></div><div class="col-md-2 col-lg-2 body2">'+
+						val.factu+'</div><div class="'+
 						'col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;background:'+col2+
 						';" id="precio">$ '+formatMoney(val.precio)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;background:'+col1+
 						';">'+formatMoney(val.cantidad,1)+'</div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)"'+
@@ -240,14 +243,17 @@ $(document).off("click", ".btnnel").on("click", ".btnnel", function (){
 
 $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	event.preventDefault();
-	var devs = 0;var costu = null;var produ = null;var body4 = "";
-	
+	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;
+	obj = [];
 	for (var i = 0; i < $(".cuerpodiv").length; i++) {
 		if ($("#cuerpodiv"+i).css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $("#cuerpodiv"+i).css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
 			devs = 0;
+			devos = 0;
 		}else{
 			devs = 1;
+			devos = $("#cuerpodiv"+i).find(".devolucion").find("#difis").val();
 		}
+		
 		body4 = $("#cuerpodiv"+i).find(".body4");
 		if (body4.html() === "SOLTAR RECUADRO AQUÍ") {
 			costo = null;
@@ -256,29 +262,56 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 			produ = body4.find(".pedsist").attr('id');
 			costu = body4.find(".pedsist").find(".costod").val();
 		}	
-		
-		obj.push({"folio":folis,
-				"factura":$("#cuerpodiv"+i).find(".body2").html(),
-				"descripcion":$("#cuerpodiv"+i).find(".body3").html(),
-				"producto":produ,
-				"id_tienda":tiendis,
-				"id_proveedor":$("#proveedor option:selected").val(),
-				"costo":costu,
-				"devolucion":devs
-			})
+		obj.push({
+			"folio":folis,
+			"factura":$("#cuerpodiv"+i).find(".body2").html(),
+			"descripcion":$("#cuerpodiv"+i).find(".body3").html(),
+			"producto":produ,
+			"id_tienda":tiendis,
+			"id_proveedor":$("#proveedor option:selected").val(),
+			"costo":costu,
+			"devolucion":devs,
+			"devueltos":devos
+		})
 	}
-	
-})
 
-$(document).off("click", ".devolucion").on("click", ".devolucion", function (){
+	guardaComparacion(JSON.stringify(obj)).done(function(resp){
+
+	})
+	
+});
+
+function guardaComparacion(values){
+    return $.ajax({
+        url: site_url+"/Facturas/guardaComparacion",
+        type: "POST",
+        dataType: "JSON",
+        data: {
+            values : values
+        },
+    });
+}
+
+
+
+$(document).off("click", "#idev").on("click", "#idev", function (){
 	event.preventDefault();
-	
-	if ($(this).closest(".cuerpodiv").css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $(this).closest(".cuerpodiv").css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
-		$(this).closest(".cuerpodiv").css("background","#efff00");
-	} else {
-		$(this).closest(".cuerpodiv").css("background","#FFF");
+	var uno = $(this).closest(".devolucion").closest(".cuerpodiv").find(".body1");
+	if ($(this).closest(".devolucion").closest(".cuerpodiv").find(".body4").html() == "SOLTAR RECUADRO AQUÍ"){
+		uno = uno.html();
+	}else{
+		uno = uno.html().substr(0, uno.html().indexOf('<'));
 	}
-
+	
+	if($(this).closest(".cuerpodiv").css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $(this).closest(".cuerpodiv").css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box"){
+		$(this).closest(".cuerpodiv").css("background","#efff00");
+		$(this).closest(".devolucion").find("#difis").css("display","block");
+		$(this).closest(".devolucion").find("#difis").val(formatMoney(uno,0));
+	}else{
+		$(this).closest(".cuerpodiv").css("background","#FFF");
+		$(this).closest(".devolucion").find("#difis").css("display","none");
+		$(this).closest(".devolucion").find("#difis").val("");
+	}
 })
 
 /*$(document).off("click", "#allcheck").on("click", "#allcheck", function (){
