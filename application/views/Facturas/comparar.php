@@ -88,7 +88,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				<div class="col-md-12 col-lg-12" style="margin-top:20px;">
 					<div class="ibox" style="box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93)">
 						<div class="col-md-12 col-lg-12 ibox-content">
-							<h1>Comparar productos factura con pedidos realizados</h1>
+							<h1>Comparar productos factura con pedidos realizados<a href="<?php echo base_url('assets/uploads/FacturaExcel.xlsx') ?>" download><i class='fa fa-download'></i></a></h2></h1>
 							<div class="col-lg-6 col-md-6">
 								<select id="proveedor" name="proveedor">
 									<option value="0">Seleccione un proveedor</option>
