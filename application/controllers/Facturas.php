@@ -41,7 +41,7 @@ class Facturas extends MY_Controller {
 		];
 		$data["proveedores"] = $this->usua_mdl->get(NULL,["estatus <>"=>0,"id_grupo"=>2]);
 		$data["tiendas"]	 = $this->usua_mdl->getColors(NULL);
-		$this->estructura("Facturas/Comparar", $data);
+		$this->estructura("Facturas/comparar", $data);
 	}
 	public function getFacturas($values){
 		$facturas = $this->fact_md->getFacturas(NULL,$values);
