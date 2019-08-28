@@ -30,7 +30,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.fixdiv{padding:0;border:1px solid #0b73ce;position:fixed;right:20px;top:72px;overflow-y:scroll;height:50vh;}
 	.pedsist{background:#279c9173;font-size:14px;padding:15px 10px;border:1px solid #0b73ce}
 	.witheblock {border:1px dotted#000;font-size:14px;text-align:center;padding:20px;}
-	.checkhim{display:none}
+	.checkhim{display:none;height: 270vh;}
 	.cerra{position:absolute;top:-22px;right:-1px;background:#279c9173;cursor:pointer;display:none;padding:0px 10px;border:1px solid #0b73ce;}
 	.cantu{font-family:monospace;}
 	.fixdiv2{padding:0;position:fixed;right:20px;top:60vh;height:25vh;}
@@ -40,39 +40,29 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.devolucion:hover{color:#efff00;background:#FFF}
 	#difis{width:30px;height:20px;border:1px solid #000;color:#000;padding:3px;font-size:14px;display:none}
 	#cuerpo{overflow-y:scroll;height:250vh;}
-
+	.btndownload{font-size:20px;padding:10px 35px;background:cadetblue;border:1px solid cadetblue;border-radius:5px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);}
+	.btndownload:hover{background:#FFF;color:cadetblue}
+	.headfact{text-align:center;font-size:30px;font-family:fantasy;padding:2px;background:red;border:2px solid}
+	.subheadfact{font-size:20px;text-align:center;border:2px solid;height:50px;line-height:50px;border-top:0}
+	.subheadfact2{padding:0}
+	.fecharep,.fechafact{font-size:15px;height:25px;border-bottom:2px solid;border-right:2px solid;}
+	.totfact,.totpend,.totpaga{text-align:right;font-size:20px;font-weight:bold}
+	.notafolio,.sumtotal,.sumnota{font-size:20px;text-align:center;font-weight:bold;line-height:30px}
+	.factlistItem{font-size:14px;text-align:center;border:1px solid #000;height:40px;line-height:40px;border-top:0;font-family:monospace;}
+	.sumtotal,.sumnota{font-size:15px}
+	.factlisty:hover{background:#c7c7c7}
+	#searchy{width:100%;font-size:20px;border:0;border-bottom:2px solid blue;}
+	.elvis,.elvis2,.factdetails{display:none}
+	.btnExcel{font-size:20px;width:80%;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);background:#ec8b5c;border:1px solid #ec8b5c;}
+	.btnExcel:hover{border:1px solid #ec8b5c;background:transparent;color:#ec8b5c}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12 col-md-12">
-			<h1>Comparar productos factura con pedidos realizados</h1>
-			<div class="col-md-5 col-lg-5" style="margin-top:20px">
-				<div class="ibox">
-					<div class="ibox-content ">
-						<h2 class="m-b-md">Seleccione el proveedor</h2>
-						<select id="proveedor" name="proveedor">
-							<option value="0">Seleccione un proveedor</option>
-							<?php foreach ($proveedores as $key => $value):?>
-								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
-							<?php endforeach; ?>
-						</select>
-					</div> 
-				</div>
-			</div>
-		</div>
-		<div class="dragscroll col-lg-12 col-md-12" style="border:1px solid #000;padding:30px;overflow-x: scroll; cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
+			<h1>Seleccione una sucursal</h1>
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">
-					<div class="col-md-12 col-lg-12 ibox-content ">
-						<h2 class="m-b-md">Seleccionar filtros</h2>
-						<!--<div class="col-md-3 col-lg-2">
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value="" id="allcheck">
-								<label class="form-check-label" for="allcheck" style="color:#000;background:#FFF !important;">
-								   MOSTRAR TODAS
-								</label>
-							</div>
-						</div>-->
+					<div class="col-md-12 col-lg-12 ibox-content">
 						<?php foreach ($tiendas as $key => $value): ?>
 							<div class="col-md-3 col-lg-2">
 								<div class="form-check">
@@ -83,68 +73,194 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</div>
 							</div>
 						<?php endforeach; ?>
-						<!--<div class="col-md-12 col-lg-12" style="border-bottom:1px solid #000;height:20px;margin-bottom: 10px"></div>
-						<div class="col-md-3 col-lg-2">
-							<div class="form-check">
-								<input class="form-check-input tienda" type="checkbox" value="" id="tienda<?php echo $value->id_usuario ?>">
-								<label class="form-check-label" for="tienda<?php echo $value->id_usuario ?>" style="color:red;background:#FFF !important;">
-								   ROJOS
-								</label>
-							</div>
-						</div>
-						<div class="col-md-4 col-lg-2">
-							<div class="form-check">
-								<input class="form-check-input tienda" type="checkbox" value="" id="tienda<?php echo $value->id_usuario ?>">
-								<label class="form-check-label" for="tienda<?php echo $value->id_usuario ?>" style="color:red;background:#FFF !important;">
-								   PRODUCTOS SIN RELACIÓN
-								</label>
-							</div>
-						</div>-->
 					</div> 
 				</div>
 			</div>
-			<div class="tablediv">
-				<div class="tablepeds">
-					<div class="divcontain">
-						<div class="backblack bbtotal" style="width:100%"></div>
-					</div>
-					<div class="divcontain">
-						<div class="backblack" style="width:5%"> - </div>
-						<div class="backblack" style="width:15%">CÓDIGO</div>
-						<div class="backblack" style="width:50%">DESCRIPCIÓN</div>
-						<div class="backblack" style="width:10%">PEDIDO</div>
-						<div class="backblack" style="width:20%">PROMOCIÓN</div>
-					</div>
-					<div class="tablepeds-body" style="padding:0;width:100%">
-						
-					</div>
-				</div>
-				<div class="tabletien">
-					<?php foreach ($tiendas as $key => $value): ?>
-						<div class="ttc tienda<?php echo $value->id_usuario ?>">
-							<div class="ttchead" style="display:inline-flex;background-color:<?php echo $value->color ?>;">
-								<h3 style="width: 50%"><?php echo $value->nombre ?></h3> &nbsp;&nbsp;&nbsp;
-								<?php echo form_open_multipart("", array('id' => 'upload_facturas'.$value->id_usuario)); ?>
-									<input class="btn btn-info" type="file" id="file_factura" name="file_factura" value="" style="width:170px;background-color:<?php echo $value->color ?>" data-id-tienda="<?php echo $value->id_usuario ?>"/>
+		</div>
+
+		
+		<div class="col-md-12 col-lg-12 elvis" style="padding:0">
+			<div class="col-lg-6 col-md-6">
+				<div class="col-md-12 col-lg-12" style="margin-top:20px;">
+					<div class="ibox" style="box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93)">
+						<div class="col-md-12 col-lg-12 ibox-content">
+							<h1>Comparar productos factura con pedidos realizados</h1>
+							<div class="col-lg-6 col-md-6">
+								<select id="proveedor" name="proveedor">
+									<option value="0">Seleccione un proveedor</option>
+									<?php foreach ($proveedores as $key => $value):?>
+										<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<?php echo form_open_multipart("", array('id' => 'upload_facturas')); ?>
+									<input class="btn btn-info" type="file" id="file_factura" name="file_factura" value="" style="background-color:#2347c8;border-color:#2347c8;" />
 								<?php echo form_close(); ?>
 							</div>
-							<div class="divcontain">
-								<div class="backblack" style="width:19%">COD</div>
-								<div class="backblack" style="width:9%">PED</div>
-								<div class="backblack" style="width:9%">ENT</div>
-								<div class="backblack" style="width:9%">DIF</div>
-								<div class="backblack" style="width:9%">COS</div>
-								<div class="backblack" style="width:9%">FAC</div>
-								<div class="backblack" style="width:9%">DIF</div>
-								<div class="backblack" style="width:9%">TOT</div>
-								<div class="backblack" style="width:9%">TOT</div>
-								<div class="backblack" style="width:9%">DIF</div>
+							<div class="col-lg-12 col-md-12">
+								Para comparar una factura con los pedidos registrados, seleccione un proveedor y posteriormente clic al boton "Seleccionar archivo".
 							</div>
-						</div>
-					<?php endforeach; ?>
+						</div> 
+					</div>
 				</div>
 			</div>
-				
+			<div class="col-md-6 col-lg-6" style="padding:50px">
+				<button type="button" class="btndownload">
+					<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR REPORTE (Sin detalles)
+				</button>
+			</div>
+		</div>
+		<div class="dragscroll col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;overflow-x: scroll; cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
+			<div class="col-md-12 col-lg-12" style="margin-top:20px">
+				<div class="ibox">
+					<div class="col-md-12 col-lg-12 ibox-content">
+						<div class="col-md-12 col-lg-12 facture">
+							
+						</div>
+					</div> 
+					<div class="col-md-12 col-lg-12 ibox-content">
+						<div class="col-md-12 col-lg-12 factdetails">
+							<div class="col-md-12 col-lg-12" style="padding:20px">
+								<div class="col-md-4 col-lg-4 btnExcelComp" style="text-align:center;">
+									<button type="button" class="btnExcel">
+										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA
+									</button>
+								</div>
+								<div class="col-md-4 col-lg-4 btnExcelFact" style="text-align:center;">
+									<button type="button" class="btnExcel">
+										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR FORMATO
+									</button>
+								</div>
+								<div class="col-md-4 col-lg-4 btnExcelComp" style="text-align:center;">
+									<!--<button type="button" class="btnExcel" style="background:#ec8b5c;border:0">
+										<i class="fa fa-download" aria-hidden="true"></i> GUARDAR
+									</button>-->
+								</div>
+							</div>
+							<div class="col-lg-12 col-md-12" style="padding:0">
+								<div class="col-md-12 col-lg-12 headfact">
+									
+								</div>
+
+								<div class="col-md-5 col-lg-5 subheadfact">
+									
+								</div>
+								<div class="col-lg-7 col-md-7 subheadfact2">
+									<div class="col-lg-6 col-md-6" style="font-size:15px;height:25px;border-bottom:2px solid;border-right:1px solid gray;line-height:25px">
+										Fecha de Reporte
+									</div>
+									<div class="col-lg-6 col-md-6 fecharep">
+										
+									</div>
+									<div class="col-lg-6 col-md-6" style="font-size:15px;height:25px;border-bottom:2px solid;border-right:1px solid gray;line-height:25px">
+										Fecha en Factura
+									</div>
+									<div class="col-lg-6 col-md-6 fechafact">
+										
+									</div>
+								</div>
+
+								<div class="col-md-4 col-lg-4" style="height:50px;border:2px solid;border-top:0;line-height:50px;text-align:center;font-size:18px;">
+									DESCRIPCIÓN
+								</div>
+								<div class="col-md-1 col-lg-1" style="height:50px;border:2px solid;border-top:0;line-height:50px;text-align:center;font-size:14px;border-left:0">
+									PROMO
+								</div>
+								<div class="col-md-1 col-lg-1" style="padding:0">
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0;border-bottom:1px solid gray">
+										PRECIO EN
+									</div>
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0">
+										PEDIDO
+									</div>
+								</div>
+								<div class="col-md-1 col-lg-1" style="padding:0">
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0;border-bottom:1px solid gray">
+										CANT
+									</div>
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0">
+										PEDIDO
+									</div>
+								</div>
+								<div class="col-md-1 col-lg-1" style="padding:0">
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0;border-bottom:1px solid gray">
+										CANT
+									</div>
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0">
+										FACTURA
+									</div>
+								</div>
+								<div class="col-md-1 col-lg-1" style="padding:0">
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0;border-bottom:1px solid gray">
+										PRECIO NETO
+									</div>
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0">
+										FACTURA
+									</div>
+								</div>
+								<div class="col-md-1 col-lg-1" style="height:50px;border:2px solid;border-top:0;line-height:50px;text-align:center;font-size:18px;border-left:0">
+									DIF.
+								</div>
+								<div class="col-md-1 col-lg-1" style="padding:0">
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:18px;border-left:0;border-bottom:1px solid gray">
+										NOTA
+									</div>
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:18px;border-left:0">
+										CREDITO
+									</div>
+								</div>
+								<div class="col-md-1 col-lg-1" style="padding:0">
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:18px;border-left:0;border-bottom:1px solid gray">
+										TOTAL
+									</div>
+									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:18px;border-left:0">
+										A PAGAR
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12 col-lg-12 factlist" style="padding:0">
+								
+							</div>
+
+							<div class="col-md-12 col-lg-12" style="padding:0">
+								<div class="col-md-8 col-lg-8" style="height:30px;border-bottom:2px solid;border-right:2px solid"></div>
+								<div class="col-md-2 col-lg-2 notafolio" style="height:30px;border:2px solid;border-left:0;"></div>
+								<div class="col-md-1 col-lg-1 sumnota" style="height:30px;border:2px solid;border-left:0;"></div>
+								<div class="col-md-1 col-lg-1 sumtotal" style="height:30px;border:2px solid;border-left:0;"></div>
+							</div>
+							<div class="col-lg-12 col-md-12" style="padding:0">
+								<div class="col-md-4 col-lg-4" style="border:2px solid;border-top:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-2 col-lg-2" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;text-align:center;">TOTAL DE FACTURA</div>
+								<div class="col-md-2 col-lg-2 totfact" style="background:rgb(35,149,144);height:30px;border:2px solid;border-left:0;border-top:0"></div>
+							</div>
+							<div class="col-lg-12 col-md-12" style="padding:0">
+								<div class="col-md-4 col-lg-4" style="border:2px solid;border-top:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid #000;border-top:0;border-left:0;height:30px;line-height:30px;text-align:center;color:red;font-weight:bolder;background:#e08989">DEVUELTO</div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;text-align:center;">DIFERENC</div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-2 col-lg-2" style="border:2px solid;border-top:0;border-left:0;height:30px;text-align:center;font-size:10px">PENDIENTE X<br>DEVOLUCIÓN Y</div>
+								<div class="col-md-2 col-lg-2 totpend" style="background:rgb(35,149,144);height:30px;border:2px solid;border-left:0;border-top:0"></div>
+							</div>
+							<div class="col-lg-12 col-md-12" style="padding:0">
+								<div class="col-md-4 col-lg-4" style="border:2px solid;border-top:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1 devuel" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1 difer" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-1 col-lg-1" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;"></div>
+								<div class="col-md-2 col-lg-2" style="border:2px solid;border-top:0;border-left:0;height:30px;line-height:30px;text-align:center;font-weight:bold;font-size:20px;">TOTAL A PAGAR</div>
+								<div class="col-md-2 col-lg-2 totpaga" style="background:rgb(35,149,144);height:30px;border:2px solid;border-left:0;border-top:0"></div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -168,6 +284,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 			</div>
 			<div class="col-md-4 col-lg-4 fixdiv">
+				<div class="col-lg-12 col-md-12">
+					<input type="text" name="searchy" id="searchy" placeholder="Buscar" />
+				</div>
 				<div class="head4 col-md-12 col-lg-12" style="background:#0b73ce;">
 					PEDIDOS EN SISTEMA
 				</div>

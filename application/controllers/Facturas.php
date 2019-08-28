@@ -43,6 +43,16 @@ class Facturas extends MY_Controller {
 		$data["tiendas"]	 = $this->usua_mdl->getColors(NULL);
 		$this->estructura("Facturas/Comparar", $data);
 	}
+	public function getFacturas($values){
+		$facturas = $this->fact_md->getFacturas(NULL,$values);
+		$this->jsonResponse($facturas);
+	}
+
+	public function getDetails(){
+		$busca = $this->input->post("values");
+		$facturas = $this->fact_md->getDetails(NULL,$busca);
+		$this->jsonResponse($facturas);
+	}
 
 	public function getPedidos(){
 		$busca = $this->input->post("values");
@@ -236,15 +246,16 @@ class Facturas extends MY_Controller {
 				];
 
 				$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$cellD,$cellC);
-				//$this->jsonResponse($codiga);
 				if ($codiga) {
 				}else{
 					$data['id_prodcaja']=$this->fact_md->insert($new_producto);
 				}
 			}
 		}
-		$query = "pd.nombre,pd.codigo,fc.descripcion,fc.folio,fc.codigo as factu,fc.cantidad,fc.precio,fc.estatus,fc.fecha_registro,fc.id_tienda,fc.id_proveedor,pc.id_prodcaja,pc.id_prodfactura, f.".$tend." as total,f.costo,f.promocion,f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor LEFT JOIN productos pd ON pc.id_prodfactura = pd.id_producto WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."' ORDER BY fc.id_factura ASC";
+		//Obtener elementos factura con pedidos para asociar
+		$query = "pd.nombre,pd.codigo,fc.descripcion,fc.folio,fc.codigo as factu,fc.cantidad,fc.precio,fc.estatus,fc.fecha_registro,fc.id_tienda,fc.id_proveedor,pc.id_prodcaja,pc.id_prodfactura, f.".$tend." as total,f.costo,f.promocion,f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor LEFT JOIN productos pd ON pc.id_prodfactura = pd.id_producto WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."' AND fc.id_tienda = '".$id_tienda."' GROUP BY fc.id_factura ORDER BY fc.id_factura ASC";
 		$factus = $this->fact_md->getFactos(NULL,json_encode($query));
+		//Obtener pedidos no asociados a productos en la fatcura
 		$query2 = "f2.id_final,f2.costo,f2.promocion,pd.nombre,pd.codigo,pd.id_producto,f2.".$tend." as total from finales f2 LEFT JOIN productos pd ON f2.id_producto = pd.id_producto WHERE f2.id_final NOT IN(SELECT f1.id_final from finales f1 WHERE f1.id_final IN (SELECT f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."')) AND id_proveedor = ".$proveedor." AND WEEKOFYEAR(f2.fecha_registro) = WEEKOFYEAR(CURDATE()) AND f2.".$tend." > 0 ORDER BY f2.id_final ASC";
 		$factus2 = $this->fact_md->getFactos(NULL,json_encode($query2));
 		$cambios = [
@@ -265,6 +276,7 @@ class Facturas extends MY_Controller {
 		$user = $this->session->userdata();
 		$value = json_decode($this->input->post('values'), true);
 		$prodcod = "";
+		$this->jsonResponse($value);
 		foreach ($value as $key => $v) {
 			$producto = $this->pro_md->get(NULL,["codigo"=>$v["producto"]])[0];
 			if ($producto) {
@@ -290,13 +302,237 @@ class Facturas extends MY_Controller {
 				"devolucion" => $v["devolucion"],
 				"devueltos" => $v["devueltos"]
 			];
+
+
 			if ($compara) {
 				$data['prodcaja'] = $this->comp_md->update($new_compara,$compara->id_comparacion);
+
 			}else{
 				$data['prodcaja'] = $this->comp_md->insert($new_compara);
 			}
 		}
 		
+	}
+	public function fill_excel(){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleArrayHL = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleArrayHR = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+
+		$stylebottom = array(
+		  'borders' => array(
+		    'top' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'bottom' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styletop = array(
+		  'borders' => array(
+		    'bottom' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'top' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleleft = array(
+		  'borders' => array(
+		    'bottom' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'top' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleright = array(
+		  'borders' => array(
+		    'bottom' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'top' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+
+
+
+
+		$hoja->mergeCells('A1:I1');
+		$this->cellStyle("A1", "FFFFFF", "000000", TRUE, 24, "Berlin Sans FB Demi");
+		$hoja->setCellValue("A1", "CEDIS GRUPO AZTECA, S.A DE C.V")->getColumnDimension('A')->setWidth(60);
+		$this->excelfile->getActiveSheet()->getStyle('A1:I1')->applyFromArray($styleArray);
+
+		$hoja->mergeCells('A2:B3');
+		$this->cellStyle("A2", "FFFFFF", "000000", FALSE, 18, "Arial Narrow");
+		$hoja->setCellValue("A2", "REPORTE IMPULSORA SAHUAYO");
+		$this->excelfile->getActiveSheet()->getStyle('A2:B3')->applyFromArray($styleArray);
+
+		$hoja->mergeCells('C2:E2');
+		$this->cellStyle("C2", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("C2", "Fecha de Reporte");
+		$this->excelfile->getActiveSheet()->getStyle('C2:E2')->applyFromArray($styleright);
+		$hoja->mergeCells('C3:E3');
+		$this->cellStyle("C3", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("C3", "Fecha en Factura");
+		$this->excelfile->getActiveSheet()->getStyle('C3:E3')->applyFromArray($styleright);
+		$hoja->mergeCells('F2:I2');
+		$this->cellStyle("F2", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue('F2','2014-10-16');  
+		$this->excelfile->getActiveSheet()->getStyle('F2:I2')->applyFromArray($styleleft);
+		$hoja->mergeCells('F3:I3');
+		$this->cellStyle("F3", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("F3", "Fecha en Factura");
+		$this->excelfile->getActiveSheet()->getStyle('F3:I3')->applyFromArray($styleleft);
+
+		$hoja->mergeCells('A4:A5');
+		$this->cellStyle("A4", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("A4", "DESCRIPCIÓN");
+		$this->excelfile->getActiveSheet()->getStyle('A4:A5')->applyFromArray($styleArray);
+
+		$hoja->mergeCells('B4:B5');
+		$this->cellStyle("B4", "FFFFFF", "000000", FALSE, 9, "Arial Narrow");
+		$hoja->setCellValue("B4", "PROMO")->getColumnDimension('B')->setWidth(15);
+		$this->excelfile->getActiveSheet()->getStyle('B4:B5')->applyFromArray($styleArray);
+
+		$this->cellStyle("C4", "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+		$hoja->setCellValue("C4", "PRECIO EN")->getColumnDimension('C')->setWidth(15);
+		$this->excelfile->getActiveSheet()->getStyle('C4')->applyFromArray($stylebottom);
+		$this->cellStyle("C5", "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+		$hoja->setCellValue("C5", "PEDIDO");
+		$this->excelfile->getActiveSheet()->getStyle('C5')->applyFromArray($styletop);
+
+		$this->cellStyle("D4", "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+		$hoja->setCellValue("D4", "CANT")->getColumnDimension('D')->setWidth(9);
+		$this->excelfile->getActiveSheet()->getStyle('D4')->applyFromArray($stylebottom);
+		$this->cellStyle("D5", "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+		$hoja->setCellValue("D5", "PEDIDO");
+		$this->excelfile->getActiveSheet()->getStyle('D5')->applyFromArray($styletop);
+
+		$this->cellStyle("E4", "FFFFFF", "000000", FALSE, 8, "Arial Narrow");
+		$hoja->setCellValue("E4", "CANT")->getColumnDimension('E')->setWidth(9);
+		$this->excelfile->getActiveSheet()->getStyle('E4')->applyFromArray($stylebottom);
+		$this->cellStyle("E5", "FFFFFF", "000000", FALSE, 8, "Arial Narrow");
+		$hoja->setCellValue("E5", "FACTURA");
+		$this->excelfile->getActiveSheet()->getStyle('E5')->applyFromArray($styletop);
+
+		$this->cellStyle("F4", "FFFFFF", "000000", FALSE, 10, "Arial Narrow");
+		$hoja->setCellValue("F4", "PREC NETO")->getColumnDimension('F')->setWidth(11);
+		$this->excelfile->getActiveSheet()->getStyle('F4')->applyFromArray($stylebottom);
+		$this->cellStyle("F5", "FFFFFF", "000000", FALSE, 10, "Arial Narrow");
+		$hoja->setCellValue("F5", "FACTURA");
+		$this->excelfile->getActiveSheet()->getStyle('F5')->applyFromArray($styletop);
+
+		$hoja->mergeCells('G4:G5');
+		$this->cellStyle("G4", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("G4", "DIF.")->getColumnDimension('G')->setWidth(12);
+		$this->excelfile->getActiveSheet()->getStyle('G4:G5')->applyFromArray($styleArray);
+
+		$this->cellStyle("H4", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("H4", "NOTA")->getColumnDimension('H')->setWidth(15);
+		$this->excelfile->getActiveSheet()->getStyle('H4')->applyFromArray($stylebottom);
+		$this->cellStyle("H5", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("H5", "CREDITO");
+		$this->excelfile->getActiveSheet()->getStyle('H5')->applyFromArray($styletop);
+
+		$this->cellStyle("I4", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("I4", "TOTAL")->getColumnDimension('I')->setWidth(15);
+		$this->excelfile->getActiveSheet()->getStyle('I4')->applyFromArray($stylebottom);
+		$this->cellStyle("I5", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+		$hoja->setCellValue("I5", "A PAGAR");
+		$this->excelfile->getActiveSheet()->getStyle('I5')->applyFromArray($styletop);
+
+
+
+		$file_name = "Facturas.xlsx"; //Nombre del documento con extención
+
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
 	}
 }
 
