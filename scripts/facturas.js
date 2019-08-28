@@ -12,7 +12,7 @@ var obj = [];
 var folis = "";
 var tiendis =  "";
 
-var tiendas = {87:"cedis",57:"abarrotes",90:"villas",58:"tienda",59:"ultra",60:"trincheras",61:"mercado",61:"tenencia",63:"tijeras"}
+var tiendas = {87:"cedis",57:"abarrotes",90:"villas",58:"tienda",59:"ultra",60:"trincheras",61:"mercado",62:"tenencia",63:"tijeras"}
 $(document).off("change", "#proveedor").on("change", "#proveedor", function (){
 	event.preventDefault();
 	var provs = $("#proveedor option:selected");
@@ -56,10 +56,8 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 	event.preventDefault();
 	if ($(this).val() !== ""){
 		blockPage();
-		tiendis = $(this).data("idTienda");
-		var tienda = $(this).data("idTienda");
-		var fdata = new FormData($("#upload_facturas"+tienda)[0]);
-		uploadFactura(fdata,$("#proveedor option:selected").val(),tienda,tiendas[tienda])
+		var fdata = new FormData($("#upload_facturas")[0]);
+		uploadFactura(fdata,$("#proveedor option:selected").val(),tiendis,tiendas[tiendis])
 		.done(function (resp) {
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, user_name)
@@ -104,7 +102,7 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 				$("#cuerpo").html(bod);
 				$.each(resp[1],function(index,vals) {
 					vals.promocion = vals.promocion == null ? "" : vals.promocion;
-					bods+= '<div class="col-lg-12 col-md-12 pedsist cuerpo2div'+index+'" draggable="true" ondragstart="drag(event)" id="'+vals.codigo+'" style="padding:5px"><h4>'+vals.codigo+
+					bods+= '<div class="col-lg-12 col-md-12 pedsist pedsi" draggable="true" ondragstart="drag(event)" id="'+vals.codigo+'" style="padding:5px"><h4>'+vals.codigo+
 							' - '+vals.nombre+'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+vals.codigo+'" value="'+vals.costo+'" id="costo'+vals.codigo+
 							'" style="width:100%"></div><div class="col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(vals.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '
 							+vals.promocion+'</div><div class="cerra" id="cerra'+vals.codigo+'"><i class="fa fa-times" aria-hidden="true"></i></div></div>'
@@ -131,6 +129,7 @@ function drop(ev) {
 	var onj = document.getElementById(data);
 	ev.target.appendChild(onj);
 	onj.removeAttribute("draggable");
+	onj.classList.remove("pedsi");
 	ev.target.removeAttribute("ondrop");
 	$("#"+data+" .cerra").css("display","block");
 	var pedsist = $("#"+data+" .cerra").closest(".pedsist");
@@ -180,19 +179,151 @@ function uploadFactura(formData,cual,tienda,tend) {
 }
 
 $(document).off("click", ".tienda").on("click", ".tienda", function (){
+	$(".elvis").css("display","block");
+	$(".elvis2").css("display","block");
+	$(".factdetails").css("display","none");
 	if ($(this).is(":checked")) {
-		$("."+$(this).attr('id')).attr("hidden",false);
-		console.log($(this).attr('id').substring(6,$(this).attr('id').length))
-		var numItems = $('.divcont').length
-		console.log($(this).data("idCodigo"));
+		$(".facture").html("");
+		tiendis = $(this).attr('id').substring(6, $(this).attr('id').length);
+		getFacturas($(this).attr('id').substring(6, $(this).attr('id').length))
+		.done(function (resp) {
+			if (resp) {
+				$(".facture").html("<h2>Seleccione una factura</h2>");
+				$.each(resp,function(indx,val){
+					$(".facture").append('<div class="col-md-3 col-lg-2"><div class="form-check"><input class="form-check-input facty" type="checkbox" value="'+val.id_proveedor+'" '+
+						'id="'+val.folio+'"><label class="form-check-label" for="facty'+val.folio+'" style="color:#000;background:#FFF !important;">'+val.folio+' - '+val.nombre+'</label></div></div>')
+				});
+			} else {
+				$(".facture").html("<h2>Sin facturas</h2>");
+			}
+		})
 	}else{
-		$("."+$(this).attr('id')).attr("hidden",true);
-		$("#allcheck").prop('checked', false);
+		tiendis = 0;
+		$(".facture").html("");
 	}
 })
 
+$(document).off("click", ".facty").on("click", ".facty", function (){
+	$(".factdetails").css("display","block");
+	if ($(this).is(":checked")) {
+		$(".factlist").html("");
+		var values = {"proveedor":$(this).val(),"folio":$(this).attr('id'),"tienda":tiendis,"which":tiendas[tiendis]};
+		var diferencia = 0;var credito = 0;var totis = 0;var devuel = 0;var cred = 0;var tot = 0;var difer = 0;
+		getDetails(JSON.stringify(values))
+		.done(function (resp) {
+			var devis="DIRECTO";var colis="black";var backis="white"
+			console.log(resp)
+			$(".headfact").html(resp[0].tienda+" - GRUPO AZTECA, S.A DE C.V");
+			$(".headfact").css("background",resp[0].color);
+			$(".subheadfact").html("REPORTE "+resp[0].prove);
+			$(".fecharep").html(resp[0].fecha);
+			$(".fechafact").html(resp[0].fecha_factura);
+			$(".notafolio").html(resp[0].folio);
+			$.each(resp,function (indx,val) {
+				if(val.devolucion === 0 || val.devolucion === "0") {
+					devis = "DIRECTO";colis="black";backis="transparent";
+					diferencia = (parseFloat(val.precio) - parseFloat(val.costo));
+					credito = (parseFloat(diferencia) * parseFloat(val.cantidad));
+					totis = (parseFloat(val.cantidad) * parseFloat(val.costo));
+					cred = parseFloat(cred) + parseFloat(credito);
+					tot = parseFloat(tot) + (parseFloat(val.cantidad) * parseFloat(val.costo));
+					difer = parseFloat(difer) + parseFloat(credito);
+
+				}else{
+					if (val.cantidad === val.devueltos) {
+						diferencia = val.precio;
+						credito = (parseFloat(diferencia) * parseFloat(val.cantidad));
+						totis = 0;
+						cred = parseFloat(cred) + parseFloat(credito);
+						devuel = parseFloat(devuel) + parseFloat(credito);
+					}else{
+						diferencia = (parseFloat(val.precio) - parseFloat(val.costo));
+						credito = (parseFloat(diferencia) * (parseFloat(val.cantidad)-parseFloat(val.devueltos)));
+						totis = ((parseFloat(val.cantidad)-parseFloat(val.devueltos)) * parseFloat(val.costo));
+						cred = parseFloat(cred) + parseFloat(credito);
+						difer = parseFloat(difer) + parseFloat(credito);
+						cred = parseFloat(cred) + (parseFloat(val.precio) * parseFloat(val.devueltos));
+						devuel = parseFloat(devuel) + (parseFloat(val.precio) * parseFloat(val.devueltos));
+						tot = parseFloat(tot) + ((parseFloat(val.cantidad)-parseFloat(val.devueltos)) * parseFloat(val.costo));
+					}
+				}
+				val.precio = formatMoney(val.precio,2);
+				val.costo = formatMoney(val.costo,2);
+				totis = formatMoney(totis,2);
+				credito = formatMoney(credito,2);
+				diferencia = formatMoney(diferencia,2);
+				
+
+				if (val.devolucion === 0 || val.devolucion === "0") {
+					$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+					val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;">DIRECTO</div><div class="col-md-1 col-lg-1'+
+					' factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+					'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
+					' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
+					'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+					'style="border-left:0">'+totis+'</div></div>')
+				}else{
+					if (val.cantidad === val.devueltos) {
+						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
+						'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
+						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0">0.00</div></div>')
+					} else {
+						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;">DIRECTO</div>'+
+						'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
+						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0">'+totis+'</div></div>');
+
+						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
+						'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.devueltos+'</div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
+						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+formatMoney((parseFloat(val.precio) * parseFloat(val.devueltos)),2)+
+						'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0">0.00</div></div>')
+					}
+				}
+
+				
+			})
+			$(".totfact").html("$ "+formatMoney((parseFloat(tot)+parseFloat(cred)),2));
+			$(".sumnota").html("$ "+formatMoney(cred,2));
+			$(".sumtotal").html("$ "+formatMoney(tot,2));
+			$(".devuel").html("$ "+formatMoney(devuel,2));
+			$(".difer").html("$ "+formatMoney(difer,2));
+		})
+	}else{
+		$(".factdetails").html("");
+	}
+})
+
+function getFacturas(values){
+    return $.ajax({
+        url: site_url+"/Facturas/getFacturas/"+values,
+        type: "POST",
+        dataType: "JSON",
+    });
+}
+
+function getDetails(values){
+    return $.ajax({
+        url: site_url+"/Facturas/getDetails/",
+        type: "POST",
+        dataType: "JSON",
+        data : {values: values}
+    });
+}
+
 $(document).off("click", ".cerra").on("click", ".cerra", function (){
 	var pedsist = $(this).closest(".pedsist");
+	pedsist.addClass("pedsi")
 	var uno = pedsist.closest(".body4").closest(".col-md-12").find("#precio");
 	var dos = pedsist.closest(".body4").closest(".col-md-12").find(".body1");
 	uno.css({"background":"transparent","color":"black"})
@@ -243,6 +374,7 @@ $(document).off("click", ".btnnel").on("click", ".btnnel", function (){
 
 $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	event.preventDefault();
+	$("#file_factura").val("");
 	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;
 	obj = [];
 	for (var i = 0; i < $(".cuerpodiv").length; i++) {
@@ -256,8 +388,8 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 		
 		body4 = $("#cuerpodiv"+i).find(".body4");
 		if (body4.html() === "SOLTAR RECUADRO AQUÍ") {
-			costo = null;
-			produ = null;
+			costu = 0;
+			produ = 0;
 		}else{
 			produ = body4.find(".pedsist").attr('id');
 			costu = body4.find(".pedsist").find(".costod").val();
@@ -276,7 +408,10 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	}
 
 	guardaComparacion(JSON.stringify(obj)).done(function(resp){
-
+		toastr.success("Se han guardado con exito", user_name);
+		$(".checkhim").css("display","none");
+		$("#cuerpo").html("");
+		$("#cuerpo2").html("");
 	})
 	
 });
@@ -314,12 +449,20 @@ $(document).off("click", "#idev").on("click", "#idev", function (){
 	}
 })
 
-/*$(document).off("click", "#allcheck").on("click", "#allcheck", function (){
-	if ($(this).is(":checked")) {
-		$(".tienda").prop('checked', true);
-		$(".ttc").attr("hidden",false);
-	}else{
-		$(".tienda").prop('checked', false);
-		$(".ttc").attr("hidden",true);
-	}
-})*/
+$('.tienda').on('change', function() {
+    $('.tienda').not(this).prop('checked', false);  
+});
+
+$('.facty').on('change', function() {
+    $('.facty').not(this).prop('checked', false);  
+});
+
+$(document).off("keyup", "#searchy").on("keyup", "#searchy", function (){
+	$('.pedsi').hide();
+    var txt = $('#searchy').val();
+    $('.pedsi').each(function(){
+       if($(this).text().toUpperCase().indexOf(txt.toUpperCase()) != -1){
+           $(this).show();
+       }
+    });
+})
