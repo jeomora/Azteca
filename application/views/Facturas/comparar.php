@@ -30,7 +30,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.fixdiv{padding:0;border:1px solid #0b73ce;position:fixed;right:20px;top:72px;overflow-y:scroll;height:50vh;}
 	.pedsist{background:#279c9173;font-size:14px;padding:15px 10px;border:1px solid #0b73ce}
 	.witheblock {border:1px dotted#000;font-size:14px;text-align:center;padding:20px;}
-	.checkhim{display:none;height: 270vh;}
+	.checkhim{display:none;height: 100vh;}
 	.cerra{position:absolute;top:-22px;right:-1px;background:#279c9173;cursor:pointer;display:none;padding:0px 10px;border:1px solid #0b73ce;}
 	.cantu{font-family:monospace;}
 	.fixdiv2{padding:0;position:fixed;right:20px;top:60vh;height:25vh;}
@@ -55,6 +55,10 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.elvis,.elvis2,.factdetails{display:none}
 	.btnExcel{font-size:20px;width:80%;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);background:#ec8b5c;border:1px solid #ec8b5c;}
 	.btnExcel:hover{border:1px solid #ec8b5c;background:transparent;color:#ec8b5c}
+	.gifted{position:absolute;font-size:20px;background:#c388e8;border-radius:50px;cursor:pointer;z-index:10000000;bottom:8px;padding:4px 10px;}
+	.style1::-webkit-scrollbar{width:6px;background-color:#F5F5F5;} 
+	.style1::-webkit-scrollbar-thumb{background-color:#000000;}
+	.style1::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);background-color:#F5F5F5;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -271,7 +275,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 			RESULTADOS DE LA FACTURA
 		</h1>
 		<div class="col-md-12 col-lg-12" style="padding:0">
-			<div class="col-md-8 col-lg-8" style="padding-left:0">
+			<div class="col-md-8 col-lg-8 style1" style="padding-left:0">
 				<div class="col-md-12 col-lg-12" style="padding:0;display:inline-flex;">
 					<div class="col-md-2 col-lg-2 head2">CÓDIGO</div>
 					<div class="col-md-3 col-lg-3 head3">DESCRIPCIÓN</div>
@@ -279,11 +283,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<div class="col-md-1 col-lg-1 head1">CANT</div>
 					<div class="col-md-4 col-lg-4 head4">PEDIDOS SISTEMA</div>
 				</div>
-				<div class="col-md-12 col-lg-12" style="padding:0;" id="cuerpo">
+				<div class="col-md-12 col-lg-12 style1" style="padding:0;height:83vh" id="cuerpo">
 					
 				</div>
 			</div>
-			<div class="col-md-4 col-lg-4 fixdiv">
+			<div class="col-md-4 col-lg-4 fixdiv style1">
 				<div class="col-lg-12 col-md-12">
 					<input type="text" name="searchy" id="searchy" placeholder="Buscar" />
 				</div>

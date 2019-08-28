@@ -65,19 +65,20 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 			}else{
 				unblockPage();
 				$(".checkhim").css("display","block");
+				$(document.body).css("overflow-y","hidden");
 				toastr.success(resp.desc, user_name)
 				folis = resp[3];
 				$(".h1folio").html("RESULTADOS DE LA FACTURA CON FOLIO "+resp[3]);
 				var bod = "";var bods = "";
 				$.each(resp[0],function(indx,val) {
-					console.log(val);
 					val.codigo = val.codigo == null ? "" : val.codigo;
 					val.nombre = val.nombre == null ? "" : val.nombre;
 					val.costo  = val.costo == null ? "" : val.costo;
 					val.total = val.total == null ? "" : val.total;
 					val.promocion = val.promocion == null ? "" : val.promocion;
 					if (val.costo == "") {
-						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i '+
+						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="gifted">'+
+						'<i '+'class="fa fa-gift" aria-hidden="true"></i></div><div class="devolucion"><i '+
 						'class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text" name="difis" id="difis" value="" /></div><div class="col-md-2 col-lg-2 body2">'+val.factu+
 						'</div><div class="col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;" id="precio">$ '+
 						formatMoney(val.precio,2)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;">'+formatMoney(val.cantidad,1)+
@@ -87,12 +88,12 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 						col1 = cantidades(parseFloat(val.cantidad),parseFloat(val.total));
 						col2 = costos(parseFloat(val.precio),parseFloat(val.costo));
 						
-						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="devolucion"><i '+
-						'class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text" name="difis" id="difis" value=""></div><div class="col-md-2 col-lg-2 body2">'+
-						val.factu+'</div><div class="'+
+						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="gifted"><i '+'class="fa fa-gift"'+
+						' aria-hidden="true"></i></div><div class="devolucion"><i class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text"'+
+						' name="difis" id="difis" value=""></div><div class="col-md-2 col-lg-2 body2">'+val.factu+'</div><div class="'+
 						'col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;background:'+col2+
-						';" id="precio">$ '+formatMoney(val.precio)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;background:'+col1+
-						';">'+formatMoney(val.cantidad,1)+'</div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)"'+
+						';" id="precio">$ '+formatMoney(val.precio)+'<br><div style="color:white;background:#000;border-radius:30px">DIF: '+formatMoney((parseFloat(val.precio)-parseFloat(val.costo)),2)+'</div></div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;background:'+col1+
+						';">'+formatMoney(val.cantidad,1)+'<br><div style="color:white;background:#000;border-radius:30px">DIF: '+(parseFloat(val.cantidad) - parseFloat(val.total))+'</div></div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)"'+
 						' id="pedidodiv"><div class="col-lg-12 col-md-12 pedsist" ondragstart="drag(event)" id="'+val.codigo+'" style="padding:5px"><h4>'+val.codigo+' - '+val.nombre+
 						'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+val.codigo+'" value="'+val.costo+'" id="costo'+val.codigo+'" style="width:100%"></div><div class='+
 						'"col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(val.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '+val.promocion+'</div><div class="cerra"'+
@@ -374,6 +375,7 @@ $(document).off("click", ".btnnel").on("click", ".btnnel", function (){
 
 $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	event.preventDefault();
+	$(document.body).css("overflow-y","scroll");
 	$("#file_factura").val("");
 	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;
 	obj = [];
@@ -442,10 +444,23 @@ $(document).off("click", "#idev").on("click", "#idev", function (){
 		$(this).closest(".cuerpodiv").css("background","#efff00");
 		$(this).closest(".devolucion").find("#difis").css("display","block");
 		$(this).closest(".devolucion").find("#difis").val(formatMoney(uno,0));
+		$(this).closest(".cuerpodiv").find(".gifted").css("display","none");
 	}else{
 		$(this).closest(".cuerpodiv").css("background","#FFF");
 		$(this).closest(".devolucion").find("#difis").css("display","none");
 		$(this).closest(".devolucion").find("#difis").val("");
+		$(this).closest(".cuerpodiv").find(".gifted").css("display","block");
+	}
+})
+
+$(document).off("click", ".gifted").on("click", ".gifted", function (){
+	event.preventDefault();
+	if($(this).closest(".cuerpodiv").css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $(this).closest(".cuerpodiv").css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box"){
+		$(this).closest(".cuerpodiv").css("background","#c388e8");
+		$(this).closest(".cuerpodiv").find(".devolucion").css("display","none");
+	}else{
+		$(this).closest(".cuerpodiv").css("background","#FFF");
+		$(this).closest(".cuerpodiv").find(".devolucion").css("display","block");
 	}
 })
 
