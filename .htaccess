@@ -3,8 +3,8 @@
     RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /abarrotesazteca.com/index.php?/$1 [L]
+    RewriteRule ^(.*)$ index.php?/$1 [L]
 </IfModule>
 <IfModule !mod_rewrite.c>
-    ErrorDocument 404 /abarrotesazteca.com/index.php
+    ErrorDocument 404 index.php
 </IfModule>
