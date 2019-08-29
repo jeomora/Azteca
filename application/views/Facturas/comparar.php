@@ -59,6 +59,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.style1::-webkit-scrollbar{width:6px;background-color:#F5F5F5;} 
 	.style1::-webkit-scrollbar-thumb{background-color:#000000;}
 	.style1::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);background-color:#F5F5F5;}
+	.tienda,.facty{height:15px;width:15px;}
+	.tienda[type="checkbox"]:before,.facty[type="checkbox"]:before {width:15px;height:15px;}
+	.tienda[type="checkbox"]:after,.facty[type="checkbox"]:after {top:-15px;width: 15px;height: 15px;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">

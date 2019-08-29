@@ -300,7 +300,8 @@ class Facturas extends MY_Controller {
 				"id_proveedor" => $v["id_proveedor"],
 				"costo" => $v["costo"],
 				"devolucion" => $v["devolucion"],
-				"devueltos" => $v["devueltos"]
+				"devueltos" => $v["devueltos"],
+				"gift" => $v["gift"]
 			];
 
 

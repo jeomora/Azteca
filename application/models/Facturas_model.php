@@ -57,7 +57,7 @@ class Facturas_model extends MY_Model {
 	}
 
 	public function getFacturas($where=[],$values){
-		$this->db->select("total,folio,f.fecha_registro,fecha_factura,sum(precio*cantidad) as totis,u.nombre,f.id_proveedor FROM facturas f LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE id_tienda = ".$values." AND WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) GROUP by folio");
+		$this->db->select("f.folio,f.id_tienda,f.fecha_registro,fecha_factura,u.nombre,f.id_proveedor FROM comparacion c LEFT JOIN facturas f on c.folio = f.folio LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE c.id_tienda = ".$values." AND WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) GROUP BY f.folio");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
@@ -81,7 +81,7 @@ class Facturas_model extends MY_Model {
 
 	public function getDetails($where=[],$values){
 		$value = json_decode($values);
-		$this->db->select("ff.".$value->which." as wey,u.nombre as prove,f.fecha_factura,s.color,s.nombre as tienda,c.id_comparacion,c.folio,c.fecha,c.costo,c.devolucion,c.devueltos,f.descripcion,f.cantidad ,f.precio FROM comparacion c LEFT JOIN facturas f on c.folio = f.folio AND c.id_tienda = f.id_tienda AND c.id_proveedor = f.id_proveedor AND c.factura = f.codigo LEFT JOIN suc_lunes s ON f.id_tienda = s.id_sucursal LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario LEFT JOIN productos pp ON c.producto = pp.codigo LEFT JOIN finales ff ON pp.id_producto = ff.id_producto WHERE c.folio = '".$value->folio."' AND c.id_proveedor = '".$value->proveedor."' AND c.id_tienda = '".$value->tienda."' GROUP BY c.id_comparacion");
+		$this->db->select("ff.".$value->which." as wey,u.nombre as prove,f.fecha_factura,s.color,s.nombre as tienda,c.id_comparacion,c.folio,c.fecha,c.costo,c.devolucion,c.devueltos,c.gift,f.descripcion,f.cantidad ,f.precio FROM comparacion c LEFT JOIN facturas f on c.folio = f.folio AND c.id_tienda = f.id_tienda AND c.id_proveedor = f.id_proveedor AND c.factura = f.codigo LEFT JOIN suc_lunes s ON f.id_tienda = s.id_sucursal LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario LEFT JOIN productos pp ON c.producto = pp.codigo LEFT JOIN finales ff ON pp.id_producto = ff.id_producto WHERE c.folio = '".$value->folio."' AND c.id_proveedor = '".$value->proveedor."' AND c.id_tienda = '".$value->tienda."' GROUP BY c.id_comparacion");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
