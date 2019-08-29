@@ -61,7 +61,6 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 		.done(function (resp) {
 			if (resp.type == 'error'){
 				toastr.error(resp.desc, user_name)
-				
 			}else{
 				unblockPage();
 				$(".checkhim").css("display","block");
@@ -205,15 +204,18 @@ $(document).off("click", ".tienda").on("click", ".tienda", function (){
 })
 
 $(document).off("click", ".facty").on("click", ".facty", function (){
-	$(".factdetails").css("display","block");
 	if ($(this).is(":checked")) {
-		$(".factlist").html("");
+		$(".factdetails").css("display","block");
+		$(".totfact").html("");
+		$(".sumnota").html("");
+		$(".sumtotal").html("");
+		$(".devuel").html("");
+		$(".difer").html("");
 		var values = {"proveedor":$(this).val(),"folio":$(this).attr('id'),"tienda":tiendis,"which":tiendas[tiendis]};
 		var diferencia = 0;var credito = 0;var totis = 0;var devuel = 0;var cred = 0;var tot = 0;var difer = 0;
 		getDetails(JSON.stringify(values))
 		.done(function (resp) {
-			var devis="DIRECTO";var colis="black";var backis="white"
-			console.log(resp)
+			var devis="DIRECTO";var colis="black";var backis="white";
 			$(".headfact").html(resp[0].tienda+" - GRUPO AZTECA, S.A DE C.V");
 			$(".headfact").css("background",resp[0].color);
 			$(".subheadfact").html("REPORTE "+resp[0].prove);
@@ -255,7 +257,7 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 				diferencia = formatMoney(diferencia,2);
 				
 
-				if (val.devolucion === 0 || val.devolucion === "0") {
+				if ((val.devolucion === 0 || val.devolucion === "0") && (val.gift === 0 || val.gift === "0")) {
 					$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
 					val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;">DIRECTO</div><div class="col-md-1 col-lg-1'+
 					' factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
@@ -264,31 +266,41 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 					'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
 					'style="border-left:0">'+totis+'</div></div>')
 				}else{
-					if (val.cantidad === val.devueltos) {
+					if (val.gift === 1 || val.gift === "1") {
 						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
-						'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
-						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
-						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">0.00</div></div>')
-					} else {
-						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;">DIRECTO</div>'+
-						'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style=";background:#e08989;color:blue;border-left:0;">S/C</div><div class="col-md-1 col-lg-1'+
+						' factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
 						'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
 						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
 						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">'+totis+'</div></div>');
+						'style="border-left:0">'+totis+'</div></div>')
+					} else {
+						if (val.cantidad === val.devueltos) {
+							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
+							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
+							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
+							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0">0.00</div></div>')
+						} else {
+							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;">DIRECTO</div>'+
+							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
+							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
+							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0">'+totis+'</div></div>');
 
-						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
-						'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.devueltos+'</div><div class="col-md-1'+
-						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
-						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+formatMoney((parseFloat(val.precio) * parseFloat(val.devueltos)),2)+
-						'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">0.00</div></div>')
+							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
+							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
+							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.devueltos+'</div><div class="col-md-1'+
+							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
+							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+formatMoney((parseFloat(val.precio) * parseFloat(val.devueltos)),2)+
+							'</div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0">0.00</div></div>')
+						}
 					}
 				}
 
@@ -301,7 +313,12 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$(".difer").html("$ "+formatMoney(difer,2));
 		})
 	}else{
-		$(".factdetails").html("");
+		$(".totfact").html("");
+		$(".sumnota").html("");
+		$(".sumtotal").html("");
+		$(".devuel").html("");
+		$(".difer").html("");
+		$(".factdetails").css("display","none");
 	}
 })
 
@@ -377,15 +394,21 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	event.preventDefault();
 	$(document.body).css("overflow-y","scroll");
 	$("#file_factura").val("");
-	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;
+	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;var gift = 0;
 	obj = [];
 	for (var i = 0; i < $(".cuerpodiv").length; i++) {
+		console.log($("#cuerpodiv"+i).css('background'))
 		if ($("#cuerpodiv"+i).css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $("#cuerpodiv"+i).css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
 			devs = 0;
 			devos = 0;
+			gift = 0;
 		}else{
-			devs = 1;
-			devos = $("#cuerpodiv"+i).find(".devolucion").find("#difis").val();
+			if ($("#cuerpodiv"+i).css('background') === "rgb(195, 136, 232) none repeat scroll 0% 0% / auto padding-box border-box"){
+				gift = 1;
+			}else{
+				devs = 1;
+				devos = $("#cuerpodiv"+i).find(".devolucion").find("#difis").val();
+			}
 		}
 		
 		body4 = $("#cuerpodiv"+i).find(".body4");
@@ -405,7 +428,8 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 			"id_proveedor":$("#proveedor option:selected").val(),
 			"costo":costu,
 			"devolucion":devs,
-			"devueltos":devos
+			"devueltos":devos,
+			"gift":gift
 		})
 	}
 
