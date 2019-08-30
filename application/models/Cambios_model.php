@@ -10,7 +10,7 @@ class Cambios_model extends MY_Model {
 	}
 
 	public function getCambios($where=[]){
-		$this->db->select("id_cambio, usuarios.nombre AS usuario, cambios.fecha_cambio, antes, despues, accion")
+		$this->db->select("id_cambio, usuarios.nombre AS usuario, DATE_SUB(cambios.fecha_cambio, INTERVAL 7 HOUR) as fecha_cambio, antes, despues, accion")
 		->from("cambios")
 		->join("usuarios", $this->TABLE_NAME.".id_usuario = usuarios.id_usuario", "INNER")
 		->order_by($this->TABLE_NAME.".fecha_cambio", "DESC");;
