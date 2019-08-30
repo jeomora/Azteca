@@ -612,12 +612,12 @@ class Lunes extends MY_Controller {
 
 	public function upload_precios(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$filen = "Precios Sistema";
+		$filen = "Precios Sistema Lunes";
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10204;
+        $config['max_height']           = 7068;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_cotizaciones',$filen);
@@ -1706,13 +1706,12 @@ class Lunes extends MY_Controller {
 		
 		$cfile =  $this->user_md->get(NULL, ['id_usuario' => $tienda])[0];
 		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
-		$filen = "Pedidos".$nams."".rand();
+		$filen = "PedidosLunes".$nams."".rand();
 		$config['upload_path']          = base_url('/assets/uploads/pedidos/');
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7680;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_cotizaciones',$filen);
@@ -1746,7 +1745,7 @@ class Lunes extends MY_Controller {
 					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
 					"antes"			=>	"El usuario sube archivo de pedidos de la tienda ".$aprov->nombre,
 					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
-					"accion"			=>	"Sube existencias y pedidos"
+					"accion"			=>	"Sube existencias y pedidos formato LUNES"
 				];
 			$data['cambios']=$this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',
