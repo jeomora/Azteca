@@ -1230,9 +1230,9 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Cotizacion".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7680;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_otizaciones',$filen);
@@ -5004,6 +5004,7 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
+
 		if($idesp === "0"){
 			$tienda = $this->session->userdata('id_usuario');
 		}else{
@@ -5014,10 +5015,9 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Pedidos".$nams."".rand();
 		$config['upload_path']          = base_url('/assets/uploads/pedidos/');
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7680;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_cotizaciones',$filen);
