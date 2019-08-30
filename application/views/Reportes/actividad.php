@@ -35,7 +35,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 											<td><?php echo strtoupper($value->usuario) ?></td>
 											<td><?php echo strtoupper($value->accion) ?></td>
 											<td><?php echo $value->antes ?></td>
-											<?php if (strtoupper($value->accion) === 'SUBE ARCHIVO' || strtoupper($value->accion) === 'SUBE PEDIDOS'): ?>
+											<?php if (strtoupper($value->accion) === 'SUBE ARCHIVO' || strtoupper($value->accion) === 'SUBE PEDIDOS' || $value->accion === 'Sube existencias y pedidos'): ?>
 												<td>
 													<a href="<?php echo base_url($value->despues); ?>" target="_blank" data-toggle="tooltip" title="Decargar" class="btn btn-info" download><i class="fa fa-cloud-download"></i><span class="nav-label" download></span> </a>
 												</td>
