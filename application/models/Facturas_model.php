@@ -77,7 +77,7 @@ class Facturas_model extends MY_Model {
 		} else {
 			return false;
 		}
-	}
+	}´´
 
 	public function getDetails($where=[],$values){
 		$value = json_decode($values);
