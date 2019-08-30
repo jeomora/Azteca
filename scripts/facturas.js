@@ -54,63 +54,72 @@ function getPedidos(values){
 
 $(document).off("change", "#file_factura").on("change", "#file_factura", function(event) {
 	event.preventDefault();
+	
 	if ($(this).val() !== ""){
-		blockPage();
-		var fdata = new FormData($("#upload_facturas")[0]);
-		uploadFactura(fdata,$("#proveedor option:selected").val(),tiendis,tiendas[tiendis])
-		.done(function (resp) {
-			if (resp.type == 'error'){
-				toastr.error(resp.desc, user_name)
-			}else{
-				unblockPage();
-				$(".checkhim").css("display","block");
-				$(document.body).css("overflow-y","hidden");
-				toastr.success(resp.desc, user_name)
-				folis = resp[3];
-				$(".h1folio").html("RESULTADOS DE LA FACTURA CON FOLIO "+resp[3]);
-				var bod = "";var bods = "";
-				$.each(resp[0],function(indx,val) {
-					val.codigo = val.codigo == null ? "" : val.codigo;
-					val.nombre = val.nombre == null ? "" : val.nombre;
-					val.costo  = val.costo == null ? "" : val.costo;
-					val.total = val.total == null ? "" : val.total;
-					val.promocion = val.promocion == null ? "" : val.promocion;
-					if (val.costo == "") {
-						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="gifted">'+
-						'<i '+'class="fa fa-gift" aria-hidden="true"></i></div><div class="devolucion"><i '+
-						'class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text" name="difis" id="difis" value="" /></div><div class="col-md-2 col-lg-2 body2">'+val.factu+
-						'</div><div class="col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;" id="precio">$ '+
-						formatMoney(val.precio,2)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;">'+formatMoney(val.cantidad,1)+
-						'</div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)" id="pedidodiv">SOLTAR RECUADRO AQUÍ</div></div>';
-					} else {
-						var col1 = "#FFF";var col2 = "#FFF";
-						col1 = cantidades(parseFloat(val.cantidad),parseFloat(val.total));
-						col2 = costos(parseFloat(val.precio),parseFloat(val.costo));
-						
-						bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="gifted"><i '+'class="fa fa-gift"'+
-						' aria-hidden="true"></i></div><div class="devolucion"><i class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text"'+
-						' name="difis" id="difis" value=""></div><div class="col-md-2 col-lg-2 body2">'+val.factu+'</div><div class="'+
-						'col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;background:'+col2+
-						';" id="precio">$ '+formatMoney(val.precio)+'<br><div style="color:white;background:#000;border-radius:30px">DIF: '+formatMoney((parseFloat(val.precio)-parseFloat(val.costo)),2)+'</div></div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;background:'+col1+
-						';">'+formatMoney(val.cantidad,1)+'<br><div style="color:white;background:#000;border-radius:30px">DIF: '+(parseFloat(val.cantidad) - parseFloat(val.total))+'</div></div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)"'+
-						' id="pedidodiv"><div class="col-lg-12 col-md-12 pedsist" ondragstart="drag(event)" id="'+val.codigo+'" style="padding:5px"><h4>'+val.codigo+' - '+val.nombre+
-						'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+val.codigo+'" value="'+val.costo+'" id="costo'+val.codigo+'" style="width:100%"></div><div class='+
-						'"col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(val.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '+val.promocion+'</div><div class="cerra"'+
-						' id="cerra'+val.codigo+'" style="display:block"><i class="fa fa-times" aria-hidden="true"></i></div></div></div></div>';
-					}
-				})
-				$("#cuerpo").html(bod);
-				$.each(resp[1],function(index,vals) {
-					vals.promocion = vals.promocion == null ? "" : vals.promocion;
-					bods+= '<div class="col-lg-12 col-md-12 pedsist pedsi" draggable="true" ondragstart="drag(event)" id="'+vals.codigo+'" style="padding:5px"><h4>'+vals.codigo+
-							' - '+vals.nombre+'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+vals.codigo+'" value="'+vals.costo+'" id="costo'+vals.codigo+
-							'" style="width:100%"></div><div class="col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(vals.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '
-							+vals.promocion+'</div><div class="cerra" id="cerra'+vals.codigo+'"><i class="fa fa-times" aria-hidden="true"></i></div></div>'
-				})
-				$("#cuerpo2").html(bods);
-				//setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
-			}
-		});
+		if($("#proveedor option:selected").val() !== 0 && $("#proveedor option:selected").val() !== "0") {
+			blockPage();
+			var fdata = new FormData($("#upload_facturas")[0]);
+			uploadFactura(fdata,$("#proveedor option:selected").val(),tiendis,tiendas[tiendis])
+			.done(function (resp) {
+				if (resp.type == 'error'){
+					unblockPage();
+					toastr.error(resp.desc, user_name)
+				}else{
+					unblockPage();
+					$(".checkhim").css("display","block");
+					$(document.body).css("overflow-y","hidden");
+					toastr.success(resp.desc, user_name)
+					folis = resp[3];
+					$(".h1folio").html("RESULTADOS DE LA FACTURA CON FOLIO '"+resp[3]+"' - "+tiendas[tiendis].toUpperCase()+" - "+$("#proveedor option:selected").text());
+					var bod = "";var bods = "";
+					$.each(resp[0],function(indx,val) {
+						val.codigo = val.codigo == null ? "" : val.codigo;
+						val.nombre = val.nombre == null ? "" : val.nombre;
+						val.costo  = val.costo == null ? "" : val.costo;
+						val.total = val.total == null ? "" : val.total;
+						val.promocion = val.promocion == null ? "" : val.promocion;
+						if (val.costo == "") {
+							bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="gifted">'+
+							'<i '+'class="fa fa-gift" aria-hidden="true"></i></div><div class="devolucion"><i '+
+							'class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text" name="difis" id="difis" value="" /></div><div class="col-md-2 col-lg-2 body2">'+val.factu+
+							'</div><div class="col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;" id="precio">$ '+
+							formatMoney(val.precio,2)+'</div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;">'+formatMoney(val.cantidad,1)+
+							'</div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)" id="pedidodiv">SOLTAR RECUADRO AQUÍ</div></div>';
+						} else {
+							var col1 = "#FFF";var col2 = "#FFF";
+							col1 = cantidades(parseFloat(val.cantidad),parseFloat(val.total));
+							col2 = costos(parseFloat(val.precio),parseFloat(val.costo));
+							
+							bod+= '<div class="col-md-12 col-lg-12 cuerpodiv" id="cuerpodiv'+indx+'" style="padding:0;display:inline-flex;"><div class="gifted"><i '+'class="fa fa-gift"'+
+							' aria-hidden="true"></i></div><div class="devolucion"><i class="fa fa-retweet" aria-hidden="true" id="idev"></i><input type="text"'+
+							' name="difis" id="difis" value=""></div><div class="col-md-2 col-lg-2 body2">'+val.factu+'</div><div class="'+
+							'col-md-3 col-lg-3 body3">'+val.descripcion+'</div><div class="col-md-2 col-lg-2 body2" style="font-size:20px;font-weight:bold;background:'+col2+
+							';" id="precio">$ '+formatMoney(val.precio)+'<br><div style="color:white;background:#000;border-radius:30px">DIF: '+formatMoney((parseFloat(val.precio)-parseFloat(val.costo)),2)+'</div></div><div class="col-md-1 col-lg-1 body1" style="font-size:20px;font-weight:bold;background:'+col1+
+							';">'+formatMoney(val.cantidad,1)+'<br><div style="color:white;background:#000;border-radius:30px">DIF: '+(parseFloat(val.cantidad) - parseFloat(val.total))+'</div></div><div class="col-md-4 col-lg-4 body4" ondrop="drop(event)" ondragover="allowDrop(event)"'+
+							' id="pedidodiv"><div class="col-lg-12 col-md-12 pedsist" ondragstart="drag(event)" id="'+val.codigo+'" style="padding:5px"><h4>'+val.codigo+' - '+val.nombre+
+							'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+val.codigo+'" value="'+val.costo+'" id="costo'+val.codigo+'" style="width:100%"></div><div class='+
+							'"col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(val.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '+val.promocion+'</div><div class="cerra"'+
+							' id="cerra'+val.codigo+'" style="display:block"><i class="fa fa-times" aria-hidden="true"></i></div></div></div></div>';
+						}
+					})
+					$("#cuerpo").html(bod);
+					$.each(resp[1],function(index,vals) {
+						vals.promocion = vals.promocion == null ? "" : vals.promocion;
+						bods+= '<div class="col-lg-12 col-md-12 pedsist pedsi" draggable="true" ondragstart="drag(event)" id="'+vals.codigo+'" style="padding:5px"><h4>'+vals.codigo+
+								' - '+vals.nombre+'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+vals.codigo+'" value="'+vals.costo+'" id="costo'+vals.codigo+
+								'" style="width:100%"></div><div class="col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(vals.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '
+								+vals.promocion+'</div><div class="cerra" id="cerra'+vals.codigo+'"><i class="fa fa-times" aria-hidden="true"></i></div></div>'
+					})
+					$("#cuerpo2").html(bods);
+					//setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+				}
+			});
+
+		}else{
+			toastr.error("Por favor seleccione un proveedor e intente nuevamente", user_name);
+			$("#file_factura").val("");
+		}
+		
 	}
 });
 
@@ -287,7 +296,8 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
 							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;">DIRECTO</div>'+
 							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
+							'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+
+							(parseFloat(val.cantidad)-parseFloat(val.devueltos))+'</div><div class="col-md-1'+
 							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
 							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
 							'style="border-left:0">'+totis+'</div></div>');
