@@ -118,7 +118,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</button>
 			</div>
 		</div>
-		<div class="dragscroll col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;overflow-x: scroll; cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
+		<div class="dragscroll col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">
 					<div class="col-md-12 col-lg-12 ibox-content">
