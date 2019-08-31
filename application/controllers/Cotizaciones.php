@@ -291,7 +291,7 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function add_cotizacion(){
 		$data["title"]="REGISTRAR COTIZACIONES";
-		$data["productos"] = $this->prod_mdl->get("id_producto, nombre");
+		$data["productos"] = $this->prod_mdl->get("id_producto, nombre",["estatus <>"=>0]);
 		$data["view"]=$this->load->view("Cotizaciones/new_cotizacion", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_cotizacion' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
