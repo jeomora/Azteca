@@ -321,6 +321,10 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$(".sumtotal").html("$ "+formatMoney(tot,2));
 			$(".devuel").html("$ "+formatMoney(devuel,2));
 			$(".difer").html("$ "+formatMoney(difer,2));
+			$(".BE1").html('<button type="button" class="btnExcel btnExcel'+$(this).val()+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
+				' aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA</button>');
+			$(".BE2").html('<button type="button" class="btnExcel btnExcel'+$(this).val()+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
+				' aria-hidden="true"></i> DESCARGAR FORMATO</button>');
 		})
 	}else{
 		$(".totfact").html("");
@@ -514,4 +518,9 @@ $(document).off("keyup", "#searchy").on("keyup", "#searchy", function (){
            $(this).show();
        }
     });
+})
+
+$(document).off("click", ".btnExcel").on("click", ".btnExcel", function (){
+	event.preventDefault();
+	
 })
