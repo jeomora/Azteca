@@ -71,7 +71,7 @@ p {
 
 </head>
 <?php
-header("Location: http:/abarrotesazteca.com/Compras/Login");
+header("Location: http://abarrotesazteca.com/Compras/Login");
 die();
 ?>
 <body>
