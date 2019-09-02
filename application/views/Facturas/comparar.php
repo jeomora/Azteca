@@ -129,17 +129,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<div class="col-md-12 col-lg-12 ibox-content">
 						<div class="col-md-12 col-lg-12 factdetails">
 							<div class="col-md-12 col-lg-12" style="padding:20px">
-								<div class="col-md-4 col-lg-4 btnExcelComp" style="text-align:center;">
+								<div class="col-md-4 col-lg-4 btnExcelComp BE1" style="text-align:center;">
 									<button type="button" class="btnExcel">
 										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA
 									</button>
 								</div>
-								<div class="col-md-4 col-lg-4 btnExcelFact" style="text-align:center;">
+								<div class="col-md-4 col-lg-4 btnExcelFact BE2" style="text-align:center;">
 									<button type="button" class="btnExcel">
 										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR FORMATO
 									</button>
 								</div>
-								<div class="col-md-4 col-lg-4 btnExcelComp" style="text-align:center;">
+								<div class="col-md-4 col-lg-4 btnExcelComp BE3" style="text-align:center;">
 									<!--<button type="button" class="btnExcel" style="background:#ec8b5c;border:0">
 										<i class="fa fa-download" aria-hidden="true"></i> GUARDAR
 									</button>-->
