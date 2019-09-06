@@ -13,7 +13,7 @@ $(document).off("keyup", "#producto").on("keyup", "#producto", function (){
 	if (producto.val().length > 3 ) {
 		setTimeout(function() {
 			$("#tbodys").html("");
-			buscaCodigos(JSON.stringify(values,values2)).done(function(resp){
+			buscaCodigos(JSON.stringify(values),JSON.stringify(values2)).done(function(resp){
 				if(resp){
 					$.each(resp,function(indx,vals){
 						vals.promocion = vals.promocion == null ? "" : vals.promocion;
@@ -32,7 +32,7 @@ $(document).off("keyup", "#producto").on("keyup", "#producto", function (){
 	}else if(producto.val().length <= 3 && provs.val() !== "0"){
 		setTimeout(function() {
 			$("#tbodys").html("");
-			buscaCodigos(values).done(function(resp){
+			buscaCodigos(JSON.stringify(values),JSON.stringify(values2)).done(function(resp){
 				if(resp){
 					$.each(resp,function(indx,vals){
 						vals.promocion = vals.promocion == null ? "" : vals.promocion;
@@ -65,7 +65,7 @@ $(document).off("change", "#provs").on("change", "#provs", function (){
 	if (provs.val() !== 0 || producto.val().length > 3) {
 		setTimeout(function() {
 			$("#tbodys").html("");
-			buscaCodigos(JSON.stringify(values,values2)).done(function(resp){
+			buscaCodigos(JSON.stringify(values),JSON.stringify(values2)).done(function(resp){
 				if(resp){
 					$.each(resp,function(indx,vals){
 						vals.promocion = vals.promocion == null ? "" : vals.promocion;
