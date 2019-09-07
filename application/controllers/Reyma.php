@@ -210,7 +210,12 @@ class Reyma extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function exislunes(){
+
+
+
+
+
+	public function existencias(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
 			'/assets/css/plugins/dataTables/dataTables.responsive',
@@ -237,7 +242,7 @@ class Reyma extends MY_Controller {
 		$data["meses"] = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$data["fecha"] =  $data["dias"][date('w')]." ".date('d')." DE ".$data["meses"][date('n')-1]. " DEL ".date('Y') ;
 		$data["cuantas"] = $this->ex_lun_md->getCuantas(NULL);
-		$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
+		//$data["noprod"] = $this->prolu_md->getCount(NULL)[0];
 		$data["tiendas"] = $this->suc_md->getByOrder(NULL);
 		$this->estructura("Lunes/existencias", $data);
 		//$this->jsonResponse($data["noprod"]);

@@ -4,6 +4,13 @@ $(function($) {
 	});
 	fillDataTable("table_usuarios", 30);
 });
+$("#new_producto").mousedown(function(e){
+		//1: izquierda, 2: medio/ruleta, 3: derecho
+	if(e.which == 3) 
+		{
+   		 console.log("kfnflksnlkdfnkl")
+		}
+	});
 
 $(document).off("click", "#new_producto").on("click", "#new_producto", function(event) {
 	event.preventDefault();

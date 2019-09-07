@@ -16,6 +16,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.top-navigation .navbar-nav .dropdown-menu{background:#004479;color:#ffffff;}
 }
 </style>
+<script language="Javascript">
+//document.oncontextmenu = function(){return false}
+</script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
