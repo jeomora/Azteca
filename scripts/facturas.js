@@ -411,7 +411,6 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;var gift = 0;
 	obj = [];
 	for (var i = 0; i < $(".cuerpodiv").length; i++) {
-		console.log($("#cuerpodiv"+i).css('background'))
 		if ($("#cuerpodiv"+i).css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $("#cuerpodiv"+i).css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
 			devs = 0;
 			devos = 0;

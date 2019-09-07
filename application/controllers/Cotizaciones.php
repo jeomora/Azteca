@@ -1924,7 +1924,7 @@ class Cotizaciones extends MY_Controller {
 						//HOJA PEDIDOS
 						if ($id_proves === "VOLUMEN" || $id_proves === "AMARILLOS"){
 							$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("A".$flag."", "CEDIS, ABARROTES,PEDREGAL, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
+							$hoja->setCellValue("A".$flag."", "CEDIS, ABARROTES,VILLAS, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
 							$hoja->mergeCells('A'.$flag.':BA'.$flag);
 							$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BA'.$flag)->applyFromArray($styleArray);
 							$flag++;
@@ -1952,7 +1952,7 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("U".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("U".$flag, "ABARROTES");
 							$this->cellStyle("Y".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("Y".$flag, "PEDREGAL");
+							$hoja->setCellValue("Y".$flag, "VILLAS");
 							$this->cellStyle("AC".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("AC".$flag, "TIENDA");
 							$this->cellStyle("AG".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -2060,7 +2060,7 @@ class Cotizaciones extends MY_Controller {
 							$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BA'.$flag)->applyFromArray($styleArray);
 						}else{
 							$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("A".$flag."", "CEDIS, ABARROTES, PEDREGAL, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
+							$hoja->setCellValue("A".$flag."", "CEDIS, ABARROTES, VILLAS, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
 							$hoja->mergeCells('A'.$flag.':BC'.$flag);
 							$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BC'.$flag)->applyFromArray($styleArray);
 							$flag++;
@@ -2087,7 +2087,7 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("U".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("U".$flag, "ABARROTES");
 							$this->cellStyle("Z".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("Z".$flag, "PEDREGAL");
+							$hoja->setCellValue("Z".$flag, "VILLAS");
 							$this->cellStyle("AE".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 							$hoja->setCellValue("AE".$flag, "TIENDA");
 							$this->cellStyle("AI".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -2604,7 +2604,7 @@ class Cotizaciones extends MY_Controller {
 			$hoja->setCellValue("C{$flag}", "=(".substr($sumall[2],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 			$flag++;
 			$this->cellStyle("B".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-			$hoja->setCellValue("B".$flag, "V. PEDREGAL");
+			$hoja->setCellValue("B".$flag, "VILLAS");
 			$hoja->setCellValue("C{$flag}", "=(".substr($sumall[3],0,-1).")")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 			$flag++;
 			$this->cellStyle("B".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -3375,7 +3375,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AB1", "ABARROTES");
 		$hoja->mergeCells('AE1:AG1');
 		$this->cellStyle("AE1", "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AE1", "PEDREGAL");
+		$hoja->setCellValue("AE1", "VILLAS");
 		$hoja->mergeCells('AH1:AJ1');
 		$this->cellStyle("AH1", "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("AH1", "TIENDA");
@@ -4009,7 +4009,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("AA1", "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->mergeCells('AD1:AF1');
 		$this->cellStyle("AD1", "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AD1", "PEDREGAL");
+		$hoja->setCellValue("AD1", "VILLAS");
 
 		$hoja->setCellValue("C2", "CAJAS");
 		$hoja->setCellValue("D2", "PZAS");
@@ -4477,7 +4477,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("V".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("V".$flag, "ABARROTES");
 		$this->cellStyle("AA".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AA".$flag, "PEDREGAL");
+		$hoja->setCellValue("AA".$flag, "VILLAS");
 		$this->cellStyle("AF".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("AF".$flag, "TIENDA");
 		$this->cellStyle("AJ".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -4822,7 +4822,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("C{$flag}", "=(BF{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flag++;
 		$this->cellStyle("B".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "V. PEDREGAL");
+		$hoja->setCellValue("B".$flag, "VILLAS");
 		$hoja->setCellValue("C{$flag}", "=(BG{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flag++;
 		$this->cellStyle("B".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -5155,7 +5155,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("V".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("V".$flag, "ABARROTES");
 		$this->cellStyle("AA".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AA".$flag, "PEDREGAL");
+		$hoja->setCellValue("AA".$flag, "VILLAS");
 		$this->cellStyle("AF".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("AF".$flag, "TIENDA");
 		$this->cellStyle("AJ".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -5500,7 +5500,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("C{$flag}", "=(BF{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flag++;
 		$this->cellStyle("B".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "V. PEDREGAL");
+		$hoja->setCellValue("B".$flag, "VILLAS");
 		$hoja->setCellValue("C{$flag}", "=(BG{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$flag++;
 		$this->cellStyle("B".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
