@@ -420,9 +420,9 @@ class Lunes extends MY_Controller {
 		$filen = "Existencias".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7608;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_otizaciones',$filen);
@@ -556,9 +556,9 @@ class Lunes extends MY_Controller {
 		$filen = "Precios Sistema";
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7068;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_otizaciones',$filen);
@@ -1707,7 +1707,7 @@ class Lunes extends MY_Controller {
 		$cfile =  $this->user_md->get(NULL, ['id_usuario' => $tienda])[0];
 		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
 		$filen = "PedidosLunes".$nams."".rand();
-		$config['upload_path']          = base_url('/assets/uploads/pedidos/');
+		$config['upload_path']          = base_url('/assets/uploads/pedidos/'); 
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
         $config['max_width']            = 10024;
@@ -1833,9 +1833,9 @@ class Lunes extends MY_Controller {
 		$filen = "Pedidos Pendientes".rand();
 		$config['upload_path']          = base_url('/assets/uploads/pedidos/');
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7608;
         $config['max_height']           = 768;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
