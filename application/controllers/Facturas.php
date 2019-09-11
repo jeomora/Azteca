@@ -91,10 +91,12 @@ class Facturas extends MY_Controller {
 	public function getit(){
 		include_once APPPATH . 'vendor/autoload.php';
 		$parser = new \Smalot\PdfParser\Parser();
-		$pdf = $parser->parseFile(APPPATH.'vendor\smalot\pdfparser\samples\adela.pdf');
+		$pdf = $parser->parseFile(APPPATH.'vendor\smalot\pdfparser\samples\vv.pdf');
 
 		$text = $pdf->getText();
-		ini_set("memory_limit", "-1");
+		$details  = $pdf->getDetails();
+
+		/*ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
 		$hoja = $this->excelfile->getActiveSheet();
 		$hoja->getDefaultStyle()
@@ -133,7 +135,15 @@ class Facturas extends MY_Controller {
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
-		$excel_Writer->save("php://output");
+		$excel_Writer->save("php://output");*/
+		if (strpos($text, 'Unitario Con Impuesto')) {
+			$ind1 = strpos($text, 'Unitario Con Impuesto');
+		}else{
+			$ind1 = strpos($text, 'Unitario con Impuestos');
+		}
+		$folio = substr($text, (strpos( $text, 'Dirección De Entrega' )+100),(200));
+		$folio = substr($folio, (strpos( $folio, '<td>' )+4),((strpos( $folio, '</td>' )-strpos( $folio, '<td>' )-4)));
+		$this->jsonResponse(substr($text,($ind1),strlen($text)));
 	}
 
 	public function uploadPedidos(){

@@ -265,12 +265,13 @@ class PDFObject
         $current_position_tm = array('x' => false, 'y' => false);
 
         array_push(self::$recursionStack, $this->getUniqueId());
-
+        $text .= "<tr><td>";
         foreach ($sections as $section) {
 
             $commands = $this->getCommandsText($section);
 
             foreach ($commands as $command) {
+
 
                 switch ($command[self::OPERATOR]) {
                     // set character spacing
@@ -286,13 +287,13 @@ class PDFObject
                             ($current_position_td['y'] !== false && floatval($y) < floatval($current_position_td['y']))
                         ) {
                             // vertical offset
-                            $text .= "\n";
+                            $text .= "</td></tr><tr><td>";
                         } elseif ($current_position_td['x'] !== false && floatval($x) > floatval(
                                 $current_position_td['x']
                             )
                         ) {
                             // horizontal offset
-                            $text .= ' ';
+                            $text .= '</td><td>';
                         }
                         $current_position_td = array('x' => $x, 'y' => $y);
                         break;
@@ -302,10 +303,11 @@ class PDFObject
                         $args = preg_split('/\s/s', $command[self::COMMAND]);
                         $y    = array_pop($args);
                         $x    = array_pop($args);
+
                         if (floatval($y) < 0) {
-                            $text .= "\n";
+                            $text .= "</td></tr><tr><td>";
                         } elseif (floatval($x) <= 0) {
-                            $text .= ' ';
+                              $text .= '</td><td>';
                         }
                         break;
 
@@ -325,7 +327,8 @@ class PDFObject
                         if (is_null($current_font)) {
                             // Fallback
                             // TODO : Improve
-                            $text .= $command[self::COMMAND][0][self::COMMAND];
+                            $text .= $command[self::COMMAND];
+
                             break;
                         }
 
@@ -345,14 +348,16 @@ class PDFObject
                         if ($current_position_tm['x'] !== false) {
                             $delta = abs(floatval($x) - floatval($current_position_tm['x']));
                             if ($delta > 10) {
-                                $text .= "\t";
+                                $text .= '</td><td>';
                             }
                         }
                         if ($current_position_tm['y'] !== false) {
                             $delta = abs(floatval($y) - floatval($current_position_tm['y']));
                             if ($delta > 10) {
-                                $text .= "\n";
+                                  
+                                  $text .= "</td></tr><tr><td>";
                             }
+                            $text .= ' ';
                         }
                         $current_position_tm = array('x' => $x, 'y' => $y);
                         break;
@@ -388,7 +393,7 @@ class PDFObject
                              // @todo $xobject could be a ElementXRef object, which would then throw an error
                              if ( is_object($xobject) && $xobject instanceof PDFObject && !in_array($xobject->getUniqueId(), self::$recursionStack) ) {
                                 // Not a circular reference.
-                                $text .= $xobject->getText($page);
+                                //$text .= $xobject->getText($page);
                             }
                         }
                         break;

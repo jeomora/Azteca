@@ -275,7 +275,7 @@ class Productos extends MY_Controller {
         $config['max_height']           = 768;
 
 
-
+        $estatus = 1;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_productos',$filen);
@@ -287,6 +287,11 @@ class Productos extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
+		if ($sheet->getCell('E'.$i)->getValue() === "") {
+			$estatus = 1
+		}else{
+			$estatus = $sheet->getCell('E'.$i)->getValue();
+		}
 		
 		for ($i=3; $i<=$num_rows; $i++) {
 			$productos = $this->pro_md->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
@@ -297,7 +302,7 @@ class Productos extends MY_Controller {
 						"nombre" => $sheet->getCell('B'.$i)->getValue(),
 						"codigo" => $sheet->getCell('A'.$i)->getValue(),
 						"colorp" => $conversion,
-						"estatus" => 1];
+						"estatus" => $sheet->getCell('E'.$i)->getValue()];
 				$data ['id_producto'] = $this->pro_md->update($new_producto, $productos->id_producto);
 			}else{
 				$new_producto=[
@@ -305,7 +310,7 @@ class Productos extends MY_Controller {
 						"nombre" => $sheet->getCell('B'.$i)->getValue(),
 						"codigo" => $sheet->getCell('A'.$i)->getValue(),
 						"colorp" => $conversion,
-						"estatus" => 1];
+						"estatus" => $sheet->getCell('E'.$i)->getValue()];
 				$data ['id_producto']=$this->pro_md->insert($new_producto);
 			}
 		}
