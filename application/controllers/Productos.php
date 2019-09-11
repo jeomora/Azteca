@@ -216,11 +216,11 @@ class Productos extends MY_Controller {
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
-		$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:E2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
-		$this->cellStyle("F1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("G1:H2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
@@ -231,19 +231,40 @@ class Productos extends MY_Controller {
 		$hoja->setCellValue("C2", "FAMILIA")->getColumnDimension('C')->setWidth(20);
 		$hoja->setCellValue("D1", "CONVERSIÓN")->getColumnDimension('D')->setWidth(20);
 		$hoja->setCellValue("D2", "SI / NO")->getColumnDimension('D')->setWidth(20);
+		$hoja->setCellValue("E1", "TIPO")->getColumnDimension('E')->setWidth(20)
 
-		$hoja->setCellValue("F1", "FAMILIA")->getColumnDimension('F')->setWidth(35);
-		$hoja->setCellValue("G1", "NÚMERO")->getColumnDimension('G')->setWidth(18);
-		$hoja->setCellValue("G2", "FAMILIA")->getColumnDimension('G')->setWidth(18);
+		$hoja->setCellValue("G1", "FAMILIA")->getColumnDimension('G')->setWidth(35);
+		$hoja->setCellValue("H1", "NÚMERO")->getColumnDimension('H')->setWidth(18);
+		$hoja->setCellValue("H2", "FAMILIA")->getColumnDimension('H')->setWidth(18);
 		$productos = $this->pro_md->getProdFam(NULL,0);
 		$row_print = 3;
 		if ($productos){
 			foreach ($productos as $key => $value){
-				$hoja->setCellValue("F{$row_print}", $value['familia']);
-				$hoja->setCellValue("G{$row_print}", $value['id_familia']);
+				$hoja->setCellValue("G{$row_print}", $value['familia']);
+				$hoja->setCellValue("H{$row_print}", $value['id_familia']);
 				$row_print +=1;
 			}
 		}
+
+		$hoja->setCellValue("G{$row_print}", "NORMAL");
+		$hoja->setCellValue("H{$row_print}", "1");
+		$row_print++;
+		$hoja->setCellValue("G{$row_print}", "VOLÚMEN");
+		$hoja->setCellValue("H{$row_print}", "2");
+		$row_print++;
+		$hoja->setCellValue("G{$row_print}", "AMARILLO");
+		$hoja->setCellValue("H{$row_print}", "3");
+		$row_print++;
+		$hoja->setCellValue("G{$row_print}", "MODERNA");
+		$hoja->setCellValue("H{$row_print}", "4");
+		$row_print++;
+		$hoja->setCellValue("G{$row_print}", "COSTEÑA");
+		$hoja->setCellValue("H{$row_print}", "5");
+		$row_print++;
+		$hoja->setCellValue("G{$row_print}", "CUETARA");
+		$hoja->setCellValue("H{$row_print}", "6");
+		$row_print++;
+
 		$hoja->getStyle("A3:H{$row_print}")
                  ->getAlignment()
                  ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -288,7 +309,7 @@ class Productos extends MY_Controller {
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 		if ($sheet->getCell('E'.$i)->getValue() === "") {
-			$estatus = 1
+			$estatus = 1;
 		}else{
 			$estatus = $sheet->getCell('E'.$i)->getValue();
 		}
