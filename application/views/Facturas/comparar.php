@@ -62,6 +62,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.tienda,.facty{height:15px;width:15px;}
 	.tienda[type="checkbox"]:before,.facty[type="checkbox"]:before {width:15px;height:15px;}
 	.tienda[type="checkbox"]:after,.facty[type="checkbox"]:after {top:-15px;width: 15px;height: 15px;}
+	td{border: 1px solid;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -84,6 +85,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 			</div>
 		</div>
+
+		<table>
+			<tbody class="yy">
+				
+			</tbody>
+		</table>
 
 		
 		<div class="col-md-12 col-lg-12 elvis" style="padding:0">
@@ -112,11 +119,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6 col-lg-6" style="padding:50px">
+			<!--<div class="col-md-6 col-lg-6" style="padding:50px">
 				<button type="button" class="btndownload">
 					<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR REPORTE (Sin detalles)
 				</button>
-			</div>
+			</div>-->
 		</div>
 		<div class="dragscroll col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">

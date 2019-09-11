@@ -6,7 +6,9 @@ $(window).on('beforeunload', function(){
 		}else
 			return false;
 	}
-	
+	/*getit(JSON.stringify(values)).done(function(resp){
+		$(".yy").html(resp)
+	})*/
 });
 var obj = [];
 var folis = "";
@@ -14,6 +16,9 @@ var tiendis =  "";
 
 var tiendas = {87:"cedis",57:"abarrotes",90:"villas",58:"tienda",59:"ultra",60:"trincheras",61:"mercado",62:"tenencia",63:"tijeras"}
 $(document).off("change", "#proveedor").on("change", "#proveedor", function (){
+	getit(JSON.stringify(values)).done(function(resp){
+		$(".yy").html(resp)
+	})
 	event.preventDefault();
 	var provs = $("#proveedor option:selected");
 	var values = {"proveedor":provs.val()};
@@ -48,6 +53,14 @@ function getPedidos(values){
         data: {
             values : values,
         },
+    });
+}
+
+function getit(){
+    return $.ajax({
+        url: site_url+"Facturas/getit",
+        type: "POST",
+        dataType: "JSON",
     });
 }
 
