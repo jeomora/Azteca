@@ -231,7 +231,7 @@ class Productos extends MY_Controller {
 		$hoja->setCellValue("C2", "FAMILIA")->getColumnDimension('C')->setWidth(20);
 		$hoja->setCellValue("D1", "CONVERSIÓN")->getColumnDimension('D')->setWidth(20);
 		$hoja->setCellValue("D2", "SI / NO")->getColumnDimension('D')->setWidth(20);
-		$hoja->setCellValue("E1", "TIPO")->getColumnDimension('E')->setWidth(20)
+		$hoja->setCellValue("E1", "TIPO")->getColumnDimension('E')->setWidth(20);
 
 		$hoja->setCellValue("G1", "FAMILIA")->getColumnDimension('G')->setWidth(35);
 		$hoja->setCellValue("H1", "NÚMERO")->getColumnDimension('H')->setWidth(18);
