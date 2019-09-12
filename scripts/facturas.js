@@ -119,7 +119,7 @@ $(document).off("change", "#file_factura").on("change", "#file_factura", functio
 					$.each(resp[1],function(index,vals) {
 						vals.promocion = vals.promocion == null ? "" : vals.promocion;
 						bods+= '<div class="col-lg-12 col-md-12 pedsist pedsi" draggable="true" ondragstart="drag(event)" id="'+vals.codigo+'" style="padding:5px"><h4>'+vals.codigo+
-								' - '+vals.nombre+'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+vals.codigo+'" placeholder="'+val.costo+'" value="'+vals.costo+'" id="costo'+vals.codigo+
+								' - '+vals.nombre+'</h4><div class="col-md-6 col-lg-6"><input class="costod" type="text" name="costo'+vals.codigo+'" placeholder="'+vals.costo+'" value="'+vals.costo+'" id="costo'+vals.codigo+
 								'" style="width:100%"></div><div class="col-md-6 col-lg-6 cantu">Cantidad: '+formatMoney(vals.total,1)+'</div><div class="col-md-12 col-lg-12">Promoción: '
 								+vals.promocion+'</div><div class="cerra" id="cerra'+vals.codigo+'"><i class="fa fa-times" aria-hidden="true"></i></div></div>'
 					})
