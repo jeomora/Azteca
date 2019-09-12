@@ -246,7 +246,7 @@ class Facturas extends MY_Controller {
 			$this->jsonResponse($mensaje);
 		} else {
 			for ($i=3; $i<=$num_rows; $i++) {
-				$codigo = $this->getOldVal($sheet,$i,"A");
+				$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
 				$cellB = $this->getOldVal($sheet,$i,"B");
 				$cellC = $this->getOldVal($sheet,$i,"C");
 				$cellD = $this->getOldVal($sheet,$i,"D");
