@@ -296,6 +296,7 @@ class Facturas extends MY_Controller {
 		$value = json_decode($this->input->post('values'), true);
 		$prodcod = "";
 		$this->jsonResponse($value);
+		$this->db->query("delete from comparacion where folio = '".$value[0]["folio"]."' AND WEEKOFYEAR(fecha) = WEEKOFYEAR(CURDATE()) and id_proveedor = ".$value[0]["id_proveedor"]."");
 		foreach ($value as $key => $v) {
 			$producto = $this->pro_md->get(NULL,["codigo"=>$v["producto"]])[0];
 			if ($producto) {
@@ -320,16 +321,23 @@ class Facturas extends MY_Controller {
 				"costo" => $v["costo"],
 				"devolucion" => $v["devolucion"],
 				"devueltos" => $v["devueltos"],
-				"gift" => $v["gift"]
+				"gift" => $v["gift"],
+				"gifted" => $v["gifted"],
+				"cuantos"	=> $v["cuantos"]
 			];
 
 
-			if ($compara) {
-				$data['prodcaja'] = $this->comp_md->update($new_compara,$compara->id_comparacion);
+			$data['prodcaja'] = $this->comp_md->insert($new_compara);
 
+			/*if ($compara) {
+				if ($compara->gift <> $v["gift"] || $compara->devueltos <> $v["devueltos"]) {
+					
+				} else {
+					$data['prodcaja'] = $this->comp_md->update($new_compara,$compara->id_comparacion);
+				}			
 			}else{
 				$data['prodcaja'] = $this->comp_md->insert($new_compara);
-			}
+			}*/
 		}
 		
 	}

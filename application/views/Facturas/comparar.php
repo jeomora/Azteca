@@ -63,6 +63,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.tienda[type="checkbox"]:before,.facty[type="checkbox"]:before {width:15px;height:15px;}
 	.tienda[type="checkbox"]:after,.facty[type="checkbox"]:after {top:-15px;width: 15px;height: 15px;}
 	td{border: 1px solid;}
+	.inputtab{width:100%;height:100%;border:0;margin:-1px;border-bottom:1px solid;}
+	/*cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;*/
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -125,7 +127,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</button>
 			</div>-->
 		</div>
-		<div class="dragscroll col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
+		<div class="col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;">
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">
 					<div class="col-md-12 col-lg-12 ibox-content">
@@ -207,7 +209,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</div>
 								<div class="col-md-1 col-lg-1" style="padding:0">
 									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0;border-bottom:1px solid gray">
-										PRECIO NETO
+										PRECIO
 									</div>
 									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0">
 										FACTURA

@@ -13,6 +13,7 @@ $(window).on('beforeunload', function(){
 var obj = [];
 var folis = "";
 var tiendis =  "";
+var many = "";
 
 var tiendas = {87:"cedis",57:"abarrotes",90:"villas",58:"tienda",59:"ultra",60:"trincheras",61:"mercado",62:"tenencia",63:"tijeras"}
 $(document).off("change", "#proveedor").on("change", "#proveedor", function (){
@@ -225,6 +226,73 @@ $(document).off("click", ".tienda").on("click", ".tienda", function (){
 	}
 })
 
+$(document).off("keyup", ".costable").on("keyup", ".costable", function (){
+	event.preventDefault();
+	calculaFactura();
+	updateCosto(this.attr("name"));
+})
+function updateCosto(inp){
+	console.log(inp)
+}
+
+function calculaFactura(){
+	var tot=0;var cred=0;var difer=0;var devuel=0;var totis=0;var totis0=0;var diferencia=0;var diferencia0=0;var credito0=0;var credito=0;
+
+	for (var i = 0; i < many; i++) {
+		if ($("#direc"+i).val() === "DIRECTO") {
+			diferencia = (parseFloat($("#factp"+i).html()) - parseFloat($("#costable"+i).val()));
+			totis = (parseFloat($("#cantis"+i).html()) * parseFloat($("#costable"+i).val()));
+
+			if ($("#direc0"+i).val() === "DEVUELTO") {
+				diferencia0 = (parseFloat($("#factp0"+i).html()) - parseFloat($("#costable0"+i).val()));
+				totis0 = 0;
+				credito0 = (parseFloat($("#factp0"+i).html()) * parseFloat($("#cantis0"+i).html()));
+
+				$("#diftable0"+i).val(formatMoney(diferencia0));
+				$("#cretable0"+i).val(formatMoney(credito0));
+				$("#tottable0"+i).val(formatMoney(totis0));
+				cred = parseFloat(cred) + parseFloat(credito0);
+				difer = parseFloat(difer) + parseFloat(credito0);
+				devuel = parseFloat(devuel) + (parseFloat($("#factp0"+i).html()) * parseFloat($("#cantis0"+i).html()));
+			}
+		}else{
+			if ($("#direc0"+i).val() === "DEVUELTO") {
+				diferencia0 = (parseFloat($("#factp0"+i).html()) - parseFloat($("#costable0"+i).val()));
+				totis0 = 0;
+				credito0 = (parseFloat($("#factp0"+i).html()) * parseFloat($("#cantis0"+i).html()));
+				$("#diftable0"+i).val(formatMoney(diferencia0));
+				$("#cretable0"+i).val(formatMoney(credito0));
+				$("#tottable0"+i).val(formatMoney(totis0));
+
+				cred = parseFloat(cred) + parseFloat(credito0);
+				
+				difer = parseFloat(difer) + parseFloat(credito0);
+				devuel = parseFloat(devuel) + (parseFloat($("#factp0"+i).html()) * parseFloat($("#cantis0"+i).html()));
+			}else{
+				diferencia = (parseFloat($("#factp"+i).html()));
+				totis = 0;
+				devuel = parseFloat(devuel) + (diferencia * parseFloat($("#cantis"+i).html()));
+			}
+		}
+
+		if ($("#direc"+i).length && $("#direc"+i).val() !== "DEVUELTO") {
+			credito = (diferencia * parseFloat($("#cantis"+i).html()));
+			$("#diftable"+i).val(formatMoney(diferencia));
+			$("#cretable"+i).val(formatMoney(credito));
+			$("#tottable"+i).val(formatMoney(totis));
+
+			cred = parseFloat(cred) + parseFloat(credito);
+			tot = parseFloat(tot) + totis;
+			difer = parseFloat(difer) + parseFloat(credito);
+		}
+	}
+	$(".totfact").html("$ "+formatMoney((parseFloat(tot)+parseFloat(cred)),2));
+	$(".sumnota").html("$ "+formatMoney(cred,2));
+	$(".sumtotal").html("$ "+formatMoney(tot,2));
+	$(".devuel").html("$ "+formatMoney(devuel,2));
+	$(".difer").html("$ "+formatMoney(difer,2));
+}
+
 $(document).off("click", ".facty").on("click", ".facty", function (){
 	if ($(this).is(":checked")) {
 		$(".factdetails").css("display","block");
@@ -237,7 +305,8 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 		var diferencia = 0;var credito = 0;var totis = 0;var devuel = 0;var cred = 0;var tot = 0;var difer = 0;
 		getDetails(JSON.stringify(values))
 		.done(function (resp) {
-			var devis="DIRECTO";var colis="black";var backis="white";
+			many = resp.length;
+			var colis="black";var backis="white";
 			$(".headfact").html(resp[0].tienda+" - GRUPO AZTECA, S.A DE C.V");
 			$(".headfact").css("background",resp[0].color);
 			$(".subheadfact").html("REPORTE "+resp[0].prove);
@@ -245,99 +314,91 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$(".fechafact").html(resp[0].fecha_factura);
 			$(".notafolio").html(resp[0].folio);
 			$.each(resp,function (indx,val) {
-				if(val.devolucion === 0 || val.devolucion === "0") {
-					devis = "DIRECTO";colis="black";backis="transparent";
-					diferencia = (parseFloat(val.precio) - parseFloat(val.costo));
-					credito = (parseFloat(diferencia) * parseFloat(val.cantidad));
-					totis = (parseFloat(val.cantidad) * parseFloat(val.costo));
-					cred = parseFloat(cred) + parseFloat(credito);
-					tot = parseFloat(tot) + (parseFloat(val.cantidad) * parseFloat(val.costo));
-					difer = parseFloat(difer) + parseFloat(credito);
+				val.cantidad = val.cuantos;
 
-				}else{
-					if (val.cantidad === val.devueltos) {
-						diferencia = val.precio;
-						credito = (parseFloat(diferencia) * parseFloat(val.cantidad));
-						totis = 0;
-						cred = parseFloat(cred) + parseFloat(credito);
-						devuel = parseFloat(devuel) + parseFloat(credito);
-					}else{
-						diferencia = (parseFloat(val.precio) - parseFloat(val.costo));
-						credito = (parseFloat(diferencia) * (parseFloat(val.cantidad)-parseFloat(val.devueltos)));
-						totis = ((parseFloat(val.cantidad)-parseFloat(val.devueltos)) * parseFloat(val.costo));
-						cred = parseFloat(cred) + parseFloat(credito);
-						difer = parseFloat(difer) + parseFloat(credito);
-						cred = parseFloat(cred) + (parseFloat(val.precio) * parseFloat(val.devueltos));
-						devuel = parseFloat(devuel) + (parseFloat(val.precio) * parseFloat(val.devueltos));
-						tot = parseFloat(tot) + ((parseFloat(val.cantidad)-parseFloat(val.devueltos)) * parseFloat(val.costo));
-					}
-				}
-				val.precio = formatMoney(val.precio,2);
-				val.costo = formatMoney(val.costo,2);
-				totis = formatMoney(totis,2);
-				credito = formatMoney(credito,2);
-				diferencia = formatMoney(diferencia,2);
 				
 
 				if ((val.devolucion === 0 || val.devolucion === "0") && (val.gift === 0 || val.gift === "0")) {
-					$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-					val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;">DIRECTO</div><div class="col-md-1 col-lg-1'+
-					' factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-					'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
-					' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
-					'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-					'style="border-left:0">'+totis+'</div></div>')
+					$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+val.descripcion+
+						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;"><input type="text" id="direc'+indx+
+						'" value="DIRECTO" class="inputtab" readonly/></div><div class="col-md-1 col-lg-1 factlistItem"'+
+						' style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable'+indx+'" value="'+val.costo+'" class="costable'+
+						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0" id="wey'+indx+
+						'">'+formatMoney(val.wey,0)+'</div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0" id="cantis'+indx+'">'+val.cantidad+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0" id="factp'+indx+'">'+
+						val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="diftable" id="diftable'+
+						indx+'" value="" class="diftable inputtab" placeholder="" readonly/></div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0"><input type="text" name="cretable" id="cretable'+indx+'" value="" class="cretable'+
+						' inputtab" placeholder="" readonly/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="tottable"'+
+						' id="tottable'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 				}else{
 					if (val.gift === 1 || val.gift === "1") {
 						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style=";background:#e08989;color:blue;border-left:0;">S/C</div><div class="col-md-1 col-lg-1'+
-						' factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
-						' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
-						'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-						'style="border-left:0">'+totis+'</div></div>')
+						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style=";background:#e08989;color:blue;border-left:0;"><input type="text"'+
+						' id="direc'+indx+'" value="S/C"	class="inputtab" style=";background:#e08989;color:blue;border-left:0;" readonly/></div><div class="col-md-1 col-lg-1'+
+						' factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable'+indx+'" value="'+val.costo+'" class="costable'+
+						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
+						'style="border-left:0" id="wey'+indx+
+						'">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0" id="cantis'+indx+'">'+val.cantidad+'</div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0" id="factp'+indx+'">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="diftable" id="diftable'+
+						indx+'" value="" class="diftable inputtab" placeholder="" readonly/></div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0"><input type="text" name="cretable" id="cretable'+indx+'" value="" class="cretable'+
+						' inputtab" placeholder="" readonly/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="tottable"'+
+						' id="tottable'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 					} else {
 						if (val.cantidad === val.devueltos) {
 							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
-							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.cantidad+'</div><div class="col-md-1'+
-							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
-							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">0.00</div></div>')
+							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;"><input type="text"'+
+						' id="direc0'+indx+'" value="DEVUELTO"	class="inputtab" style="border-left:0;color:red;background:#e08989;" readonly/></div>'+
+							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable0'+indx+'" value="'+val.costo+'" class="costable'+
+						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0" id="wey0'+indx+
+						'">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0" id="cantis0'+indx+'">'+val.cantidad+'</div><div class="col-md-1'+
+							' col-lg-1 factlistItem" style="border-left:0" id="factp0'+indx+'">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="diftable" id="diftable0'+
+						indx+'" value="" class="diftable inputtab" placeholder="" readonly/></div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0"><input type="text" name="cretable" id="cretable0'+indx+'" value="" class="cretable'+
+						' inputtab" placeholder="" readonly/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="tottable"'+
+						' id="tottable0'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 						} else {
 							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;">DIRECTO</div>'+
-							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.costo+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+
+							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;"><input type="text"'+
+						' id="direc'+indx+'" value="DIRECTO"	class="inputtab" readonly/></div>'+
+							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable'+indx+'" value="'+val.costo+'" class="costable'+
+						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0" id="wey'+indx+
+						'">'+formatMoney(val.wey,0)+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0" id="cantis'+indx+'">'+
 							(parseFloat(val.cantidad)-parseFloat(val.devueltos))+'</div><div class="col-md-1'+
-							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+diferencia+
-							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+credito+'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">'+totis+'</div></div>');
+							' col-lg-1 factlistItem" style="border-left:0" id="factp'+indx+'">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="diftable" id="diftable'+
+						indx+'" value="" class="diftable inputtab" placeholder="" readonly/></div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0"><input type="text" name="cretable" id="cretable'+indx+'" value="" class="cretable'+
+						' inputtab" placeholder="" readonly/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="tottable"'+
+						' id="tottable'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>');
 
 							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;">DEVUELTO</div>'+
-							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">0.00</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.devueltos+'</div><div class="col-md-1'+
-							' col-lg-1 factlistItem" style="border-left:0">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+val.precio+
-							'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+formatMoney((parseFloat(val.precio) * parseFloat(val.devueltos)),2)+
-							'</div><div class="col-md-1 col-lg-1 factlistItem" '+
-							'style="border-left:0">0.00</div></div>')
+							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;"><input type="text"'+
+						' id="direc0'+indx+'" value="DEVUELTO"	class="inputtab" style="border-left:0;color:red;background:#e08989;" readonly/></div>'+
+							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable0'+indx+'" value="'+val.costo+'" class="costable'+
+						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
+							'style="border-left:0" id="wey0'+indx+
+						'">0</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0" id="cantis0'+indx+'">'+val.devueltos+'</div><div class="col-md-1'+
+							' col-lg-1 factlistItem" style="border-left:0" id="factp0'+indx+'">'+val.precio+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0">'+
+							'<input type="text" name="diftable" id="diftable0'+
+						indx+'" value="" class="diftable inputtab" placeholder="" readonly/></div><div class="col-md-1'+
+						' col-lg-1 factlistItem" style="border-left:0"><input type="text" name="cretable" id="cretable0'+indx+'" value="" class="cretable'+
+						' inputtab" placeholder="" readonly/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="tottable"'+
+						' id="tottable0'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 						}
 					}
 				}
 
 				
 			})
-			$(".totfact").html("$ "+formatMoney((parseFloat(tot)+parseFloat(cred)),2));
-			$(".sumnota").html("$ "+formatMoney(cred,2));
-			$(".sumtotal").html("$ "+formatMoney(tot,2));
-			$(".devuel").html("$ "+formatMoney(devuel,2));
-			$(".difer").html("$ "+formatMoney(difer,2));
-			$(".BE1").html('<button type="button" class="btnExcel btnExcel'+$(this).val()+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
+			
+			$(".BE1").html('<button type="button" class="btnExcel btnExcel'+$(this).attr('id')+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
 				' aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA</button>');
-			$(".BE2").html('<button type="button" class="btnExcel btnExcel'+$(this).val()+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
+			$(".BE2").html('<button type="button" class="btnExcel btnExcel'+$(this).attr('id')+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
 				' aria-hidden="true"></i> DESCARGAR FORMATO</button>');
+			calculaFactura();
 		})
 	}else{
 		$(".totfact").html("");
@@ -421,7 +482,7 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 	event.preventDefault();
 	$(document.body).css("overflow-y","scroll");
 	$("#file_factura").val("");
-	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;var gift = 0;
+	var devs = 0;var costu = null;var produ = null;var body4 = "";var devos = 0;var gift = 0;var gifted=0;var cuantos = 0;
 	obj = [];
 	for (var i = 0; i < $(".cuerpodiv").length; i++) {
 		if ($("#cuerpodiv"+i).css('background') === "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box" || $("#cuerpodiv"+i).css('background') === "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box") {
@@ -436,7 +497,14 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 				devos = $("#cuerpodiv"+i).find(".devolucion").find("#difis").val();
 			}
 		}
-		
+		devos = $("#cuerpodiv"+i).find(".devolucion").find("#difis").val();
+		var uno = $("#cuerpodiv"+i).find(".devolucion").closest(".cuerpodiv").find(".body1");
+		if ($("#cuerpodiv"+i).find(".devolucion").closest(".cuerpodiv").find(".body4").html() == "SOLTAR RECUADRO AQUÍ"){
+			gifted = uno.html();
+		}else{
+			gifted = uno.html().substr(0, uno.html().indexOf('<'));
+		}
+		cuantos = gifted;
 		body4 = $("#cuerpodiv"+i).find(".body4");
 		if (body4.html() === "SOLTAR RECUADRO AQUÍ") {
 			costu = 0;
@@ -455,7 +523,9 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 			"costo":costu,
 			"devolucion":devs,
 			"devueltos":devos,
-			"gift":gift
+			"gift":gift,
+			"gifted":gifted,
+			"cuantos":cuantos
 		})
 	}
 
