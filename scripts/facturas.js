@@ -229,10 +229,16 @@ $(document).off("click", ".tienda").on("click", ".tienda", function (){
 $(document).off("keyup", ".costable").on("keyup", ".costable", function (){
 	event.preventDefault();
 	calculaFactura();
-	updateCosto(this.attr("name"));
+	var values = {"costo":$(this).val()};
+	updateCosto($(this).attr("name"),values);
 })
-function updateCosto(inp){
-	console.log(inp)
+function updateCosto(inp,values){
+	 return $.ajax({
+        url: site_url+"/Facturas/updateCosto/"+inp,
+        type: "POST",
+        dataType: "JSON",
+        data : {values: values}
+	});
 }
 
 function calculaFactura(){
@@ -301,6 +307,7 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 		$(".sumtotal").html("");
 		$(".devuel").html("");
 		$(".difer").html("");
+		var compara = 0;
 		var values = {"proveedor":$(this).val(),"folio":$(this).attr('id'),"tienda":tiendis,"which":tiendas[tiendis]};
 		var diferencia = 0;var credito = 0;var totis = 0;var devuel = 0;var cred = 0;var tot = 0;var difer = 0;
 		getDetails(JSON.stringify(values))
@@ -315,7 +322,7 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$(".notafolio").html(resp[0].folio);
 			$.each(resp,function (indx,val) {
 				val.cantidad = val.cuantos;
-
+				compara = val.id_comparacion;
 				
 
 				if ((val.devolucion === 0 || val.devolucion === "0") && (val.gift === 0 || val.gift === "0")) {
@@ -394,9 +401,9 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 				
 			})
 			
-			$(".BE1").html('<button type="button" class="btnExcel btnExcel'+$(this).attr('id')+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
+			$(".BE1").html('<button type="button" class="btnExcel pedfact" id="'+compara+'"><i class="fa fa-download"'+
 				' aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA</button>');
-			$(".BE2").html('<button type="button" class="btnExcel btnExcel'+$(this).attr('id')+'" id="'+$(this).attr('id')+'"><i class="fa fa-download"'+
+			$(".BE2").html('<button type="button" class="btnExcel formato" id="'+compara+'"><i class="fa fa-download"'+
 				' aria-hidden="true"></i> DESCARGAR FORMATO</button>');
 			calculaFactura();
 		})
@@ -426,7 +433,15 @@ function getDetails(values){
         data : {values: values}
     });
 }
+$(document).off("click", ".pedfact").on("click", ".pedfact", function (){
+	var win = window.open(site_url+'Facturas/fill_excel/'+$(this).attr("id")+"/"+tiendas[tiendis], '_blank');
+	if (win) {
+		
+	} else {
+		alert('Por favor, activar la opción de abrir pestañas para este sitio.');
+	}
 
+})
 $(document).off("click", ".cerra").on("click", ".cerra", function (){
 	var pedsist = $(this).closest(".pedsist");
 	pedsist.addClass("pedsi")
@@ -441,9 +456,7 @@ $(document).off("click", ".cerra").on("click", ".cerra", function (){
 	dos.html(dos.html().substr(0, dos.html().indexOf('<'))); 
 	$("#cuerpo2").prepend(pedsist);
 	$(this).css("display","none");
-	
 	pedsist.closest(".col-md-12").find(".body1").css({"background":"white !important","color":"black !important"});
-
 })
 
 $(document).off("click", ".divcont").on("click", ".divcont", function (){

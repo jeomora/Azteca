@@ -53,7 +53,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.factlisty:hover{background:#c7c7c7}
 	#searchy{width:100%;font-size:20px;border:0;border-bottom:2px solid blue;}
 	.elvis,.elvis2,.factdetails{display:none}
-	.btnExcel{font-size:20px;width:80%;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);background:#ec8b5c;border:1px solid #ec8b5c;}
+	.btnExcel{color:#000;font-size:20px;width:80%;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);background:#ec8b5c;border:1px solid #ec8b5c;}
 	.btnExcel:hover{border:1px solid #ec8b5c;background:transparent;color:#ec8b5c}
 	.gifted{position:absolute;font-size:20px;background:#c388e8;border-radius:50px;cursor:pointer;z-index:10000000;bottom:8px;padding:4px 10px;}
 	.style1::-webkit-scrollbar{width:6px;background-color:#F5F5F5;} 
@@ -139,14 +139,10 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<div class="col-md-12 col-lg-12 factdetails">
 							<div class="col-md-12 col-lg-12" style="padding:20px">
 								<div class="col-md-4 col-lg-4 btnExcelComp BE1" style="text-align:center;">
-									<button type="button" class="btnExcel">
-										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA
-									</button>
+									
 								</div>
 								<div class="col-md-4 col-lg-4 btnExcelFact BE2" style="text-align:center;">
-									<button type="button" class="btnExcel">
-										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR FORMATO
-									</button>
+									
 								</div>
 								<div class="col-md-4 col-lg-4 btnExcelComp BE3" style="text-align:center;">
 									<!--<button type="button" class="btnExcel" style="background:#ec8b5c;border:0">
