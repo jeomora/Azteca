@@ -53,7 +53,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.factlisty:hover{background:#c7c7c7}
 	#searchy{width:100%;font-size:20px;border:0;border-bottom:2px solid blue;}
 	.elvis,.elvis2,.factdetails{display:none}
-	.btnExcel{font-size:20px;width:80%;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);background:#ec8b5c;border:1px solid #ec8b5c;}
+	.btnExcel{color:#000;font-size:20px;width:80%;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.79),0 6px 6px rgba(0,0,0,0.93);background:#ec8b5c;border:1px solid #ec8b5c;}
 	.btnExcel:hover{border:1px solid #ec8b5c;background:transparent;color:#ec8b5c}
 	.gifted{position:absolute;font-size:20px;background:#c388e8;border-radius:50px;cursor:pointer;z-index:10000000;bottom:8px;padding:4px 10px;}
 	.style1::-webkit-scrollbar{width:6px;background-color:#F5F5F5;} 
@@ -63,6 +63,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.tienda[type="checkbox"]:before,.facty[type="checkbox"]:before {width:15px;height:15px;}
 	.tienda[type="checkbox"]:after,.facty[type="checkbox"]:after {top:-15px;width: 15px;height: 15px;}
 	td{border: 1px solid;}
+	.inputtab{width:100%;height:100%;border:0;margin:-1px;border-bottom:1px solid;}
+	/*cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;*/
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -125,7 +127,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</button>
 			</div>-->
 		</div>
-		<div class="dragscroll col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;">
+		<div class="col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;">
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">
 					<div class="col-md-12 col-lg-12 ibox-content">
@@ -137,14 +139,10 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<div class="col-md-12 col-lg-12 factdetails">
 							<div class="col-md-12 col-lg-12" style="padding:20px">
 								<div class="col-md-4 col-lg-4 btnExcelComp BE1" style="text-align:center;">
-									<button type="button" class="btnExcel">
-										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA
-									</button>
+									
 								</div>
 								<div class="col-md-4 col-lg-4 btnExcelFact BE2" style="text-align:center;">
-									<button type="button" class="btnExcel">
-										<i class="fa fa-download" aria-hidden="true"></i> DESCARGAR FORMATO
-									</button>
+									
 								</div>
 								<div class="col-md-4 col-lg-4 btnExcelComp BE3" style="text-align:center;">
 									<!--<button type="button" class="btnExcel" style="background:#ec8b5c;border:0">
@@ -207,7 +205,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</div>
 								<div class="col-md-1 col-lg-1" style="padding:0">
 									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0;border-bottom:1px solid gray">
-										PRECIO NETO
+										PRECIO
 									</div>
 									<div class="col-lg-12 col-md-12" style="height:25px;border:2px solid;border-top:0;line-height:25px;text-align:center;font-size:14px;border-left:0">
 										FACTURA

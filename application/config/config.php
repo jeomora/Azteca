@@ -36,7 +36,6 @@ $config['base_url'] = 'http://abarrotesazteca.com';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
