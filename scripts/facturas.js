@@ -65,13 +65,7 @@ function getit(){
     });
 }
 
-navigator.clipboard.readText()
-  .then(text => {
-    console.log(text);
-  })
-  .catch(err => {
-    console.error('Failed to read clipboard contents: ', err);
-  });
+
 $(document).off("change", "#file_factura").on("change", "#file_factura", function(event) {
 	event.preventDefault();
 	
