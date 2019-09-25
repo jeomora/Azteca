@@ -592,7 +592,7 @@ class Facturas extends MY_Controller {
 					$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArray);
 					$hoja->setCellValue("D".$flag, $value->wey);
 					$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArray);
-					$hoja->setCellValue("E".$flag, ($value->cuantos-$value->devuelto))->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$hoja->setCellValue("E".$flag, ($value->cuantos-$value->devueltos))->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 					$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArray);
 					$hoja->setCellValue("F".$flag, $value->precio)->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 					$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArray);
