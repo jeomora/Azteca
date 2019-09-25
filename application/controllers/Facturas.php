@@ -25,7 +25,6 @@ class Facturas extends MY_Controller {
 
 		$data['scripts'] = [
 			'/scripts/facturas',
-			'/scripts/dragscroll',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
@@ -243,6 +242,7 @@ class Facturas extends MY_Controller {
 		$num_rows = $sheet->getHighestDataRow();
 		$proveedor = $id_proveedor;
 		$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');
+
 		if ($folio === "" || $folio === NULL) {
 			$mensaje=[	
 				"id"	=>	'Factura sin folio',
@@ -250,6 +250,7 @@ class Facturas extends MY_Controller {
 				"type"	=>	'error'];
 			$this->jsonResponse($mensaje);
 		} else {
+			$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
 			for ($i=3; $i<=$num_rows; $i++) {
 				$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
 				$cellB = $this->getOldVal($sheet,$i,"B");
@@ -301,7 +302,7 @@ class Facturas extends MY_Controller {
 		$value = json_decode($this->input->post('values'), true);
 		$prodcod = "";
 		$this->jsonResponse($value);
-		$this->db->query("delete from comparacion where folio = '".$value[0]["folio"]."' AND WEEKOFYEAR(fecha) = WEEKOFYEAR(CURDATE()) and id_proveedor = ".$value[0]["id_proveedor"]."");
+		$this->db->query("delete from comparacion where folio = '".$value[0]["folio"]."' AND id_proveedor = ".$value[0]["id_proveedor"]."");
 		foreach ($value as $key => $v) {
 			$producto = $this->pro_md->get(NULL,["codigo"=>$v["producto"]])[0];
 			if ($producto) {
