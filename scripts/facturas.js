@@ -65,7 +65,13 @@ function getit(){
     });
 }
 
-
+navigator.clipboard.readText()
+  .then(text => {
+    console.log(text);
+  })
+  .catch(err => {
+    console.error('Failed to read clipboard contents: ', err);
+  });
 $(document).off("change", "#file_factura").on("change", "#file_factura", function(event) {
 	event.preventDefault();
 	
@@ -230,7 +236,11 @@ $(document).off("keyup", ".costable").on("keyup", ".costable", function (){
 	event.preventDefault();
 	calculaFactura();
 	var values = {"costo":$(this).val()};
-	updateCosto($(this).attr("name"),values);
+	if ($(this).val().substring(0,1) ==! "=" || $(this).val().substring(0,1) ==! "+") {
+		updateCosto($(this).attr("name"),values);	
+	}else{
+		console.log($(this).val().split('/')[0])
+	}
 })
 function updateCosto(inp,values){
 	 return $.ajax({
@@ -619,3 +629,9 @@ $(document).off("click", ".btnExcel").on("click", ".btnExcel", function (){
 	event.preventDefault();
 	
 })
+
+$(document).off("focusout", ".costod").on("focusout", ".costod", function () {
+	if ($(this).val().substring(0,1) === "=" || $(this).val().substring(0,1) === "+") {
+
+	}
+});
