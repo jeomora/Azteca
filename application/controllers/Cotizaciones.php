@@ -2276,7 +2276,15 @@ class Cotizaciones extends MY_Controller {
 
 										if ($row['id_mayoreo']) {
 											$this->cellStyle("K".$flag.":L".$flag, "ED7D31", "000000", TRUE, 12, "Franklin Gothic Book");
+											if ($row['exist']) {
+												$this->cellStyle("K".$flag.":L".$flag, "f79646", "ED7D31", TRUE, 12, "Franklin Gothic Book");
+											}
+										}else{
+											if ($row['exist']) {
+												$this->cellStyle("K".$flag.":L".$flag, "f79646", "000000", TRUE, 12, "Franklin Gothic Book");
+											}
 										}
+										
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
 										$hoja->setCellValue("W{$flag}", $row['abarrotes']);
 										$hoja->setCellValue("AA{$flag}", $row['pedregal']);
@@ -2397,8 +2405,17 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("I{$flag}", $row['proveedor_next']);
 										$this->cellStyle("I".$flag.":AX".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 										
+										
+
 										if ($row['id_mayoreo']) {
 											$this->cellStyle("J".$flag.":K".$flag, "ED7D31", "000000", TRUE, 12, "Franklin Gothic Book");
+											if ($row['exist']) {
+												$this->cellStyle("J".$flag.":K".$flag, "f79646", "ED7D31", TRUE, 12, "Franklin Gothic Book");
+											}
+										}else{
+											if ($row['exist']) {
+												$this->cellStyle("J".$flag.":K".$flag, "f79646", "000000", TRUE, 12, "Franklin Gothic Book");
+											}
 										}
 
 										$hoja->setCellValue("M{$flag}", $row['cedis']);
@@ -4683,6 +4700,13 @@ class Cotizaciones extends MY_Controller {
 
 						if ($row['id_mayoreo']) {
 							$this->cellStyle("K".$flag.":L".$flag, "ED7D31", "000000", TRUE, 12, "Franklin Gothic Book");
+							if ($row['exist']) {
+								$this->cellStyle("K".$flag.":L".$flag, "f79646", "ED7D31", TRUE, 12, "Franklin Gothic Book");
+							}
+						}else{
+							if ($row['exist']) {
+								$this->cellStyle("K".$flag.":L".$flag, "f79646", "000000", TRUE, 12, "Franklin Gothic Book");
+							}
 						}
 						$hoja->setCellValue("K{$flag}", $row['caja0']);
 						$hoja->setCellValue("L{$flag}", $row['pz0']);
