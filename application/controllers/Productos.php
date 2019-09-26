@@ -484,7 +484,65 @@ class Productos extends MY_Controller {
 		return $cellB;
 	}
 
-	
+	public function uploadExi(){
+		$proveedor = $this->session->userdata('id_usuario');
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$filen = "Productos por ".$cfile->nombre."".rand();
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+
+
+        $estatus = 1;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_producto',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_producto"]["tmp_name"];
+		$filename=$_FILES['file_producto']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		
+		for ($i=1; $i<=$num_rows; $i++) {
+			$productos = $this->pro_md->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			$conversion = $sheet->getCell('C'.$i)->getValue() == 1 ? 1 : 0; 
+			if (sizeof($productos) > 0) {
+				$new_producto=[
+						"exist" => $sheet->getCell('C'.$i)->getValue()
+					];
+				$data ['id_producto'] = $this->pro_md->update($new_producto, $productos->id_producto);
+			}
+		}
+		if (!isset($new_producto)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin productos',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_producto) > 0) {
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"			=>	"El usuario sube productos",
+						"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Productos cargados correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Los Productos no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}
 
 }
 

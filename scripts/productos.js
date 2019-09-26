@@ -116,3 +116,31 @@ function uploadProductos(formData) {
 		data: formData,
 	});
 }
+
+$(document).off("change", "#file_producto").on("change", "#file_producto", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_producto")[0]);
+	uploadExi(fdata)
+		.done(function (resp) {
+			if (resp.type == 'error'){
+				setTimeout("location.reload()", 1700, toastr.error(resp.desc, user_name), "");
+			}else{
+				unblockPage();
+				setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+			}
+		});
+});
+
+
+function uploadExi(formData) {
+	return $.ajax({
+		url: site_url+"Productos/uploadExi",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

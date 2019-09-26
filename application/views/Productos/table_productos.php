@@ -13,7 +13,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				<div class="ibox-title">
 					<h5>LISTADO DE ARTÍCULOS</h5>
 				</div>
-				<div class="ibox-content">
+				<div class="ibox-content" style="padding-top:30px;">
 					<div class="btn-group">
 						<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_producto">
 							<i class="fa fa-plus"></i>
@@ -35,6 +35,16 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<input class="btn btn-info" type="file" id="file_productos" name="file_productos" value="" size="20" />
 							</div>
 						<?php echo form_close(); ?>
+					</div>
+					<div class="btn-group">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color:#7e23c8;margin-top: -2rem;">
+							Color Existencia Cedis
+						</div>
+						<?php echo form_open_multipart("", array('id' => 'upload_producto')); ?>
+							<div class="col-sm-4">
+								<input class="btn btn-info" type="file" id="file_producto" name="file_producto" value="" size="20" style="background-color:#7e23c8;border-color:#7e23c8" />
+							</div>
+						<?php echo form_close(); ?><br>
 					</div>
 						<table class="table table-striped table-bordered table-hover" id="table_productos">
 							<thead>
