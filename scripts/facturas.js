@@ -327,6 +327,7 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$.each(resp,function (indx,val) {
 				val.cantidad = val.cuantos;
 				compara = val.id_comparacion;
+				val.descripcion = val.pprod === null ? val.descripcion : val.pprod;
 				
 
 				if ((val.devolucion === 0 || val.devolucion === "0") && (val.gift === 0 || val.gift === "0")) {

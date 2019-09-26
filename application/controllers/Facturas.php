@@ -565,7 +565,12 @@ class Facturas extends MY_Controller {
 				$hoja->setCellValue("A".$flag, $value->descripcion);
 				if ($value->devolucion === 1 || $value->devolucion === "1") {
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
-					$hoja->setCellValue("A".$flag, $value->descripcion);
+					if($value->pprod === "" || $value->pprod === NULL){
+						$hoja->setCellValue("A".$flag, $value->descripcion);
+					}else{
+						$hoja->setCellValue("A".$flag, $value->pprod);	
+					}
+					
 					$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 					$this->cellStyle("B".$flag, "FF0000", "000000", FALSE, 14, "Arial Narrow");
 					$hoja->setCellValue("B".$flag, "DEVUELTO");
@@ -586,7 +591,12 @@ class Facturas extends MY_Controller {
 					$flag++;
 					$this->cellStyle("A".$flag.":I".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
-					$hoja->setCellValue("A".$flag, $value->descripcion);
+					if($value->pprod === "" || $value->pprod === NULL){
+						$hoja->setCellValue("A".$flag, $value->descripcion);
+					}else{
+						$hoja->setCellValue("A".$flag, $value->pprod);	
+					}
+					
 					$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 					$hoja->setCellValue("B".$flag, "DIRECTO");
 					$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
@@ -606,7 +616,12 @@ class Facturas extends MY_Controller {
 
 				} elseif ($value->gift === 1 || $value->gift === "1") {
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
-					$hoja->setCellValue("A".$flag, $value->descripcion);
+					if($value->pprod === "" || $value->pprod === NULL){
+						$hoja->setCellValue("A".$flag, $value->descripcion);
+					}else{
+						$hoja->setCellValue("A".$flag, $value->pprod);	
+					}
+					
 					$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 					$this->cellStyle("B".$flag, "0000FF", "000000", FALSE, 14, "Arial Narrow");
 					$hoja->setCellValue("B".$flag, "S/C");
@@ -626,7 +641,12 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("I".$flag, "=C{$flag}*E{$flag}")->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				} else{
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
-					$hoja->setCellValue("A".$flag, $value->descripcion);
+					if($value->pprod === "" || $value->pprod === NULL){
+						$hoja->setCellValue("A".$flag, $value->descripcion);
+					}else{
+						$hoja->setCellValue("A".$flag, $value->pprod);	
+					}
+					
 					$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 					$hoja->setCellValue("B".$flag, "DIRECTO");
 					$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
@@ -683,6 +703,7 @@ class Facturas extends MY_Controller {
 			$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArrayHL);
 			$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArrayHL);
 			$this->excelfile->getActiveSheet()->getStyle('H'.$flag)->applyFromArray($styleArrayHL);
+			$this->excelfile->getActiveSheet()->getStyle('I'.$flag)->applyFromArray($styleArrayHL);
 
 			$flag++;
 			$this->cellStyle("A".$flag.":I".$flag, "4f81bd", "000000", TRUE, 22, "Arial Narrow");
