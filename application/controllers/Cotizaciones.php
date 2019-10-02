@@ -5569,17 +5569,17 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function getUserIP(){
-    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-        //ip from share internet
-        $ip = $_SERVER['HTTP_CLIENT_IP'];
-    }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-        //ip pass from proxy
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }else{
-        $ip = $_SERVER['REMOTE_ADDR'];
-    }
+	    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+	        //ip from share internet
+	        $ip = $_SERVER['HTTP_CLIENT_IP'];
+	    }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+	        //ip pass from proxy
+	        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	    }else{
+	        $ip = $_SERVER['REMOTE_ADDR'];
+	    }
 
-    return $this->jsonResponse($ip);
+    return $ip;
 }
 }
 /* End of file Cotizaciones.php */
