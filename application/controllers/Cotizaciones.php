@@ -1618,7 +1618,7 @@ class Cotizaciones extends MY_Controller {
 		$cambios = [
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
-				"antes" => getHostByName(getHostName()),
+				"antes" => $this->getUserIP(),
 				"despues" => "El usuario subio precios de sistema y precio 4"];
 		$data['cambios'] = $this->cambio_md->insert($cambios);
 		$mensaje=[	"id"	=>	'Éxito',
@@ -5567,6 +5567,20 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 
 	}
+
+	public function getUserIP(){
+    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+        //ip from share internet
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+        //ip pass from proxy
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }else{
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+    return $this->jsonResponse($ip);
+}
 }
 /* End of file Cotizaciones.php */
 /* Location: ./application/controllers/Cotizaciones.php */
