@@ -4445,28 +4445,28 @@ class Cotizaciones extends MY_Controller {
 		$this->excelfile->setActiveSheetIndex(0);
 		foreach ($array as $key => $v3) {
 			$flag2 = $flag;
-			$hoja1->mergeCells('A{$flag2}:E{$flag2}');
-			$this->cellStyle("A{$flag2}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-			$hoja1->setCellValue("A{$flag2}", "GRUPO ABARROTES AZTECA");
-			$this->excelfile->getActiveSheet()->getStyle('A{$flag2}:E{$flag2}')->applyFromArray($styleArray);
+			$hoja1->mergeCells('A'.$flag2.':E'.$flag2);
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "GRUPO ABARROTES AZTECA");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
 			$flag2++;
-			$hoja1->mergeCells('A{$flag2}:E{$flag2}');
-			$this->cellStyle("A{$flag2}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-			$hoja1->setCellValue("A{$flag2}", "PEDIDOS A '".$v3->nombre."' ".date("d-m-Y"));
-			$this->excelfile->getActiveSheet()->getStyle('A{$flag2}:E{$flag2}')->applyFromArray($styleArray);
+			$hoja1->mergeCells('A'.$flag2.':E'.$flag2.'');
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "PEDIDOS A '".$v3->nombre."' ".date("d-m-Y"));
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
 			$flag2++;
-			$this->cellStyle("A{$flag2}:D{$flag2}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-			$hoja1->mergeCells('A{$flag2}:B3');
-			$hoja1->setCellValue("A{$flag2}", "EXISTENCIAS");
-			$hoja1->setCellValue("E{$flag2}", "DESCRIPCIÓN");
-			$this->cellStyle("E{$flag2}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-			$this->excelfile->getActiveSheet()->getStyle('A{$flag2}:E{$flag2}')->applyFromArray($styleArray);
+			$this->cellStyle("A".$flag2.":D".$flag2."}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->mergeCells('A'.$flag2.':B'.$flag2.'');
+			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
+			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
+			$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
 			$flag2++;
-			$this->cellStyle("A{$flag2}:E{$flag2}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-			$hoja1->setCellValue("A{$flag2}", "CAJAS");
-			$hoja1->setCellValue("B{$flag2}", "PZAS");
-			$hoja1->setCellValue("C{$flag2}", "PEDIDO");
-			$hoja1->setCellValue("D{$flag2}", "COD");
+			$this->cellStyle("A".$flag2.":E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "CAJAS");
+			$hoja1->setCellValue("B".$flag2."", "PZAS");
+			$hoja1->setCellValue("C".$flag2."", "PEDIDO");
+			$hoja1->setCellValue("D".$flag2."", "COD");
 
 			$this->excelfile->setActiveSheetIndex(1);
 			
@@ -4883,7 +4883,7 @@ class Cotizaciones extends MY_Controller {
 			$flag++;
 
 			$flag = $flag+5;
-			$flag2 = $flag+5;
+			$flag1 = $flag+5;
 		}
 
 		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
