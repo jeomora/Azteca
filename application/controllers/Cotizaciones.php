@@ -4455,7 +4455,7 @@ class Cotizaciones extends MY_Controller {
 			$hoja1->setCellValue("A".$flag2."", "PEDIDOS A '".$v3->nombre."' ".date("d-m-Y"));
 			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
 			$flag2++;
-			$this->cellStyle("A".$flag2.":D".$flag2."}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("A".$flag2.":D".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->mergeCells('A'.$flag2.':B'.$flag2.'');
 			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
 			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
