@@ -4408,7 +4408,7 @@ class Cotizaciones extends MY_Controller {
 		$array2 = "";
 		$filenam = "";
 		$flag1 = 5;
-		$array = $this->usua_mdl->get(NULL, ["id_usuario = 107 OR id_usuario = 3"]);
+		$array = $this->usua_mdl->getD(NULL);
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
