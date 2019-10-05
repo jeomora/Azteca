@@ -4408,7 +4408,7 @@ class Cotizaciones extends MY_Controller {
 		$array2 = "";
 		$filenam = "";
 		$flag1 = 5;
-		$array = $this->usua_mdl->get(NULL, ["(id_usuario = 107 OR id_usuario = 3)"]);
+		$array = $this->usua_mdl->get(NULL, ["id_usuario = 107 OR id_usuario = 3"]);
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
@@ -4488,7 +4488,7 @@ class Cotizaciones extends MY_Controller {
 			$hoja->mergeCells('AV'.$flag.':AY'.$flag);
 			$hoja->mergeCells('AZ'.$flag.':BC'.$flag);
 			$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-			$hoja->setCellValue("B".$flag, "PEDIDOS A 'DUERO' ".date("d-m-Y"));
+			$hoja->setCellValue("B".$flag, "PEDIDOS A '".$v3->nombre."' ".date("d-m-Y"));
 			$this->cellStyle("K".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
 			$hoja->setCellValue("K".$flag, "CEDIS");
 			$this->cellStyle("P".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
