@@ -4403,9 +4403,12 @@ class Cotizaciones extends MY_Controller {
 	}
 	private function fill_duerazo(){
 		$flag =1;
+		$flag2=1;
 		$array = "";
 		$array2 = "";
 		$filenam = "";
+		$flag1 = 5;
+		$array = $this->usua_mdl->get(NULL, ["(id_usuario = 107 OR id_usuario = 3)"]);
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
@@ -4440,443 +4443,448 @@ class Cotizaciones extends MY_Controller {
 		$hoja1->getColumnDimension('E')->setWidth("47");
 
 		$this->excelfile->setActiveSheetIndex(0);
+		foreach ($array as $key => $v3) {
+			$flag2 = $flag;
+			$hoja1->mergeCells('A{$flag2}:E{$flag2}');
+			$this->cellStyle("A{$flag2}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A{$flag2}", "GRUPO ABARROTES AZTECA");
+			$this->excelfile->getActiveSheet()->getStyle('A{$flag2}:E{$flag2}')->applyFromArray($styleArray);
+			$flag2++;
+			$hoja1->mergeCells('A{$flag2}:E{$flag2}');
+			$this->cellStyle("A{$flag2}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A{$flag2}", "PEDIDOS A '".$v3->nombre."' ".date("d-m-Y"));
+			$this->excelfile->getActiveSheet()->getStyle('A{$flag2}:E{$flag2}')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A{$flag2}:D{$flag2}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->mergeCells('A{$flag2}:B3');
+			$hoja1->setCellValue("A{$flag2}", "EXISTENCIAS");
+			$hoja1->setCellValue("E{$flag2}", "DESCRIPCIÓN");
+			$this->cellStyle("E{$flag2}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('A{$flag2}:E{$flag2}')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A{$flag2}:E{$flag2}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A{$flag2}", "CAJAS");
+			$hoja1->setCellValue("B{$flag2}", "PZAS");
+			$hoja1->setCellValue("C{$flag2}", "PEDIDO");
+			$hoja1->setCellValue("D{$flag2}", "COD");
 
-		$hoja1->mergeCells('A1:E1');
-		$this->cellStyle("A1", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja1->setCellValue("A1", "GRUPO ABARROTES AZTECA");
-		$this->excelfile->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleArray);
+			$this->excelfile->setActiveSheetIndex(1);
+			
+			$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("A".$flag, "CEDIS,CD INDUSTRIAL, ABARROTES, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
+			$hoja->mergeCells('A'.$flag.':BD'.$flag);
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
+			$flag++;
+			$hoja->mergeCells('B'.$flag.':J'.$flag);
+			$hoja->mergeCells('K'.$flag.':O'.$flag);
+			$hoja->mergeCells('P'.$flag.':R'.$flag);
+			$hoja->mergeCells('S'.$flag.':U'.$flag);
+			$hoja->mergeCells('V'.$flag.':Z'.$flag);
+			$hoja->mergeCells('AA'.$flag.':AE'.$flag);
+			$hoja->mergeCells('AF'.$flag.':AI'.$flag);
+			$hoja->mergeCells('AJ'.$flag.':AM'.$flag);
+			$hoja->mergeCells('AN'.$flag.':AQ'.$flag);
+			$hoja->mergeCells('AR'.$flag.':AU'.$flag);
+			$hoja->mergeCells('AV'.$flag.':AY'.$flag);
+			$hoja->mergeCells('AZ'.$flag.':BC'.$flag);
+			$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "PEDIDOS A 'DUERO' ".date("d-m-Y"));
+			$this->cellStyle("K".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("K".$flag, "CEDIS");
+			$this->cellStyle("P".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("P".$flag, "SUPER INDUSTRIAL");
+			$this->cellStyle("S".$flag, "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("S".$flag, "SUMA CEDIS");
+			$this->cellStyle("V".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("V".$flag, "ABARROTES");
+			$this->cellStyle("AA".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AA".$flag, "VILLAS");
+			$this->cellStyle("AF".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AF".$flag, "TIENDA");
+			$this->cellStyle("AJ".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AJ".$flag, "ULTRAMARINOS");
+			$this->cellStyle("AN".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AN".$flag, "TRINCHERAS");
+			$this->cellStyle("AR".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AR".$flag, "AZT MERCADO");
+			$this->cellStyle("AV".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AV".$flag, "TENENCIA");
+			$this->cellStyle("AZ".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AZ".$flag, "TIJERAS");
+			
+			$this->cellStyle("A3:BD4", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
+			$flag++;
+			$hoja->mergeCells('B'.$flag.':J'.$flag);
+			$hoja->mergeCells('K'.$flag.':O'.$flag);
+			$hoja->mergeCells('P'.$flag.':R'.$flag);
+			$hoja->mergeCells('S'.$flag.':U'.$flag);
+			$hoja->mergeCells('V'.$flag.':Z'.$flag);
+			$hoja->mergeCells('AA'.$flag.':AE'.$flag);
+			$hoja->mergeCells('AF'.$flag.':AI'.$flag);
+			$hoja->mergeCells('AJ'.$flag.':AM'.$flag);
+			$hoja->mergeCells('AN'.$flag.':AQ'.$flag);
+			$hoja->mergeCells('AR'.$flag.':AU'.$flag);
+			$hoja->mergeCells('AV'.$flag.':AY'.$flag);
+			$hoja->mergeCells('AZ'.$flag.':BC'.$flag);
+			$this->cellStyle("A".$flag.":BD".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "DESCRIPCIÓN");
+			$hoja->setCellValue("K".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("P".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("S".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("V".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AA".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AF".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AJ".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AN".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AR".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AV".$flag, "EXISTENCIAS");
+			$hoja->setCellValue("AZ".$flag, "EXISTENCIAS");
+			$flag++;
+			$this->cellStyle("A".$flag.":BA".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("A".$flag, "CODIGO");
+			$hoja->setCellValue("B".$flag, "FACTURA");
+			$hoja->setCellValue("D".$flag, "COSTO");
+			$hoja->setCellValue("F".$flag, "SISTEMA");
+			$hoja->setCellValue("H".$flag, "PRECIO4");
+			$hoja->setCellValue("I".$flag, "2DO");
+			$hoja->setCellValue("J".$flag, "PROVEEDOR");
+			$hoja->setCellValue("K".$flag, "CAJAS");
+			$hoja->setCellValue("L".$flag, "PZAS");
+			$hoja->setCellValue("M".$flag, "STOCK");
+			$hoja->setCellValue("N".$flag, "PEND");
+			$hoja->setCellValue("O".$flag, "PEDIDO");
+			$hoja->setCellValue("P".$flag, "CAJAS");
+			$hoja->setCellValue("Q".$flag, "PZAS");
+			$hoja->setCellValue("R".$flag, "PEDIDO");
+			$hoja->setCellValue("S".$flag, "CAJAS");
+			$hoja->setCellValue("T".$flag, "PZAS");
+			$hoja->setCellValue("U".$flag, "PEDIDO");
+			$hoja->setCellValue("V".$flag, "CAJAS");
+			$hoja->setCellValue("W".$flag, "PZAS");
+			$hoja->setCellValue("X".$flag, "STOCK");
+			$hoja->setCellValue("Y".$flag, "PEND");
+			$hoja->setCellValue("Z".$flag, "PEDIDO");
+			$hoja->setCellValue("AA".$flag, "CAJAS");
+			$hoja->setCellValue("AB".$flag, "PZAS");
+			$hoja->setCellValue("AC".$flag, "STOCK");
+			$hoja->setCellValue("AD".$flag, "PEND");
+			$hoja->setCellValue("AE".$flag, "PEDIDO");
+			$hoja->setCellValue("AF".$flag, "CAJAS");
+			$hoja->setCellValue("AG".$flag, "PZAS");
+			$hoja->setCellValue("AH".$flag, "PEND");
+			$hoja->setCellValue("AI".$flag, "PEDIDO");
+			$hoja->setCellValue("AJ".$flag, "CAJAS");
+			$hoja->setCellValue("AK".$flag, "PZAS");
+			$hoja->setCellValue("AL".$flag, "PEND");
+			$hoja->setCellValue("AM".$flag, "PEDIDO");
+			$hoja->setCellValue("AN".$flag, "CAJAS");
+			$hoja->setCellValue("AO".$flag, "PZAS");
+			$hoja->setCellValue("AP".$flag, "PEND");
+			$hoja->setCellValue("AQ".$flag, "PEDIDO");
+			$hoja->setCellValue("AR".$flag, "CAJAS");
+			$hoja->setCellValue("AS".$flag, "PZAS");
+			$hoja->setCellValue("AT".$flag, "PEND");
+			$hoja->setCellValue("AU".$flag, "PEDIDO");
+			$hoja->setCellValue("AV".$flag, "CAJAS");
+			$hoja->setCellValue("AW".$flag, "PZAS");
+			$hoja->setCellValue("AX".$flag, "PEND");
+			$hoja->setCellValue("AY".$flag, "PEDIDO");
+			$hoja->setCellValue("AZ".$flag, "CAJAS");
+			$hoja->setCellValue("BA".$flag, "PZAS");
+			$hoja->setCellValue("BB".$flag, "PEND");
+			$hoja->setCellValue("BC".$flag, "PEDIDO");
+			
+			$hoja->setCellValue("BD".$flag, "PROMOCION");
+			$hoja->setCellValue("BN".$flag, "TOTAL");
+			$hoja->setCellValue("BO".$flag, "PEDIDOS");
+			$this->cellStyle("BE".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BF".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BG".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BH".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BI".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BJ".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BK".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BL".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BM".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BN".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("BO".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('BD'.$flag)->applyFromArray($styleArray);
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$where=["ctz_first.id_proveedor" => $v3->id_usuario,"prod.estatus" => 1];//Semana actual
+			$intervalo = new DateInterval('P2D');
+			$fecha->add($intervalo);
+			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
+			
+			if($cotizacionesProveedor){
+				foreach ($cotizacionesProveedor as $key => $value) {
 
-		$hoja1->mergeCells('A2:E2');
-		$this->cellStyle("A2", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja1->setCellValue("A2", "PEDIDOS A 'DUERO' ".date("d-m-Y"));
-		$this->excelfile->getActiveSheet()->getStyle('A2:E2')->applyFromArray($styleArray);
-
-		$this->cellStyle("A3:D3", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja1->mergeCells('A3:B3');
-		$hoja1->setCellValue("A3", "EXISTENCIAS");
-		$hoja1->setCellValue("E3", "DESCRIPCIÓN");
-		$this->cellStyle("E3", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$this->excelfile->getActiveSheet()->getStyle('A3:E3')->applyFromArray($styleArray);
-
-		$this->cellStyle("A4:E4", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja1->setCellValue("A4", "CAJAS");
-		$hoja1->setCellValue("B4", "PZAS");
-		$hoja1->setCellValue("C4", "PEDIDO");
-		$hoja1->setCellValue("D4", "COD");
-
-		$this->excelfile->setActiveSheetIndex(1);
-		$flag = 1;
-		$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("A".$flag, "CEDIS,CD INDUSTRIAL, ABARROTES, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
-		$hoja->mergeCells('A'.$flag.':BD'.$flag);
-		$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
-		$flag++;
-		$hoja->mergeCells('B'.$flag.':J'.$flag);
-		$hoja->mergeCells('K'.$flag.':O'.$flag);
-		$hoja->mergeCells('P'.$flag.':R'.$flag);
-		$hoja->mergeCells('S'.$flag.':U'.$flag);
-		$hoja->mergeCells('V'.$flag.':Z'.$flag);
-		$hoja->mergeCells('AA'.$flag.':AE'.$flag);
-		$hoja->mergeCells('AF'.$flag.':AI'.$flag);
-		$hoja->mergeCells('AJ'.$flag.':AM'.$flag);
-		$hoja->mergeCells('AN'.$flag.':AQ'.$flag);
-		$hoja->mergeCells('AR'.$flag.':AU'.$flag);
-		$hoja->mergeCells('AV'.$flag.':AY'.$flag);
-		$hoja->mergeCells('AZ'.$flag.':BC'.$flag);
-		$this->cellStyle("B".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "PEDIDOS A 'DUERO' ".date("d-m-Y"));
-		$this->cellStyle("K".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("K".$flag, "CEDIS");
-		$this->cellStyle("P".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("P".$flag, "SUPER INDUSTRIAL");
-		$this->cellStyle("S".$flag, "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("S".$flag, "SUMA CEDIS");
-		$this->cellStyle("V".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("V".$flag, "ABARROTES");
-		$this->cellStyle("AA".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AA".$flag, "VILLAS");
-		$this->cellStyle("AF".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AF".$flag, "TIENDA");
-		$this->cellStyle("AJ".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AJ".$flag, "ULTRAMARINOS");
-		$this->cellStyle("AN".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AN".$flag, "TRINCHERAS");
-		$this->cellStyle("AR".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AR".$flag, "AZT MERCADO");
-		$this->cellStyle("AV".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AV".$flag, "TENENCIA");
-		$this->cellStyle("AZ".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("AZ".$flag, "TIJERAS");
-		
-		$this->cellStyle("A3:BD4", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
-		$flag++;
-		$hoja->mergeCells('B'.$flag.':J'.$flag);
-		$hoja->mergeCells('K'.$flag.':O'.$flag);
-		$hoja->mergeCells('P'.$flag.':R'.$flag);
-		$hoja->mergeCells('S'.$flag.':U'.$flag);
-		$hoja->mergeCells('V'.$flag.':Z'.$flag);
-		$hoja->mergeCells('AA'.$flag.':AE'.$flag);
-		$hoja->mergeCells('AF'.$flag.':AI'.$flag);
-		$hoja->mergeCells('AJ'.$flag.':AM'.$flag);
-		$hoja->mergeCells('AN'.$flag.':AQ'.$flag);
-		$hoja->mergeCells('AR'.$flag.':AU'.$flag);
-		$hoja->mergeCells('AV'.$flag.':AY'.$flag);
-		$hoja->mergeCells('AZ'.$flag.':BC'.$flag);
-		$this->cellStyle("A".$flag.":BD".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "DESCRIPCIÓN");
-		$hoja->setCellValue("K".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("P".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("S".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("V".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AA".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AF".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AJ".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AN".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AR".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AV".$flag, "EXISTENCIAS");
-		$hoja->setCellValue("AZ".$flag, "EXISTENCIAS");
-		$flag++;
-		$this->cellStyle("A".$flag.":BA".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("A".$flag, "CODIGO");
-		$hoja->setCellValue("B".$flag, "FACTURA");
-		$hoja->setCellValue("D".$flag, "COSTO");
-		$hoja->setCellValue("F".$flag, "SISTEMA");
-		$hoja->setCellValue("H".$flag, "PRECIO4");
-		$hoja->setCellValue("I".$flag, "2DO");
-		$hoja->setCellValue("J".$flag, "PROVEEDOR");
-		$hoja->setCellValue("K".$flag, "CAJAS");
-		$hoja->setCellValue("L".$flag, "PZAS");
-		$hoja->setCellValue("M".$flag, "STOCK");
-		$hoja->setCellValue("N".$flag, "PEND");
-		$hoja->setCellValue("O".$flag, "PEDIDO");
-		$hoja->setCellValue("P".$flag, "CAJAS");
-		$hoja->setCellValue("Q".$flag, "PZAS");
-		$hoja->setCellValue("R".$flag, "PEDIDO");
-		$hoja->setCellValue("S".$flag, "CAJAS");
-		$hoja->setCellValue("T".$flag, "PZAS");
-		$hoja->setCellValue("U".$flag, "PEDIDO");
-		$hoja->setCellValue("V".$flag, "CAJAS");
-		$hoja->setCellValue("W".$flag, "PZAS");
-		$hoja->setCellValue("X".$flag, "STOCK");
-		$hoja->setCellValue("Y".$flag, "PEND");
-		$hoja->setCellValue("Z".$flag, "PEDIDO");
-		$hoja->setCellValue("AA".$flag, "CAJAS");
-		$hoja->setCellValue("AB".$flag, "PZAS");
-		$hoja->setCellValue("AC".$flag, "STOCK");
-		$hoja->setCellValue("AD".$flag, "PEND");
-		$hoja->setCellValue("AE".$flag, "PEDIDO");
-		$hoja->setCellValue("AF".$flag, "CAJAS");
-		$hoja->setCellValue("AG".$flag, "PZAS");
-		$hoja->setCellValue("AH".$flag, "PEND");
-		$hoja->setCellValue("AI".$flag, "PEDIDO");
-		$hoja->setCellValue("AJ".$flag, "CAJAS");
-		$hoja->setCellValue("AK".$flag, "PZAS");
-		$hoja->setCellValue("AL".$flag, "PEND");
-		$hoja->setCellValue("AM".$flag, "PEDIDO");
-		$hoja->setCellValue("AN".$flag, "CAJAS");
-		$hoja->setCellValue("AO".$flag, "PZAS");
-		$hoja->setCellValue("AP".$flag, "PEND");
-		$hoja->setCellValue("AQ".$flag, "PEDIDO");
-		$hoja->setCellValue("AR".$flag, "CAJAS");
-		$hoja->setCellValue("AS".$flag, "PZAS");
-		$hoja->setCellValue("AT".$flag, "PEND");
-		$hoja->setCellValue("AU".$flag, "PEDIDO");
-		$hoja->setCellValue("AV".$flag, "CAJAS");
-		$hoja->setCellValue("AW".$flag, "PZAS");
-		$hoja->setCellValue("AX".$flag, "PEND");
-		$hoja->setCellValue("AY".$flag, "PEDIDO");
-		$hoja->setCellValue("AZ".$flag, "CAJAS");
-		$hoja->setCellValue("BA".$flag, "PZAS");
-		$hoja->setCellValue("BB".$flag, "PEND");
-		$hoja->setCellValue("BC".$flag, "PEDIDO");
-		
-		$hoja->setCellValue("BD".$flag, "PROMOCION");
-		$hoja->setCellValue("BN".$flag, "TOTAL");
-		$hoja->setCellValue("BO".$flag, "PEDIDOS");
-		$this->cellStyle("BE".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BF".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BG".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BH".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BI".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BJ".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BK".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BL".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BM".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BN".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$this->cellStyle("BO".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$this->excelfile->getActiveSheet()->getStyle('BD'.$flag)->applyFromArray($styleArray);
-		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$where=["ctz_first.id_proveedor" => 3,"prod.estatus" => 1];//Semana actual
-		$intervalo = new DateInterval('P2D');
-		$fecha->add($intervalo);
-		$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
-		$flag1 = 5;
-		if($cotizacionesProveedor){
-			foreach ($cotizacionesProveedor as $key => $value) {
-
-				$this->excelfile->setActiveSheetIndex(0);
-				$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
-				$hoja1->setCellValue("E".$flag1, $value['familia']);
-				$flag1 +=1;
-				//Pedidos
-				$this->excelfile->setActiveSheetIndex(1);
-				$this->cellStyle("C".$flag, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
-				$hoja->setCellValue("C{$flag}", $value['familia']);
-				$flag +=1;
-				if ($value['articulos']) {
-					foreach ($value['articulos'] as $key => $row){
-						$registrazo = date('Y-m-d',strtotime($row['registrazo']));
-						$this->excelfile->setActiveSheetIndex(0);
-						$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						
-						$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-						if($row['color'] == '#92CEE3'){
-							$this->cellStyle("D{$flag1}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						$hoja1->setCellValue("E{$flag1}", $row['producto']);
-						$hoja1->getStyle("A{$flag1}:E{$flag1}")
-				                 ->getAlignment()
-				                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-				         
-		                
-						//Pedidos
-						$this->excelfile->setActiveSheetIndex(1);
-						$this->cellStyle("A".$flag.":BA".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						
-						$hoja->setCellValue("A{$flag}", $row['codigo'])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-						$hoja->setCellValue("B{$flag}", $row['codigo_factura'])->getStyle("B{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-						if($row['color'] == '#92CEE3'){
-							$this->cellStyle("A{$flag}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$this->cellStyle("A{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						$hoja->setCellValue("C{$flag}", $row['producto']);
-						
-						
-
-						
-						if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
-							$hoja->setCellValue("D{$flag}", $row['precio_first'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}elseif($row['precio_sistema'] < $row['precio_first']){
-							$hoja->setCellValue("D{$flag}", $row['precio_first'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("D{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("D{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("C{$flag}", "E21600", "000000", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$hoja->setCellValue("D{$flag}", $row['precio_first'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("D{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("C{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-
-						$hoja->setCellValue("F{$flag}", $row['precio_sistema'])->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
-						$this->cellStyle("F".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
-						if($row['colorp'] == 1){
-							$this->cellStyle("F{$flag}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$this->cellStyle("F{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-
-						$hoja->setCellValue("H{$flag}", $row['precio_four'])->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$this->cellStyle("H{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						if($row['precio_sistema'] < $row['precio_next']){
-							$hoja->setCellValue("I{$flag}", $row['precio_next'])->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("I{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-						}else if($row['precio_next'] !== NULL){
-							$hoja->setCellValue("I{$flag}", $row['precio_next'])->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("I{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-						}else{
-							$hoja->setCellValue("I{$flag}", $row['precio_next'])->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-							$this->cellStyle("I{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						$hoja->setCellValue("J{$flag}", $row['proveedor_next']);
-						$this->cellStyle("K".$flag.":BA".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-						$this->cellStyle("J".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-
-						if ($row['id_mayoreo']) {
-							$this->cellStyle("K".$flag.":L".$flag, "ED7D31", "000000", TRUE, 12, "Franklin Gothic Book");
-							if ($row['exist']) {
-								$this->cellStyle("K".$flag.":L".$flag, "f79646", "ED7D31", TRUE, 12, "Franklin Gothic Book");
+					$this->excelfile->setActiveSheetIndex(0);
+					$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+					$hoja1->setCellValue("E".$flag1, $value['familia']);
+					$flag1 +=1;
+					//Pedidos
+					$this->excelfile->setActiveSheetIndex(1);
+					$this->cellStyle("C".$flag, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("C{$flag}", $value['familia']);
+					$flag +=1;
+					if ($value['articulos']) {
+						foreach ($value['articulos'] as $key => $row){
+							$registrazo = date('Y-m-d',strtotime($row['registrazo']));
+							$this->excelfile->setActiveSheetIndex(0);
+							$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							
+							$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							if($row['color'] == '#92CEE3'){
+								$this->cellStyle("D{$flag1}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
-						}else{
-							if ($row['exist']) {
-								$this->cellStyle("K".$flag.":L".$flag, "f79646", "000000", TRUE, 12, "Franklin Gothic Book");
+							$hoja1->setCellValue("E{$flag1}", $row['producto']);
+							$hoja1->getStyle("A{$flag1}:E{$flag1}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					         
+			                
+							//Pedidos
+							$this->excelfile->setActiveSheetIndex(1);
+							$this->cellStyle("A".$flag.":BA".$flag."", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							
+							$hoja->setCellValue("A{$flag}", $row['codigo'])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							$hoja->setCellValue("B{$flag}", $row['codigo_factura'])->getStyle("B{$flag}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							if($row['color'] == '#92CEE3'){
+								$this->cellStyle("A{$flag}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$this->cellStyle("A{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
+							$hoja->setCellValue("C{$flag}", $row['producto']);
+							
+							
+
+							
+							if (number_format(($row['precio_sistema'] - $row['precio_first']),2) === "0.01" || number_format(($row['precio_sistema'] - $row['precio_first']),2) === "-0.01") {
+								$hoja->setCellValue("D{$flag}", $row['precio_first'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}elseif($row['precio_sistema'] < $row['precio_first']){
+								$hoja->setCellValue("D{$flag}", $row['precio_first'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->cellStyle("D{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("D{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "E21600", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$hoja->setCellValue("D{$flag}", $row['precio_first'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->cellStyle("D{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+
+							$hoja->setCellValue("F{$flag}", $row['precio_sistema'])->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
+							$this->cellStyle("F".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
+							if($row['colorp'] == 1){
+								$this->cellStyle("F{$flag}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$this->cellStyle("F{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+
+							$hoja->setCellValue("H{$flag}", $row['precio_four'])->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("H{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							if($row['precio_sistema'] < $row['precio_next']){
+								$hoja->setCellValue("I{$flag}", $row['precio_next'])->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->cellStyle("I{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
+							}else if($row['precio_next'] !== NULL){
+								$hoja->setCellValue("I{$flag}", $row['precio_next'])->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->cellStyle("I{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$hoja->setCellValue("I{$flag}", $row['precio_next'])->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->cellStyle("I{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+							$hoja->setCellValue("J{$flag}", $row['proveedor_next']);
+							$this->cellStyle("K".$flag.":BA".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+							$this->cellStyle("J".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+
+							if ($row['id_mayoreo']) {
+								$this->cellStyle("K".$flag.":L".$flag, "ED7D31", "000000", TRUE, 12, "Franklin Gothic Book");
+								if ($row['exist']) {
+									$this->cellStyle("K".$flag.":L".$flag, "f79646", "ED7D31", TRUE, 12, "Franklin Gothic Book");
+								}
+							}else{
+								if ($row['exist']) {
+									$this->cellStyle("K".$flag.":L".$flag, "f79646", "000000", TRUE, 12, "Franklin Gothic Book");
+								}
+							}
+							$hoja->setCellValue("K{$flag}", $row['caja0']);
+							$hoja->setCellValue("L{$flag}", $row['pz0']);
+							$hoja->setCellValue("N{$flag}", $row['cedis']);
+							$hoja->setCellValue("O{$flag}", $row['ped0']);
+							$this->cellStyle("O{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("P{$flag}", $row['caja9']);
+							$hoja->setCellValue("Q{$flag}", $row['pz9']);
+							$hoja->setCellValue("R{$flag}", $row['ped9']);
+							$this->cellStyle("R{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("S{$flag}", "=K".$flag."+BA".$flag);
+							$hoja->setCellValue("T{$flag}", "=L".$flag."+BB".$flag);
+							$hoja->setCellValue("U{$flag}", "=O".$flag."+BC".$flag);
+							$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("V{$flag}", $row['caja1']);
+							$hoja->setCellValue("W{$flag}", $row['pz1']);
+							$hoja->setCellValue("X{$flag}", $row['stocant']);
+							$hoja->setCellValue("Y{$flag}", $row['abarrotes']);
+							$hoja->setCellValue("Z{$flag}", $row['ped1']);
+							$this->cellStyle("Z{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AA{$flag}", $row['caja2']);
+							$hoja->setCellValue("AB{$flag}", $row['pz2']);
+							$hoja->setCellValue("AD{$flag}", $row['pedregal']);
+							$hoja->setCellValue("AE{$flag}", $row['ped2']);
+							$this->cellStyle("AE{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AF{$flag}", $row['caja3']);
+							$hoja->setCellValue("AG{$flag}", $row['pz3']);
+							$hoja->setCellValue("AH{$flag}", $row['tienda']);
+							$hoja->setCellValue("AI{$flag}", $row['ped3']);
+							$this->cellStyle("AI{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AJ{$flag}", $row['caja4']);
+							$hoja->setCellValue("AK{$flag}", $row['pz4']);
+							$hoja->setCellValue("AL{$flag}", $row['ultra']);
+							$hoja->setCellValue("AM{$flag}", $row['ped4']);
+							$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AN{$flag}", $row['caja5']);
+							$hoja->setCellValue("AO{$flag}", $row['pz5']);
+							$hoja->setCellValue("AP{$flag}", $row['trincheras']);
+							$hoja->setCellValue("AQ{$flag}", $row['ped5']);
+							$this->cellStyle("AQ{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AR{$flag}", $row['caja6']);
+							$hoja->setCellValue("AS{$flag}", $row['pz6']);
+							$hoja->setCellValue("AT{$flag}", $row['mercado']);
+							$hoja->setCellValue("AU{$flag}", $row['ped6']);
+							$this->cellStyle("AU{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AV{$flag}", $row['caja7']);
+							$hoja->setCellValue("AW{$flag}", $row['pz7']);
+							$hoja->setCellValue("AX{$flag}", $row['tenencia']);
+							$hoja->setCellValue("AY{$flag}", $row['ped7']);
+							$this->cellStyle("AY{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							$hoja->setCellValue("AZ{$flag}", $row['caja8']);
+							$hoja->setCellValue("BA{$flag}", $row['pz8']);
+							$hoja->setCellValue("BB{$flag}", $row['tijeras']);
+							$hoja->setCellValue("BC{$flag}", $row['ped8']);
+							$this->cellStyle("BC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+							
+
+							$hoja->setCellValue("BD{$flag}", $row['promocion_first']);
+							$hoja->setCellValue("BE{$flag}", "=D".$flag."*O".$flag)->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BF{$flag}", "=D".$flag."*Z".$flag)->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BG{$flag}", "=D".$flag."*AE".$flag)->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BH{$flag}", "=D".$flag."*AI".$flag)->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BI{$flag}", "=D".$flag."*AM".$flag)->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BJ{$flag}", "=D".$flag."*AQ".$flag)->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BK{$flag}", "=D".$flag."*AU".$flag)->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BL{$flag}", "=D".$flag."*AY".$flag)->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("BM{$flag}", "=D".$flag."*BC".$flag)->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("BN{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->setCellValue("BN{$flag}", "=SUM(BE".$flag.":BM".$flag.")")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$this->cellStyle("BO{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
+							$hoja->setCellValue("BO{$flag}", "=O".$flag."+Z".$flag."+AE".$flag."+AI".$flag."+AM".$flag."+AQ".$flag."+AU".$flag."+AY".$flag."+BC".$flag."");
+							
+							$border_style= array('borders' => array('right' => array('style' =>
+								PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+							$this->excelfile->setActiveSheetIndex(1);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
+							$this->excelfile->getActiveSheet()->getStyle('BN'.$flag)->applyFromArray($styleArray);
+							$this->excelfile->getActiveSheet()->getStyle('BO'.$flag)->applyFromArray($styleArray);
+							$this->excelfile->setActiveSheetIndex(0);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':E'.$flag1)->applyFromArray($styleArray);
+							$hoja->getStyle("A{$flag}:J{$flag}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+					   if($this->weekNumber($registrazo) == ($this->weekNumber() - 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
+								$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+							if($row['precio_sistema'] == 0){
+								$row['precio_sistema'] = 1;
+							}
+							if($row['precio_four'] == 0){
+								$row['precio_four'] = 1;
+							}
+
+							$hoja->setCellValue("E{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+							$this->cellStyle("E".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
+
+							$hoja->setCellValue("G{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+							$this->cellStyle("G".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
+							$flag ++;
+							$flag1 ++;
 						}
-						$hoja->setCellValue("K{$flag}", $row['caja0']);
-						$hoja->setCellValue("L{$flag}", $row['pz0']);
-						$hoja->setCellValue("N{$flag}", $row['cedis']);
-						$hoja->setCellValue("O{$flag}", $row['ped0']);
-						$this->cellStyle("O{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("P{$flag}", $row['caja9']);
-						$hoja->setCellValue("Q{$flag}", $row['pz9']);
-						$hoja->setCellValue("R{$flag}", $row['ped9']);
-						$this->cellStyle("R{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("S{$flag}", "=K".$flag."+BA".$flag);
-						$hoja->setCellValue("T{$flag}", "=L".$flag."+BB".$flag);
-						$hoja->setCellValue("U{$flag}", "=O".$flag."+BC".$flag);
-						$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("V{$flag}", $row['caja1']);
-						$hoja->setCellValue("W{$flag}", $row['pz1']);
-						$hoja->setCellValue("X{$flag}", $row['stocant']);
-						$hoja->setCellValue("Y{$flag}", $row['abarrotes']);
-						$hoja->setCellValue("Z{$flag}", $row['ped1']);
-						$this->cellStyle("Z{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AA{$flag}", $row['caja2']);
-						$hoja->setCellValue("AB{$flag}", $row['pz2']);
-						$hoja->setCellValue("AD{$flag}", $row['pedregal']);
-						$hoja->setCellValue("AE{$flag}", $row['ped2']);
-						$this->cellStyle("AE{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AF{$flag}", $row['caja3']);
-						$hoja->setCellValue("AG{$flag}", $row['pz3']);
-						$hoja->setCellValue("AH{$flag}", $row['tienda']);
-						$hoja->setCellValue("AI{$flag}", $row['ped3']);
-						$this->cellStyle("AI{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AJ{$flag}", $row['caja4']);
-						$hoja->setCellValue("AK{$flag}", $row['pz4']);
-						$hoja->setCellValue("AL{$flag}", $row['ultra']);
-						$hoja->setCellValue("AM{$flag}", $row['ped4']);
-						$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AN{$flag}", $row['caja5']);
-						$hoja->setCellValue("AO{$flag}", $row['pz5']);
-						$hoja->setCellValue("AP{$flag}", $row['trincheras']);
-						$hoja->setCellValue("AQ{$flag}", $row['ped5']);
-						$this->cellStyle("AQ{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AR{$flag}", $row['caja6']);
-						$hoja->setCellValue("AS{$flag}", $row['pz6']);
-						$hoja->setCellValue("AT{$flag}", $row['mercado']);
-						$hoja->setCellValue("AU{$flag}", $row['ped6']);
-						$this->cellStyle("AU{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AV{$flag}", $row['caja7']);
-						$hoja->setCellValue("AW{$flag}", $row['pz7']);
-						$hoja->setCellValue("AX{$flag}", $row['tenencia']);
-						$hoja->setCellValue("AY{$flag}", $row['ped7']);
-						$this->cellStyle("AY{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						$hoja->setCellValue("AZ{$flag}", $row['caja8']);
-						$hoja->setCellValue("BA{$flag}", $row['pz8']);
-						$hoja->setCellValue("BB{$flag}", $row['tijeras']);
-						$hoja->setCellValue("BC{$flag}", $row['ped8']);
-						$this->cellStyle("BC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-						
-
-						$hoja->setCellValue("BD{$flag}", $row['promocion_first']);
-						$hoja->setCellValue("BE{$flag}", "=D".$flag."*O".$flag)->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BF{$flag}", "=D".$flag."*Z".$flag)->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BG{$flag}", "=D".$flag."*AE".$flag)->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BH{$flag}", "=D".$flag."*AI".$flag)->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BI{$flag}", "=D".$flag."*AM".$flag)->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BJ{$flag}", "=D".$flag."*AQ".$flag)->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BK{$flag}", "=D".$flag."*AU".$flag)->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BL{$flag}", "=D".$flag."*AY".$flag)->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$hoja->setCellValue("BM{$flag}", "=D".$flag."*BC".$flag)->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$this->cellStyle("BN{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
-						$hoja->setCellValue("BN{$flag}", "=SUM(BE".$flag.":BM".$flag.")")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-						$this->cellStyle("BO{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-						$hoja->setCellValue("BO{$flag}", "=O".$flag."+Z".$flag."+AE".$flag."+AI".$flag."+AM".$flag."+AQ".$flag."+AU".$flag."+AY".$flag."+BC".$flag."");
-						
-						$border_style= array('borders' => array('right' => array('style' =>
-							PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-						$this->excelfile->setActiveSheetIndex(1);
-						$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
-						$this->excelfile->getActiveSheet()->getStyle('BN'.$flag)->applyFromArray($styleArray);
-						$this->excelfile->getActiveSheet()->getStyle('BO'.$flag)->applyFromArray($styleArray);
-						$this->excelfile->setActiveSheetIndex(0);
-						$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':E'.$flag1)->applyFromArray($styleArray);
-						$hoja->getStyle("A{$flag}:J{$flag}")
-				                 ->getAlignment()
-				                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-
-				   if($this->weekNumber($registrazo) == ($this->weekNumber() - 1) || $this->weekNumber($registrazo) == ($this->weekNumber())){
-							$this->cellStyle("A{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-							$this->cellStyle("B{$flag}", "FF7F71", "000000", FALSE, 12, "Franklin Gothic Book");
-						}
-						if($row['precio_sistema'] == 0){
-							$row['precio_sistema'] = 1;
-						}
-						if($row['precio_four'] == 0){
-							$row['precio_four'] = 1;
-						}
-
-						$hoja->setCellValue("E{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-						$this->cellStyle("E".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
-
-						$hoja->setCellValue("G{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
-						$this->cellStyle("G".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
-						$flag ++;
-						$flag1 ++;
 					}
 				}
 			}
+			$flans = $flag - 1;
+			$hoja->setCellValue("BE{$flag}", "=SUM(BE5:BE{$flans})")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BF{$flag}", "=SUM(BF5:BF{$flans})")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BG{$flag}", "=SUM(BG5:BG{$flans})")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BH{$flag}", "=SUM(BH5:BH{$flans})")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BI{$flag}", "=SUM(BI5:BI{$flans})")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BJ{$flag}", "=SUM(BJ5:BJ{$flans})")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BK{$flag}", "=SUM(BK5:BK{$flans})")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BL{$flag}", "=SUM(BL5:BL{$flans})")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BM{$flag}", "=SUM(BM5:BM{$flans})")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$hoja->setCellValue("BN{$flag}", "=SUM(BN5:BN{$flans})")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flans = $flag;
+			$flag += 4;
+			$this->cellStyle("B".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "CEDIS");
+			$hoja->setCellValue("C{$flag}", "=(BE{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "ABARROTES");
+			$hoja->setCellValue("C{$flag}", "=(BF{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "VILLAS");
+			$hoja->setCellValue("C{$flag}", "=(BG{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "TIENDA");
+			$hoja->setCellValue("C{$flag}", "=(BH{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "ULTRAMARINOS");
+			$hoja->setCellValue("C{$flag}", "=(BI{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "TRINCHERAS");
+			$hoja->setCellValue("C{$flag}", "=(BJ{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "AZT MERCADO");
+			$hoja->setCellValue("C{$flag}", "=(BK{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "TENENCIA");
+			$hoja->setCellValue("C{$flag}", "=(BL{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "TIJERAS");
+			$hoja->setCellValue("C{$flag}", "=(BM{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+			$this->cellStyle("B".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("B".$flag, "TOTAL");
+			$hoja->setCellValue("C{$flag}", "=(BN{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+			$flag++;
+
+			$flag = $flag+5;
+			$flag2 = $flag+5;
 		}
-		$flans = $flag - 1;
-		$hoja->setCellValue("BE{$flag}", "=SUM(BE5:BE{$flans})")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BF{$flag}", "=SUM(BF5:BF{$flans})")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BG{$flag}", "=SUM(BG5:BG{$flans})")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BH{$flag}", "=SUM(BH5:BH{$flans})")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BI{$flag}", "=SUM(BI5:BI{$flans})")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BJ{$flag}", "=SUM(BJ5:BJ{$flans})")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BK{$flag}", "=SUM(BK5:BK{$flans})")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BL{$flag}", "=SUM(BL5:BL{$flans})")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BM{$flag}", "=SUM(BM5:BM{$flans})")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$hoja->setCellValue("BN{$flag}", "=SUM(BN5:BN{$flans})")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flans = $flag;
-		$flag += 4;
-		$this->cellStyle("B".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "CEDIS");
-		$hoja->setCellValue("C{$flag}", "=(BE{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "ABARROTES");
-		$hoja->setCellValue("C{$flag}", "=(BF{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "VILLAS");
-		$hoja->setCellValue("C{$flag}", "=(BG{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "TIENDA");
-		$hoja->setCellValue("C{$flag}", "=(BH{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "ULTRAMARINOS");
-		$hoja->setCellValue("C{$flag}", "=(BI{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "TRINCHERAS");
-		$hoja->setCellValue("C{$flag}", "=(BJ{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "AZT MERCADO");
-		$hoja->setCellValue("C{$flag}", "=(BK{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "TENENCIA");
-		$hoja->setCellValue("C{$flag}", "=(BL{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "TIJERAS");
-		$hoja->setCellValue("C{$flag}", "=(BM{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
-		$this->cellStyle("B".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja->setCellValue("B".$flag, "TOTAL");
-		$hoja->setCellValue("C{$flag}", "=(BN{$flans})")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-		$flag++;
 
 		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
