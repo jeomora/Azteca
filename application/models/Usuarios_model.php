@@ -69,6 +69,31 @@ class Usuarios_model extends MY_Model {
 			return false;
 		}
 	}
+	public function getH($where=[]){
+		$this->db->select("*")
+		->from($this->TABLE_NAME)
+		->where("(id_usuario = 6 OR id_usuario = 17)")
+		->order_by("id_usuario","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
 
 	public function getColors($where=[]){
 		$this->db->select("u.nombre,u.id_usuario,s.color")
