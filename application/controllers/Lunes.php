@@ -1462,8 +1462,8 @@ class Lunes extends MY_Controller {
 				$proveedor[$key]->estatus->setCellValue("BY{$flag}", "=SUM(BY5:BY".($flag-1).")")->getStyle("BY{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$this->cellStyle("BZ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("BZ{$flag}", "=SUM(BZ5:BZ".($flag-1).")")->getStyle("BZ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
-				$this->cellStyle("AA".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("AA{$flag}", "=SUM(AA5:AA".($flag-1).")")->getStyle("AA{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$this->cellStyle("CA".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+				$proveedor[$key]->estatus->setCellValue("CA{$flag}", "=SUM(CA5:CA".($flag-1).")")->getStyle("CA{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$this->cellStyle("CB".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("CB{$flag}", "=SUM(CB5:CB".($flag-1).")")->getStyle("CB{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$this->cellStyle("CC".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -1503,7 +1503,7 @@ class Lunes extends MY_Controller {
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "PEDREGAL");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=AA{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=CA{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$ped=$ped."".$va->alias."!D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':C'.$flag)->applyFromArray($styleArray);
@@ -1538,7 +1538,7 @@ class Lunes extends MY_Controller {
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("B".$flag, "TIJERAS");
+				$proveedor[$key]->estatus->setCellValue("C".$flag, "TIJERAS");
 				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=CG{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$tij=$tij."".$va->alias."!D{$flag}+";
 				$flag++;
