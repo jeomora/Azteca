@@ -306,65 +306,6 @@ class Lunes extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-
-	/*public function upload_prods(){
-		$nams = preg_replace('/\s+/', '_', "Topazo");
-		$filen = "Cotizacion".$nams."".rand();
-		$config['upload_path']          = './assets/uploads/cotizaciones/';
-        $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
-        $this->load->library('upload', $config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload('file_otizaciones',$filen);
-		$this->load->library("excelfile");
-		ini_set("memory_limit", -1);
-		$file = $_FILES["file_otizaciones"]["tmp_name"];
-		$filename=$_FILES['file_otizaciones']['name'];
-		$sheet = PHPExcel_IOFactory::load($file);
-		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0);
-		$num_rows = $sheet->getHighestDataRow();
-		for ($i=2; $i<=$num_rows; $i++) {
-			if($sheet->getCell('A'.$i)->getValue() > 0){
-				$precio=0; $sistema=0; $codigo=""; $desc=""; $unidad=0;
-				$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue()));
-				$sistema = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('D'.$i)->getValue()));
-				$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
-				$desc = $sheet->getCell('B'.$i)->getValue();
-				$unidad = $sheet->getCell('E'.$i)->getValue();
-				$prove = $sheet->getCell('F'.$i)->getValue();
-				$new_cotizacion=[
-					"codigo"			=>	$codigo,
-					"id_proveedor"		=>	$prove,//Recupera el id_usuario activo
-					"precio"			=>	$precio,
-					"sistema"			=>	$sistema,
-					"descripcion"			=>	$desc,
-					"unidad"			=>	$unidad,
-					"estatus" => 1];
-				$data['cotizacion']=$this->prolu_md->insert($new_cotizacion);
-			}
-		}
-		if (!isset($new_cotizacion)) {
-			$mensaje=[	"id"	=>	'Error',
-						"desc"	=>	'El Archivo esta sin precios',
-						"type"	=>	'error'];
-		}else{
-			if (sizeof($new_cotizacion) > 0) {
-				
-				$mensaje=[	"id"	=>	'Éxito',
-							"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
-							"type"	=>	'success'];
-			}else{
-				$mensaje=[	"id"	=>	'Error',
-							"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
-							"type"	=>	'error'];
-			}
-		}
-		$this->jsonResponse($mensaje);
-	}*/
-
 	public function exislunes(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
@@ -1942,6 +1883,84 @@ class Lunes extends MY_Controller {
 		$data["view"]=$this->load->view("Lunes/allpedido", $data, TRUE);
 		
 		$this->jsonResponse($data);
+	}
+
+	public function fill_plantilla(){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+
+		$hoja->getColumnDimension('A')->setWidth("10");
+		$hoja->getColumnDimension('B')->setWidth("10");
+		$hoja->getColumnDimension('D')->setWidth("22");
+		$hoja->getColumnDimension('C')->setWidth("10");
+		$hoja->getColumnDimension('E')->setWidth("70");
+
+		$productos = $this->ex_lun_md->getPlantilla(NULL);
+		$alias = "";
+		$flag = 1;
+
+		
+		if ($productos){
+			foreach ($productos as $key => $value){
+				if ($alias <> $value->alias) {
+					if ($flag <> 1) {
+						$flag++;
+						$flag++;
+					}
+					$alias = $value->alias;
+					$hoja->mergeCells('A'.$flag.':E'.$flag);
+					$this->cellStyle("A".$flag."", "4f81bd", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("A".$flag."", $value->nombre);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':E'.$flag.'')->applyFromArray($styleArray);
+					$flag++;
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':E'.$flag.'')->applyFromArray($styleArray);
+					$this->cellStyle("A".$flag."", "1f497d", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("B".$flag."", "1f497d", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("C".$flag."", "1f497d", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("D".$flag."", "1f497d", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("E".$flag."", "1f497d", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("A".$flag."", "CAJA");
+					$hoja->setCellValue("B".$flag."", "PZAS");
+					$hoja->setCellValue("C".$flag."", "PEDIDO");
+					$hoja->setCellValue("D".$flag."", "CÓDIGO");
+					$hoja->setCellValue("E".$flag."", "DESCRIPCIÓN");
+					$flag++;
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':E'.$flag.'')->applyFromArray($styleArray);
+					$this->cellStyle("D".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$this->cellStyle("E".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("D".$flag."", $value->codigo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
+					$hoja->setCellValue("E".$flag."", $value->descripcion);
+					$flag++;
+				}else{
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':E'.$flag.'')->applyFromArray($styleArray);
+					$this->cellStyle("D".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$this->cellStyle("E".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("D".$flag."", $value->codigo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
+					$hoja->setCellValue("E".$flag."", $value->descripcion);
+					$flag++;
+				}
+			}
+		}
+
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "Formato Existencias Lunes ".$fecha.".xlsx"; //Nombre del documento con extención
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer->save("php://output");
 	}
 }
 

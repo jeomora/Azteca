@@ -273,4 +273,31 @@ class Exislunes_model extends MY_Model {
 			return false;
 		}
 	}
+
+	public function getPlantilla($where=[]){
+		$this->db->select("p.codigo,p.descripcion,pl.nombre,pl.alias")
+		->from("pro_lunes p")
+		->join("prove_lunes pl","p.id_proveedor = pl.id_proveedor","LEFT")
+		->where("p.estatus",1)
+		->order_by("p.id_proveedor","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
 }

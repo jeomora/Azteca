@@ -7,7 +7,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 }
 ?>
 <style>
-	.buscale {width: 50vw;padding: 5px 10px;border: 2px solid #23c6c8;font-size: 16px;border-radius: 5px;}
+	.buscale {width: 100%;padding: 5px 10px;border: 2px solid #23c6c8;font-size: 16px;border-radius: 5px;}
 	div#page-wrapper{background: #008b8b;}
 	.top-navigation .nav>li>a{color:#000;background:#fff;}
 	.white-bg .navbar-fixed-top, .white-bg .navbar-static-top{background: #fff;}
@@ -17,6 +17,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.top-navigation .navbar-nav .dropdown-menu{background:#004479;color:#ffffff;}
 	.top-navigation .wrapper.wrapper-content{padding:40px 0px !important;}
 	body{font-family:sans-serif;}
+	.btnPlantilla{background:aquamarine;border:1px solid lightseagreen;padding:15px 30px;font-size:16px;border-radius:5px;}
 }
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -38,9 +39,14 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<?php //echo form_close(); ?>
 					</div> -->
 					<br>
-					<div class="btn-group" style="margin-top:20px;margin-bottom:20px;">
+					<div class="btn-group col-md-6 col-xl-6 col-sm-12" style="margin-top:20px;margin-bottom:20px;">
 						<input type="text" name="buscale" id="buscale" class="buscale" placeholder="Ingrese la descripción o código del producto"><br>
 						<p>A partir de 4 caracteres se mostrarán los resultados en la tabla </p>
+					</div>
+					<div class="btn-group col-md-6 col-xl-6 col-sm-12">
+						<button class="btnPlantilla">
+							Descargar Plantilla Existencias
+						</button>
 					</div>
 					<table class="table table-striped table-bordered table-hover" style="font-size:10px">
 						<thead>
