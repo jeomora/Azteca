@@ -44,9 +44,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<p>A partir de 4 caracteres se mostrarán los resultados en la tabla </p>
 					</div>
 					<div class="btn-group col-md-6 col-xl-6 col-sm-12">
+						<?php echo form_open("Lunes/fill_plantilla", array("id" => 'repe_cotizaciones', "target" => '_blank')); ?>
 						<button class="btnPlantilla">
 							Descargar Plantilla Existencias
 						</button>
+						<?php echo form_close(); ?>
 					</div>
 					<table class="table table-striped table-bordered table-hover" style="font-size:10px">
 						<thead>
