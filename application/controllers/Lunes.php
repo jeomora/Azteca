@@ -1300,9 +1300,36 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F{$flag}", $v["unidad"]);
 					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-
-
-
+					$this->cellStyle("B".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					if ($v["codigo"] == "490676"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "001");}
+					if ($v["codigo"] == "490677"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "002");}
+					if ($v["codigo"] == "75010258035"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "009");}
+					if ($v["codigo"] == "490686"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "014");}
+					if ($v["codigo"] == "75010490679"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "024");}
+					if ($v["codigo"] == "7501021148"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "063");}
+					if ($v["codigo"] == "75030253007"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "201");}
+					if ($v["codigo"] == "750242549"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "202");}
+					if ($v["codigo"] == "7501021112183"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "218");}
+					if ($v["codigo"] == "7501021112206"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "220");}
+					if ($v["codigo"] == "490683"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "505");}
+					if ($v["codigo"] == "490684"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "507");}
+					if ($v["codigo"] == "490685"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "508");}
+					if ($v["codigo"] == "7501025803020"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "516");}
+					if ($v["codigo"] == "7506399016"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "559");}
+					if ($v["codigo"] == "7506399017"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "609");}
+					if ($v["codigo"] == "7506399018"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "610");}
+					if ($v["codigo"] == "242546"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "617");}
+					if ($v["codigo"] == "73501"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "630");}
+					if ($v["codigo"] == "490682"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "631");}
+					if ($v["codigo"] == "242548"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "648");}
+					if ($v["codigo"] == "242547"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "654");}
+					if ($v["codigo"] == "490680"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "656");}
+					if ($v["codigo"] == "490678"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "713");}
+					if ($v["codigo"] == "490681"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "715");}
+					if ($v["codigo"] == "490675"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "725");}
+					if ($v["codigo"] == "490679"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "732");}
+					if ($v["codigo"] == "7501028490679"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "741");}
+					
 					$proveedor[$key]->estatus->setCellValue("G{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,55,FALSE)")->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
 					$proveedor[$key]->estatus->setCellValue("S{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,56,FALSE)")->getStyle("S{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
 					$proveedor[$key]->estatus->setCellValue("Y{$flag}", "=VLOOKUP(A{$flag},ANTERIOR!A:BL,57,FALSE)")->getStyle("Y{$flag}")->getNumberFormat()->setFormatCode('#,#0_-');
@@ -1506,7 +1533,7 @@ class Lunes extends MY_Controller {
 				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=CA{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$ped=$ped."".$va->alias."!D{$flag}+";
 				$flag++;
-				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':C'.$flag)->applyFromArray($styleArray);
+				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TIENDA");
 				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=CB{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
