@@ -246,7 +246,7 @@ class Lunes extends MY_Controller {
 		$data["producto"] = $this->prolu_md->get(NULL, ['codigo'=>$id])[0];
 		$data["proveedor"] = $this->prove_md->get(NULL, ["id_proveedor"=>$data["producto"]->id_proveedor])[0];
 		$data["view"] = $this->load->view("Lunes/delete_producto", $data,TRUE);
-		$data["button"]="<button class='btn btn-danger delete_proveedor' type='button'>
+		$data["button"]="<button class='btn btn-danger delete_producto' type='button'>
 							<span class='bold'><i class='fa fa-times'></i></span> &nbsp;Estoy segura(o) de eliminar
 						</button>";
 		$this->jsonResponse($data);
@@ -254,14 +254,14 @@ class Lunes extends MY_Controller {
 
 	public function delete_prod(){
 		$user = $this->session->userdata();
-		$antes = $this->prolu_md->get(NULL, ['codigo'=>$this->input->post('codigo')])[0];
+		$antes = $this->prolu_md->get(NULL, ['codigo'=>$this->input->post('id_producto')])[0];
 		$cambios = [
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
 				"antes" => "Código : ".$antes->codigo." /Descripción: ".$antes->descripcion,
 				"despues" => "El Producto fue eliminado, se puede recuperar desde la BD"];
 		$data['cambios'] = $this->cambio_md->insert($cambios);
-		$data ['id_usuario'] = $this->prolu_md->update(["estatus" => 0], $this->input->post('codigo'));
+		$data ['id_usuario'] = $this->prolu_md->update(["estatus" => 0], $antes->codigo);
 		$mensaje = ["id" 	=> 'Éxito',
 					"desc"	=> 'Producto eliminado correctamente',
 					"type"	=> 'success'];
