@@ -209,7 +209,7 @@ class Verduras extends MY_Controller {
 					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
 				];
 				if($exis){
-					//$data['cotizacion']=$this->ex_lun_md->update($new_existencias[$i], ['id_pedido' => $exis->id_existencia]);
+					$data['cotizacion']=$this->exver_mdl->update($new_existencias[$i], ['id_existencia' => $exis->id_existencia]);
 				}else{
 					$data['cotizacion']=$this->exver_mdl->insert($new_existencias[$i]);
 				}
