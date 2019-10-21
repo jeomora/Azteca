@@ -21,6 +21,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Prolunes_model", "prolu_md");
 		$this->load->model("Exislunes_model", "ex_lun_md");
+		$this->load->model("Verduras_model", "ver_md");
 	}
 
 	public function index(){
@@ -64,7 +65,8 @@ class Pedidos extends MY_Controller {
 			$data["noall"] = $this->prod_mdl->getAllCount(NULL)[0];
 			$data["volcuantas"] = $this->ex_lun_md->getVolTienda(NULL,$user["id_usuario"])[0];
 			$data["allcuantas"] = $this->ex_lun_md->getAllTienda(NULL,$user["id_usuario"])[0];
-			//$this->jsonResponse($data["cuantas"]);
+			$data["verduras"] = $this->ver_md->getExisTienda(NULL,$user["id_usuario"]);
+			//$this->jsonResponse($data["verduras"]);
 			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
 		}else{
 			$data['scripts'] = [
