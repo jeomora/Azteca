@@ -5,6 +5,7 @@
 	th{border: 2px solid #000 !important;text-align:center;}
 	/*.table-responsive{width: 80vw;overflow-x:scroll;}*/
 	button.btnPrec{background:#2935ca;border:#2935ca;padding:10px 30px;border-radius:3px;margin-bottom:10px;color:#FFF;}
+	button.btnPrec{background:gold;border:gold;padding:10px 30px;border-radius:3px;margin-bottom:10px;color:#000;}
 </style>
 <?php 
 if(!$this->session->userdata("username") || $this->session->userdata("id_grupo") == 2){
@@ -41,6 +42,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<input class="btn btn-info" type="file" id="file_precios" name="file_precios"/>
 							</div>
 						<?php echo form_close(); ?>
+					</div>
+					<div class="btn-group">
+						<a href="Verduras/print_formato" target="_blank"><button type="button" class="btnForma"><i class='fa fa-download'></i> <span style="font-size:16px">Descargar Formato Verduras</span></button></a>
 					</div>
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_usuarios">
