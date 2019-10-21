@@ -5,6 +5,34 @@ $(function($) {
 });
 
 
+$(document).off("change", "#file_verduras").on("change", "#file_verduras", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_verduras")[0]);
+	uploadVerduras(fdata).done(function (resp) {
+		if (resp.type == 'error'){
+			toastr.error(resp.desc, user_name);
+			unblockPage();
+		}else{
+			unblockPage();
+			setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+		}
+	});	
+});
+
+function uploadVerduras(formData) {
+	return $.ajax({
+		url: site_url+"Verduras/upload_pedidos",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
+
+
 $(document).off("change", "#file_cotizaciones").on("change", "#file_cotizaciones", function(event) {
 	event.preventDefault();
 	if ($("#id_proves4").val() == "nope") {
