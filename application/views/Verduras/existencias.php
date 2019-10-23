@@ -21,6 +21,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.logo_img>img{border: 4px solid #008b8b;}
 	.top-navigation .navbar-nav .dropdown-menu{background:#004479;color:#ffffff;}
 	td{font-size:16px;font-family:monospace;}
+	.btndown{background:navy;font-size:18px;color:#FFF;padding:7px 25px;border:0;border-radius:3px;margin-top:-5px;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -34,17 +35,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<a href="Verduras/print_productos2" target="_blank"><button type="button" class="btnPrec"><i class='fa fa-download'></i> <span style="font-size:16px">(Descargar Formato Precios)</span></button></a>
 					</div>
 					<div class="btn-group">
-						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
+						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#000;margin-top:-2rem;">
 							Subir formato precios
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_precios')); ?>
 							<div class="col-sm-4">
-								<input class="btn btn-info" type="file" id="file_precios" name="file_precios"/>
+								<input class="btn btn-info" type="file" id="file_precios" name="file_precios" style="background-color:gold;border-color:gold;color:#000" />
 							</div>
 						<?php echo form_close(); ?>
 					</div>
 					<div class="btn-group">
-						<a href="Verduras/print_formato" target="_blank"><button type="button" class="btnForma"><i class='fa fa-download'></i> <span style="font-size:16px">Descargar Formato Verduras</span></button></a>
+						<a href="Verduras/print_formato" target="_blank"><button type="button" class="btnForma btndown"><i class='fa fa-download'></i> <span style="font-size:16px">Descargar Formato Verduras</span></button></a>
 					</div>
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_usuarios">
@@ -60,6 +61,20 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<tr>
 									<th colspan="6" style="background-color:#FFF"></th>
 									<th colspan="9" style="background-color:#FFF"><?php echo $fecha ?></th>
+								</tr>
+								<tr>
+									<th style="background-color:#FFF;" colspan="2"></th>
+									<th id="tnds87">0 DE 102</th>
+									<th id="tnds89">0 DE 102</th>
+									<th id="tnds90">0 DE 102</th>
+									<th id="tnds57">0 DE 102</th>
+									<th id="tnds58">0 DE 102</th>
+									<th id="tnds59">0 DE 102</th>
+									<th id="tnds60">0 DE 102</th>
+									<th id="tnds61">0 DE 102</th>
+									<th id="tnds62">0 DE 102</th>
+									<th id="tnds63">0 DE 102</th>
+									<th style="background-color:#FFF;" colspan="3"></th>
 								</tr>
 								<tr>
 									<th>ID</th>
@@ -186,6 +201,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 										<?php $dd += ($value->precio*$dude) ?>
 									</td><?php endforeach;endif; ?>
 								</tr>
+								
 							</tbody>
 						</table>
 					</div>

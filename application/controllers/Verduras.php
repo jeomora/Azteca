@@ -400,7 +400,6 @@ class Verduras extends MY_Controller {
 		$row_print++;
 		$row_print++;
 
-
 		$productos = $this->ver_mdl->getExistenciasJ(NULL);
 		if ($productos){
 			foreach ($productos as $key => $value){
@@ -427,7 +426,6 @@ class Verduras extends MY_Controller {
 				$row_print +=1;
 			}
 		}
-
 
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
@@ -551,6 +549,11 @@ class Verduras extends MY_Controller {
 						"type"	=>	'error'];
 		}
 		$this->jsonResponse($mensaje);
+	}
+
+	public function getExTns(){
+		$extns = $this->ver_mdl->getExTns(NULL);
+		$this->jsonResponse($extns);
 	}
 
 

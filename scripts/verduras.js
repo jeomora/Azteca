@@ -106,3 +106,24 @@ function uploadPrecios(formData) {
 		data: formData,
 	});
 }
+
+$(function($) {
+	getExTns().done(function(resp){
+		if (resp) {
+			$.each(resp,function(index,value){
+				$("#tnds"+value.id_tienda).html(value.total+" de 102");
+			})
+		}
+	})
+});
+
+function getExTns() {
+	return $.ajax({
+		url: site_url+"Verduras/getExTns/",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+	});
+}
