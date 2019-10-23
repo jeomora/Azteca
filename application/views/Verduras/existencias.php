@@ -137,7 +137,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 											<input type="text" name="precio" class="precio<?php echo $value->id_verdura ?>" id="precio" value="<?php echo $value->precio ?>" style="width:100px !important" data-id-verd="<?php echo $value->id_verdura ?>">
 										</td>
 										<td>$
-											<input type="text" name="total" class="total<?php echo $value->id_verdura ?>" id="total" value="<?php echo ($value->precio*$dude) ?>" style="width:100px !important;border:0;background-color:transparent;" readOnly>
+											<input type="text" name="total" class="total<?php echo $value->id_verdura ?>" id="total" value="<?php echo number_format($value->precio*$dude,2,'.',',') ?>" style="width:100px !important;border:0;background-color:transparent;" readOnly>
 											<?php $dd += ($value->precio*$dude) ?>
 										</td>
 									</tr>
@@ -197,7 +197,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 										<input type="text" name="preci2" class="precio2<?php echo $value->id_verdura ?>" id="preci2" value="<?php echo $value->precio ?>" style="width:100px !important" data-id-verd="<?php echo $value->id_verdura ?>">
 									</td>
 									<td>$
-										<input type="text" name="tota2" class="total2<?php echo $value->id_verdura ?>" id="tota2" value="<?php echo ($value->precio*$dude) ?>" style="width:100px !important;border:0;background-color:transparent;" readOnly>
+										<input type="text" name="tota2" class="total2<?php echo $value->id_verdura ?>" id="tota2" value="<?php echo number_format($value->precio*$dude,2,'.',',') ?>" style="width:100px !important;border:0;background-color:transparent;" readOnly>
 										<?php $dd += ($value->precio*$dude) ?>
 									</td><?php endforeach;endif; ?>
 								</tr>
