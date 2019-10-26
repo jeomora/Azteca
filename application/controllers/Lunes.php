@@ -234,7 +234,7 @@ class Lunes extends MY_Controller {
 		}else{
 			$mensaje = [
 				"id" 	=> 'Alerta',
-				"desc"	=> 'El Producto ['.$producto['nombre'].'] está registrado en el Sistema',
+				"desc"	=> 'El Producto ['.$producto['descripcion'].'] está registrado en el Sistema',
 				"type"	=> 'warning'
 			];
 		}
