@@ -234,7 +234,7 @@ class Lunes extends MY_Controller {
 		}else{
 			$mensaje = [
 				"id" 	=> 'Alerta',
-				"desc"	=> 'El Producto ['.$producto['nombre'].'] está registrado en el Sistema',
+				"desc"	=> 'El Producto ['.$producto['descripcion'].'] está registrado en el Sistema',
 				"type"	=> 'warning'
 			];
 		}
@@ -1989,6 +1989,72 @@ class Lunes extends MY_Controller {
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer->save("php://output");
+	}
+
+
+	public function print_precios(){
+		ini_set("memory_limit", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getTop()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getBottom()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getLeft()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$hoja->getDefaultStyle()
+		    ->getBorders()
+		    ->getRight()
+		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+		$this->cellStyle("A1:C2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$border_style= array('borders' => array('right' => array('style' =>
+			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+
+
+		$hoja->setCellValue("B1", "DESCRIPCIÓN SISTEMA")->getColumnDimension('B')->setWidth(60);
+
+		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(25); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("B2", "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(20);
+		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(20);
+		$hoja->setCellValue("C2", "SISTEMA")->getColumnDimension('C')->setWidth(20);
+
+		$productos = $this->prolu_md->get();
+		$row_print = 3;
+		if ($productos){
+			foreach ($productos as $key => $value){
+				$hoja->setCellValue("A{$row_print}", $value->codigo);
+				$hoja->setCellValue("B{$row_print}", $value->descripcion);
+				$hoja->setCellValue("C{$row_print}", $value->sistema);
+				$row_print +=1;
+			}
+		}
+
+
+		$hoja->getStyle("A3:C{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+		$hoja->getStyle("C3:C{$row_print}")
+                 ->getAlignment()
+                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+        $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "PRECIOS SISTEMA LUNES ".$fecha.".xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+
 	}
 }
 

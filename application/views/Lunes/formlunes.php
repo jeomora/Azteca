@@ -31,7 +31,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				<div class="ibox-content" style="overflow-x:scroll;">
 					<div class="btn-group col-sm-3" style="border:1px solid #bb2152;margin-right:30px;">
 						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#bb2152;margin-top: 2rem;">
-							Subir precios de sistema
+							Subir precios de sistema<a href="print_precios" target="_blank"><i class='fa fa-download'></i> <span style="font-size:10px">(Descargar Formato)</span></a>
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_sistema')); ?>
 							<div class="col-sm-4">
