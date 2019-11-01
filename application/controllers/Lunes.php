@@ -1676,7 +1676,7 @@ class Lunes extends MY_Controller {
 		$cfile =  $this->user_md->get(NULL, ['id_usuario' => $tienda])[0];
 		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
 		$filen = "PedidosLunes".$nams."".rand();
-		$config['upload_path']          = base_url('./assets/uploads/pedidos/'); 
+		$config['upload_path']          = './assets/uploads/pedidos/'; 
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
         $config['max_width']            = 10024;
