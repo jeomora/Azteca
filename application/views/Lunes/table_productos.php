@@ -49,6 +49,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<th>UM</th>
 								<th>PRECIO</th>
 								<th>SISTEMA</th>
+								<th>PROMOCIÓN</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -62,6 +63,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 										<td><?php echo number_format($value->unidad,0,".",",") ?></td>
 										<td><?php echo "$ ".number_format($value->precio,2,".",",") ?></td>
 										<td><?php echo "$ ".number_format($value->sistema,2,".",",") ?></td>
+										<td><?php echo $value->observaciones ?></td>
 										<td>
 											<button id="update_producto" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-producto="<?php echo $value->codigo ?>">
 												<i class="fa fa-pencil"></i>

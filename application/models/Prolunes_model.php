@@ -35,7 +35,7 @@ class Prolunes_model extends MY_Model {
 	}
 
 	public function getProductos($where=[]){
-		$this->db->select("p1.codigo,p1.descripcion,p2.alias,p2.nombre,p1.unidad,p1.precio,p1.sistema")
+		$this->db->select("p1.codigo,p1.descripcion,p2.alias,p2.nombre,p1.unidad,p1.precio,p1.sistema,p1.observaciones")
 		->from($this->TABLE_NAME." p1")
 		->join("prove_lunes p2","p1.id_proveedor = p2.id_proveedor","LEFT")
 		->where("p1.estatus","1")
