@@ -125,3 +125,30 @@ $(document).off("click", "#allinfo").on("click", "#allinfo", function(event) {
 		
 	});
 });
+
+$(document).off("change", "#file_frutas").on("change", "#file_frutas", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_frutas")[0]);
+	uploadFrutas(fdata).done(function (resp) {
+		if (resp.type == 'error'){
+			toastr.error(resp.desc, user_name);
+			unblockPage();
+		}else{
+			unblockPage();
+			setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+		}
+	});	
+});
+
+function uploadFrutas(formData) {
+	return $.ajax({
+		url: site_url+"Frutas/upload_pedidos",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}

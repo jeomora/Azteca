@@ -22,6 +22,7 @@ class Pedidos extends MY_Controller {
 		$this->load->model("Prolunes_model", "prolu_md");
 		$this->load->model("Exislunes_model", "ex_lun_md");
 		$this->load->model("Verduras_model", "ver_md");
+		$this->load->model("Frutas_model", "fru_md");
 	}
 
 	public function index(){
@@ -66,6 +67,7 @@ class Pedidos extends MY_Controller {
 			$data["volcuantas"] = $this->ex_lun_md->getVolTienda(NULL,$user["id_usuario"])[0];
 			$data["allcuantas"] = $this->ex_lun_md->getAllTienda(NULL,$user["id_usuario"])[0];
 			$data["verduras"] = $this->ver_md->getExisTienda(NULL,$user["id_usuario"]);
+			$data["frutas"] = $this->fru_md->getExisTienda(NULL,$user["id_usuario"]);
 			//$this->jsonResponse($data["verduras"]);
 			$this->estructura("Pedidos/pedido_tienda", $data, FALSE);
 		}else{

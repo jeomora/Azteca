@@ -138,13 +138,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		<div class="col-md-12" style="height:90px"></div>
 
 
-		<div class="col-md-12" style="box-shadow:inset 0px 0px 0px #1b006d,0px 5px 0px 0px #1b006d,0px 10px 5px #1b006d;border:1px solid #1b006d;padding:20px">
+		<div class="col-md-6" style="box-shadow:inset 0px 0px 0px #1b006d,0px 5px 0px 0px #1b006d,0px 10px 5px #1b006d;border:1px solid #1b006d;padding:20px">
 			<?php echo form_open_multipart("", array('id' => 'upload_verduras')); ?>
 			<div class="col-md-12">
-				<h2 style="text-align:center;padding-bottom: 20px">FORMATO VERDURAS (MERMA) <a href="Verduras/print_productos" target="_blank"><i class='fa fa-download'></i> <span style="font-size:10px">(Descargar Formato)</span></a></h2>
+				<h2 style="text-align:left;padding-bottom: 20px">FORMATO VERDURAS (MERMA) <a href="Verduras/print_productos" target="_blank"><i class='fa fa-download'></i> <span style="font-size:10px">(Descargar Formato)</span></a></h2>
 			</div>
 			<div class="col-md-12">
-				<div class="col-md-4"></div>
 				<div class="col-md-4" style="margin-top:5px;margin-bottom:5px">
 					<div class="btn-group">
 						<div class="col-sm-4">
@@ -152,17 +151,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4"></div>
 			</div>
 			<div class="col-md-12">
 
 			</div>
-			<div class="col-md-4 wonder" style="padding: 0">
+			<div class="col-md-2"></div>
+			<div class="col-md-8 wonder" style="padding: 0">
 				<table class="table table-striped table-bordered table-hover" id="table_verduras">
 					<thead>
-						<th style="background-color:#000;color:#FFF">ID</th>
-						<th style="background-color:#000;color:#FFF">DESCRIPCIÓN</th>
-						<th style="background-color:#000;color:#FFF">TOTAL</th>
+						<th style="background-color:#1b006d;color:#FFF">ID</th>
+						<th style="background-color:#1b006d;color:#FFF">DESCRIPCIÓN</th>
+						<th style="background-color:#1b006d;color:#FFF">TOTAL</th>
 					</thead>
 					<tbody>
 						<?php if($verduras):foreach ($verduras as $key => $value): ?>
@@ -176,6 +175,52 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					</tbody>
 				</table>
 			</div>
+			<div class="col-md-2"></div>
+			
+			<?php echo form_close(); ?>
+
+
+
+		</div>
+
+		<div class="col-md-6" style="box-shadow:inset 0px 0px 0px #6d0037,0px 5px 0px 0px #6d0037,0px 10px 5px #6d0037;border:1px solid #6d0037;padding:20px">
+			<?php echo form_open_multipart("", array('id' => 'upload_frutas')); ?>
+			<div class="col-md-12">
+				<h2 style="text-align:left;padding-bottom: 20px">FORMATO FRUTAS (MERMA) <a href="Frutas/print_productos" target="_blank"><i class='fa fa-download'></i> <span style="font-size:10px">(Descargar Formato)</span></a></h2>
+			</div>
+			<div class="col-md-12">
+				<div class="col-md-4" style="margin-top:5px;margin-bottom:5px">
+					<div class="btn-group">
+						<div class="col-sm-4">
+							<input class="btn btn-info" style="background-color:#6d0037;border:1px solid #6d0037" type="file" id="file_frutas" name="file_frutas" value=""/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+
+			</div>
+			<div class="col-md-2"></div>
+			<div class="col-md-8 wonder" style="padding: 0">
+				<table class="table table-striped table-bordered table-hover" id="table_frutas">
+					<thead>
+						<th style="background-color:#6d0037;color:#FFF">ID</th>
+						<th style="background-color:#6d0037;color:#FFF">DESCRIPCIÓN</th>
+						<th style="background-color:#6d0037;color:#FFF">TOTAL</th>
+					</thead>
+					<tbody>
+						<?php if($frutas):foreach ($frutas as $key => $value): ?>
+							<tr>
+								<td><?php echo $value->codigo; ?></td>
+								<td><?php echo $value->descripcion ?></td>
+								<td style="font-family:monospace;font-size:16px"><?php echo $value->total ?></td>
+							</tr>
+						<?php endforeach;endif; ?>
+						
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-2"></div>
 			
 			<?php echo form_close(); ?>
 
