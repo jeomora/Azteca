@@ -1299,6 +1299,9 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("E{$flag}", $v["sistema"])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F{$flag}", $v["unidad"]);
+
+					$proveedor[$key]->estatus->setCellValue("BU{$flag}", $v["observaciones"]);
+
 					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$this->cellStyle("B".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					if ($v["codigo"] == "490676"){$proveedor[$key]->estatus->setCellValue("B{$flag}", "001");}
