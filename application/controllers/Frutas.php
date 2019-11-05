@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Verduras extends MY_Controller {
+class Frutas extends MY_Controller {
 
 	function __construct(){
 		parent::__construct();
@@ -13,8 +13,8 @@ class Verduras extends MY_Controller {
 		$this->load->model("Exislunes_model", "ex_lun_md");
 		$this->load->model("Productos_model", "prod_mdl");
 		$this->load->model("Pendlunes_model", "pend_mdl");
-		$this->load->model("Verduras_model", "ver_mdl");
-		$this->load->model("Exverdura_model", "exver_mdl");
+		$this->load->model("Frutas_model", "ver_mdl");
+		$this->load->model("Exfruta_model", "exver_mdl");
 	}
 
 	public function index(){
@@ -26,7 +26,7 @@ class Verduras extends MY_Controller {
 		];
 
 		$data['scripts'] = [
-			'/scripts/verduras',
+			'/scripts/frutas',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
@@ -48,7 +48,7 @@ class Verduras extends MY_Controller {
 		$data["verduras"] = $this->ver_mdl->getExistenciasJ(NULL);
 		$data["verdurasEx"] = $this->ver_mdl->getExistencias(NULL);
 		$data["fecha"] =  $data["dias"][date('w')]." ".date('d')." DE ".$data["meses"][date('n')-1]. " DEL ".date('Y') ;
-		$this->estructura("Verduras/existencias", $data);
+		$this->estructura("Frutas/existencias", $data);
 	}
 
 	public function upload_productos(){
@@ -65,24 +65,25 @@ class Verduras extends MY_Controller {
 	        $estatus = 1;
 	        $this->load->library('upload', $config);
 	        $this->upload->initialize($config);
-	        $this->upload->do_upload('file_productos',$filen);
+	        $this->upload->do_upload('file_precios',$filen);
 			$this->load->library("excelfile");
 			ini_set("memory_limit", -1);
-			$file = $_FILES["file_productos"]["tmp_name"];
-			$filename=$_FILES['file_productos']['name'];
+			$file = $_FILES["file_precios"]["tmp_name"];
+			$filename=$_FILES['file_precios']['name'];
 			$sheet = PHPExcel_IOFactory::load($file);
 			$objExcel = PHPExcel_IOFactory::load($file);
 			$sheet = $objExcel->getSheet(0);
 			$num_rows = $sheet->getHighestDataRow();
 
 		
-			for ($i=3; $i<=$num_rows; $i++) {
-				$productos = $this->ver_mdl->get("id_verdura",['descripcion'=> $sheet->getCell('A'.$i)->getValue()])[0];
+			for ($i=1; $i<=$num_rows; $i++) {
+				$productos = $this->ver_mdl->get("id_fruta",['codigo'=> $sheet->getCell('A'.$i)->getValue()])[0];
 				if (sizeof($productos) <= 0) {
 					$new_producto=[
-							"id_familia" => $sheet->getCell('C'.$i)->getValue(),//Recupera el id_usuario activo
-							"descripcion" => $sheet->getCell('A'.$i)->getValue(),
-							"precio" => $sheet->getCell('B'.$i)->getValue()];
+							"id_familia" => 1,//Recupera el id_usuario activo
+							"codigo" => $sheet->getCell('A'.$i)->getValue(),
+							"descripcion" => $sheet->getCell('B'.$i)->getValue(),
+							"precio" => $sheet->getCell('C'.$i)->getValue()];
 					$data ['id_producto']=$this->ver_mdl->insert($new_producto);
 				}
 			}
@@ -95,7 +96,7 @@ class Verduras extends MY_Controller {
 					$cambios=[
 							"id_usuario"		=>	$this->session->userdata('id_usuario'),
 							"fecha_cambio"		=>	date("Y-m-d H:i:s"),
-							"antes"				=>	"El usuario sube productos Verduras",
+							"antes"				=>	"El usuario sube productos Frutas",
 							"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
 							"accion"			=>	"Sube Archivo"
 						];
@@ -176,7 +177,7 @@ class Verduras extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
-		$file = $_FILES["file_verduras"]["tmp_name"];
+		$file = $_FILES["file_frutas"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
@@ -185,7 +186,7 @@ class Verduras extends MY_Controller {
 		
 		$cfile =  $this->user_md->get(NULL, ['id_usuario' => $tienda])[0];
 		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
-		$filen = "PedidosVerduras".$nams."".rand();
+		$filen = "PedidosFrutas".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/pedidos/'; 
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
@@ -193,14 +194,14 @@ class Verduras extends MY_Controller {
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
-        $this->upload->do_upload('file_verduras',$filen);
+        $this->upload->do_upload('file_frutas',$filen);
 		for ($i=1; $i<=$num_rows; $i++) {
-			$productos = $this->ver_mdl->get("id_verdura",['codigo'=>$sheet->getCell('A'.$i)->getValue()])[0];
+			$productos = $this->ver_mdl->get("id_fruta",['codigo'=>$sheet->getCell('A'.$i)->getValue()])[0];
 			if (sizeof($productos) > 0) {
-				$exis = $this->exver_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$tienda,"id_verdura"=>$productos->id_verdura])[0];
+				$exis = $this->exver_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$tienda,"id_fruta"=>$productos->id_fruta])[0];
 				$column_two = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 				$new_existencias[$i]=[
-					"id_verdura"	=>	$productos->id_verdura,
+					"id_fruta"	=>	$productos->id_fruta,
 					"id_tienda"		=>	$tienda,
 					"total"			=>	$column_two,
 					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
@@ -217,9 +218,9 @@ class Verduras extends MY_Controller {
 			$cambios=[
 					"id_usuario"		=>	$this->session->userdata('id_usuario'),
 					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
-					"antes"				=>	"El usuario sube existencias verduras de la tienda ".$aprov->nombre,
+					"antes"				=>	"El usuario sube existencias frutas de la tienda ".$aprov->nombre,
 					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
-					"accion"			=>	"Sube existencias verduras"
+					"accion"			=>	"Sube existencias frutas"
 				];
 			$data['cambios']=$this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',
@@ -236,9 +237,9 @@ class Verduras extends MY_Controller {
 	public function changeprice(){
 		$busca = $this->input->post("values");
 		$new_producto=[
-				"id_verdura" => $busca["id_verdura"],//Recupera el id_usuario activo
+				"id_fruta" => $busca["id_fruta"],//Recupera el id_usuario activo
 				"precio" => $busca["precio"]];
-		$data ['id_producto']=$this->ver_mdl->update($new_producto,$busca["id_verdura"]);
+		$data ['id_producto']=$this->ver_mdl->update($new_producto,$busca["id_fruta"]);
 		$this->jsonResponse($busca);
 	}
 
@@ -284,9 +285,9 @@ class Verduras extends MY_Controller {
 
 		$this->cellStyle("A1", "000000", "FFFFFF", FALSE, 22, "Arial Rounded MT Bold");
 		$this->cellStyle("B1", "000000", "FFFFFF", FALSE, 22, "Arial Rounded MT Bold");
-		$this->cellStyle("F1", "fcd6b4", "000000", TRUE, 18, "Arial Rounded MT Bold");
+		$this->cellStyle("F1", "b7dee8", "000000", TRUE, 18, "Arial Rounded MT Bold");
 		$hoja->setCellValue("A1", "CONTROL DE MERMA")->getColumnDimension('B')->setWidth(50);
-		$hoja->setCellValue("F1", "VERDURAS")->getColumnDimension('F')->setWidth(13);
+		$hoja->setCellValue("F1", "FRUTAS")->getColumnDimension('F')->setWidth(13);
 		$hoja->mergeCells('A2:F2');
 		$hoja->mergeCells('G2:O2');
 		$this->cellStyle("A2", "99ffcc", "000000", FALSE, 16, "Arial Rounded MT Bold");
@@ -343,7 +344,7 @@ class Verduras extends MY_Controller {
 				$this->cellStyle("B{$row_print}", "FFFFFF", "000000",FALSE, 12, "Euphemia");
 				$this->cellStyle("C{$row_print}:O{$row_print}", "FFFFFF", "000000",FALSE, 14, "Franklin Gothic Book");
 				$this->cellStyle("M{$row_print}", "FFFFFF", "000000",TRUE, 14, "Franklin Gothic Book");
-				$hoja->setCellValue("A{$row_print}", $value->codigo);
+				$hoja->setCellValue("A{$row_print}", $value->codigo)->getColumnDimension('A')->setWidth(13);
 				$hoja->setCellValue("B{$row_print}", $value->descripcion);
 				$hoja->setCellValue("C{$row_print}", $value->cedis)->getColumnDimension('C')->setWidth(13);
 				$hoja->setCellValue("D{$row_print}", $value->super)->getColumnDimension('D')->setWidth(13);
@@ -375,7 +376,7 @@ class Verduras extends MY_Controller {
 		$this->excelfile->getActiveSheet()->getStyle('O'.$row_print)->applyFromArray($styleArray);
 		$hoja->mergeCells('M'.$row_print.':N'.$row_print);
 		$this->cellStyle("M{$row_print}:O{$row_print}", "FFFFFF", "000000",FALSE, 12, "Arial Rounded MT Bold");
-		$hoja->setCellValue("N{$row_print}", "TOTAL FINAL");
+		$hoja->setCellValue("M{$row_print}", "TOTAL FINAL");
 		$hoja->setCellValue("O{$row_print}", "=SUM(O5:O".($row_print-1).")")->getStyle("O{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 		$this->cellStyle("C{$row_print}", "948a54", "000000",TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("C{$row_print}", substr($ced,0,-1))->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -435,7 +436,7 @@ class Verduras extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "FORMATO VERDURAS (MERMA) ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "FORMATO FRUTAS (MERMA) ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
@@ -477,7 +478,7 @@ class Verduras extends MY_Controller {
 		$row_print = 2;
 		if ($productos){
 			foreach ($productos as $key => $value){
-				$hoja->setCellValue("A{$row_print}", $value->id_verdura);
+				$hoja->setCellValue("A{$row_print}", $value->id_fruta);
 				$hoja->setCellValue("B{$row_print}", $value->descripcion);
 				$hoja->setCellValue("C{$row_print}", $value->precio)->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$row_print +=1;
@@ -495,7 +496,7 @@ class Verduras extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "FORMATO PRECIOS VERDURA ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "FORMATO PRECIOS FRUTAS ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
@@ -514,7 +515,7 @@ class Verduras extends MY_Controller {
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 	
-		$filen = "PreciosVerduras".$fecha->format('Y-m-d H:i:s')."".rand();
+		$filen = "PreciosFrutas".$fecha->format('Y-m-d H:i:s')."".rand();
 		$config['upload_path']          = './assets/uploads/pedidos/'; 
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
@@ -524,22 +525,22 @@ class Verduras extends MY_Controller {
         $this->upload->initialize($config);
         $this->upload->do_upload('file_precios',$filen);
 		for ($i=1; $i<=$num_rows; $i++) {
-			$productos = $this->ver_mdl->get("id_verdura",['id_verdura'=>$sheet->getCell('A'.$i)->getValue()])[0];
+			$productos = $this->ver_mdl->get("id_fruta",['id_fruta'=>$sheet->getCell('A'.$i)->getValue()])[0];
 			if (sizeof($productos) > 0) {
 				$column_two = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 				$new_existencias[$i]=[
 					"precio"			=>	$column_two
 				];
-				$data['cotizacion']=$this->ver_mdl->update($new_existencias[$i], ['id_verdura' => $productos->id_verdura]);
+				$data['cotizacion']=$this->ver_mdl->update($new_existencias[$i], ['id_fruta' => $productos->id_fruta]);
 			}
 		}
 		if (isset($new_existencias)) {
 			$cambios=[
 					"id_usuario"		=>	$this->session->userdata('id_usuario'),
 					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
-					"antes"				=>	"El usuario sube precios verduras",
+					"antes"				=>	"El usuario sube precios frutas",
 					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
-					"accion"			=>	"Sube precios verduras"
+					"accion"			=>	"Sube precios frutas"
 				];
 			$data['cambios']=$this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',
@@ -560,8 +561,8 @@ class Verduras extends MY_Controller {
 
 
 	public function add_producto(){
-		$data["title"]="REGISTRAR VERDURA";
-		$data["view"] =$this->load->view("Verduras/new_verdura", $data, TRUE);
+		$data["title"]="REGISTRAR FRUTA";
+		$data["view"] =$this->load->view("Frutas/new_fruta", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_producto' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
 						</button>";
@@ -584,12 +585,12 @@ class Verduras extends MY_Controller {
 					$cambios = [
 							"id_usuario" => $user["id_usuario"],
 							"fecha_cambio" => date('Y-m-d H:i:s'),
-							"antes" => "Registro de nueva verdura",
+							"antes" => "Registro de nueva fruta",
 							"despues" => "Código: ".$producto['codigo']." /Nombre: ".$producto['descripcion']." /Precio: ".$producto['precio']];
 					$data['cambios'] = $this->cambio_md->insert($cambios);
 					$data ['id_producto']=$this->ver_mdl->insert($producto);
 					$mensaje = ["id" 	=> 'Éxito',
-								"desc"	=> 'Verdura registrada correctamente',
+								"desc"	=> 'Fruta registrada correctamente',
 								"type"	=> 'success'];
 				}else{
 					$mensaje = ["id" 	=> 'Alerta',

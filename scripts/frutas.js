@@ -14,7 +14,7 @@ $(document).off("change", "#file_productos").on("change", "#file_productos", fun
 });
 function uploadCotizaciones(formData) {
 	return $.ajax({
-		url: site_url+"Verduras/upload_productos/",
+		url: site_url+"Frutas/upload_productos/",
 		type: "POST",
 		cache: false,
 		contentType: false,
@@ -30,7 +30,7 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function (){
 	var precio = $(this).val();
 	var tots = $(this).val()*$(".dude"+prods).val();
 	$(".total"+prods).val(tots);
-	var values = {"id_verdura":prods,"precio":precio};
+	var values = {"id_fruta":prods,"precio":precio};
 	var ora = 0;
 	changeprice(values).done(function(resp){
 		var cuenta = $("input[id*='total'").length;
@@ -47,7 +47,7 @@ $(document).off("keyup", "#precio").on("keyup", "#precio", function (){
 
 function changeprice(values){
     return $.ajax({
-        url: site_url+"Verduras/changeprice",
+        url: site_url+"Frutas/changeprice",
         type: "POST",
         dataType: "JSON",
         data: {
@@ -62,23 +62,12 @@ $(document).off("keyup", "#preci2").on("keyup", "#preci2", function (){
 	var precio = $(this).val();
 	var tots = $(this).val()*$(".dud2"+prods).val();
 	$(".tota2"+prods).val(tots);
-	var values = {"id_verdura":prods,"precio":precio};
+	var values = {"id_fruta":prods,"precio":precio};
 	changeprice(values).done(function(resp){
 		
 	});
 	
 })
-
-function changeprice(values){
-    return $.ajax({
-        url: site_url+"Verduras/changeprice",
-        type: "POST",
-        dataType: "JSON",
-        data: {
-            values : values
-        },
-    });
-}
 
 
 $(document).off("change", "#file_precios").on("change", "#file_precios", function(event) {
@@ -95,9 +84,10 @@ $(document).off("change", "#file_precios").on("change", "#file_precios", functio
 			}
 		});
 });
+
 function uploadPrecios(formData) {
 	return $.ajax({
-		url: site_url+"Verduras/upload_precios/",
+		url: site_url+"Frutas/upload_precios/",
 		type: "POST",
 		cache: false,
 		contentType: false,
@@ -119,7 +109,7 @@ $(function($) {
 
 function getExTns() {
 	return $.ajax({
-		url: site_url+"Verduras/getExTns/",
+		url: site_url+"Frutas/getExTns/",
 		type: "POST",
 		cache: false,
 		contentType: false,
@@ -130,7 +120,7 @@ function getExTns() {
 
 $(document).off("click", "#new_producto").on("click", "#new_producto", function(event) {
 	event.preventDefault();
-	getModal("Verduras/add_producto", function (){
+	getModal("Frutas/add_producto", function (){
 		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
 			$("#form_producto_new").validate({
 				rules: {
@@ -150,6 +140,6 @@ $(document).off("click", "#new_producto").on("click", "#new_producto", function(
 $(document).off("click", ".new_producto").on("click", ".new_producto", function(event) {
 	event.preventDefault();
 	if($("#form_producto_new").valid()){
-		sendForm("Verduras/accion/I", $("#form_producto_new"), "");
+		sendForm("Frutas/accion/I", $("#form_producto_new"), "");
 	}
 }); 
