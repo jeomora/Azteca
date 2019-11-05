@@ -170,6 +170,7 @@ class Prolunes_model extends MY_Model {
 				$comparativaIndexada[$comparativa[$i]->codigo]["precio"]		=	$comparativa[$i]->precio;
 				$comparativaIndexada[$comparativa[$i]->codigo]["sistema"]	=	$comparativa[$i]->sistema;
 				$comparativaIndexada[$comparativa[$i]->codigo]["unidad"]		=	$comparativa[$i]->unidad;
+				$comparativaIndexada[$comparativa[$i]->codigo]["observaciones"]		=	$comparativa[$i]->observaciones;
 				$comparativaIndexada[$comparativa[$i]->codigo]["sis"]		=	$comparativa[$i]->sis;
 				$comparativaIndexada[$comparativa[$i]->codigo]["cur"]		=	$comparativa[$i]->cur;
 				
