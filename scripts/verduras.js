@@ -127,3 +127,29 @@ function getExTns() {
 		dataType:"JSON",
 	});
 }
+
+$(document).off("click", "#new_producto").on("click", "#new_producto", function(event) {
+	event.preventDefault();
+	getModal("Verduras/add_producto", function (){
+		loadScript(base_url+"assets/js/plugins/validate/jquery.validate.min.js", function (argument) {
+			$("#form_producto_new").validate({
+				rules: {
+					codigo: {required: true},
+					nombre: {required: true},
+					precio: {required: true}
+				}
+			});
+			jQuery.extend(jQuery.validator.messages,{
+				required: "Este campo es requerido",
+				min: jQuery.validator.format("Este campo es requerido"),
+			});
+		});
+	});
+});
+
+$(document).off("click", ".new_producto").on("click", ".new_producto", function(event) {
+	event.preventDefault();
+	if($("#form_producto_new").valid()){
+		sendForm("Verduras/accion/I", $("#form_producto_new"), "");
+	}
+}); 

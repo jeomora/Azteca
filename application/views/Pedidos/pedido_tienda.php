@@ -167,9 +167,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<tbody>
 						<?php if($verduras):foreach ($verduras as $key => $value): ?>
 							<tr>
-								<td><?php echo $value->id_verdura; ?></td>
+								<td><?php echo $value->codigo; ?></td>
 								<td><?php echo $value->descripcion ?></td>
-								<td><?php echo $value->total ?></td>
+								<td style="font-family:monospace;font-size:16px"><?php echo $value->total ?></td>
 							</tr>
 						<?php endforeach;endif; ?>
 						

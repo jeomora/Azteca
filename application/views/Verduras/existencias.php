@@ -47,6 +47,13 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					<div class="btn-group">
 						<a href="Verduras/print_formato" target="_blank"><button type="button" class="btnForma btndown"><i class='fa fa-download'></i> <span style="font-size:16px">Descargar Formato Verduras</span></button></a>
 					</div>
+					<div class="">
+						<div class="btn-group">
+							<button class="btn btn-primary" data-toggle="tooltip" title="Registrar" id="new_producto" style="font-size:16px">
+								<i class="fa fa-plus"></i> Agregar Verduras
+							</button>
+						</div>
+					</div>
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover" id="table_usuarios">
 							<thead>
@@ -77,7 +84,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 									<th style="background-color:#FFF;" colspan="3"></th>
 								</tr>
 								<tr>
-									<th>ID</th>
+									<th>CÓDIGO</th>
 									<th>DESCRIPCIÓN</th>
 									<th style="background-color:#948a54;">CEDIS</th>
 									<th style="background-color:#92d050;">SUPER</th>
@@ -98,7 +105,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<?php $dd=0;;if($verdurasEx):foreach ($verdurasEx as $key => $value): ?>
 									<tr>
 										<?php $dude = ($value->cedis+$value->super+$value->villas+$value->soli+$value->tienda+$value->ultra+$value->trinch+$value->merca+$value->tenen+$value->tije) ?>
-										<td style="width:50px !important;"><?php echo $value->id_verdura ?></td>
+										<td style="width:50px !important;"><?php echo $value->codigo ?></td>
 										<td><?php echo $value->descripcion ?></td>
 										<td style="background-color:#948a544a">
 											<input type="text" id="cedis<?php echo $value->id_verdura ?>" value="<?php echo $value->cedis ?>" style="width:80px !important;border:0;background-color:transparent;" readOnly>
