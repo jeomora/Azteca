@@ -214,6 +214,7 @@ class Lunes extends MY_Controller {
 			"descripcion"	=>	strtoupper($this->input->post('descripcion')),
 			"precio"	=>	$this->input->post('precio'),
 			"sistema"	=>	$this->input->post('sistema'),
+			"observaciones"	=>	$this->input->post('observaciones'),
 			"id_proveedor"	=>	$this->input->post('id_proveedor'),
 			"unidad"	=>	$this->input->post('unidad'),
 		];
@@ -289,6 +290,7 @@ class Lunes extends MY_Controller {
 			"descripcion"	=>	strtoupper($this->input->post('descripcion')),
 			"precio"	=>	$this->input->post('precio'),
 			"sistema"	=>	$this->input->post('sistema'),
+			"observaciones"	=>	$this->input->post('observaciones'),
 			"id_proveedor"	=>	$this->input->post('id_proveedor'),
 			"unidad"	=>	$this->input->post('unidad'),
 		];
@@ -1300,7 +1302,7 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F{$flag}", $v["unidad"]);
 
-					$proveedor[$key]->estatus->setCellValue("BU{$flag}", $v["observaciones"]);
+					$proveedor[$key]->estatus->setCellValue("BU{$flag}", $v["observaciones"]);					
 
 					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$this->cellStyle("B".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");

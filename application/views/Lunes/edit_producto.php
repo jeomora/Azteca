@@ -30,7 +30,11 @@
 					<input type="text" name="sistema" value="<?php echo $producto->sistema ?>" class="form-control numeric" placeholder="Precio del Sistema">
 				</div>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-5">
+				<div class="form-group">
+					<label for="observaciones">Observaciones</label>
+					<input type="text" name="observaciones" value="<?php echo $producto->observaciones ?>" class="form-control" placeholder="Promoción">
+				</div>
 			</div>
 			<div class="col-sm-8">
 				<div class="form-group">
