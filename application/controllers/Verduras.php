@@ -477,7 +477,7 @@ class Verduras extends MY_Controller {
 		$row_print = 2;
 		if ($productos){
 			foreach ($productos as $key => $value){
-				$hoja->setCellValue("A{$row_print}", $value->id_verdura);
+				$hoja->setCellValue("A{$row_print}", $value->codigo);
 				$hoja->setCellValue("B{$row_print}", $value->descripcion);
 				$hoja->setCellValue("C{$row_print}", $value->precio)->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$row_print +=1;
@@ -524,11 +524,11 @@ class Verduras extends MY_Controller {
         $this->upload->initialize($config);
         $this->upload->do_upload('file_precios',$filen);
 		for ($i=1; $i<=$num_rows; $i++) {
-			$productos = $this->ver_mdl->get("id_verdura",['id_verdura'=>$sheet->getCell('A'.$i)->getValue()])[0];
+			$productos = $this->ver_mdl->get("id_verdura",['codigo'=>$sheet->getCell('A'.$i)->getValue()])[0];
 			if (sizeof($productos) > 0) {
 				$column_two = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 				$new_existencias[$i]=[
-					"precio"			=>	$column_two
+					"precio"	=>	$column_two
 				];
 				$data['cotizacion']=$this->ver_mdl->update($new_existencias[$i], ['id_verdura' => $productos->id_verdura]);
 			}

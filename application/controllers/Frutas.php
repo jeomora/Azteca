@@ -478,7 +478,7 @@ class Frutas extends MY_Controller {
 		$row_print = 2;
 		if ($productos){
 			foreach ($productos as $key => $value){
-				$hoja->setCellValue("A{$row_print}", $value->id_fruta);
+				$hoja->setCellValue("A{$row_print}", $value->codigo);
 				$hoja->setCellValue("B{$row_print}", $value->descripcion);
 				$hoja->setCellValue("C{$row_print}", $value->precio)->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$row_print +=1;
@@ -525,7 +525,7 @@ class Frutas extends MY_Controller {
         $this->upload->initialize($config);
         $this->upload->do_upload('file_precios',$filen);
 		for ($i=1; $i<=$num_rows; $i++) {
-			$productos = $this->ver_mdl->get("id_fruta",['id_fruta'=>$sheet->getCell('A'.$i)->getValue()])[0];
+			$productos = $this->ver_mdl->get("id_fruta",['codigo'=>$sheet->getCell('A'.$i)->getValue()])[0];
 			if (sizeof($productos) > 0) {
 				$column_two = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
 				$new_existencias[$i]=[
