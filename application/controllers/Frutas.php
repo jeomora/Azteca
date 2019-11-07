@@ -470,7 +470,7 @@ class Frutas extends MY_Controller {
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
-		$hoja->setCellValue("A1", "ID")->getColumnDimension('A')->setWidth(7); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("A1", "CÓDIGO")->getColumnDimension('A')->setWidth(20); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(40);		
 		$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(20);
 
