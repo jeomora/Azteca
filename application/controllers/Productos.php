@@ -308,13 +308,14 @@ class Productos extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
-		if ($sheet->getCell('E'.$i)->getValue() === "") {
-			$estatus = 1;
-		}else{
-			$estatus = $sheet->getCell('E'.$i)->getValue();
-		}
+		
 		
 		for ($i=3; $i<=$num_rows; $i++) {
+			if ($sheet->getCell('E'.$i)->getValue() === "") {
+				$estatus = 1;
+			}else{
+				$estatus = $sheet->getCell('E'.$i)->getValue();
+			}
 			$productos = $this->pro_md->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 			$conversion = $sheet->getCell('D'.$i)->getValue() == "SI" ? 1 : 0; 
 			if (sizeof($productos) > 0) {
