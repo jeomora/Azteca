@@ -838,7 +838,7 @@ $this->db->select("c.id_cotizacion,
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 
-		$this->db->select("exist,abarrotes,cedis,mercado,pedregal,tienda,trincheras,tenencia,ultra,tijeras,ctz_first.id_cotizacion,prod.registrazo,fac.codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
+		$this->db->select("exist,abarrotes,cedis,mercado,pedregal,tienda,trincheras,tenencia,ultra,tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,my.id_mayoreo,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
@@ -858,7 +858,8 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
-		->join("prodcaja fac", "prod.id_producto = fac.id_prodfactura AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
+		->join("prodcaja fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
+		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
 		->join("mayoreo my","prod.codigo = my.codigo","LEFT")
 		->group_by("prod.nombre")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
