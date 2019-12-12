@@ -13,6 +13,7 @@ class Facturas extends MY_Controller {
 		$this->load->model("Finales_model", "final_md");
 		$this->load->model("Facturas_model", "fact_md");
 		$this->load->model("Compara_model", "comp_md");
+		$this->load->model("Invoice_model", "invoice_md");
 	}
 
 	public function comparar(){
@@ -42,10 +43,12 @@ class Facturas extends MY_Controller {
 		$data["tiendas"]	 = $this->usua_mdl->getColors(NULL);
 		$this->estructura("Facturas/comparar", $data);
 	}
+
 	public function getFacturas($values){
 		$facturas = $this->fact_md->getFacturas(NULL,$values);
 		$this->jsonResponse($facturas);
 	}
+
 	public function updateCosto($inp){
 		$busca = $this->input->post("values");
 		$facturas = $this->comp_md->update(["costo"=>$busca["costo"]],$inp);
@@ -90,7 +93,6 @@ class Facturas extends MY_Controller {
 		$data["proveedores"]=$this->usua_mdl->get(NULL,["estatus <>"=>0,"id_grupo"=>2]);
 		$this->estructura("Facturas/pedidos", $data);
 	}
-
 
 	public function getit(){
 		include_once APPPATH . 'vendor/autoload.php';
@@ -241,60 +243,69 @@ class Facturas extends MY_Controller {
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 		$proveedor = $id_proveedor;
-		$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');
-
-		if ($folio === "" || $folio === NULL) {
-			$mensaje=[	
-				"id"	=>	'Factura sin folio',
-				"desc"	=>	'Por favor agregue un folio a la factura.',
-				"type"	=>	'error'];
-			$this->jsonResponse($mensaje);
-		} else {
-			$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
-			for ($i=3; $i<=$num_rows; $i++) {
-				$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
-				$cellB = $this->getOldVal($sheet,$i,"B");
-				$cellC = $this->getOldVal($sheet,$i,"C");
-				$cellD = $this->getOldVal($sheet,$i,"D");
-				
-				if (sizeof($codigo) > 0) {
-					$new_producto=[
-						"folio" => $folio,
-						"id_proveedor" => $proveedor,
-						"precio" => $cellD,
-						"codigo" => $codigo,
-						"descripcion" => $cellB,
-						"cantidad" => $cellC,
-						"id_tienda"=> $id_tienda
-					];
-
-					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$cellD,$cellC);
-					if ($codiga) {
-					}else{
-						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
-					}
-				}
-			}
-			//Obtener elementos factura con pedidos para asociar
-			$query = "pd.nombre,pd.codigo,fc.descripcion,fc.folio,fc.codigo as factu,fc.cantidad,fc.precio,fc.estatus,fc.fecha_registro,fc.id_tienda,fc.id_proveedor,pc.id_prodcaja,pc.id_prodfactura, f.".$tend." as total,f.costo,f.promocion,f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor LEFT JOIN productos pd ON pc.id_prodfactura = pd.id_producto WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."' AND fc.id_tienda = '".$id_tienda."' GROUP BY fc.id_factura ORDER BY fc.id_factura ASC";
-			$factus = $this->fact_md->getFactos(NULL,json_encode($query));
-			//Obtener pedidos no asociados a productos en la fatcura
-			$query2 = "f2.id_final,f2.costo,f2.promocion,pd.nombre,pd.codigo,pd.id_producto,f2.".$tend." as total from finales f2 LEFT JOIN productos pd ON f2.id_producto = pd.id_producto WHERE f2.id_final NOT IN(SELECT f1.id_final from finales f1 WHERE f1.id_final IN (SELECT f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.codigo_factura AND fc.id_proveedor = pc.id_proveedor LEFT JOIN finales f ON pc.id_prodfactura = f.id_producto AND fc.id_proveedor = f.id_proveedor WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."')) AND id_proveedor = ".$proveedor." AND WEEKOFYEAR(f2.fecha_registro) = WEEKOFYEAR(CURDATE()) AND f2.".$tend." > 0 ORDER BY f2.id_final ASC";
-			$factus2 = $this->fact_md->getFactos(NULL,json_encode($query2));
-			$cambios = [
-					"id_usuario" => $user["id_usuario"],
-					"fecha_cambio" => date('Y-m-d H:i:s'),
-					"antes" => "El usuario registro factura",
-					"despues" => "FOLIO : ".$folio];
-			$data['cambios'] = $this->cambio_md->insert($cambios);
-			$mensaje=[	
-				"id"	=>	'Éxito',
-				"desc"	=>	'Factura se cargó correctamente en el Sistema',
-				"type"	=>	'success'];
-
-			$this->jsonResponse(array($factus,$factus2,$num_rows,$folio));
+		if ($sheet->getCell('A1')->getValue() === "FOLIO FACTURA") {
+			$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');	
+			$fecha = $sheet->getCell('D1')->getValue();
+			$no = 3;
+		}else{
+			$folio = htmlspecialchars($sheet->getCell('D1')->getValue(), ENT_QUOTES, 'UTF-8');
+			$fecha = $sheet->getCell('E1')->getValue();
+			$no = 1;
 		}
 		
+		if ($folio === "" || strlen($folio) < 5) {
+			$folio = rand(1000000000, 9000000000);
+		}
+		
+		if ($fecha === "" || $fecha === null) {
+			$fecha = new DateTime(date('Y-m-d H:i:s'));
+		}
+
+		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
+		for ($i=$no; $i<=$num_rows; $i++) {
+			$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
+			$cantidad = $this->getOldVal($sheet,$i,"B");
+			$precio = $this->getOldVal($sheet,$i,"C");
+			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
+			
+			
+			if (sizeof($codigo) > 0) {
+				$new_producto=[
+					"folio" => $folio,
+					"id_proveedor" => $proveedor,
+					"precio" => $precio,
+					"codigo" => $descripcion->id_invoice,
+					"descripcion" => $descripcion->descripcion,
+					"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
+					"cantidad" => $cantidad,
+					"id_tienda"=> $id_tienda
+				];
+
+				$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
+				if ($codiga) {
+				}else{
+					$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+				}
+			}
+		}
+		//Obtener elementos factura con pedidos para asociar
+		$query = "pd.nombre,pd.codigo,fc.descripcion,fc.folio,fc.codigo as factu,fc.cantidad,fc.precio,fc.estatus,fc.fecha_registro,fc.id_tienda,fc.id_proveedor,pc.id_prodcaja,pc.id_producto, f.".$tend." as total,f.costo,f.promocion,f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.id_invoice AND pc.id_proveedor = ".$proveedor." LEFT JOIN productos pd ON pc.id_producto = pd.id_producto LEFT JOIN finales f ON pd.id_producto = f.id_producto AND f.id_proveedor = ".$proveedor." AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."' AND fc.id_tienda = '".$id_tienda."' GROUP BY fc.id_factura ORDER BY fc.id_factura ASC";
+		$factus = $this->fact_md->getFactos(NULL,json_encode($query));
+		//Obtener pedidos no asociados a productos en la fatcura
+		$query2 = "f2.id_final,f2.costo,f2.promocion,pd.nombre,pd.codigo,pd.id_producto,f2.".$tend." as total from finales f2 LEFT JOIN productos pd ON f2.id_producto = pd.id_producto WHERE f2.id_final NOT IN(SELECT f1.id_final from finales f1 WHERE f1.id_final IN (SELECT f.id_final FROM facturas fc LEFT JOIN prodcaja pc ON fc.codigo = pc.id_invoice AND pc.id_proveedor = ".$proveedor." LEFT JOIN productos pd2 ON pc.id_producto = pd2.id_producto LEFT JOIN finales f ON pd2.id_producto = f.id_producto AND f.id_proveedor = ".$proveedor." WHERE fc.id_proveedor = ".$proveedor." AND WEEKOFYEAR(fc.fecha_registro) = WEEKOFYEAR(CURDATE()) AND fc.folio = '".$folio."')) AND id_proveedor = ".$proveedor." AND WEEKOFYEAR(f2.fecha_registro) = WEEKOFYEAR(CURDATE()) AND f2.".$tend." > 0 ORDER BY f2.id_final ASC";
+		$factus2 = $this->fact_md->getFactos(NULL,json_encode($query2));
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "El usuario registro factura",
+				"despues" => "FOLIO : ".$folio];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
+		$mensaje=[	
+			"id"	=>	'Éxito',
+			"desc"	=>	'Factura se cargó correctamente en el Sistema',
+			"type"	=>	'success'];
+
+		$this->jsonResponse(array($factus,$factus2,$num_rows,$folio));
 	}
 
 	public function guardaComparacion(){
@@ -306,15 +317,17 @@ class Facturas extends MY_Controller {
 		foreach ($value as $key => $v) {
 			$producto = $this->pro_md->get(NULL,["codigo"=>$v["producto"]])[0];
 			if ($producto) {
-				$prodcaja=$this->pcaja_md->get(NULL,["codigo_factura"=>$v["factura"],"id_proveedor"=>$v["id_proveedor"],"estatus"=>1,"id_prodfactura"=>$producto->id_producto])[0];
-				if(!$prodcaja) {
-					$new_prodcaja=[
-						"id_prodfactura" => $producto->id_producto,
-						"id_proveedor" => $v["id_proveedor"],
-						"codigo_factura" => $v["factura"],
-						"descripcion"	=> $v["descripcion"]
-					];
-					$data['prodcaja'] = $this->pcaja_md->insert($new_prodcaja);
+				$invoice = $this->invoice_md->get(NULL,["id_proveedor"=>$v["id_proveedor"],"id_invoice"=>$v["factura"]])[0];
+				if ($invoice) {
+					$prodcaja=$this->pcaja_md->get(NULL,["id_invoice"=>$invoice->id_invoice,"id_proveedor"=>$v["id_proveedor"],"estatus"=>1,"id_producto"=>$producto->id_producto])[0];
+					if(!$prodcaja) {
+						$new_prodcaja=[
+							"id_producto" => $producto->id_producto,
+							"id_proveedor" => $v["id_proveedor"],
+							"id_invoice" => $invoice->id_invoice,
+						];
+						$data['prodcaja'] = $this->pcaja_md->insert($new_prodcaja);
+					}
 				}
 			}
 			$compara=$this->comp_md->get(NULL,["folio"=>$v["folio"],"id_proveedor"=>$v["id_proveedor"],"id_tienda"=>$v["id_tienda"],"factura"=>$v["factura"]])[0];
@@ -344,9 +357,9 @@ class Facturas extends MY_Controller {
 			}else{
 				$data['prodcaja'] = $this->comp_md->insert($new_compara);
 			}*/
-		}
-		
+		}		
 	}
+
 	public function fill_excel($folio,$which){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
@@ -736,6 +749,61 @@ class Facturas extends MY_Controller {
 		$excel_Writer->save("php://output");
 		//$this->jsonResponse($facturas);
 	}
+
+	/*public function uploadExi(){
+		$proveedor = $this->session->userdata('id_usuario');
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$filen = "Productos por ".$cfile->nombre."".rand();
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 100;
+        $config['max_width']            = 1024;
+        $config['max_height']           = 768;
+
+
+        $estatus = 1;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_codes',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_codes"]["tmp_name"];
+		$filename=$_FILES['file_codes']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		
+		for ($i=1; $i<=$num_rows; $i++) {
+			$invoice = $this->invoice_md->get(NULL,["codigo"=>$sheet->getCell('A'.$i)->getValue(),"id_proveedor"=>4])[0];
+			$product = $this->pro_md->get(NULL,["id_producto"=>$sheet->getCell('B'.$i)->getValue()])[0];
+			if ($invoice && $product) {
+				$new_producto=[
+					"id_invoice" 	=> $invoice->id_invoice,
+					"id_producto" 	=> $product->id_producto,
+					"id_proveedor" 	=> 4
+				];
+				$data ['id_producto'] = $this->pcaja_md->insert($new_producto);
+			}
+		}
+		if (!isset($new_producto)) {
+			$mensaje	=	[	"id"	=>	'Error',
+								"desc"	=>	'El Archivo esta sin productos',
+								"type"	=>	'error'];
+		}else{
+			if (sizeof($new_producto) > 0) {
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Productos cargados correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Los Productos no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}*/
+	
 }
 
 /* End of file Productos.php */

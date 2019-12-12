@@ -630,3 +630,27 @@ $(document).off("focusout", ".costod").on("focusout", ".costod", function () {
 
 	}
 });
+
+
+/*$(document).off("change", "#file_codes").on("change", "#file_codes", function(event) {
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_codes")[0]);
+	uploadExiaa(fdata)
+		.done(function (resp) {
+
+		});
+});
+
+
+function uploadExiaa(formData) {
+	return $.ajax({
+		url: site_url+"Facturas/uploadExi",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}*/
