@@ -10,9 +10,10 @@ class Prodcaja_model extends MY_Model {
 	}
 
 	public function getProds($where=[]){
-		$this->db->select("pc.id_prodcaja,pc.clave,pc.codigo,pc.descripcion,pc.codigo_factura,p.nombre")
+		$this->db->select("pc.id_prodcaja,ic.id_invoice as clave,p.codigo,ic.descripcion,ic.codigo as codigo_factura,p.nombre")
 		->from($this->TABLE_NAME." pc")
-		->join("productos p", "pc.codigo = p.codigo", "LEFT");
+		->join("invoice_code ic","pc.id_invoice = ic.id_invoice","LEFT")
+		->join("productos p", "pc.id_producto = p.id_producto", "LEFT");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {

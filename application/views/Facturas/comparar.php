@@ -69,6 +69,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12 col-md-12">
+			<!--<?php echo form_open_multipart("", array('id' => 'upload_codes')); ?>
+				<input class="btn btn-info" type="file" id="file_codes" name="file_codes" value="" style="background-color:#2347c8;border-color:#2347c8;" />
+			<?php echo form_close(); ?>-->
 			<h1>Seleccione una sucursal</h1>
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">

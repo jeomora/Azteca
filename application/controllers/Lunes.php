@@ -555,7 +555,7 @@ class Lunes extends MY_Controller {
 
 	public function upload_precios(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$filen = "Precios Sistema Lunes";
+		$filen = "Precios Proveedores Lunes";
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;

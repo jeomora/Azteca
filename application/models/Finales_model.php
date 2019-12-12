@@ -13,9 +13,9 @@ class Finales_model extends MY_Model {
 		$value = json_decode($values);
 		$value2 = json_decode($values2);
 		if ($value2->provs <> 0 || $value2->provs <> "0") {
-			$this->db->select("p.codigo,p.nombre,u.nombre as proveedor,f.cedis,f.abarrotes,f.costo,f.tienda,f.villas,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) AND f.id_proveedor = ".$value2->provs." ORDER BY p.codigo");
+			$this->db->select("p.codigo,p.nombre,u.nombre as proveedor,f.cedis,f.abarrotes,f.costo,f.tienda,f.villas,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(f.fecha_registro) = YEAR(CURDATE()) AND f.id_proveedor = ".$value2->provs." ORDER BY p.codigo");
 		} else {
-			$this->db->select("p.codigo,p.nombre,u.nombre as proveedor,f.cedis,f.abarrotes,f.costo,f.tienda,f.villas,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) ORDER BY p.codigo");
+			$this->db->select("p.codigo,p.nombre,u.nombre as proveedor,f.cedis,f.abarrotes,f.costo,f.tienda,f.villas,f.ultra,f.trincheras,f.mercado,f.tenencia,f.tijeras,f.promocion FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE (p.nombre LIKE '%".$value->producto."%' OR p.codigo LIKE '%".$value->producto."%') AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(f.fecha_registro) = YEAR(CURDATE()) ORDER BY p.codigo");
 		}
 		
 		
