@@ -553,7 +553,26 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 		$("#cuerpo").html("");
 		$("#cuerpo2").html("");
 	})
-	
+	var sThisVal = "";
+	$('input:checkbox.tienda').each(function () {
+		if (this.checked) {
+			sThisVal = $(this).attr('id')	
+		}
+	 });
+	$(".facture").html("");
+	tiendis = sThisVal.substring(6, sThisVal.length);
+	getFacturas(sThisVal.substring(6, sThisVal.length))
+	.done(function (resp) {
+		if (resp) {
+			$(".facture").html("<h2>Seleccione una factura</h2>");
+			$.each(resp,function(indx,val){
+				$(".facture").append('<div class="col-md-3 col-lg-2"><div class="form-check"><input class="form-check-input facty" type="checkbox" value="'+val.id_proveedor+'" '+
+					'id="'+val.folio+'"><label class="form-check-label" for="facty'+val.folio+'" style="color:#000;background:#FFF !important;">'+val.folio+' - '+val.nombre+'</label></div></div>')
+			});
+		} else {
+			$(".facture").html("<h2>Sin facturas</h2>");
+		}
+	})
 });
 
 function guardaComparacion(values){
