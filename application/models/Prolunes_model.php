@@ -61,6 +61,31 @@ class Prolunes_model extends MY_Model {
 		}
 	}
 
+	public function getMaxOrden($where=[]){
+		$this->db->select("MAX(orden) as ordenes")
+		->from($this->TABLE_NAME." p1")
+		->order_by("p1.descripcion","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
 
 	public function buscaProdis($where=[],$values,$tiendas){
 		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
