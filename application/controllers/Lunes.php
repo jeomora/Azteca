@@ -209,6 +209,8 @@ class Lunes extends MY_Controller {
 	}
 
 	public function save_prod(){
+		$ordenes = $this->prolu_md->getMaxOrden(NULL)[0];
+		$orden = ($ordenes->ordenes+1);
 		$producto = [
 			"codigo"	=>	strtoupper($this->input->post('codigo')),
 			"descripcion"	=>	strtoupper($this->input->post('descripcion')),
@@ -217,8 +219,10 @@ class Lunes extends MY_Controller {
 			"observaciones"	=>	$this->input->post('observaciones'),
 			"id_proveedor"	=>	$this->input->post('id_proveedor'),
 			"unidad"	=>	$this->input->post('unidad'),
+			"orden"		=> $orden
 		];
 		$getProducto = $this->prolu_md->get(NULL, ['codigo'=>$producto['codigo']])[0];
+
 
 		if(sizeof($getProducto) == 0){
 			$data['codigo'] = $this->prolu_md->insert($producto);
