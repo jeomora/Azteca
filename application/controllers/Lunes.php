@@ -1671,7 +1671,7 @@ class Lunes extends MY_Controller {
 
 	public function upload_pedidos(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P1D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
@@ -1721,7 +1721,7 @@ class Lunes extends MY_Controller {
 			$cambios=[
 					"id_usuario"		=>	$this->session->userdata('id_usuario'),
 					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
-					"antes"			=>	"El usuario sube archivo de pedidos de la tienda ".$aprov->nombre,
+					"antes"			=>	"El usuario sube archivo de pedidos Lunes de la tienda ".$aprov->nombre,
 					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
 					"accion"			=>	"Sube existencias y pedidos formato LUNES"
 				];
