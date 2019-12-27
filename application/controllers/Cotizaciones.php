@@ -5024,7 +5024,7 @@ class Cotizaciones extends MY_Controller {
 
 	public function upload_pedid($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
