@@ -218,7 +218,7 @@ class Prolunes_model extends MY_Model {
 			}
 			if ($codigo <> $comparativa[$i]->codigo) {
 				$codigo = $comparativa[$i]->codigo;
-				$this->db->select("e.id_tienda,e.cajas as ecajas,ss.orden, e.piezas as epiezas,e.pedido as epedido, e.fecha_registro FROM ex_lunes e LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal WHERE e.id_producto = '".$comparativa[$i]->codigo."' and WEEKOFYEAR(e.fecha_registro) = 52 GROUP BY id_tienda ORDER BY fecha_registro DESC");
+				$this->db->select("e.id_tienda,e.cajas as ecajas,ss.orden, e.piezas as epiezas,e.pedido as epedido, e.fecha_registro FROM ex_lunes e LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal WHERE e.id_producto = '".$comparativa[$i]->codigo."' and WEEKOFYEAR(e.fecha_registro) < WEEKOFYEAR(CURDATE()) GROUP BY id_tienda ORDER BY fecha_registro DESC");
 				$comparativa2 = $this->db->get()->result();
 				for ($e=0; $e<sizeof($comparativa2); $e++){
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$comparativa2[$e]->orden]["pzs"]	=	$comparativa2[$e]->epiezas;
@@ -226,7 +226,7 @@ class Prolunes_model extends MY_Model {
 					$comparativaIndexada[$comparativa[$i]->codigo]["exist"][$comparativa2[$e]->orden]["ped"]	=	$comparativa2[$e]->epedido;
 				}
 
-				$this->db->select("id_producto,cedis,abarrotes,pedregal,tienda,ultra,trincheras,mercado,tenencia,tijeras FROM pendlunes WHERE id_producto = '".$comparativa[$i]->codigo."' and WEEKOFYEAR(fecha_registro) = 1");
+				$this->db->select("id_producto,cedis,abarrotes,pedregal,tienda,ultra,trincheras,mercado,tenencia,tijeras FROM pendlunes WHERE id_producto = '".$comparativa[$i]->codigo."' and WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE())");
 				$comparativa3 = $this->db->get()->result();
 				if ($comparativa3) {
 					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][1]["pend"]	=	$comparativa3[0]->cedis;

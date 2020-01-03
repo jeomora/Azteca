@@ -90,7 +90,7 @@ class Main extends MY_Controller {
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$data["prueba"] = $semana;
 		$data["title"]="PRODUCTOS COTIZADOS EN LA ANTERIOR SEMANA";
-		$data["cotizaciones"] =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => 52]);
+		$data["cotizaciones"] =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$ides,'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
 		$data["view"] = $this->load->view("Cotizaciones/get_cotz", $data,TRUE);
 		$data["button"]="<button class='btn btn-success repeat_cotizacion' id='repeat_cot' type='button' data-id-cot='".$ides."'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Repetir precios
@@ -105,7 +105,7 @@ class Main extends MY_Controller {
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
 
-		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => 52]);
+		$cotizaciones =  $this->cot_md->getAnterior(['cotizaciones.id_proveedor'=>$this->input->post('id_proveedor'),'WEEKOFYEAR(cotizaciones.fecha_registro)' => $semana]);
 		$i = 0;
 		$new_cotizacion = null;
 		if ($cotizaciones){
