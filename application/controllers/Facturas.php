@@ -263,7 +263,7 @@ class Facturas extends MY_Controller {
 
 		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
 		for ($i=$no; $i<=$num_rows; $i++) {
-			$codigo = htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
+			$codigo = $sheet->getCell('A'.$i)->getValue();
 			$cantidad = $this->getOldVal($sheet,$i,"B");
 			$precio = $this->getOldVal($sheet,$i,"C");
 			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
