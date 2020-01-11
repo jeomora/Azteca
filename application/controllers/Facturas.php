@@ -269,7 +269,7 @@ class Facturas extends MY_Controller {
 			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
 			
 			
-			if (sizeof($codigo) > 0) {
+			if (sizeof($descripcion) > 0) {
 				$new_producto=[
 					"folio" => $folio,
 					"id_proveedor" => $proveedor,
