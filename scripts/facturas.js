@@ -407,9 +407,9 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			})
 			
 			$(".BE1").html('<button type="button" class="btnExcel pedfact" id="'+compara+'"><i class="fa fa-download"'+
-				' aria-hidden="true"></i> DESCARGAR PEDIDOS Y FACTURA</button>');
-			$(".BE2").html('<button type="button" class="btnExcel formato" id="'+compara+'"><i class="fa fa-download"'+
-				' aria-hidden="true"></i> DESCARGAR FORMATO</button>');
+				' aria-hidden="true"></i> DESCARGAR FORMATO FACTURA</button>');
+			/*$(".BE2").html('<button type="button" class="btnExcel formato" id="'+compara+'"><i class="fa fa-download"'+
+				' aria-hidden="true"></i> DESCARGAR FORMATO</button>');*/
 			calculaFactura();
 		})
 	}else{
@@ -526,7 +526,7 @@ $(document).off("click", ".btnsalvar").on("click", ".btnsalvar", function (){
 		body4 = $("#cuerpodiv"+i).find(".body4");
 		if (body4.html() === "SOLTAR RECUADRO AQUÍ") {
 			costu = 0;
-			produ = 0;
+			produ = "FACTURA"
 		}else{
 			produ = body4.find(".pedsist").attr('id');
 			costu = body4.find(".pedsist").find(".costod").val();

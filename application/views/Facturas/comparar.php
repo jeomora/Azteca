@@ -64,14 +64,27 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.tienda[type="checkbox"]:after,.facty[type="checkbox"]:after {top:-15px;width: 15px;height: 15px;}
 	td{border: 1px solid;}
 	.inputtab{width:100%;height:100%;border:0;margin:-1px;border-bottom:1px solid;}
-	/*cursor: grab; cursor : -o-grab; cursor : -moz-grab; cursor : -webkit-grab;*/
+	.downl{width:100%;font-size:16px;padding:10px;background:#7db7ff;border:2px solid #7db7ff;border-radius:5px;}
+	.downl:hover{background:transparent;color: #7db7ff}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
+		<div class="col-md-12 col-lg-12">
+			<div class="col-md-12 col-lg-12" style="margin-top:20px">
+				<div class="ibox">
+					<div class="col-md-12 col-lg-12 ibox-content" style="border:1px solid #7db7ff;">
+						<h1 style="border-bottom:1px solid #7db7ff;margin-bottom:15px;color:#7db7ff">Seleccione un proveedor para descargar todas las facturas de la semana</h1>
+						<?php foreach ($provis as $key => $value): ?>
+							<div class="col-md-3 col-lg-2">
+								<a target="_blank" href="<?php echo base_url('Facturas/imprimeR/'.$value->id_usuario) ?>" style="color:#FFF"><button class="downl" data-id-prove="<?php echo $value->id_usuario ?>"><i class="fa fa-download" aria-hidden="true"></i>
+									&nbsp;&nbsp;&nbsp;<?php echo $value->nombre ?></button></a>
+							</div>
+						<?php endforeach; ?>
+					</div> 
+				</div>
+			</div>
+		</div>
 		<div class="col-lg-12 col-md-12">
-			<!--<?php echo form_open_multipart("", array('id' => 'upload_codes')); ?>
-				<input class="btn btn-info" type="file" id="file_codes" name="file_codes" value="" style="background-color:#2347c8;border-color:#2347c8;" />
-			<?php echo form_close(); ?>-->
 			<h1>Seleccione una sucursal</h1>
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">
