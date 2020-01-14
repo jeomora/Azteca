@@ -79,7 +79,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<a target="_blank" href="<?php echo base_url('Facturas/imprimeR/'.$value->id_usuario) ?>" style="color:#FFF"><button class="downl" data-id-prove="<?php echo $value->id_usuario ?>"><i class="fa fa-download" aria-hidden="true"></i>
 									&nbsp;&nbsp;&nbsp;<?php echo $value->nombre ?></button></a>
 							</div>
-						<?php endif;endforeach; ?>
+						<?php endforeach;endif; ?>
 					</div> 
 				</div>
 			</div>
