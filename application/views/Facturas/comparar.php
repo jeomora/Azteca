@@ -74,12 +74,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				<div class="ibox">
 					<div class="col-md-12 col-lg-12 ibox-content" style="border:1px solid #7db7ff;">
 						<h1 style="border-bottom:1px solid #7db7ff;margin-bottom:15px;color:#7db7ff">Seleccione un proveedor para descargar todas las facturas de la semana</h1>
-						<?php foreach ($provis as $key => $value): ?>
+						<?php if($provis):foreach ($provis as $key => $value): ?>
 							<div class="col-md-3 col-lg-2">
 								<a target="_blank" href="<?php echo base_url('Facturas/imprimeR/'.$value->id_usuario) ?>" style="color:#FFF"><button class="downl" data-id-prove="<?php echo $value->id_usuario ?>"><i class="fa fa-download" aria-hidden="true"></i>
 									&nbsp;&nbsp;&nbsp;<?php echo $value->nombre ?></button></a>
 							</div>
-						<?php endforeach; ?>
+						<?php endif;endforeach; ?>
 					</div> 
 				</div>
 			</div>
