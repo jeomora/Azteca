@@ -838,7 +838,7 @@ $this->db->select("c.id_cotizacion,
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 
-		$this->db->select("exist,abarrotes,cedis,mercado,pedregal,tienda,trincheras,tenencia,ultra,tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
+		$this->db->select("r.precio AS reales,exist,abarrotes,cedis,mercado,pedregal,tienda,trincheras,tenencia,ultra,tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,my.id_mayoreo,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
@@ -849,6 +849,7 @@ $this->db->select("c.id_cotizacion,
 			ctz_maxima.precio AS precio_maximo,
 			AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia")
 		->from("prodandprice prod")
+		->join("reales r","prod.id_producto = r.id_producto AND WEEKOFYEAR(r.fecha_registro) = WEEKOFYEAR(CURDATE())")
 		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." AND c.estatus = 1", "LEFT")
 		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT ctz_min.id_cotizacion FROM cotizaciones ctz_min LEFT JOIN usuarios uss on ctz_min.id_proveedor = uss.id_usuario	WHERE prod.id_producto = ctz_min.id_producto AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") ORDER BY uss.orden ASC LIMIT 1)", "LEFT")
 		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE ctz_first.id_producto = ctz_max.id_producto AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND ctz_max_precio.estatus = 1 AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
@@ -917,6 +918,7 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["id_mayoreo"]	=	$comparativa[$i]->id_mayoreo;
