@@ -4694,16 +4694,16 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("E{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								$this->cellStyle("E{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-								$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							}elseif($row['precio_sistema'] < $row['precio_first']){
 								$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("E{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
 								$this->cellStyle("E{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-								$this->cellStyle("D{$flag}", "E21600", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "E21600", "000000", FALSE, 12, "Franklin Gothic Book");
 							}else{
 								$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("E{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-								$this->cellStyle("D{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
 
 							$hoja->setCellValue("G{$flag}", $row['precio_sistema'])->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
@@ -5520,16 +5520,16 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("E{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								$this->cellStyle("E{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-								$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							}elseif($row['precio_sistema'] < $row['precio_first']){
 								$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("E{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
 								$this->cellStyle("E{$flag}", "FDB2B2", "E21111", FALSE, 12, "Franklin Gothic Book");
-								$this->cellStyle("D{$flag}", "E21600", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "E21600", "000000", FALSE, 12, "Franklin Gothic Book");
 							}else{
 								$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("E{$flag}", "96EAA8", "0C800C", FALSE, 12, "Franklin Gothic Book");
-								$this->cellStyle("D{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
+								$this->cellStyle("C{$flag}", "249947", "000000", FALSE, 12, "Franklin Gothic Book");
 							}
 
 							$hoja->setCellValue("G{$flag}", $row['precio_sistema'])->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
