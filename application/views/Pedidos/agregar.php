@@ -7,48 +7,30 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 }
 ?>
 <style>
-	.td2Form{background-color: #000 !important; color:#FFF !important;}
-	th {text-align: center}
-	tr:hover {background-color: #cfffc3 !important;}
-	select#id_proves2{display: none}
-	.fill_form{display: none}
-	select#id_proves {color: #000;}
-	select#id_proves4 {color: #000;}
-	.btng1{
-		display: inline-flex;
-	    background-color: #23c6c8;
-	    border-radius: 5px;
-	    color: #FFF;
-	    margin-left: 3rem;
-    	padding: 5px;
-    	padding-top: 4px;
-    	padding-right: 5px;
-    	margin-bottom: 2rem;
-	}
-	.lblget {
-	    font-family: inherit;
-	    font-weight: normal;
-	    font-size: 14px;
-	    padding: 7px;
-	}
-	.preciomas{
-		background-color: #ea9696;
-	    color: red;
-	    font-weight: bold;
-	    text-align: center;
-	}
-	.preciomenos{
-		background-color: #96eaa8;
-	    color: green;
-	    font-weight: bold;
-	    text-align: center;
-	}
-	.numeric {width: 70px !important;}
+	.td2Form{background-color:#000 !important;color:#FFF !important;}
+	th{text-align:center}
+	tr:hover{background-color:#cfffc3 !important;}
+	select#id_proves2{display:none}
+	.fill_form{display:none}
+	select#id_proves{color:#000;}
+	select#id_proves4{color:#000;}
+	.btng1{display:inline-flex;background-color:#23c6c8;border-radius:5px;color:#FFF;margin-left:3rem;padding:5px;padding-top:4px;padding-right:5px;margin-bottom:2rem;}
+	.lblget{font-family:inherit;font-weight:normal;font-size:14px;padding:7px;}
+	.preciomas{background-color:#ea9696;color:red;font-weight:bold;text-align:center;}
+	.preciomenos{background-color:#96eaa8;color:green;font-weight:bold;text-align:center;}
+	.numeric{width: 70px !important;}
+	.btndown{font-size:20px;background:darkcyan;color:#FFF;border:2px solid darkcyan;padding:10px 40px;border-radius:3px;}
+	.btndown:hover{color:darkcyan !important;background: transparent;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<?php echo form_open_multipart("", array('id' => 'upload_pedidos')); ?>
 	<div class="row">
 		<div class="col-lg-12">
+			<div class="col-lg-12 col-md-12" style="padding-left:30px;padding-bottom:70px;">
+				<a href="existeExcel" target="_blank" style="color:#FFF" class="btndown">
+					<i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp; Descargar Formato Existencias
+				</a>
+			</div>
 			<div class="btn-group btng1">
 				<label for="id_proveedor" class="lblget">Tienda</label>
 				<select name="id_proves4" id="id_proves4" class="form-control">

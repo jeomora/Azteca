@@ -475,6 +475,104 @@ class Pedidos extends MY_Controller {
 		$data["allcuantas"] = $this->ex_lun_md->getAllTienda(NULL,$id_tienda)[0];
 		$this->jsonResponse($data);
 	}
+
+	public function existeExcel(){
+		$flag =1;
+		$flag2=1;
+		$array = "";
+		$array2 = "";
+		$filenam = "";
+		$flag1 = 4;
+		$array = $this->usua_mdl->getH(NULL);
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		
+		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+	
+		$hoja1->getColumnDimension('A')->setWidth("6");
+		$hoja1->getColumnDimension('B')->setWidth("6");
+		$hoja1->getColumnDimension('C')->setWidth("6");
+		$hoja1->getColumnDimension('D')->setWidth("25");
+		$hoja1->getColumnDimension('E')->setWidth("52");
+		$hoja1->getColumnDimension('F')->setWidth("60");
+
+		$this->excelfile->setActiveSheetIndex(0);
+		foreach ($array as $key => $v3) {
+			$flag2 = $flag;
+			$hoja1->mergeCells('A'.$flag2.':F'.$flag2);
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "GRUPO ABARROTES AZTECA");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$hoja1->mergeCells('A'.$flag2.':F'.$flag2.'');
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "FORMATO DE EISTENCIAS ".date("d-m-Y"));
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A".$flag2.":D".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->mergeCells('A'.$flag2.':C'.$flag2.'');
+			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
+			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
+			$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("F".$flag2."", "PROMOCIÓN DE LA SEMANA");
+			$this->cellStyle("F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A".$flag2.":F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "CAJAS");
+			$hoja1->setCellValue("B".$flag2."", "PZAS");
+			$hoja1->setCellValue("C".$flag2."", "PEDIDO");
+			$hoja1->setCellValue("D".$flag2."", "CÓDIGO");
+			$cotizacionesProveedor = $this->ct_mdl->getCodesPromos(NULL);
+
+			if($cotizacionesProveedor){
+				foreach ($cotizacionesProveedor as $key => $value) {
+					$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+					$hoja1->setCellValue("E".$flag1, $value['familia']);
+					$flag1 +=1;
+					if ($value['articulos']) {
+						foreach ($value['articulos'] as $key => $row){
+							$this->excelfile->setActiveSheetIndex(0);
+							$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							
+							$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							if($row['color'] == '#92CEE3'){
+								$this->cellStyle("D{$flag1}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+							$hoja1->setCellValue("E{$flag1}", $row['producto']);
+							$hoja1->setCellValue("F{$flag1}", $row['observaciones']);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':F'.$flag1.'')->applyFromArray($styleArray);
+							$hoja1->getStyle("A{$flag1}:F{$flag1}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+							$flag1 ++;
+						}
+					}
+				}
+			}
+		}
+
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "FORMATO EXISTENCIAS ".$fecha.".xlsx"; //Nombre del documento con extención
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer->save("php://output");
+	}
 	
 
 }
