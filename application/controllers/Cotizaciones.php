@@ -5601,9 +5601,8 @@ class Cotizaciones extends MY_Controller {
 	    }else{
 	        $ip = $_SERVER['REMOTE_ADDR'];
 	    }
-
-    return $ip;
-}
+		return $ip;
+	}
 }
 /* End of file Cotizaciones.php */
 /* Location: ./application/controllers/Cotizaciones.php */

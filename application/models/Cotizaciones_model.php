@@ -1828,6 +1828,53 @@ $this->db->select("c.id_cotizacion,
 			return false;
 		}
 	}
+
+	public function getCodesPromos($where=[]){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+
+		$this->db->select("p.color,p.id_producto,f.id_familia,p.nombre as producto,p.codigo,ctz_first.observaciones,f.nombre as familia FROM productos p LEFT JOIN familias f ON p.id_familia = f.id_familia LEFT JOIN cotizaciones ctz_first ON ctz_first.id_cotizacion = (SELECT ctz_min.id_cotizacion FROM cotizaciones ctz_min LEFT JOIN usuarios uss on ctz_min.id_proveedor = uss.id_usuario WHERE p.id_producto = ctz_min.id_producto AND (WEEKOFYEAR(ctz_min.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(ctz_min.fecha_registro) = YEAR(CURDATE())) AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND (WEEKOFYEAR(ctz_min_precio.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(ctz_min_precio.fecha_registro) = YEAR(CURDATE())) ) ORDER BY uss.orden ASC LIMIT 1) WHERE p.estatus <> 0");
+
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+
+
+		// echo $this->db->last_query();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if (isset($comparativaIndexada[$comparativa[$i]->id_familia])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_familia]				=	[];
+				$comparativaIndexada[$comparativa[$i]->id_familia]["familia"]	=	$comparativa[$i]->familia;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"]	=	[];
+			}
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["producto"]		=	$comparativa[$i]->producto;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["codigo"]			=	$comparativa[$i]->codigo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	$comparativa[$i]->observaciones;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]	=	$comparativa[$i]->color;
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 
