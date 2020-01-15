@@ -502,8 +502,8 @@ class Pedidos extends MY_Controller {
 		$hoja1->getColumnDimension('B')->setWidth("6");
 		$hoja1->getColumnDimension('C')->setWidth("6");
 		$hoja1->getColumnDimension('D')->setWidth("25");
-		$hoja1->getColumnDimension('E')->setWidth("52");
-		$hoja1->getColumnDimension('F')->setWidth("60");
+		$hoja1->getColumnDimension('E')->setWidth("60");
+		$hoja1->getColumnDimension('F')->setWidth("80");
 
 		$this->excelfile->setActiveSheetIndex(0);
 		foreach ($array as $key => $v3) {
@@ -515,7 +515,7 @@ class Pedidos extends MY_Controller {
 			$flag2++;
 			$hoja1->mergeCells('A'.$flag2.':F'.$flag2.'');
 			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
-			$hoja1->setCellValue("A".$flag2."", "FORMATO DE EISTENCIAS ".date("d-m-Y"));
+			$hoja1->setCellValue("A".$flag2."", "FORMATO DE EXISTENCIAS ".date("d-m-Y"));
 			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
 			$flag2++;
 			$this->cellStyle("A".$flag2.":D".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
