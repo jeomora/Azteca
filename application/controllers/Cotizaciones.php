@@ -1868,6 +1868,7 @@ class Cotizaciones extends MY_Controller {
 			$flage = 5;
 			$i = 0;
 			$sumall = array(1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "");
+			$provname = "";
 			if ($array){
 				foreach ($array as $key => $value){
 					$fecha = new DateTime(date('Y-m-d H:i:s'));
@@ -1901,6 +1902,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja1->mergeCells('A'.$flag1.':F'.$flag1);
 						$this->cellStyle("A".$flag1, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja1->setCellValue("A".$flag1."", "PEDIDOS A '".$value->nombre."' ".date("d-m-Y"));
+						$provname = $value->nombre;
 						$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag1)->applyFromArray($styleArray);
 						$flag1++;
 						$this->cellStyle("A".$flag1.":D".$flag1, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
@@ -2610,7 +2612,7 @@ class Cotizaciones extends MY_Controller {
 							$flag = $flag + 3;
 							$hoja->mergeCells('B'.$flag.':C'.$flag);
 							$this->cellStyle("B".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("B".$flag, "TOTALES POR '".$value->nombre."'");
+							$hoja->setCellValue("B".$flag, "TOTALES POR '".$provname."'");
 							$flag++;
 
 							$this->cellStyle("B".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
