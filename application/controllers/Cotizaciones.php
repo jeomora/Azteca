@@ -2321,15 +2321,15 @@ class Cotizaciones extends MY_Controller {
 									}
 									$hoja1->setCellValue("E{$flag1}", $row['producto']);
 									$hoja1->setCellValue("F{$flag1}", $row['promocion_first']);
-									$hoja1->setCellValue("G{$flag}", $row['cedis']);
-									$hoja1->setCellValue("H{$flag}", $row['abarrotes']);
-									$hoja1->setCellValue("I{$flag}", $row['pedregal']);
-									$hoja1->setCellValue("J{$flag}", $row['tienda']);
-									$hoja1->setCellValue("K{$flag}", $row['ultra']);
-									$hoja1->setCellValue("L{$flag}", $row['trincheras']);
-									$hoja1->setCellValue("M{$flag}", $row['mercado']);
-									$hoja1->setCellValue("N{$flag}", $row['tenencia']);
-									$hoja1->setCellValue("O{$flag}", $row['tijeras']);
+									$hoja1->setCellValue("G{$flag1}", $row['cedis']);
+									$hoja1->setCellValue("H{$flag1}", $row['abarrotes']);
+									$hoja1->setCellValue("I{$flag1}", $row['pedregal']);
+									$hoja1->setCellValue("J{$flag1}", $row['tienda']);
+									$hoja1->setCellValue("K{$flag1}", $row['ultra']);
+									$hoja1->setCellValue("L{$flag1}", $row['trincheras']);
+									$hoja1->setCellValue("M{$flag1}", $row['mercado']);
+									$hoja1->setCellValue("N{$flag1}", $row['tenencia']);
+									$hoja1->setCellValue("O{$flag1}", $row['tijeras']);
 									$hoja1->getStyle("A{$flag1}:O{$flag1}")
 							                 ->getAlignment()
 							                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -2646,7 +2646,7 @@ class Cotizaciones extends MY_Controller {
 										PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 									$this->excelfile->setActiveSheetIndex(1);
 									if ($id_proves === "VOLUMEN"){
-										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BB'.$flag)->applyFromArray($styleArray);
+										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BK'.$flag)->applyFromArray($styleArray);
 										$this->excelfile->getActiveSheet()->getStyle('BL'.$flag.':BM'.$flag)->applyFromArray($styleArray);
 										if($row['precio_sistema'] == 0){
 											$row['precio_sistema'] = 1;
@@ -2660,7 +2660,7 @@ class Cotizaciones extends MY_Controller {
 											$hoja->setCellValue("H{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
 											$this->cellStyle("H".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 									}else{
-										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BD'.$flag)->applyFromArray($styleArray);
+										$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BM'.$flag)->applyFromArray($styleArray);
 										$this->excelfile->getActiveSheet()->getStyle('BN'.$flag)->applyFromArray($styleArray);
 										$this->excelfile->getActiveSheet()->getStyle('BO'.$flag)->applyFromArray($styleArray);
 										if($row['precio_sistema'] == 0){
@@ -2676,7 +2676,7 @@ class Cotizaciones extends MY_Controller {
 									}
 									
 									$this->excelfile->setActiveSheetIndex(0);
-									$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':G'.$flag1)->applyFromArray($styleArray);
+									$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':O'.$flag1)->applyFromArray($styleArray);
 									$hoja->getStyle("A{$flag}:I{$flag}")
 							                 ->getAlignment()
 							                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
