@@ -4796,7 +4796,7 @@ class Cotizaciones extends MY_Controller {
 			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
 			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
 			$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':O'.$flag2.'')->applyFromArray($styleArray);
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
 			$this->cellStyle("G".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->setCellValue("G".$flag2."", "PENDIENT");
 			$this->cellStyle("H".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
@@ -4818,7 +4818,7 @@ class Cotizaciones extends MY_Controller {
 			
 
 			$flag2++;
-			$this->cellStyle("A".$flag2.":O".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("A".$flag2.":F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->setCellValue("A".$flag2."", "CAJAS");
 			$hoja1->setCellValue("B".$flag2."", "PZAS");
 			$hoja1->setCellValue("C".$flag2."", "PEDIDO");
@@ -5031,7 +5031,7 @@ class Cotizaciones extends MY_Controller {
 						foreach ($value['articulos'] as $key => $row){
 							$registrazo = date('Y-m-d',strtotime($row['registrazo']));
 							$this->excelfile->setActiveSheetIndex(0);
-							$this->cellStyle("A".$flag1.":0".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("A".$flag1.":O".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							
 							$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 							if($row['color'] == '#92CEE3'){
@@ -5912,7 +5912,7 @@ class Cotizaciones extends MY_Controller {
 						foreach ($value['articulos'] as $key => $row){
 							$registrazo = date('Y-m-d',strtotime($row['registrazo']));
 							$this->excelfile->setActiveSheetIndex(0);
-							$this->cellStyle("A".$flag1.":0".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							$this->cellStyle("A".$flag1.":O".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 							
 							$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 							if($row['color'] == '#92CEE3'){
