@@ -4776,7 +4776,7 @@ class Cotizaciones extends MY_Controller {
 		foreach ($array as $key => $v3) {
 			$this->excelfile->setActiveSheetIndex(0);
 			if ($flag > 15) {
-				$flag2 = $flag-3;	
+				$flag2 = $flag+2;	
 			}else{
 				$flag2 = $flag;
 			}
@@ -5657,7 +5657,7 @@ class Cotizaciones extends MY_Controller {
 		foreach ($array as $key => $v3) {
 			$this->excelfile->setActiveSheetIndex(0);
 			if ($flag > 15) {
-				$flag2 = $flag-3;	
+				$flag2 = $flag+2;	
 			}else{
 				$flag2 = $flag;
 			}
