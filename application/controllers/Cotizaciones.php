@@ -4778,7 +4778,7 @@ class Cotizaciones extends MY_Controller {
 			if ($flag > 15) {
 				$flag2 = $flag;	
 			}else{
-				$flag2 = $flag;
+				$flag2 = $flag -1;
 			}
 			
 			$hoja1->mergeCells('A'.$flag2.':F'.$flag2);
@@ -5659,7 +5659,7 @@ class Cotizaciones extends MY_Controller {
 			if ($flag > 15) {
 				$flag2 = $flag;	
 			}else{
-				$flag2 = $flag;
+				$flag2 = $flag -1;
 			}
 			
 			$hoja1->mergeCells('A'.$flag2.':F'.$flag2);
