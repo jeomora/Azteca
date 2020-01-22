@@ -2348,7 +2348,7 @@ class Cotizaciones extends MY_Controller {
 									$hoja->setCellValue("B{$flag}", $row['producto']);
 									if ($id_proves === "VOLUMEN" || $id_proves === "AMARILLOS") {
 										$hoja->setCellValue("E{$flag}", $row['proveedor_first']);
-										$hoja->setCellValue("C{$flag}", $row['reales']);
+										$hoja->setCellValue("C{$flag}", $row['reales'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
 										if($row['precio_sistema'] > $row['reales']){
 											$this->cellStyle("C{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
@@ -5085,7 +5085,7 @@ class Cotizaciones extends MY_Controller {
 							
 
 							$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("D{$flag}", $row['reales'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("D{$flag}", $row['reales'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
 							if($row['precio_sistema'] > $row['reales']){
 								$this->cellStyle("D{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
@@ -5972,7 +5972,7 @@ class Cotizaciones extends MY_Controller {
 							
 
 							$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-							$hoja->setCellValue("D{$flag}", $row['reales'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							$hoja->setCellValue("D{$flag}", $row['reales'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							if($row['precio_sistema'] > $row['reales']){
 								$this->cellStyle("D{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
 							}else{
