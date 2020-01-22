@@ -1199,7 +1199,7 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("BL".$flag1, "4CACC6", "000000", TRUE, 10, "Franklin Gothic Book");
 					$anterior->setCellValue("BL".$flag1."", "TIJERAS");
 				}
-				
+				$flageas = $flag+1;
 				foreach ($infos as $keys => $v) {
 					$this->excelfile->setActiveSheetIndex($last);
 					$anterior = $this->excelfile->getActiveSheet();
@@ -1293,7 +1293,7 @@ class Lunes extends MY_Controller {
 					$this->excelfile->setActiveSheetIndex($key);
 					$proveedor[0]->estatus = $this->excelfile->getActiveSheet();
 					$flag++;
-					$flageas = $flag;
+					
 					$this->excelfile->setActiveSheetIndex($key);
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", $v["codigo"])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
