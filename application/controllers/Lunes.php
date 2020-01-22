@@ -621,12 +621,12 @@ class Lunes extends MY_Controller {
 		$proveedor = $this->prove_md->get(NULL);
 		$last = 1;
 		$this->excelfile->createSheet();
-		$totales = $this->excelfile->setActiveSheetIndex(0)->setTitle("TOTALES");
-		foreach ($proveedor as $ke => $value) {
+		$totales = $this->excelfile->setActiveSheetIndex(0)->setTitle("PEDIDOS LUNES");
+		/*foreach ($proveedor as $ke => $value) {
 			$last++;
 			$this->excelfile->createSheet();
         	$proveedor[$ke]->estatus = $this->excelfile->setActiveSheetIndex($ke+1)->setTitle($value->alias);
-		}
+		}*/
 		$this->excelfile->createSheet();
 		$anterior = $this->excelfile->setActiveSheetIndex($last)->setTitle("ANTERIOR");
 
