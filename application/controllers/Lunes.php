@@ -670,7 +670,6 @@ class Lunes extends MY_Controller {
 					$key = 0;
 					$this->excelfile->setActiveSheetIndex($key);
 					$proveedor[$key]->estatus = $this->excelfile->getActiveSheet();
-					$flag = 1;
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BU'.$flag);
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", "CEDIS, ABARROTES,PEDREGAL, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
@@ -1291,10 +1290,10 @@ class Lunes extends MY_Controller {
 					 
 
 
-					$this->excelfile->setActiveSheetIndex($key+1);
+					$this->excelfile->setActiveSheetIndex($key);
 					$proveedor[0]->estatus = $this->excelfile->getActiveSheet();
 					$flag++;
-					$this->excelfile->setActiveSheetIndex($key+1);
+					$this->excelfile->setActiveSheetIndex($key);
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", $v["codigo"])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
