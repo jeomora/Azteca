@@ -2352,7 +2352,7 @@ class Cotizaciones extends MY_Controller {
 
 										if(number_format(($row['precio_first'] - $row['reales']),2) === "0.01" || number_format(($row['precio_first'] - $row['reales']),2) === "-0.01"){
 											$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-										}elseif($row['precio_first'] < $row['precio_reales']){
+										}elseif($row['precio_first'] < $row['reales']){
 											$this->cellStyle("C{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
 										}else{
 											$this->cellStyle("C{$flag}", "FFFFFF", "249947", FALSE, 12, "Franklin Gothic Book");
@@ -2505,7 +2505,7 @@ class Cotizaciones extends MY_Controller {
 										
 										if(number_format(($row['precio_first'] - $row['reales']),2) === "0.01" || number_format(($row['precio_first'] - $row['reales']),2) === "-0.01"){
 											$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-										}elseif($row['precio_first'] < $row['precio_reales']){
+										}elseif($row['precio_first'] < $row['reales']){
 											$this->cellStyle("C{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
 										}else{
 											$this->cellStyle("C{$flag}", "FFFFFF", "249947", FALSE, 12, "Franklin Gothic Book");
@@ -5094,7 +5094,7 @@ class Cotizaciones extends MY_Controller {
 
 							if(number_format(($row['precio_first'] - $row['reales']),2) === "0.01" || number_format(($row['precio_first'] - $row['reales']),2) === "-0.01"){
 								$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-							}elseif($row['precio_first'] < $row['precio_reales']){
+							}elseif($row['precio_first'] < $row['reales']){
 								$this->cellStyle("D{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
 							}else{
 								$this->cellStyle("D{$flag}", "FFFFFF", "249947", FALSE, 12, "Franklin Gothic Book");
@@ -5982,7 +5982,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("D{$flag}", $row['reales'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 							if(number_format(($row['precio_first'] - $row['reales']),2) === "0.01" || number_format(($row['precio_first'] - $row['reales']),2) === "-0.01"){
 								$this->cellStyle("D{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-							}elseif($row['precio_first'] < $row['precio_reales']){
+							}elseif($row['precio_first'] < $row['reales']){
 								$this->cellStyle("D{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
 							}else{
 								$this->cellStyle("D{$flag}", "FFFFFF", "249947", FALSE, 12, "Franklin Gothic Book");
