@@ -621,12 +621,12 @@ class Lunes extends MY_Controller {
 		$proveedor = $this->prove_md->get(NULL);
 		$last = 1;
 		$this->excelfile->createSheet();
-		$totales = $this->excelfile->setActiveSheetIndex(0)->setTitle("TOTALES");
-		foreach ($proveedor as $ke => $value) {
+		$totales = $this->excelfile->setActiveSheetIndex(0)->setTitle("PEDIDOS LUNES");
+		/*foreach ($proveedor as $ke => $value) {
 			$last++;
 			$this->excelfile->createSheet();
         	$proveedor[$ke]->estatus = $this->excelfile->setActiveSheetIndex($ke+1)->setTitle($value->alias);
-		}
+		}*/
 		$this->excelfile->createSheet();
 		$anterior = $this->excelfile->setActiveSheetIndex($last)->setTitle("ANTERIOR");
 
@@ -667,8 +667,8 @@ class Lunes extends MY_Controller {
 			$infos = $this->prolu_md->printProdis(NULL,$va->id_proveedor,$tiendas->total);
 			if ($infos) {
 				if (1 == 1) {
-					$this->excelfile->setActiveSheetIndex($key+1
-					);
+					$key = 0;
+					$this->excelfile->setActiveSheetIndex($key);
 					$proveedor[$key]->estatus = $this->excelfile->getActiveSheet();
 					$flag = 1;
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BU'.$flag);
@@ -1583,10 +1583,12 @@ class Lunes extends MY_Controller {
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TOTAL");
 				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=SUM(D".($totis+5).":D".($flag-1).")")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 			$flag1 += 5;
+
+			$flag += 5;
 			}
 		}
 
-		$this->excelfile->setActiveSheetIndex(0);
+		/*$this->excelfile->setActiveSheetIndex(0);
 
 		$flag = 2;
 		$totales->getColumnDimension('B')->setWidth("40");
@@ -1655,7 +1657,7 @@ class Lunes extends MY_Controller {
 		$this->excelfile->getActiveSheet()->getStyle('B'.$flag.':C'.$flag)->applyFromArray($styleArray);
 		$this->cellStyle("B".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$totales->setCellValue("B".$flag, "TOTAL");
-		$totales->setCellValue("C{$flag}", "=SUM(C2:C11)")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$totales->setCellValue("C{$flag}", "=SUM(C2:C11)")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');*/
 		//$this->jsonResponse($sup);
 
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
