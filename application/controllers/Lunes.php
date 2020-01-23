@@ -2109,12 +2109,78 @@ class Lunes extends MY_Controller {
 		$week_end = date('d', strtotime('+'.(6-$day).' days'));
 
 		$ced="=";$sup="=";$aba="=";$ped="=";$tie="=";$ult="=";$tri="=";$mer="=";$ten="=";$tij="=";
-
+		$bande=1;
 		foreach ($proveedor as $key => $va) {
 			$infos = $this->prolu_md->printProdis(NULL,$va->id_proveedor,$tiendas->total);
 			if ($infos) {
 				if (1 == 1) {
 					$key = 1;
+
+					/******************BEGIN HOJA EXISTENCIAS******************/
+					$this->excelfile->setActiveSheetIndex(0);
+					$bande+=5;
+					$pedide = $this->excelfile->getActiveSheet();
+					$pedide->mergeCells('A'.$bande.':F'.$bande);
+					$this->cellStyle("A".$bande."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("A".$bande."", "GRUPO ABARROTES AZTECA");
+					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':F'.$bande.'')->applyFromArray($styleArray);
+					$bande++;
+					$pedide->mergeCells('A'.$bande.':F'.$bande.'');
+					$this->cellStyle("A".$bande."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("A".$bande."", "PEDIDOS A '".$va->nombre."' ".date("d-m-Y"));
+					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':F'.$bande.'')->applyFromArray($styleArray);
+					$bande++;
+					$this->cellStyle("A".$bande.":D".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->mergeCells('A'.$bande.':B'.$bande.'');
+					$pedide->setCellValue("A".$bande."", "EXISTENCIAS");
+					$pedide->setCellValue("E".$bande."", "DESCRIPCIÓN");
+					$this->cellStyle("E".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':F'.$bande.'')->applyFromArray($styleArray);
+					$this->cellStyle("G".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("G".$bande."", "PENDIENT");
+					$this->cellStyle("H".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("H".$bande."", "PENDIENT");
+					$this->cellStyle("I".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("I".$bande."", "PENDIENT");
+					$this->cellStyle("J".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("J".$bande."", "PENDIENT");
+					$this->cellStyle("K".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("K".$bande."", "PENDIENT");
+					$this->cellStyle("L".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("L".$bande."", "PENDIENT");
+					$this->cellStyle("M".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("M".$bande."", "PENDIENT");
+					$this->cellStyle("N".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("N".$bande."", "PENDIENT");
+					$this->cellStyle("O".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("O".$bande."", "PENDIENT");
+					$bande++;
+					$this->cellStyle("A".$bande.":F".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->setCellValue("A".$bande."", "CAJAS");
+					$pedide->setCellValue("B".$bande."", "PZAS");
+					$pedide->setCellValue("C".$bande."", "PEDIDO");
+					$pedide->setCellValue("D".$bande."", "CÓDIGO");
+					$pedide->setCellValue("F".$bande."", "PROMOCIÓN");
+					$this->cellStyle("G".$bande, "C00000", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("H".$bande, "01B0F0", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("I".$bande, "FF0000", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("J".$bande, "E26C0B", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("K".$bande, "C5C5C5", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("L".$bande, "92D051", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("M".$bande, "B1A0C7", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("N".$bande, "DA9694", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("O".$bande, "4CACC6", "000000", TRUE, 10, "Franklin Gothic Book");
+					$pedide->setCellValue("G".$bande."", "CEDIS");
+					$pedide->setCellValue("H".$bande."", "ABARROTES");
+					$pedide->setCellValue("I".$bande."", "VILLAS");
+					$pedide->setCellValue("J".$bande."", "TIENDA");
+					$pedide->setCellValue("K".$bande."", "ULTRA");
+					$pedide->setCellValue("L".$bande."", "TRINCHERAS");
+					$pedide->setCellValue("M".$bande."", "MERCADO");
+					$pedide->setCellValue("N".$bande."", "TENENCIA");
+					$pedide->setCellValue("O".$bande."", "TIJERAS");
+					/******************END HOJA EXISTENCIAS******************/
+
 					$this->excelfile->setActiveSheetIndex($key);
 					$proveedor[$key]->estatus = $this->excelfile->getActiveSheet();
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BU'.$flag);
@@ -2319,6 +2385,30 @@ class Lunes extends MY_Controller {
 				}
 				$flageas = $flag+1;
 				foreach ($infos as $keys => $v) {
+					/******************BEGIN HOJA EXISTENCIAS******************/
+					$this->excelfile->setActiveSheetIndex(0);
+					$this->cellStyle("A".$bande.":O".$bande, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					
+					$pedide->setCellValue("D{$bande}", $row['codigo'])->getStyle("D{$bande}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+					if($row['color'] == '#92CEE3'){
+						$this->cellStyle("D{$bande}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+					}else{
+						$this->cellStyle("D{$bande}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					}
+					$pedide->setCellValue("E{$bande}", $row['producto']);
+					$pedide->setCellValue("F{$bande}", $row['promocion_first']);
+					$pedide->setCellValue("G{$bande}", $row['cedis']);
+					$pedide->setCellValue("H{$bande}", $row['abarrotes']);
+					$pedide->setCellValue("I{$bande}", $row['pedregal']);
+					$pedide->setCellValue("J{$bande}", $row['tienda']);
+					$pedide->setCellValue("K{$bande}", $row['ultra']);
+					$pedide->setCellValue("L{$bande}", $row['trincheras']);
+					$pedide->setCellValue("M{$bande}", $row['mercado']);
+					$pedide->setCellValue("N{$bande}", $row['tenencia']);
+					$pedide->setCellValue("O{$bande}", $row['tijeras']);
+					/******************END HOJA EXISTENCIAS******************/
+
+
 					$this->excelfile->setActiveSheetIndex($key);
 					$proveedor[0]->estatus = $this->excelfile->getActiveSheet();
 					$flag++;
@@ -2569,7 +2659,7 @@ class Lunes extends MY_Controller {
 			}
 		}
 
-		$this->excelfile->getActiveSheet()->getStyle('B'.$flag.':C'.$flag)->applyFromArray($styleArray);
+		/*$this->excelfile->getActiveSheet()->getStyle('B'.$flag.':C'.$flag)->applyFromArray($styleArray);
 		$this->cellStyle("B".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
 		$proveedor[$key]->estatus->setCellValue("B".$flag, "CEDIS/SUPER");
 		$proveedor[$key]->estatus->setCellValue("C{$flag}", substr($ced, 0, -1))->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -2633,7 +2723,7 @@ class Lunes extends MY_Controller {
 		$this->excelfile->getActiveSheet()->getStyle('B'.$flag.':C'.$flag)->applyFromArray($styleArray);
 		$this->cellStyle("B".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$proveedor[$key]->estatus->setCellValue("B".$flag, "TOTAL");
-		$proveedor[$key]->estatus->setCellValue("C{$flag}", "=SUM(C2:C11)")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+		$proveedor[$key]->estatus->setCellValue("C{$flag}", "=SUM(C2:C11)")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');*/
 
 		
 
