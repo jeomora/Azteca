@@ -51,7 +51,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					</div> 
 					<div class="btn-group col-sm-3">
 						<div class="col-sm-2">
-							<?php echo form_open("Lunes/excel_semana", array("id" => 'archivo_precios', "target" => '_blank')); ?>
+							<?php echo form_open("Lunes/excel_semanon", array("id" => 'archivo_precios', "target" => '_blank')); ?>
 								<button class="btn btn-info" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
 									<i class="fa fa-cloud-download"></i> Descargar formato
 								</button>
