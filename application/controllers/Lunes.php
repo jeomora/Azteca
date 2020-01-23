@@ -2118,8 +2118,13 @@ class Lunes extends MY_Controller {
 
 					/******************BEGIN HOJA EXISTENCIAS******************/
 					$this->excelfile->setActiveSheetIndex(0);
-					$bande+=5;
 					$pedide = $this->excelfile->getActiveSheet();
+					$pedide->getColumnDimension('A')->setWidth("6");
+					$pedide->getColumnDimension('B')->setWidth("6");
+					$pedide->getColumnDimension('C')->setWidth("6");
+					$pedide->getColumnDimension('D')->setWidth("25");
+					$pedide->getColumnDimension('E')->setWidth("47");
+					$pedide->getColumnDimension('F')->setWidth("50");
 					$pedide->mergeCells('A'.$bande.':F'.$bande);
 					$this->cellStyle("A".$bande."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$pedide->setCellValue("A".$bande."", "GRUPO ABARROTES AZTECA");
@@ -2129,12 +2134,18 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("A".$bande."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$pedide->setCellValue("A".$bande."", "PEDIDOS A '".$va->nombre."' ".date("d-m-Y"));
 					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':F'.$bande.'')->applyFromArray($styleArray);
+
 					$bande++;
-					$this->cellStyle("A".$bande.":D".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-					$pedide->mergeCells('A'.$bande.':B'.$bande.'');
+					$this->cellStyle("A".$bande.":F".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$pedide->mergeCells('A'.$bande.':C'.$bande.'');
+
 					$pedide->setCellValue("A".$bande."", "EXISTENCIAS");
 					$pedide->setCellValue("E".$bande."", "DESCRIPCIÓN");
+					$pedide->setCellValue("D".$bande."", "CÓD");
+					$pedide->setCellValue("F".$bande."", "PROMO");
+					$this->cellStyle("D".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("E".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("F".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':F'.$bande.'')->applyFromArray($styleArray);
 					$this->cellStyle("G".$bande."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$pedide->setCellValue("G".$bande."", "PENDIENT");
@@ -2179,6 +2190,8 @@ class Lunes extends MY_Controller {
 					$pedide->setCellValue("M".$bande."", "MERCADO");
 					$pedide->setCellValue("N".$bande."", "TENENCIA");
 					$pedide->setCellValue("O".$bande."", "TIJERAS");
+					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':O'.$bande.'')->applyFromArray($styleArray);
+					$bande++;
 					/******************END HOJA EXISTENCIAS******************/
 
 					$this->excelfile->setActiveSheetIndex($key);
@@ -2402,7 +2415,8 @@ class Lunes extends MY_Controller {
 					$pedide->setCellValue("M{$bande}", $v["pend"][9]["pend"]);
 					$pedide->setCellValue("N{$bande}", $v["pend"][10]["pend"]);
 					$pedide->setCellValue("O{$bande}", $v["pend"][11]["pend"]);
-					
+					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':O'.$bande.'')->applyFromArray($styleArray);
+					$bande++;
 					/******************END HOJA EXISTENCIAS******************/
 
 
@@ -2653,6 +2667,7 @@ class Lunes extends MY_Controller {
 			$flag1 += 5;
 
 			$flag += 5;
+			$bande+=5;
 			}
 		}
 
