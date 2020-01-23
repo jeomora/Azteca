@@ -2067,7 +2067,7 @@ class Lunes extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 
-	public function excel_semana(){
+	public function excel_semanon(){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
