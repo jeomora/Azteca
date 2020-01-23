@@ -2389,23 +2389,20 @@ class Lunes extends MY_Controller {
 					$this->excelfile->setActiveSheetIndex(0);
 					$this->cellStyle("A".$bande.":O".$bande, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 					
-					$pedide->setCellValue("D{$bande}", $row['codigo'])->getStyle("D{$bande}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
-					if($row['color'] == '#92CEE3'){
-						$this->cellStyle("D{$bande}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
-					}else{
-						$this->cellStyle("D{$bande}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-					}
-					$pedide->setCellValue("E{$bande}", $row['producto']);
-					$pedide->setCellValue("F{$bande}", $row['promocion_first']);
-					$pedide->setCellValue("G{$bande}", $row['cedis']);
-					$pedide->setCellValue("H{$bande}", $row['abarrotes']);
-					$pedide->setCellValue("I{$bande}", $row['pedregal']);
-					$pedide->setCellValue("J{$bande}", $row['tienda']);
-					$pedide->setCellValue("K{$bande}", $row['ultra']);
-					$pedide->setCellValue("L{$bande}", $row['trincheras']);
-					$pedide->setCellValue("M{$bande}", $row['mercado']);
-					$pedide->setCellValue("N{$bande}", $row['tenencia']);
-					$pedide->setCellValue("O{$bande}", $row['tijeras']);
+					$pedide->setCellValue("D{$bande}", $v['codigo'])->getStyle("D{$bande}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+					
+					$pedide->setCellValue("E{$bande}", $v['descripcion']);
+					$pedide->setCellValue("F{$bande}", $v['observaciones']);
+					$pedide->setCellValue("G{$bande}", $v["pend"][1]["pend"]);
+					$pedide->setCellValue("H{$bande}", $v["pend"][4]["pend"]);
+					$pedide->setCellValue("I{$bande}", $v["pend"][5]["pend"]);
+					$pedide->setCellValue("J{$bande}", $v["pend"][6]["pend"]);
+					$pedide->setCellValue("K{$bande}", $v["pend"][7]["pend"]);
+					$pedide->setCellValue("L{$bande}", $v["pend"][8]["pend"]);
+					$pedide->setCellValue("M{$bande}", $v["pend"][9]["pend"]);
+					$pedide->setCellValue("N{$bande}", $v["pend"][10]["pend"]);
+					$pedide->setCellValue("O{$bande}", $v["pend"][11]["pend"]);
+					
 					/******************END HOJA EXISTENCIAS******************/
 
 
