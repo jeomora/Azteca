@@ -2239,7 +2239,7 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("F".$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F".$flag."", "UM");
 
-					$this->cellStyle("G".$flag.':AX', "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
+					$this->cellStyle("G".$flag.':AX'.$flag, "000000", "FFFFFF", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("G".$flag."", "CAJAS");
 					$proveedor[$key]->estatus->setCellValue("H".$flag."", "PZAS");
 					$proveedor[$key]->estatus->setCellValue("I".$flag."", "PEND");
