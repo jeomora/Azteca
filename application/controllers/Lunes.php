@@ -2123,7 +2123,7 @@ class Lunes extends MY_Controller {
 					$pedide->getColumnDimension('B')->setWidth("6");
 					$pedide->getColumnDimension('C')->setWidth("6");
 					$pedide->getColumnDimension('D')->setWidth("25");
-					$pedide->getColumnDimension('E')->setWidth("47");
+					$pedide->getColumnDimension('E')->setWidth("58");
 					$pedide->getColumnDimension('F')->setWidth("50");
 					$pedide->mergeCells('A'.$bande.':F'.$bande);
 					$this->cellStyle("A".$bande."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -2402,7 +2402,7 @@ class Lunes extends MY_Controller {
 					$this->excelfile->setActiveSheetIndex(0);
 					$this->cellStyle("A".$bande.":O".$bande, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 					
-					$pedide->setCellValue("D{$bande}", $v['codigo'])->getStyle("D{$bande}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+					$pedide->setCellValue("D{$bande}", $v['codigo'])->getStyle("D{$bande}")->getNumberFormat()->setFormatCode('#');//Formato de fraccion
 					
 					$pedide->setCellValue("E{$bande}", $v['descripcion']);
 					$pedide->setCellValue("F{$bande}", $v['observaciones']);
