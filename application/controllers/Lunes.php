@@ -1977,7 +1977,7 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("E".$flag."", "DESCRIPCIÓN");
 					$hoja->setCellValue("F".$flag."", "PROMOCIÓN");
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':E'.$flag.'')->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag.'')->applyFromArray($styleArray);
 					$this->cellStyle("D".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$this->cellStyle("E".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$hoja->setCellValue("D".$flag."", $value->codigo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
@@ -1985,7 +1985,7 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("F".$flag."", $value->observaciones);
 					$flag++;
 				}else{
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':E'.$flag.'')->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag.'')->applyFromArray($styleArray);
 					$this->cellStyle("D".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$this->cellStyle("E".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$hoja->setCellValue("D".$flag."", $value->codigo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
