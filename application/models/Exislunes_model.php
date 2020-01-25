@@ -275,7 +275,7 @@ class Exislunes_model extends MY_Model {
 	}
 
 	public function getPlantilla($where=[]){
-		$this->db->select("p.codigo,p.descripcion,pl.nombre,pl.alias")
+		$this->db->select("p.codigo,p.descripcion,pl.nombre,pl.alias,p.observaciones")
 		->from("pro_lunes p")
 		->join("prove_lunes pl","p.id_proveedor = pl.id_proveedor","LEFT")
 		->where("p.estatus",1)
