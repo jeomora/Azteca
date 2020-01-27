@@ -5033,7 +5033,7 @@ class Cotizaciones extends MY_Controller {
 			$intervalo = new DateInterval('P2D');
 			$fecha->add($intervalo);
 			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
-			
+			$bandera = $flag;
 			if($cotizacionesProveedor){
 				foreach ($cotizacionesProveedor as $key => $value) {
 					$this->excelfile->setActiveSheetIndex(0);
@@ -5045,7 +5045,7 @@ class Cotizaciones extends MY_Controller {
 					$this->cellStyle("C".$flag, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("C{$flag}", $value['familia']);
 					$flag +=1;
-					$bandera = $flag;
+					
 					if ($value['articulos']) {
 						foreach ($value['articulos'] as $key => $row){
 							$registrazo = date('Y-m-d',strtotime($row['registrazo']));
@@ -5922,7 +5922,7 @@ class Cotizaciones extends MY_Controller {
 			$intervalo = new DateInterval('P2D');
 			$fecha->add($intervalo);
 			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
-			
+			$bandera = $flag;
 			if($cotizacionesProveedor){
 				foreach ($cotizacionesProveedor as $key => $value) {
 					$this->excelfile->setActiveSheetIndex(0);
@@ -5934,7 +5934,6 @@ class Cotizaciones extends MY_Controller {
 					$this->cellStyle("C".$flag, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("C{$flag}", $value['familia']);
 					$flag +=1;
-					$bandera = $flag;
 					if ($value['articulos']) {
 						foreach ($value['articulos'] as $key => $row){
 							$registrazo = date('Y-m-d',strtotime($row['registrazo']));
