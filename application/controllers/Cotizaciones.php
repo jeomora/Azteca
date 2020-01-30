@@ -708,7 +708,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setActiveSheetIndex(0);
 
 		
-		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$fecha = new DateTime(date('2020-01-15 18:59:42'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
