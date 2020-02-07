@@ -6392,8 +6392,12 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("D".$rws, "PRECIO 4")->getColumnDimension('D')->setWidth(20);
 		$this->cellStyle("E".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("E".$rws, "PRECIO REAL")->getColumnDimension('E')->setWidth(20);
-		$this->excelfile->getActiveSheet()->getStyle('A'.$rws.":E".$rws)->applyFromArray($styleArray2);
-		$colFlag = 5;
+		$this->cellStyle("F".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("F".$rws, "1ER PRECIO")->getColumnDimension('F')->setWidth(20);
+		$this->cellStyle("G".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("G".$rws, "PROVEEDOR")->getColumnDimension('G')->setWidth(30);
+		$this->excelfile->getActiveSheet()->getStyle('A'.$rws.":G".$rws)->applyFromArray($styleArray2);
+		$colFlag = 7;
 		$rws = 1;
 		foreach ($columnas as $key => $val) {
 			if ($val["cuantos"] > 10) {
@@ -6431,6 +6435,14 @@ class Cotizaciones extends MY_Controller {
 					$this->cellStyle("E".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$hoja->setCellValue("E".$rws, $val["reales"])->getStyle("E{$rws}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->excelfile->getActiveSheet()->getStyle('E'.$rws)->applyFromArray($styleArray);
+
+					$this->cellStyle("F".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("F".$rws, $val["precio"])->getStyle("F{$rws}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->excelfile->getActiveSheet()->getStyle('F'.$rws)->applyFromArray($styleArray);
+					$this->cellStyle("G".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("G".$rws, $val["provefirst"]);
+					$this->excelfile->getActiveSheet()->getStyle('G'.$rws)->applyFromArray($styleArray);
+
 					if (isset($columnas[ $val["primero"] ])) {
 						$this->cellStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 						$hoja->setCellValue($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
@@ -6453,7 +6465,7 @@ class Cotizaciones extends MY_Controller {
 					$condRed = new PHPExcel_Style_Conditional();
 					$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
 			                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_EQUAL)
-			                ->addCondition('=MIN(F'.$rws.':'.$this->getColumna($colFlag).''.$rws.')')
+			                ->addCondition('=MIN(H'.$rws.':'.$this->getColumna($colFlag).''.$rws.')')
 			                ->getStyle()
 			                ->applyFromArray(
 			                	array(
@@ -6467,13 +6479,15 @@ class Cotizaciones extends MY_Controller {
 									)
 								)
 							);
-			        $bandera = 5;
+			        $bandera = 7;
 					for ($i=$bandera;$i<$colFlag;$i++) {
 						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->getConditionalStyles();
 						array_push($conditionalStyles,$condRed);
 						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->setConditionalStyles($conditionalStyles);
 					}
-					$this->excelfile->getActiveSheet()->getStyle('F'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('H'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->freezePane('H2');
+
 					$rws++;
 				}
 

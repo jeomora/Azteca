@@ -1967,6 +1967,7 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["reales"]			=	$comparativa[$i]->reales;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["primero"]			=	$comparativa[$i]->id_proveedor;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["precio"]			=	$comparativa[$i]->precio_promocion;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->producto]["provefirst"]		=	$comparativa[$i]->proveedor;
 			}
 		}
 		if ($comparativaIndexada) {
