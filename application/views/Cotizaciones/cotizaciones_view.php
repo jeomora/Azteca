@@ -76,7 +76,7 @@ if(!$this->session->userdata("username")){
 
 					<div class="btn-group">
 						<div class="col-sm-2">
-							<a href="Cotizaciones/fill_cotiz" rel="external-new-window" id="proveedorCotz"><button id="ver_proveedor" class="btn btn-info" data-toggle="tooltip" title="Filtrar 1 proveedor" style="background:#c82386;color:#c82386">
+							<a href="Cotizaciones/fill_cotiz" rel="external-new-window" id="proveedorCotz"><button id="ver_proveedor" class="btn btn-info" data-toggle="tooltip" title="Filtrar 1 proveedor" style="background:#c82386;border-color:#c82386">
 								<i class="fa fa-cloud-download"></i> FORMATO SR. COSME
 							</button></a>
 						</div>
