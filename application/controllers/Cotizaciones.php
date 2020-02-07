@@ -6449,7 +6449,7 @@ class Cotizaciones extends MY_Controller {
 							}
 						}
 					}
-					$colFlag=$colFlag-1;
+					
 					$condRed = new PHPExcel_Style_Conditional();
 					$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
 			                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_EQUAL)
@@ -6468,7 +6468,7 @@ class Cotizaciones extends MY_Controller {
 								)
 							);
 			        $bandera = 5;
-					for ($i=$bandera;$i<=$colFlag;$i++) {
+					for ($i=$bandera;$i<$colFlag;$i++) {
 						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->getConditionalStyles();
 						array_push($conditionalStyles,$condRed);
 						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->setConditionalStyles($conditionalStyles);
