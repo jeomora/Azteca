@@ -1,3 +1,8 @@
+<style>
+	.info-label{border:2px solid #008062;margin-bottom:10px;padding:10px;font-size:12px;color:#008062;}
+	.promdes{display:none}
+	input{font-family:monospace;}
+</style>
 <div class="ibox-content">
 	<div class="row">
 		<?php echo form_open("", array("id"=>'form_producto_new')); ?>
@@ -32,7 +37,7 @@
 					<input type="text" name="observaciones" value="" class="form-control" placeholder="Promoción">
 				</div>
 			</div>
-			<div class="col-sm-8">
+			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="id_proveedor">Proveedor Asignado</label>
 					<select name="id_proveedor" class="form-control chosen-select" id="id_proveedor">
@@ -47,6 +52,126 @@
 				<div class="form-group">
 					<label for="sistema">Precio Proveedor</label>
 					<input type="text" name="precio" value="" class="form-control numeric" placeholder="Precio del Proveedor">
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group">
+					<label for="id_catalogo" style="background-color:#007eff !important;">Código Proveedor</label>
+					<input type="text" name="id_catalogo" class="form-control" placeholder="Código Proveedor">
+				</div>
+			</div>
+
+			<div class="col-sm-12"></div>
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8" style="padding-bottom:10px;border-top:1px dashed #c5c5c5;"></div>
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="promo">Promoción</label>
+					<select name="promo" class="form-control chosen-select" id="promo">
+						<option value="0">SIN PROMOCIÓN</option>
+						<option value="1"># EN  #</option>
+						<option value="2">% DE DESCUENTO</option>
+						<option value="3">PRODUCTOS S/CARGO</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-12"></div>
+
+			<div class="col-sm-12 promodescuentos1 promdes">
+				<div class="col-sm-12 info-label">
+					<div class="col-sm-1" style="font-size:24px">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+					</div>
+					<div class="col-sm-11">
+						Productos sin cargo, siendo del mismo producto que se menciona arriba. <br>EJEMPLO: "En la compra de 2 clarasol, 1 sin cargo"
+					</div>
+				</div>
+				<div class="col-sm-12" style="padding: 0">
+					<div class="col-sm-5">
+						<div class="form-group">
+							<label for="mins" style="background-color:#008062 !important;">MINIMO DE PRODUCTOS</label>
+							<input type="text" name="mins" class="form-control" placeholder="MINIMO COMPRA" id="mins">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="cuantos1" style="background-color:#008062 !important;"># SIN CARGO</label>
+						<input type="text" name="cuantos1" value="<?php /*echo $producto->cuantos1*/ ?>" class="form-control" placeholder="# Sin cargo" id="cuantos1">
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="cuantos2" style="background-color:#008062 !important;">EN  #</label>
+						<input type="text" name="cuantos2" value="<?php /*echo $producto->cuantos2*/ ?>" class="form-control" placeholder="En  #" id="cuantos2">
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12 promodescuentos2 promdes">
+				<div class="col-sm-12 info-label">
+					<div class="col-sm-1" style="font-size:24px">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+					</div>
+					<div class="col-sm-11">
+						Ingrese el porcentaje de descuento que se agregará al producto. <br>EJEMPLO: "Clarasol con un 10% de descuento, ingrese el numero 10 en la casilla"
+					</div>
+				</div>
+				<div class="col-sm-12" style="padding: 0">
+					<div class="col-sm-5">
+						<div class="form-group">
+							<label for="mins2" style="background-color:#008062 !important;">MINIMO DE PRODUCTOS</label>
+							<input type="text" name="mins2" class="form-control" placeholder="MINIMO COMPRA" id="mins2">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="descuento" style="background-color:#008062 !important;">% DE DESCUENTO </label>
+						<input type="text" name="descuento" value="<?php /*echo $producto->descuento*/ ?>" class="form-control" placeholder="% DESCUENTO" id="descuento">
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12 promodescuentos3 promdes">
+				<div class="col-sm-12 info-label">
+					<div class="col-sm-1" style="font-size:24px">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+					</div>
+					<div class="col-sm-11">
+						Productos sin cargo, de otro producto o presentación. <br>EJEMPLO: "En la compra de 2 clarasol, 1 aceite sin cargo"
+					</div>
+				</div>
+				<div class="col-sm-12" style="padding: 0">
+					<div class="col-sm-5">
+						<div class="form-group">
+							<label for="mins3" style="background-color:#008062 !important;">MINIMO DE PRODUCTOS</label>
+							<input type="text" name="mins3" class="form-control" placeholder="MINIMO COMPRA" id="mins3">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="cuanto1" style="background-color:#008062 !important;">EN LA COMPRA DE</label>
+						<input type="text" name="cuanto1" value="<?php /*echo $producto->cuantos1*/ ?>" class="form-control" placeholder="En la compra de" id="cuanto1">
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="cuanto2" style="background-color:#008062 !important;">SIN CARGO</label>
+						<input type="text" name="cuanto2" value="<?php /*echo $producto->cuantos2*/ ?>" class="form-control" placeholder="Sin cargo" id="cuanto2">
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="prod" style="background-color:#008062 !important;">PRODUCTO SIN CARGO</label>
+						<select name="prod" class="form-control chosen-select" id="prod" style="font-size: 10px !important">
+							<?php if ($productos):foreach ($productos as $key => $value): ?>
+								<option value="<?php echo $value->codigo ?>" <?php /*echo $value->codigo == $value->codigo ? 'selected' : ''*/ ?>><?php echo $value->descripcion." - ".$value->codigo ?></option>
+							<?php endforeach; endif ?>
+						</select>
+					</div>
 				</div>
 			</div>
 		</div>

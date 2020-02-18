@@ -10,6 +10,7 @@ class Productos extends MY_Controller {
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Usuarios_model", "usua_mdl");
 		$this->load->model("Prodcaja_model", "pcaja_md");
+		$this->load->model("Invoice_model", "invo_md");
 	}
 
 	public function index(){
@@ -442,39 +443,47 @@ class Productos extends MY_Controller {
 		$num_rows = $sheet->getHighestDataRow();
 		$proveedor = $this->input->post('proveedor');
 		for ($i=3; $i<=$num_rows; $i++) {
-			$codigo = $this->pro_md->get(NULL,["codigo"=>htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+			$codigo = $this->invo_md->get(NULL,["codigo"=>htmlspecialchars($this->getOldVal($sheet,$i,"B"), ENT_QUOTES, 'UTF-8'),"id_proveedor"=>$proveedor])[0];
 			$cellB = $this->getOldVal($sheet,$i,"B");
 			$cellC = $this->getOldVal($sheet,$i,"C");
-			if (sizeof($codigo) > 0 && $cellB <> 0) {
-				$new_producto=[
-					"id_prodfactura" => $codigo->id_producto,
-					"id_proveedor" => $proveedor,
-					"codigo_factura" => $cellB,
-					"descripcion" => $cellC
-				];
+			$new_producto=[
+				"id_proveedor" => $proveedor,
+				"codigo" => $cellB,
+				"descripcion" => $cellC,
+				"unidad" => "CJ"
+			];
+			if (sizeof($codigo) > 0) {
+				$data ['id_prodcaja']=$this->invo_md->update($new_producto,$codigo->id_invoice);
+				$invoice = $codigo->id_invoice;
+			}else{
+				$data['id_prodcaja']=$this->invo_md->insert($new_producto);
+				$invoice = $data['id_prodcaja'];
+			}
 
-				$codiga = $this->pcaja_md->get(NULL,['id_prodfactura'=> $codigo->id_producto,"id_proveedor"=>$proveedor,"codigo_factura"=>$cellB])[0];
-				if (sizeof($codiga) > 0) {
-					$new_codis=[
-						"nombre"=>$codigo->nombre,
-						"id_producto"=>$codigo->id_producto,
-						"id_prodfactura"=>$cellB,
+			$code = $this->pro_md->get(NULL,['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
+
+			if (sizeof($code) > 0){
+				$codiga = $this->pcaja_md->get(NULL,["id_producto"=>$code->id_producto,"id_proveedor"=>$proveedor,"id_invoice"=>$invoice])[0];
+				$new_codis=[
+						"id_producto"=>$code->id_producto,
 						"id_proveedor"=>$proveedor,
-						"codigo"=>$codigo->codigo
+						"id_invoice"=>$invoice,
+						"estatus"=>1,
 					];
-					array_push($arrays, $new_codis);
+				if (sizeof($codiga) > 0) {
+					$data ['id_prodcaja']=$this->pcaja_md->update($new_codis,$codiga->id_prodcaja);
 				}else{
-					array_push($arrays, $new_producto);
-					$data ['id_prodcaja']=$this->pcaja_md->insert($new_producto);
+					$data ['id_prodcaja']=$this->pcaja_md->insert($new_codis);
 				}
 			}
 		}
+		
 		$mensaje=[	
 			"id"	=>	'Éxito',
 			"desc"	=>	'Productos cargados correctamente en el Sistema',
 			"type"	=>	'success'];
 
-		$this->jsonResponse(array($arrays,$array,$num_rows));
+		$this->jsonResponse($mensaje);
 	}
 
 	public function getOldVal($sheets,$i,$le){
