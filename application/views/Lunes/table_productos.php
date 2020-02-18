@@ -30,22 +30,26 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</button>
 
 					</div>
-					<!--<div class="btn-group">
-						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
-							Subir formato de cotizaciones
+					<div class="btn-group" style="border:1px solid #21b9bb;margin-left:20rem;padding:10px 30px;">
+						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;">
+							Asociar códigos proveedor al sistema.
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_cotizaciones')); ?>
 							<div class="col-sm-4">
 								<input class="btn btn-info" type="file" id="file_otizaciones" name="file_otizaciones"/>
 							</div>
 						<?php echo form_close(); ?>
-					</div>-->
+						<div class="col-sm-12">
+							<span>Orden de las columnas: A) Código Sistema | B) Descripción Sistema | C) Código Proveedor</span>
+						</div>
+					</div>
 					<table class="table table-striped table-bordered table-hover" id="table_usuarios">
 						<thead>
 							<tr>
 								<th>CÓDIGO</th>
 								<th>DESCRIPCIÓN</th>
-								<th>PROVEEDOR</th>
+								<th style="background:aliceblue">PROVEEDOR</th>
+								<th style="background:aliceblue">CÓDIGO PROVEEDOR</th>
 								<th>UM</th>
 								<th>PRECIO</th>
 								<th>SISTEMA</th>
@@ -59,7 +63,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 									<tr>
 										<th><?php echo $value->codigo ?></th>
 										<td><?php echo $value->descripcion ?></td>
-										<td><?php echo $value->nombre ?></td>
+										<td style="background:aliceblue"><?php echo $value->nombre ?></td>
+										<td style="background:aliceblue"><?php echo $value->id_catalogo ?></td>
 										<td><?php echo number_format($value->unidad,0,".",",") ?></td>
 										<td><?php echo "$ ".number_format($value->precio,2,".",",") ?></td>
 										<td><?php echo "$ ".number_format($value->sistema,2,".",",") ?></td>

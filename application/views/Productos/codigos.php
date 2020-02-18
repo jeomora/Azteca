@@ -82,7 +82,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<div class="ibox-content ">
 							<?php echo form_open_multipart("", array('id' => 'upload_codigos')); ?>
 								<h2 class="m-b-md">AGREGAR CÓDIGOS A PROVEEDORES</h2>
-								<h5 class="m-b-md">1.- Descargue el archivo <a href="<?php echo base_url('assets/uploads/codigos.xlsx') ?>" download>aquí</a></h5>
+								<h5 class="m-b-mcd">1.- Descargue el archivo <a href="<?php echo base_url('assets/uploads/codigos.xlsx') ?>" download>aquí</a></h5>
 								<h5 class="m-b-md">2.- Seleccione un el proveedor para asignar códigos</h5>
 								<select id="proveedor" name="proveedor">
 									<?php foreach ($proveedores as $key => $value):?>

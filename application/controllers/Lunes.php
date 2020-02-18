@@ -13,6 +13,10 @@ class Lunes extends MY_Controller {
 		$this->load->model("Exislunes_model", "ex_lun_md");
 		$this->load->model("Productos_model", "prod_mdl");
 		$this->load->model("Pendlunes_model", "pend_mdl");
+		$this->load->model("Promo_model", "promo_mdl");
+		$this->load->model("Catalogos_model", "cata_mdl");
+		$this->load->model("Finalunes_model", "fin_mdl");
+		$this->load->model("Facturalunes_model", "fac_mdl");
 	}
 
 	public function index(){
@@ -201,6 +205,7 @@ class Lunes extends MY_Controller {
 		$data["title"]="REGISTRAR PRODUCTO";
 		$user = $this->session->userdata();
 		$data["proveedores"] = $this->prove_md->getProveedores();
+		$data["productos"] = $this->prolu_md->get(NULL,["estatus <>"=>0]);
 		$data["view"] = $this->load->view("Lunes/new_producto", $data, TRUE);
 		$data["button"]="<button class='btn btn-success new_producto' type='button'>
 							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
@@ -221,6 +226,22 @@ class Lunes extends MY_Controller {
 			"unidad"	=>	$this->input->post('unidad'),
 			"orden"		=> $orden
 		];
+		$promos =  [
+			"codigo"	=>	$this->input->post('codigo'),
+			"promo"		=>	$this->input->post('promo'),
+			"descuento"	=>	0,
+			"prod"		=>	0,
+			"cuantos1"	=>	0,
+			"cuantos2"	=>	0,
+			"mins"		=>	0,
+			"estatus"	=>	0
+		];
+		$cata =  [
+			"id_catalogo"	=>	$this->input->post('id_catalogo'),
+			"id_producto"	=>	$this->input->post('codigo'),
+			"descripcion"	=>	$this->input->post('descripcion'),
+			"estatus"		=>	1
+		];
 		$getProducto = $this->prolu_md->get(NULL, ['codigo'=>$producto['codigo']])[0];
 
 
@@ -237,6 +258,33 @@ class Lunes extends MY_Controller {
 				"despues" => "Código : ".$producto['codigo']." /Descripción: ".$producto['descripcion']];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 		}else{
+			$categos = $this->cata_mdl->get(NULL,["id_catalogo"=>$this->input->post("id_catalogo")])[0];
+			if ($categos) {
+				$mensaje = ["id" 	=> 'Error',
+						"desc"	=> 'Código de PROVEEDOR ya esta registrado',
+						"type"	=> 'error'];
+			}else{
+				$data['catego'] = $this->cata_mdl->insert($cata);
+
+				if($this->input->post('promo') === "1" || $this->input->post('promo') === 1){//# EN #
+						$promos["cuantos1"] = $this->input->post('cuantos1');
+						$promos["cuantos2"] = $this->input->post('cuantos2');
+						$promos["mins"] = $this->input->post('mins');
+						$promos["estatus"] = 1;
+					}elseif($this->input->post( 'promo') === "2" || $this->input->post('promo') === 2){//PORCENTAJE DE DESCUENTO
+						$promos["descuento"] = $this->input->post('descuento');
+						$promos["mins"] = $this->input->post('mins2');
+						$promos["estatus"] = 1;
+					}elseif($this->input->post('promo') === "3" || $this->input->post('promo') === 3){//PRODUCTO ADICIONAL
+						$promos["cuantos1"] = $this->input->post('cuanto1');
+						$promos["cuantos2"] = $this->input->post('cuanto2');
+						$promos["prod"] = $this->input->post('prod');
+						$promos["mins"] = $this->input->post('mins3');
+						$promos["estatus"] = 1;
+					}
+
+					$data['promo'] = $this->promo_mdl->insert($promos);
+			}
 			$mensaje = [
 				"id" 	=> 'Alerta',
 				"desc"	=> 'El Producto ['.$producto['descripcion'].'] está registrado en el Sistema',
@@ -277,6 +325,9 @@ class Lunes extends MY_Controller {
 		$data["title"]="ACTUALIZAR DATOS DEL PRODUCTO";
 		$data["producto"] = $this->prolu_md->get(NULL, ['codigo'=>$id])[0];
 		$data["proveedores"] = $this->prove_md->getProveedores();
+		$data["productos"] = $this->prolu_md->get(NULL,["estatus <>"=>0]);
+		$data["promo"] = $this->promo_mdl->get(NULL,["codigo"=>$data["producto"]->codigo])[0];
+		$data["cata"] = $this->cata_mdl->get(NULL,["id_producto"=>$data["producto"]->codigo])[0];
 		$user = $this->session->userdata();
 		$data["view"] =$this->load->view("Lunes/edit_producto", $data, TRUE);
 		$data["button"]="<button class='btn btn-success update_producto' type='button'>
@@ -288,7 +339,7 @@ class Lunes extends MY_Controller {
 	public function update_prod(){
 		$user = $this->session->userdata();
 		$antes = $this->prolu_md->get(NULL, ['codigo'=>$this->input->post('codigos')])[0];
-
+		$lastpromo = $this->promo_mdl->get(NULL,["codigo"=>$this->input->post('codigo')]);
 		$producto = [
 			"codigo"	=>	strtoupper($this->input->post('codigo')),
 			"descripcion"	=>	strtoupper($this->input->post('descripcion')),
@@ -298,18 +349,90 @@ class Lunes extends MY_Controller {
 			"id_proveedor"	=>	$this->input->post('id_proveedor'),
 			"unidad"	=>	$this->input->post('unidad'),
 		];
+		$promos =  [
+			"codigo"	=>	$this->input->post('codigo'),
+			"promo"		=>	$this->input->post('promo'),
+			"descuento"	=>	0,
+			"prod"		=>	0,
+			"cuantos1"	=>	0,
+			"cuantos2"	=>	0,
+			"mins"		=>	0,
+			"estatus"	=>	0
+		];
+		$cata =  [
+			"id_catalogo"	=>	$this->input->post('id_catalogo'),
+			"id_producto"	=>	$this->input->post('codigo'),
+			"descripcion"	=>	$this->input->post('descripcion'),
+			"estatus"		=>	1
+		];
+		$dude = null;
 
-		$data ['codigo'] = $this->prolu_md->update($producto, $this->input->post('codigos'));
-		$cambios = [
-				"id_usuario" => $user["id_usuario"],
-				"fecha_cambio" => date('Y-m-d H:i:s'),
-				"antes" => "Código : ".$antes->codigo." /Descripción: ".$antes->descripcion,
-				"despues" => "Código : ".$producto['codigo']." /Descripción: ".$producto['descripcion']];
-		$data['cambios'] = $this->cambio_md->insert($cambios);
-		$mensaje = ["id" 	=> 'Éxito',
-					"desc"	=> 'Producto actualizado correctamente',
-					"type"	=> 'success'];
+
+		if ($this->input->post("codigo") <> $this->input->post("codigo2")){
+			$dude = $this->prolu_md->get(NULL,["codigo"=>$this->input->post("codigo")])[0];
+		}
+		
+		if($dude){
+			$mensaje = ["id" 	=> 'Error',
+						"desc"	=> 'Código de producto ya esta registrado',
+						"type"	=> 'error'];
+		}else{
+			if ($this->input->post("id_catalogo") <> $this->input->post("id_catalogo2")){
+				$categos = $this->cata_mdl->get(NULL,["id_catalogo"=>$this->input->post("id_catalogo")])[0];
+			}else{
+				$categos = null;
+			}
+
+			if ($categos) {
+				$mensaje = ["id" 	=> 'Error',
+						"desc"	=> 'Código de PROVEEDOR ya esta registrado',
+						"type"	=> 'error'];
+			}else{
+				$categos = $this->cata_mdl->get(NULL,["id_producto"=>$this->input->post("codigo")])[0];
+				
+				if ($categos) {
+					$data['catego'] = $this->cata_mdl->update($cata, $this->input->post('id_catalogo2'));
+				}else{
+					$data['catego'] = $this->cata_mdl->insert($cata);
+				}
+
+				if($this->input->post('promo') === "1" || $this->input->post('promo') === 1){//# EN #
+						$promos["cuantos1"] = $this->input->post('cuantos1');
+						$promos["cuantos2"] = $this->input->post('cuantos2');
+						$promos["mins"] = $this->input->post('mins');
+						$promos["estatus"] = 1;
+					}elseif($this->input->post( 'promo') === "2" || $this->input->post('promo') === 2){//PORCENTAJE DE DESCUENTO
+						$promos["descuento"] = $this->input->post('descuento');
+						$promos["mins"] = $this->input->post('mins2');
+						$promos["estatus"] = 1;
+					}elseif($this->input->post('promo') === "3" || $this->input->post('promo') === 3){//PRODUCTO ADICIONAL
+						$promos["cuantos1"] = $this->input->post('cuanto1');
+						$promos["cuantos2"] = $this->input->post('cuanto2');
+						$promos["prod"] = $this->input->post('prod');
+						$promos["mins"] = $this->input->post('mins3');
+						$promos["estatus"] = 1;
+					}
+
+					if($lastpromo){
+						$data['promo'] = $this->promo_mdl->update($promos, $this->input->post('codigo'));
+					}else{
+						$data['promo'] = $this->promo_mdl->insert($promos);
+					}
+
+					$data ['codigo'] = $this->prolu_md->update($producto, $this->input->post('codigos'));
+					$cambios = [
+							"id_usuario" => $user["id_usuario"],
+							"fecha_cambio" => date('Y-m-d H:i:s'),
+							"antes" => "Código : ".$antes->codigo." /Descripción: ".$antes->descripcion,
+							"despues" => "Código : ".$producto['codigo']." /Descripción: ".$producto['descripcion']];
+					$data['cambios'] = $this->cambio_md->insert($cambios);
+					$mensaje = ["id" 	=> 'Éxito',
+								"desc"	=> 'Producto actualizado correctamente',
+								"type"	=> 'success'];
+			}
+		}
 		$this->jsonResponse($mensaje);
+
 	}
 
 	public function exislunes(){
@@ -386,10 +509,10 @@ class Lunes extends MY_Controller {
 				$productos = $this->prolu_md->get("codigo",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$caja=0; $pieza=0; $ped=0;
-					$caja = $sheet->getCell('A'.$i)->getValue();
-					$pieza = $sheet->getCell('B'.$i)->getValue();
-					$ped = $sheet->getCell('C'.$i)->getValue();
-					$codigo = htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8');
+					$caja = $this->getOldVal($sheet,$i,'A');
+					$pieza =$this->getOldVal($sheet,$i,'B');
+					$ped = $this->getOldVal($sheet,$i,'C');
+					$codigo = htmlspecialchars($this->getOldVal($sheet,$i,'D'), ENT_QUOTES, 'UTF-8');
 					$exist =  $this->ex_lun_md->get(NULL, ['id_producto' => $codigo, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_tienda' => $idesp])[0];
 					$new_existencia=[
 							"id_producto"		=>	$codigo,
@@ -2754,6 +2877,285 @@ class Lunes extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
+
+	public function asociar_codigos(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$filen = "Codigos Proveedores Lunes";
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10204;
+        $config['max_height']           = 7068;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_otizaciones',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=1; $i<=$num_rows; $i++) {
+			if(strlen($sheet->getCell('A'.$i)->getValue()) > 0){
+				$productos = $this->prolu_md->get("codigo",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$id_catalogo = $sheet->getCell('C'.$i)->getValue();
+					$descripcion = $sheet->getCell('B'.$i)->getValue();
+					$new_codigo=[
+							"id_catalogo" => $id_catalogo,
+							"descripcion" => $descripcion,
+							"id_producto" => $productos->codigo,
+							"estatus"	  => 1
+						];
+					$catal = $this->cata_mdl->get(NULL,["id_producto"=>$productos->codigo])[0];
+					if (sizeof($catal)>0) {
+						$data['existencia']=$this->cata_mdl->update($new_codigo, ['id_producto' => $productos->codigo]);
+					}else{
+						$data['existencia']=$this->cata_mdl->insert($new_codigo);
+					}
+				}
+			}
+		}
+		if (!isset($new_codigo)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin codigos',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_codigo) > 0) {
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"			=>	"El usuario sube Codigos Proveedor lunes ",
+						"despues"			=>	"assets/uploads/cotizaciones/Codigos Proveedor Lunes.xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Codigos proveedor cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Codigos proveedor no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function facturas(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/pedidolunes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+
+		$data["proveedores"] = $this->prove_md->getProveedores();
+		$data["sucursales"] = $this->suc_md->get(NULL,["estatus<>"=>0]);
+		$data["facturas"] = $this->fac_mdl->get(NULL);
+		$data["factura"] = $this->fac_mdl->getFactos(NULL,"566874805");
+		//$this->jsonResponse($data["facturas"]);
+		$this->estructura("Lunes/facturas", $data);
+	}
+	public function verpedido($id_proveedor){
+		$data["title"]="PEDIDOS A PROVEEDOR";
+		$user = $this->session->userdata();
+		$data["finales"] = $this->fin_mdl->getPedidos(NULL,$id_proveedor);
+		$data["view"] = $this->load->view("Lunes/verpedido", $data, TRUE);
+		$data["button"]="";
+		$this->jsonResponse($data);
+	}
+
+
+	public function sube_pedido(){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$filen = "Pedido".date("dmyHis");
+		$config['upload_path']          = './assets/uploads/lunes/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10204;
+        $config['max_height']           = 7068;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_otizaciones',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		$mensaje=[	"id"	=>	'Error',
+					"desc"	=>	'No se pudo cargar el archivo excel',
+					"type"	=>	'error'];
+
+		for ($i=1; $i<=$num_rows; $i++) {
+			if(strlen($sheet->getCell('A'.$i)->getValue()) > 0){
+				$productos = $this->prolu_md->get("codigo",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$new_pedido=[
+							"costo" 		=> $this->getOldVal($sheet,$i,'C'),
+							"cedis" 		=> $this->getOldVal($sheet,$i,'D'),
+							"abarrotes"		=> $this->getOldVal($sheet,$i,'E'),
+							"villas"		=> $this->getOldVal($sheet,$i,'F'),
+							"tienda"		=> $this->getOldVal($sheet,$i,'G'),
+							"ultra"			=> $this->getOldVal($sheet,$i,'H'),
+							"trincheras"	=> $this->getOldVal($sheet,$i,'I'),
+							"mercado"		=> $this->getOldVal($sheet,$i,'J'),
+							"tenencia"		=> $this->getOldVal($sheet,$i,'K'),
+							"tijeras"		=> $this->getOldVal($sheet,$i,'L'),
+							"id_producto" 	=> $productos->codigo,
+						];
+					$codiga = $this->fin_mdl->get(NULL,['id_producto'=> $productos->codigo,"WEEKOFYEAR(fecha_registro)"=>$this->weekNumber()])[0];
+					if (sizeof($codiga)>0) {
+						$data['existencia']=$this->fin_mdl->update($new_pedido, $codiga->id_final);
+					}else{
+						$data['existencia']=$this->fin_mdl->insert($new_pedido);
+					}
+				}
+			}
+		}
+		if (!isset($new_pedido)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin datos',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_pedido) > 0) {
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"				=>	"El usuario sube Pedidos Finales lunes ",
+						"despues"			=>	"assets/uploads/lunes/".$filen.".xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Pedidos Finales cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function getOldVal($sheets,$i,$le){
+		$cellB = $sheets->getCell($le.$i)->getValue();
+		if(strstr($cellB,'=')==true){
+		    $cellB = $sheets->getCell($le.$i)->getOldCalculatedValue();
+		}
+		return $cellB;
+	}
+
+	public function endPedidos($ides){
+		$this->db->query('DELETE FROM finalunes WHERE id_producto IN(select p.codigo FROM pro_lunes p WHERE p.id_proveedor = '.$ides.') AND WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE())');
+		
+		$mensaje = [
+				"id" 	=> 'Éxito',
+				"desc"	=> 'Pedidos eliminadas correctamente',
+				"type"	=> 'success'
+			];
+			$data["proveedor"] = $this->prove_md->get(NULL,["id_proveedor" => $ides])[0];
+			$cambios = [
+				"id_usuario" => $this->session->userdata('id_usuario'),
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Elimina pedidos lunes de ".$data["proveedor"]->nombre,
+				"antes" => "Eliminado",
+				"despues" => "Eliminado"
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+		$this->jsonResponse($mensaje);
+	}
+
+	public function sube_factura($tienda){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$filen = "FacturaLunes".date("dmyHis");
+		$config['upload_path']          = './assets/uploads/lunes/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10204;
+        $config['max_height']           = 7068;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_otizaciones2',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones2"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones2']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		$mensaje=[	"id"	=>	'Error',
+					"desc"	=>	'No se pudo cargar el archivo excel',
+					"type"	=>	'error'];
+		$folio = $this->getOldVal($sheet,2,'D');
+		if ($folio === "" || strlen($folio) < 6 || $folio === NULL){
+			$folio = rand(1000000000, 9000000000);
+		}
+		for ($i=2; $i<=$num_rows; $i++) {
+			if(strlen($this->getOldVal($sheet,$i,'B')) > 0){
+				$new_pedido=[
+							"folio"			=> $folio,
+							"codigo" 		=> $this->getOldVal($sheet,$i,'B'),
+							"cantidad" 		=> $this->getOldVal($sheet,$i,'A'),
+							"precio"		=> $this->getOldVal($sheet,$i,'C'),
+							"id_proveedor"	=> 7,
+							"id_sucursal"	=> $tienda,
+							"id_producto"	=> 0
+						];
+				$producto = $this->cata_mdl->get(NULL,['id_catalogo'=> htmlspecialchars($this->getOldVal($sheet,$i,'B'), ENT_QUOTES, 'UTF-8')])[0];
+
+				if (sizeof($producto)>0){
+					$new_pedido["id_producto"] = $producto->id_producto;
+				}
+				$folios = $this->fac_mdl->get(NULL,['folio'=> $folio,"codigo"=>$this->getOldVal($sheet,$i,'B')])[0];
+				if (sizeof($folios) > 0) {
+					$data['existencia']=$this->fac_mdl->update($new_pedido, $folios->id_factura);
+				}else{
+					$data['existencia']=$this->fac_mdl->insert($new_pedido);
+				}
+			}
+		}
+		if (!isset($new_pedido)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin datos',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_pedido) > 0) {
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"				=>	"El usuario sube Factura lunes ",
+						"despues"			=>	"assets/uploads/lunes/".$filen.".xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Factura cargada correctamente en el Sistema',
+							"type"	=>	'success'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}
+
 
 
 }
