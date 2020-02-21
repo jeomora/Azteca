@@ -249,8 +249,8 @@ class Facturas extends MY_Controller {
 			$fecha = $sheet->getCell('D1')->getValue();
 			$no = 3;
 		}else{
-			$folio = htmlspecialchars($sheet->getCell('D1')->getValue(), ENT_QUOTES, 'UTF-8');
-			$fecha = $sheet->getCell('E1')->getValue();
+			$folio = htmlspecialchars($sheet->getCell('E1')->getValue(), ENT_QUOTES, 'UTF-8');
+			$fecha = $sheet->getCell('F1')->getValue();
 			$no = 1;
 		}
 		
@@ -265,12 +265,38 @@ class Facturas extends MY_Controller {
 		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
 		for ($i=$no; $i<=$num_rows; $i++) {
 			$codigo = $sheet->getCell('A'.$i)->getValue();
-			$cantidad = $this->getOldVal($sheet,$i,"B");
-			$precio = $this->getOldVal($sheet,$i,"C");
+			$cantidad = $this->getOldVal($sheet,$i,"C");
+			$precio = $this->getOldVal($sheet,$i,"D");
+			$desc = $this->getOldVal($sheet,$i,"B");
 			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
 			
 			
 			if (sizeof($descripcion) > 0) {
+				$new_producto=[
+					"folio" => $folio,
+					"id_proveedor" => $proveedor,
+					"precio" => $precio,
+					"codigo" => $descripcion->id_invoice,
+					"descripcion" => $descripcion->descripcion,
+					"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
+					"cantidad" => $cantidad,
+					"id_tienda"=> $id_tienda
+				];
+
+				$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
+				if ($codiga) {
+				}else{
+					$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+				}
+			}else{
+				$new_invoice=[
+					"codigo" => $codigo,
+					"id_proveedor" => $id_proveedor,
+					"descripcion" => $desc,
+					"unidad" => "CJ"
+				];
+				$data['id_invoice']=$this->invoice_md->insert($new_invoice);
+				$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
 				$new_producto=[
 					"folio" => $folio,
 					"id_proveedor" => $proveedor,
