@@ -978,8 +978,36 @@ class Facturas extends MY_Controller {
 		);
 		$provfact = $this->fact_md->profactu(NULL,$proveedor);
 		$provnombre = $this->usua_mdl->get("nombre",["id_usuario"=>$proveedor])[0];
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("CEDIS");
+
+		$this->excelfile->createSheet();
+        $hoja1 = $this->excelfile->setActiveSheetIndex(1)->setTitle("ABARROTES");
+
+        $this->excelfile->createSheet();
+        $hoja2 = $this->excelfile->setActiveSheetIndex(2)->setTitle("TIENDA");
+
+        $this->excelfile->createSheet();
+        $hoja3 = $this->excelfile->setActiveSheetIndex(3)->setTitle("ULTRA");
+
+        $this->excelfile->createSheet();
+        $hoja4 = $this->excelfile->setActiveSheetIndex(4)->setTitle("TRINCHERAS");
+
+		$this->excelfile->createSheet();
+        $hoja5 = $this->excelfile->setActiveSheetIndex(5)->setTitle("MERCADO");
+
+        $this->excelfile->createSheet();
+        $hoja6 = $this->excelfile->setActiveSheetIndex(6)->setTitle("TENENCIA");
+
+        $this->excelfile->createSheet();
+        $hoja7 = $this->excelfile->setActiveSheetIndex(7)->setTitle("TIJERAS");
+
+        $this->excelfile->createSheet();
+        $hoja8 = $this->excelfile->setActiveSheetIndex(8)->setTitle("VILLAS");
+
+
 		//$this->jsonResponse($provfact);
 		$flag = 1;
+		$fced = 1;$faba = 1;$ftie = 1;$fult = 1;$ftri = 1;$fmer = 1; $ften = 1;$ftij = 1;$fvil = 1;
 		if ($provfact) {
 			foreach ($provfact as $key => $valorce) {
 				$folio = $valorce->folio;
@@ -987,30 +1015,66 @@ class Facturas extends MY_Controller {
 				switch ($valorce->tienda) {
 					case "87":
 						$which = "cedis";
+						$pestania = 0;
+						$this->excelfile->setActiveSheetIndex(0);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fced;
 						break;
 					case "57":
 						$which = "abarrotes";
+						$pestania = 1;
+						$this->excelfile->setActiveSheetIndex(1);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $faba;
 						break;
 					case "58":
 						$which = "tienda";
+						$pestania = 2;
+						$this->excelfile->setActiveSheetIndex(2);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ftie;
 						break;
 					case "59":
 						$which = "ultra";
+						$pestania = 3;
+						$this->excelfile->setActiveSheetIndex(3);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fult;
 						break;
 					case "60":
 						$which = "trincheras";
+						$pestania = 4;
+						$this->excelfile->setActiveSheetIndex(4);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ftri;
 						break;
 					case "61":
 						$which = "mercado";
+						$pestania = 5;
+						$this->excelfile->setActiveSheetIndex(5);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fmer;
 						break;
 					case "62":
 						$which = "tenencia";
+						$pestania = 6;
+						$this->excelfile->setActiveSheetIndex(6);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ften;
 						break;
 					case "63":
 						$which = "tijeras";
+						$pestania = 7;
+						$this->excelfile->setActiveSheetIndex(7);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ftij;
 						break;
 					case "90":
 						$which = "villas";
+						$pestania = 8;
+						$this->excelfile->setActiveSheetIndex(8);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fvil;
 						break;
 					default:
 						# code...
@@ -1068,10 +1132,10 @@ class Facturas extends MY_Controller {
 				$hoja->mergeCells('G'.$flag.':G'.($flag+1));
 				$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
 				$hoja->setCellValue("G".$flag, "DIF.")->getColumnDimension('G')->setWidth(13);
-				$this->excelfile->getActiveSheet()->getStyle('G4:G5')->applyFromArray($styleArray);
+				$this->excelfile->getActiveSheet()->getStyle('G'.$flag.':G'.($flag+1))->applyFromArray($styleArray);
 				$this->cellStyle("H".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
 				$hoja->setCellValue("H".$flag, "NOTA")->getColumnDimension('H')->setWidth(16);
-				$this->excelfile->getActiveSheet()->getStyle('H4')->applyFromArray($stylebottom);
+				$this->excelfile->getActiveSheet()->getStyle('H'.$flag)->applyFromArray($stylebottom);
 				$this->cellStyle("I".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
 				$hoja->setCellValue("I".$flag, "TOTAL")->getColumnDimension('I')->setWidth(16);
 				$this->excelfile->getActiveSheet()->getStyle('I'.$flag)->applyFromArray($stylebottom);
@@ -1369,6 +1433,38 @@ class Facturas extends MY_Controller {
 					}
 				}
 				$flag = $flag + 5;
+				switch ($valorce->tienda) {
+					case "87":
+						$fced = $flag;
+						break;
+					case "57":
+						$faba = $flag;
+						break;
+					case "58":
+						$ftie = $flag;
+						break;
+					case "59":
+						$fult = $flag;
+						break;
+					case "60":
+						$ftri = $flag;
+						break;
+					case "61":
+						$fmer = $flag;
+						break;
+					case "62":
+						$ften = $flag;
+						break;
+					case "63":
+						$ftij = $flag;
+						break;
+					case "90":
+						$fvil = $flag;
+						break;
+					default:
+						# code...
+						break;
+				}
 		
 			}
 			$file_name = "Facturas ".$provnombre->nombre.".xlsx"; //Nombre del documento con extención
