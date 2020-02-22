@@ -1121,7 +1121,7 @@ class Facturas extends MY_Controller {
 						break;
 				}
 				$woe = $this->comp_md->get(NULL,["folio"=>$folio])[0];
-				$facturas = $this->fact_md->getDetails2(NULL,json_encode($woe[0]),$which);
+				$facturas = $this->fact_md->getDetails2(NULL,json_encode($woe),$which);
 				$hoja->mergeCells('A'.$flag.':I'.$flag.'');
 				$this->cellStyle("A".$flag, "".substr($facturas[0]->color,1,6), "000000", TRUE, 24, "Berlin Sans FB Demi");
 				$hoja->setCellValue("A".$flag, $facturas[0]->tienda." GRUPO AZTECA, S.A DE C.V")->getColumnDimension('A')->setWidth(60);
