@@ -1049,7 +1049,7 @@ class Facturas extends MY_Controller {
 		$flag = 1;
 		$fced = 1;$faba = 1;$ftie = 1;$fult = 1;$ftri = 1;$fmer = 1; $ften = 1;$ftij = 1;$fvil = 1;
 		if ($provfact) {
-			/*foreach ($provfact as $key => $valorce) {
+			foreach ($provfact as $key => $valorce) {
 				$folio = $valorce->folio;
 				$which = "cedis";
 				switch ($valorce->tienda) {
@@ -1506,7 +1506,7 @@ class Facturas extends MY_Controller {
 						break;
 				}
 		
-			}*/
+			}
 			$flag9 = 1;
 			$this->excelfile->setActiveSheetIndex(9);
 			$hoja = $this->excelfile->getActiveSheet();
