@@ -1121,7 +1121,8 @@ class Facturas extends MY_Controller {
 						break;
 				}
 				$woe = $this->comp_md->get(NULL,["folio"=>$folio])[0];
-				$facturas = $this->fact_md->getDetails2(NULL,json_encode($woe),$which);
+				$this->jsonResponse($woe);
+				/*$facturas = $this->fact_md->getDetails2(NULL,json_encode($woe),$which);
 				$hoja->mergeCells('A'.$flag.':I'.$flag.'');
 				$this->cellStyle("A".$flag, "".substr($facturas[0]->color,1,6), "000000", TRUE, 24, "Berlin Sans FB Demi");
 				$hoja->setCellValue("A".$flag, $facturas[0]->tienda." GRUPO AZTECA, S.A DE C.V")->getColumnDimension('A')->setWidth(60);
@@ -1664,7 +1665,7 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("AF".$flag9, "=E".$flag9."+H".$flag9."+K".$flag9."+N".$flag9."+Q".$flag9."+T".$flag9."+W".$flag9."+Z".$flag9."+AC".$flag9."");
 					$flag9++;
 				}
-			}*/
+			}
 
 
 
@@ -1675,7 +1676,8 @@ class Facturas extends MY_Controller {
 			header("Content-Disposition: attachment;filename=".$file_name);
 			header("Cache-Control: max-age=0");
 			$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
-			$excel_Writer->save("php://output");
+			$excel_Writer->save("php://output");*/
+
 		}else{
 			$this->jsonResponse("No se pudo completar el reporte, por favor inténtalo nuevamente");
 		}
