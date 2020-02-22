@@ -173,6 +173,79 @@ class Facturas_model extends MY_Model {
 		}
 	}
 
+	public function getfinals($where=[],$proveedor){
+		$this->db->select("codigo,p.nombre,fs.nombre as familia,cedis,abarrotes,villas,tienda,ultra,trincheras,mercado,tenencia,tijeras FROM finales f LEFT JOIN productos p ON f.id_producto = p.id_producto LEFT JOIN familias fs ON p.id_familia = fs.id_familia WHERE f.id_proveedor = ".$proveedor." AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE())");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
+
+	Public function getFacts($where=[], $proveedor){
+		$this->db->select("id_tienda,producto,SUM(cuantos) as cuants FROM comparacion WHERE WEEKOFYEAR(fecha) = WEEKOFYEAR(CURDATE()) AND id_proveedor = ".$proveedor." GROUP BY producto,id_tienda");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$flag = 1;
+
+		// echo $this->db->last_query();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if (isset($comparativaIndexada[$comparativa[$i]->producto])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->producto]		=	[];
+				$comparativaIndexada[$comparativa[$i]->producto][57]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][58]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][59]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][60]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][61]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][62]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][63]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][87]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][89]	=	0;
+				$comparativaIndexada[$comparativa[$i]->producto][90]	=	0;
+			}
+
+			$comparativaIndexada[$comparativa[$i]->producto][$comparativa[$i]->id_tienda]	=	$comparativa[$i]->cuants;
+			
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Existencias_model.php */
