@@ -1677,7 +1677,7 @@ class Facturas extends MY_Controller {
 			header("Cache-Control: max-age=0");
 			$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 			$excel_Writer->save("php://output");*/
-
+			}
 		}else{
 			$this->jsonResponse("No se pudo completar el reporte, por favor inténtalo nuevamente");
 		}
