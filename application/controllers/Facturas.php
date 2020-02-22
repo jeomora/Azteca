@@ -1508,7 +1508,7 @@ class Facturas extends MY_Controller {
 				}
 		
 			}
-			$flag9 = 1;
+			/*$flag9 = 1;
 			$this->excelfile->setActiveSheetIndex(9);
 			$hoja = $this->excelfile->getActiveSheet();
 			$hoja->mergeCells('A'.$flag9.':B'.$flag9.'');
@@ -1665,7 +1665,7 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("AF".$flag9, "=E".$flag9."+H".$flag9."+K".$flag9."+N".$flag9."+Q".$flag9."+T".$flag9."+W".$flag9."+Z".$flag9."+AC".$flag9."");
 					$flag9++;
 				}
-			}
+			}*/
 
 
 
