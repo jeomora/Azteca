@@ -97,7 +97,7 @@ class Reales extends MY_Controller {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
-		$filen = "Precios Reales".rand();
+		$filen = "Precios_Reales".rand();
 		$config['upload_path']          = './assets/uploads/reales/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
