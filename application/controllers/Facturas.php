@@ -1664,7 +1664,7 @@ class Facturas extends MY_Controller {
 
 					$hoja->setCellValue("AD".$flag9, "=C".$flag9."+F".$flag9."+I".$flag9."+L".$flag9."+O".$flag9."+R".$flag9."+U".$flag9."+X".$flag9."+AA".$flag9."");
 					$hoja->setCellValue("AE".$flag9, "=D".$flag9."+G".$flag9."+J".$flag9."+M".$flag9."+P".$flag9."+S".$flag9."+V".$flag9."+Y".$flag9."+AB".$flag9."");
-					$hoja->setCellValue("AF".$flag9, "=E".$flag9."+H".$flag9."+K".$flag9."+N".$flag9."+Q".$flag9."+T".$flag9."+W".$flag9."+Z".$flag9."+AC".$flag9."");
+					$hoja->setCellValue("AF".$flag9, "=AD".$flag9."-AE".$flag9."");
 					$flag9++;
 				}
 			}
