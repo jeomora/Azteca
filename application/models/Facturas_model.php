@@ -197,7 +197,7 @@ class Facturas_model extends MY_Model {
 	}
 
 
-	Public function getFacts($where=[], $proveedor){
+	public function getFacts($where=[], $proveedor){
 		$this->db->select("id_tienda,producto,SUM(cuantos) as cuants FROM comparacion WHERE WEEKOFYEAR(fecha) = WEEKOFYEAR(CURDATE()) AND id_proveedor = ".$proveedor." GROUP BY producto,id_tienda");
 		if ($where !== NULL){
 			if(is_array($where)){
@@ -233,6 +233,57 @@ class Facturas_model extends MY_Model {
 			}
 
 			$comparativaIndexada[$comparativa[$i]->producto][$comparativa[$i]->id_tienda]	=	$comparativa[$i]->cuants;
+			
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	Public function getFacts2($where=[], $proveedor){
+		$this->db->select("c.id_tienda,c.producto,SUM(c.cuantos) as cuants,c.factura,f.codigo,f.descripcion FROM comparacion c LEFT JOIN facturas f ON c.folio = f.folio AND c.factura = f.codigo WHERE WEEKOFYEAR(c.fecha) = WEEKOFYEAR(CURDATE()) AND c.id_proveedor = ".$proveedor." AND c.producto = 'FACTURA' GROUP BY c.factura,c.id_tienda");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$flag = 1;
+
+		// echo $this->db->last_query();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if (isset($comparativaIndexada[$comparativa[$i]->codigo])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->codigo]		=	[];
+				$comparativaIndexada[$comparativa[$i]->codigo]["codigo"]	=	$comparativa[$i]->codigo;
+				$comparativaIndexada[$comparativa[$i]->codigo]["descripcion"]	=	$comparativa[$i]->descripcion;
+				$comparativaIndexada[$comparativa[$i]->codigo][57]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][58]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][59]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][60]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][61]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][62]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][63]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][87]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][89]	=	0;
+				$comparativaIndexada[$comparativa[$i]->codigo][90]	=	0;
+			}
+
+			$comparativaIndexada[$comparativa[$i]->codigo][$comparativa[$i]->id_tienda]	=	$comparativa[$i]->cuants;
 			
 		}
 		if ($comparativaIndexada) {

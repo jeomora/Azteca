@@ -1667,6 +1667,73 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("AF".$flag9, "=AD".$flag9."-AE".$flag9."");
 					$flag9++;
 				}
+				$flag9 = $flag9 + 4;
+				$hoja->mergeCells('A'.$flag9.':B'.$flag9.'');
+				$this->cellStyle("A".$flag9, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("A".$flag9, "SIN ASOCIAR A PEDIDOS FINALES '".$provnombre->nombre."'");
+				$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':L'.$flag9.'')->applyFromArray($styleArray9);
+				$this->cellStyle("C".$flag9, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("C".$flag9, "CEDIS");
+				$this->cellStyle("D".$flag9, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("D".$flag9, "ABARROTES");
+				$this->cellStyle("E".$flag9, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("E".$flag9, "VILLAS");
+				$this->cellStyle("F".$flag9, "FF6D0B", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("F".$flag9, "TIENDA");
+				$this->cellStyle("G".$flag9, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("G".$flag9, "ULTRAMARINOS");
+				$this->cellStyle("H".$flag9, "93D051", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("H".$flag9, "TRINCHERAS");
+				$this->cellStyle("I".$flag9, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("I".$flag9, "AZT MERCADO");
+				$this->cellStyle("J".$flag9, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("J".$flag9, "TENENCIA");
+				$this->cellStyle("K".$flag9, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("K".$flag9, "TIJERAS");
+				$flag9++;
+				$this->cellStyle("A".$flag9.":L".$flag9, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("A".$flag9, "CÓDIGO");
+				$hoja->setCellValue("B".$flag9, "DESCRIPCIÓN");
+				$hoja->setCellValue("C".$flag9, "FACTS");
+				$hoja->setCellValue("D".$flag9, "FACTS");
+				$hoja->setCellValue("E".$flag9, "FACTS");
+				$hoja->setCellValue("F".$flag9, "FACTS");
+				$hoja->setCellValue("G".$flag9, "FACTS");
+				$hoja->setCellValue("H".$flag9, "FACTS");
+				$hoja->setCellValue("I".$flag9, "FACTS");
+				$hoja->setCellValue("J".$flag9, "FACTS");
+				$hoja->setCellValue("K".$flag9, "FACTS");
+				$hoja->setCellValue("K".$flag9, "TOTALES");
+				$flag9++;
+				$facts2 = $this->fact_md->getfacts2(NULL,$proveedor);
+				if ($facts2) {
+					foreach ($facts2 as $key => $varray){
+						$this->cellStyle('C'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('D'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('F'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('G'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('H'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('I'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('J'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('K'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('E'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("A".$flag9, $varray["codigo"])->getStyle("A{$flag9}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("B".$flag9, $varray["descripcion"]);
+						$hoja->setCellValue("C".$flag9, $varray[87]);
+						$hoja->setCellValue("D".$flag9, $varray[57]);
+						$hoja->setCellValue("E".$flag9, $varray[90]);
+						$hoja->setCellValue("F".$flag9, $varray[58]);
+						$hoja->setCellValue("G".$flag9, $varray[59]);
+						$hoja->setCellValue("H".$flag9, $varray[60]);
+						$hoja->setCellValue("I".$flag9, $varray[61]);
+						$hoja->setCellValue("J".$flag9, $varray[62]);
+						$hoja->setCellValue("K".$flag9, $varray[63]);
+						$hoja->setCellValue("L".$flag9, "=SUM(C".$flag9.":K".$flag9.")");
+						$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':L'.$flag9.'')->applyFromArray($styleArray9);
+						$flag9++;
+					}
+				}
+
 			}
 
 
