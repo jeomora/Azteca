@@ -275,9 +275,11 @@ class Exislunes_model extends MY_Model {
 	}
 
 	public function getPlantilla($where=[]){
-		$this->db->select("p.codigo,p.descripcion,pl.nombre,pl.alias,p.observaciones")
+		$this->db->select("p.codigo,p.descripcion,pl.nombre,pl.alias,p.observaciones,pen.cedis,pen.abarrotes,pen.pedregal,pen.tienda,pen.ultra,pen.trincheras,pen.mercado,pen.tenencia,pen.tijeras,pro.promo,pro.cuantos1,pro.cuantos2,pro.mins")
 		->from("pro_lunes p")
 		->join("prove_lunes pl","p.id_proveedor = pl.id_proveedor","LEFT")
+		->join("pendlunes pen","p.codigo = pen.id_producto","LEFT")
+		->join("promo_lunes pro","p.codigo = pro.codigo","LEFT")
 		->where("p.estatus",1)
 		->order_by("p.id_proveedor","ASC");
 		if ($where !== NULL) {

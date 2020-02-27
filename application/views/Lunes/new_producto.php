@@ -94,6 +94,12 @@
 							<input type="text" name="mins" class="form-control" placeholder="MINIMO COMPRA" id="mins">
 						</div>
 					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="ieps" style="background-color:#008062 !important;">% IEPS</label>
+							<input type="text" name="ieps" class="form-control" placeholder="% IEPS" id="ieps">
+						</div>
+					</div>
 				</div>
 				<div class="col-sm-3">
 					<div class="form-group">
@@ -125,6 +131,12 @@
 							<input type="text" name="mins2" class="form-control" placeholder="MINIMO COMPRA" id="mins2">
 						</div>
 					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="ieps" style="background-color:#008062 !important;">% IEPS</label>
+							<input type="text" name="ieps2" class="form-control" placeholder="% IEPS" id="ieps2">
+						</div>
+					</div>
 				</div>
 				<div class="col-sm-3">
 					<div class="form-group">
@@ -148,6 +160,12 @@
 						<div class="form-group">
 							<label for="mins3" style="background-color:#008062 !important;">MINIMO DE PRODUCTOS</label>
 							<input type="text" name="mins3" class="form-control" placeholder="MINIMO COMPRA" id="mins3">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="ieps" style="background-color:#008062 !important;">% IEPS</label>
+							<input type="text" name="ieps3" class="form-control" placeholder="% IEPS" id="ieps3">
 						</div>
 					</div>
 				</div>

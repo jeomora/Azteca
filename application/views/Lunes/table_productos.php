@@ -68,7 +68,10 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 										<td><?php echo number_format($value->unidad,0,".",",") ?></td>
 										<td><?php echo "$ ".number_format($value->precio,2,".",",") ?></td>
 										<td><?php echo "$ ".number_format($value->sistema,2,".",",") ?></td>
-										<td><?php echo $value->observaciones ?></td>
+										<td>
+											<?php if ($value->promo <> NULL && $value->promo <> "" && $value->promo <> 0 && $value->promo <> "0"): echo '<i class="fa fa-check-circle-o" aria-hidden="true" style="font-size:20px;color:green"></i>&nbsp;&nbsp;&nbsp;';endif; ?>
+											<?php echo $value->observaciones ?>
+										</td>
 										<td>
 											<button id="update_producto" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-producto="<?php echo $value->codigo ?>">
 												<i class="fa fa-pencil"></i>
