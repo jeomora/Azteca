@@ -234,6 +234,7 @@ class Lunes extends MY_Controller {
 			"cuantos1"	=>	0,
 			"cuantos2"	=>	0,
 			"mins"		=>	0,
+			"ieps"		=>	0,
 			"estatus"	=>	0
 		];
 		$cata =  [
@@ -270,16 +271,19 @@ class Lunes extends MY_Controller {
 						$promos["cuantos1"] = $this->input->post('cuantos1');
 						$promos["cuantos2"] = $this->input->post('cuantos2');
 						$promos["mins"] = $this->input->post('mins');
+						$promos["ieps"] = $this->input->post('ieps');
 						$promos["estatus"] = 1;
 					}elseif($this->input->post( 'promo') === "2" || $this->input->post('promo') === 2){//PORCENTAJE DE DESCUENTO
 						$promos["descuento"] = $this->input->post('descuento');
 						$promos["mins"] = $this->input->post('mins2');
+						$promos["ieps"] = $this->input->post('ieps2');
 						$promos["estatus"] = 1;
 					}elseif($this->input->post('promo') === "3" || $this->input->post('promo') === 3){//PRODUCTO ADICIONAL
 						$promos["cuantos1"] = $this->input->post('cuanto1');
 						$promos["cuantos2"] = $this->input->post('cuanto2');
 						$promos["prod"] = $this->input->post('prod');
 						$promos["mins"] = $this->input->post('mins3');
+						$promos["ieps"] = $this->input->post('ieps3');
 						$promos["estatus"] = 1;
 					}
 
@@ -357,6 +361,7 @@ class Lunes extends MY_Controller {
 			"cuantos1"	=>	0,
 			"cuantos2"	=>	0,
 			"mins"		=>	0,
+			"ieps"		=>	0,
 			"estatus"	=>	0
 		];
 		$cata =  [
@@ -390,45 +395,50 @@ class Lunes extends MY_Controller {
 			}else{
 				$categos = $this->cata_mdl->get(NULL,["id_producto"=>$this->input->post("codigo")])[0];
 				
-				if ($categos) {
-					$data['catego'] = $this->cata_mdl->update($cata, $this->input->post('id_catalogo2'));
-				}else{
-					$data['catego'] = $this->cata_mdl->insert($cata);
+				if ($this->input->post('id_catalogo') <> "" && $this->input->post('id_catalogo') <> NULL) {
+					if ($categos) {
+						$data['catego'] = $this->cata_mdl->update($cata, $this->input->post('id_catalogo2'));
+					}else{
+						$data['catego'] = $this->cata_mdl->insert($cata);
+					}
 				}
 
 				if($this->input->post('promo') === "1" || $this->input->post('promo') === 1){//# EN #
-						$promos["cuantos1"] = $this->input->post('cuantos1');
-						$promos["cuantos2"] = $this->input->post('cuantos2');
-						$promos["mins"] = $this->input->post('mins');
-						$promos["estatus"] = 1;
-					}elseif($this->input->post( 'promo') === "2" || $this->input->post('promo') === 2){//PORCENTAJE DE DESCUENTO
-						$promos["descuento"] = $this->input->post('descuento');
-						$promos["mins"] = $this->input->post('mins2');
-						$promos["estatus"] = 1;
-					}elseif($this->input->post('promo') === "3" || $this->input->post('promo') === 3){//PRODUCTO ADICIONAL
-						$promos["cuantos1"] = $this->input->post('cuanto1');
-						$promos["cuantos2"] = $this->input->post('cuanto2');
-						$promos["prod"] = $this->input->post('prod');
-						$promos["mins"] = $this->input->post('mins3');
-						$promos["estatus"] = 1;
-					}
+					$promos["cuantos1"] = $this->input->post('cuantos1');
+					$promos["cuantos2"] = $this->input->post('cuantos2');
+					$promos["mins"] = $this->input->post('mins');
+					$promos["ieps"] = $this->input->post('ieps');
+					$promos["estatus"] = 1;
+				}elseif($this->input->post( 'promo') === "2" || $this->input->post('promo') === 2){//PORCENTAJE DE DESCUENTO
+					$promos["descuento"] = $this->input->post('descuento');
+					$promos["mins"] = $this->input->post('mins2');
+					$promos["ieps"] = $this->input->post('ieps2');
+					$promos["estatus"] = 1;
+				}elseif($this->input->post('promo') === "3" || $this->input->post('promo') === 3){//PRODUCTO ADICIONAL
+					$promos["cuantos1"] = $this->input->post('cuanto1');
+					$promos["cuantos2"] = $this->input->post('cuanto2');
+					$promos["prod"] = $this->input->post('prod');
+					$promos["ieps"] = $this->input->post('ieps3');
+					$promos["mins"] = $this->input->post('mins3');
+					$promos["estatus"] = 1;
+				}
 
-					if($lastpromo){
-						$data['promo'] = $this->promo_mdl->update($promos, $this->input->post('codigo'));
-					}else{
-						$data['promo'] = $this->promo_mdl->insert($promos);
-					}
+				if($lastpromo){
+					$data['promo'] = $this->promo_mdl->update($promos, $this->input->post('codigo'));
+				}else{
+					$data['promo'] = $this->promo_mdl->insert($promos);
+				}
 
-					$data ['codigo'] = $this->prolu_md->update($producto, $this->input->post('codigos'));
-					$cambios = [
-							"id_usuario" => $user["id_usuario"],
-							"fecha_cambio" => date('Y-m-d H:i:s'),
-							"antes" => "Código : ".$antes->codigo." /Descripción: ".$antes->descripcion,
-							"despues" => "Código : ".$producto['codigo']." /Descripción: ".$producto['descripcion']];
-					$data['cambios'] = $this->cambio_md->insert($cambios);
-					$mensaje = ["id" 	=> 'Éxito',
-								"desc"	=> 'Producto actualizado correctamente',
-								"type"	=> 'success'];
+				$data ['codigo'] = $this->prolu_md->update($producto, $this->input->post('codigos'));
+				$cambios = [
+						"id_usuario" => $user["id_usuario"],
+						"fecha_cambio" => date('Y-m-d H:i:s'),
+						"antes" => "Código : ".$antes->codigo." /Descripción: ".$antes->descripcion,
+						"despues" => "Código : ".$producto['codigo']." /Descripción: ".$producto['descripcion']];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
+				$mensaje = ["id" 	=> 'Éxito',
+							"desc"	=> 'Producto actualizado correctamente',
+							"type"	=> 'success'];
 			}
 		}
 		$this->jsonResponse($mensaje);
@@ -2066,7 +2076,7 @@ class Lunes extends MY_Controller {
 		$hoja->getColumnDimension('D')->setWidth("22");
 		$hoja->getColumnDimension('C')->setWidth("10");
 		$hoja->getColumnDimension('E')->setWidth("70");
-		$hoja->getColumnDimension('F')->setWidth("70");
+		$hoja->getColumnDimension('F')->setWidth("50");
 
 		$productos = $this->ex_lun_md->getPlantilla(NULL);
 		$alias = "";
@@ -2085,6 +2095,24 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("A".$flag."", "4f81bd", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("A".$flag."", $value->nombre);
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag.'')->applyFromArray($styleArray);
+					$this->cellStyle("G".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("G".$flag."", "PENDIENT");
+					$this->cellStyle("H".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("H".$flag."", "PENDIENT");
+					$this->cellStyle("I".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("I".$flag."", "PENDIENT");
+					$this->cellStyle("J".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("J".$flag."", "PENDIENT");
+					$this->cellStyle("K".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("K".$flag."", "PENDIENT");
+					$this->cellStyle("L".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("L".$flag."", "PENDIENT");
+					$this->cellStyle("M".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("M".$flag."", "PENDIENT");
+					$this->cellStyle("N".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("N".$flag."", "PENDIENT");
+					$this->cellStyle("O".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$hoja->setCellValue("O".$flag."", "PENDIENT");
 					$flag++;
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag.'')->applyFromArray($styleArray);
 					$this->cellStyle("A".$flag."", "1f497d", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
@@ -2099,6 +2127,29 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("D".$flag."", "CÓDIGO");
 					$hoja->setCellValue("E".$flag."", "DESCRIPCIÓN");
 					$hoja->setCellValue("F".$flag."", "PROMOCIÓN");
+					$hoja->setCellValue("A".$flag."", "CAJAS");
+					$hoja->setCellValue("B".$flag."", "PZAS");
+					$hoja->setCellValue("C".$flag."", "PEDIDO");
+					$hoja->setCellValue("D".$flag."", "CÓDIGO");
+					$hoja->setCellValue("F".$flag."", "PROMOCIÓN");
+					$this->cellStyle("G".$flag, "C00000", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("H".$flag, "01B0F0", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("I".$flag, "FF0000", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("J".$flag, "E26C0B", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("K".$flag, "C5C5C5", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("L".$flag, "92D051", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("M".$flag, "B1A0C7", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("N".$flag, "DA9694", "000000", TRUE, 10, "Franklin Gothic Book");
+					$this->cellStyle("O".$flag, "4CACC6", "000000", TRUE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("G".$flag."", "CEDIS");
+					$hoja->setCellValue("H".$flag."", "ABARROTES");
+					$hoja->setCellValue("I".$flag."", "VILLAS");
+					$hoja->setCellValue("J".$flag."", "TIENDA");
+					$hoja->setCellValue("K".$flag."", "ULTRA");
+					$hoja->setCellValue("L".$flag."", "TRINCHERAS");
+					$hoja->setCellValue("M".$flag."", "MERCADO");
+					$hoja->setCellValue("N".$flag."", "TENENCIA");
+					$hoja->setCellValue("O".$flag."", "TIJERAS");
 					$flag++;
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag.'')->applyFromArray($styleArray);
 					$this->cellStyle("D".$flag."", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -2106,6 +2157,56 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("D".$flag."", $value->codigo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 					$hoja->setCellValue("E".$flag."", $value->descripcion);
 					$hoja->setCellValue("F".$flag."", $value->observaciones);
+					$hoja->setCellValue("G".$flag."", $value->cedis);
+					$hoja->setCellValue("H".$flag."", $value->abarrotes);
+					$hoja->setCellValue("I".$flag."", $value->pedregal);
+					$hoja->setCellValue("J".$flag."", $value->tienda);
+					$hoja->setCellValue("K".$flag."", $value->ultra);
+					$hoja->setCellValue("L".$flag."", $value->trincheras);
+					$hoja->setCellValue("M".$flag."", $value->mercado);
+					$hoja->setCellValue("N".$flag."", $value->tenencia);
+					$hoja->setCellValue("O".$flag."", $value->tijeras);
+					if ($value->promo = 1 || $value->promo <> "1") {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$flag)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->setConditionalStyles($conditionalStyles);
+					}elseif ($value->promo = 3 || $value->promo <> "3") {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$flag)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->setConditionalStyles($conditionalStyles);
+					}
 					$flag++;
 				}else{
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':F'.$flag.'')->applyFromArray($styleArray);
@@ -2114,6 +2215,56 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("D".$flag."", $value->codigo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 					$hoja->setCellValue("E".$flag."", $value->descripcion);
 					$hoja->setCellValue("F".$flag."", $value->observaciones);
+					$hoja->setCellValue("G".$flag."", $value->cedis);
+					$hoja->setCellValue("H".$flag."", $value->abarrotes);
+					$hoja->setCellValue("I".$flag."", $value->pedregal);
+					$hoja->setCellValue("J".$flag."", $value->tienda);
+					$hoja->setCellValue("K".$flag."", $value->ultra);
+					$hoja->setCellValue("L".$flag."", $value->trincheras);
+					$hoja->setCellValue("M".$flag."", $value->mercado);
+					$hoja->setCellValue("N".$flag."", $value->tenencia);
+					$hoja->setCellValue("O".$flag."", $value->tijeras);
+					if ($value->promo = 1 || $value->promo <> "1") {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$flag)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->setConditionalStyles($conditionalStyles);
+					}elseif ($value->promo = 3 || $value->promo <> "3") {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$flag)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->setConditionalStyles($conditionalStyles);
+					}
 					$flag++;
 				}
 			}

@@ -109,16 +109,22 @@
 							<input type="text" name="mins" value="<?php if($promo):echo $promo->mins;endif ?>" class="form-control" placeholder="MINIMO COMPRA" id="mins">
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-3">
-					<div class="form-group">
-						<label for="cuantos2" style="background-color:#008062 !important;"># SIN CARGO</label>
-						<input type="text" name="cuantos2" value="<?php if($promo):echo $promo->cuantos2;endif ?>" class="form-control" placeholder="# Sin cargo" id="cuantos1">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="ieps" style="background-color:#008062 !important;">% IEPS</label>
+							<input type="text" name="ieps" value="<?php if($promo):echo $promo->ieps;endif ?>" class="form-control" placeholder="% IEPS" id="ieps">
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-3">
 					<div class="form-group">
-						<label for="cuantos1" style="background-color:#008062 !important;">EN  #</label>
+						<label for="cuantos2" style="background-color:#008062 !important;"># SIN CARGO</label>
+						<input type="text" name="cuantos2" value="<?php if($promo):echo $promo->cuantos2;endif ?>" class="form-control" placeholder="# Sin cargo" id="cuantos2">
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label for="cuantos2" style="background-color:#008062 !important;">EN  #</label>
 						<input type="text" name="cuantos1" value="<?php if($promo):echo $promo->cuantos1;endif ?>" class="form-control" placeholder="En  #" id="cuantos1">
 					</div>
 				</div>
@@ -138,6 +144,12 @@
 						<div class="form-group">
 							<label for="mins2" style="background-color:#008062 !important;">MINIMO DE PRODUCTOS</label>
 							<input type="text" name="mins2" value="<?php if($promo):echo $promo->mins;endif ?>" class="form-control" placeholder="MINIMO COMPRA" id="mins2">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="ieps" style="background-color:#008062 !important;">% IEPS</label>
+							<input type="text" name="ieps2" value="<?php if($promo):echo $promo->ieps;endif ?>" class="form-control" placeholder="% IEPS" id="ieps2">
 						</div>
 					</div>
 				</div>
@@ -164,6 +176,12 @@
 						<div class="form-group">
 							<label for="mins3" style="background-color:#008062 !important;">MINIMO DE PRODUCTOS</label>
 							<input type="text" name="mins3" value="<?php if($promo):echo $promo->mins;endif ?>" class="form-control" placeholder="MINIMO COMPRA" id="mins3">
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="ieps" style="background-color:#008062 !important;">% IEPS</label>
+							<input type="text" name="ieps3" value="<?php if($promo):echo $promo->ieps;endif ?>" class="form-control" placeholder="% IEPS" id="ieps3">
 						</div>
 					</div>
 				</div>
