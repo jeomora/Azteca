@@ -271,47 +271,49 @@ class Facturas extends MY_Controller {
 			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
 			
 			
-			if (sizeof($descripcion) > 0) {
-				$new_producto=[
-					"folio" => $folio,
-					"id_proveedor" => $proveedor,
-					"precio" => $precio,
-					"codigo" => $descripcion->id_invoice,
-					"descripcion" => $descripcion->descripcion,
-					"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
-					"cantidad" => $cantidad,
-					"id_tienda"=> $id_tienda
-				];
+			if ($codigo <> NULL || $codigo <> "") {
+				if (sizeof($descripcion) > 0) {
+					$new_producto=[
+						"folio" => $folio,
+						"id_proveedor" => $proveedor,
+						"precio" => $precio,
+						"codigo" => $descripcion->id_invoice,
+						"descripcion" => $descripcion->descripcion,
+						"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
+						"cantidad" => $cantidad,
+						"id_tienda"=> $id_tienda
+					];
 
-				$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
-				if ($codiga) {
+					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
+					if ($codiga) {
+					}else{
+						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+					}
 				}else{
-					$data['id_prodcaja']=$this->fact_md->insert($new_producto);
-				}
-			}else{
-				$new_invoice=[
-					"codigo" => $codigo,
-					"id_proveedor" => $id_proveedor,
-					"descripcion" => $desc,
-					"unidad" => "CJ"
-				];
-				$data['id_invoice']=$this->invoice_md->insert($new_invoice);
-				$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
-				$new_producto=[
-					"folio" => $folio,
-					"id_proveedor" => $proveedor,
-					"precio" => $precio,
-					"codigo" => $descripcion->id_invoice,
-					"descripcion" => $descripcion->descripcion,
-					"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
-					"cantidad" => $cantidad,
-					"id_tienda"=> $id_tienda
-				];
+					$new_invoice=[
+						"codigo" => $codigo,
+						"id_proveedor" => $id_proveedor,
+						"descripcion" => $desc,
+						"unidad" => "CJ"
+					];
+					$data['id_invoice']=$this->invoice_md->insert($new_invoice);
+					$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
+					$new_producto=[
+						"folio" => $folio,
+						"id_proveedor" => $proveedor,
+						"precio" => $precio,
+						"codigo" => $descripcion->id_invoice,
+						"descripcion" => $descripcion->descripcion,
+						"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
+						"cantidad" => $cantidad,
+						"id_tienda"=> $id_tienda
+					];
 
-				$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
-				if ($codiga) {
-				}else{
-					$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
+					if ($codiga) {
+					}else{
+						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+					}
 				}
 			}
 		}
