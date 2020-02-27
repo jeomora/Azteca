@@ -54,7 +54,16 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<h5 class="m-b-md">2.- Clic al boton y seleccione el archivo Excel.</h5>
 								<div class="col-sm-4">
 									<input class="btn btn-info" type="file" id="file_codigos" name="file_codigos" value=""/>
+								</div><br>
+							</div>
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-4" style="border-top:1px solid #c5c5c5;padding-top:20px;">
+									<button>
+										Eliminar Pedidos Del Proveedor
+									</button>
 								</div>
+								<div class="col-md-4"></div>
 							</div>
 						<?php echo form_close(); ?>
 					</div> 
