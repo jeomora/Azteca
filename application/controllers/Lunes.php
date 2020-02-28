@@ -2166,7 +2166,7 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("M".$flag."", $value->mercado);
 					$hoja->setCellValue("N".$flag."", $value->tenencia);
 					$hoja->setCellValue("O".$flag."", $value->tijeras);
-					if ($value->promo = 1 || $value->promo <> "1") {
+					if ($value->promo === 1 || $value->promo === "1") {
 						$condRed = new PHPExcel_Style_Conditional();
 						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
 				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
@@ -2186,7 +2186,7 @@ class Lunes extends MY_Controller {
 						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$flag)->getConditionalStyles();
 						array_push($conditionalStyles,$condRed);
 						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->setConditionalStyles($conditionalStyles);
-					}elseif ($value->promo = 3 || $value->promo <> "3") {
+					}elseif ($value->promo === 3 || $value->promo === "3") {
 						$condRed = new PHPExcel_Style_Conditional();
 						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
 				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
@@ -2224,7 +2224,7 @@ class Lunes extends MY_Controller {
 					$hoja->setCellValue("M".$flag."", $value->mercado);
 					$hoja->setCellValue("N".$flag."", $value->tenencia);
 					$hoja->setCellValue("O".$flag."", $value->tijeras);
-					if ($value->promo = 1 || $value->promo <> "1") {
+					if ($value->promo === 1 || $value->promo === "1") {
 						$condRed = new PHPExcel_Style_Conditional();
 						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
 				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
@@ -2244,7 +2244,7 @@ class Lunes extends MY_Controller {
 						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$flag)->getConditionalStyles();
 						array_push($conditionalStyles,$condRed);
 						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->setConditionalStyles($conditionalStyles);
-					}elseif ($value->promo = 3 || $value->promo <> "3") {
+					}elseif ($value->promo === 3 || $value->promo === "3") {
 						$condRed = new PHPExcel_Style_Conditional();
 						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
 				                ->addCondition("=MOD(C".$flag.",".$value->cuantos1.")>0")
@@ -2478,9 +2478,9 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BU'.$flag);
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", "CEDIS, ABARROTES,PEDREGAL, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BU'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->getColumnDimension('A')->setWidth("25");
 					$proveedor[$key]->estatus->getColumnDimension('C')->setWidth("70");
 					
@@ -2534,7 +2534,7 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("AZ".$flag, "NOTA");
 
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BV'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':F'.$flag);
 					$this->cellStyle("A".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", "DESCRIPCIÓN");
@@ -2585,6 +2585,8 @@ class Lunes extends MY_Controller {
 
 					$this->cellStyle("AY".$flag, "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("AZ".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BM".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BM".$flag."", "TOTAL");
 					
 					$flag++;
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':AZ'.$flag)->applyFromArray($styleArray);
@@ -2660,8 +2662,10 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("BJ".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("BK".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("BL".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BM".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					
 					$proveedor[$key]->estatus->setCellValue("BL".$flag."", "TOTAL");
+					$proveedor[$key]->estatus->setCellValue("BM".$flag."", "PEDIDOS");
 					
 					$proveedor[$key]->estatus->getColumnDimension('BB')->setWidth("15");
 					$proveedor[$key]->estatus->getColumnDimension('BC')->setWidth("15");
@@ -2674,6 +2678,7 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->getColumnDimension('BJ')->setWidth("15");
 					$proveedor[$key]->estatus->getColumnDimension('BK')->setWidth("15");
 					$proveedor[$key]->estatus->getColumnDimension('BL')->setWidth("15");
+					$proveedor[$key]->estatus->getColumnDimension('BM')->setWidth("15");
 				}
 				$flageas = $flag+1;
 				foreach ($infos as $keys => $v) {
@@ -2692,9 +2697,52 @@ class Lunes extends MY_Controller {
 					$pedide->setCellValue("K{$bande}", $v["pend"][7]["pend"]);
 					$pedide->setCellValue("L{$bande}", $v["pend"][8]["pend"]);
 					$pedide->setCellValue("M{$bande}", $v["pend"][9]["pend"]);
-					$pedide->setCellValue("N{$bande}", $v["pend"][10]["pend"]);
-					$pedide->setCellValue("O{$bande}", $v["pend"][11]["pend"]);
+					$pedide->setCellValue("N{$bande}", $v['promo']);
+					$pedide->setCellValue("O{$bande}", $v['cuantos1']);
 					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':O'.$bande.'')->applyFromArray($styleArray);
+
+					if ($v["promo"] === 1 || $v["promo"] === "1") {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+				                ->addCondition("=MOD(C".$bande.",".$v['cuantos1'].")>0")
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$bande)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$bande)->setConditionalStyles($conditionalStyles);
+					}elseif ($v["promo"] === 3 || $v["promo"] === "3") {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+				                ->addCondition("=MOD(C".$bande.",".$v['cuantos1'].")>0")
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('C'.$bande)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$bande)->setConditionalStyles($conditionalStyles);
+					}
+
 					$bande++;
 					/******************END HOJA EXISTENCIAS******************/
 
@@ -2709,9 +2757,9 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("C".$flag."", $v["descripcion"]);
 					$this->cellStyle("C".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("D{$flag}", $v["precio"])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("D{$flag}", $v["precio"])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("E{$flag}", $v["sistema"])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("E{$flag}", $v["sistema"])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("F{$flag}", $v["unidad"]);
 
@@ -2764,29 +2812,75 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("AT".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
 					$this->cellStyle("AX".$flag, "DCE6F1", "000000", TRUE, 10, "Franklin Gothic Book");
 
-					$this->excelfile->getActiveSheet()->getStyle('BB'.$flag.':BL'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('BB'.$flag.':BM'.$flag)->applyFromArray($styleArray);
 					$this->cellStyle("BB".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BB{$flag}", "=D{$flag}*J{$flag}")->getStyle("BB{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BB{$flag}", "=D{$flag}*J{$flag}")->getStyle("BB{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BC".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BC{$flag}", "=D{$flag}*R{$flag}")->getStyle("BC{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BC{$flag}", "=D{$flag}*R{$flag}")->getStyle("BC{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BD".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BD{$flag}", "=D{$flag}*V{$flag}")->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BD{$flag}", "=D{$flag}*V{$flag}")->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BE".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BE{$flag}", "=D{$flag}*Z{$flag}")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BE{$flag}", "=D{$flag}*Z{$flag}")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BF".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BF{$flag}", "=D{$flag}*AD{$flag}")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BF{$flag}", "=D{$flag}*AD{$flag}")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BG".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BG{$flag}", "=D{$flag}*AH{$flag}")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BG{$flag}", "=D{$flag}*AH{$flag}")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BH".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BH{$flag}", "=D{$flag}*AL{$flag}")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BH{$flag}", "=D{$flag}*AL{$flag}")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BI".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=D{$flag}*AP{$flag}")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=D{$flag}*AP{$flag}")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BJ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BJ{$flag}", "=D{$flag}*AT{$flag}")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BJ{$flag}", "=D{$flag}*AT{$flag}")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BK".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BK{$flag}", "=D{$flag}*AX{$flag}")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BK{$flag}", "=D{$flag}*AX{$flag}")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BL".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BL{$flag}", "=SUM(BB{$flag}:BK{$flag})")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BL{$flag}", "=SUM(BB{$flag}:BK{$flag})")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->cellStyle("BM".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$proveedor[$key]->estatus->setCellValue("BM{$flag}", "=J{$flag}+N{$flag}+R{$flag}+V{$flag}+Z{$flag}+AD{$flag}+AH{$flag}+AL{$flag}+AP{$flag}+AT{$flag}+AX{$flag}")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
+					$arras = array(1=>"J",2=>"N",3=>"R",4=>"V",5=>"Z",6=>"AD",7=>"AH",8=>"AL",9=>"AP",10=>"AT",11=>"AX",12=>"BM");
+					for ($i=1; $i <=12 ; $i++){
+						if ($v["promo"] === 1 || $v["promo"] === "1") {
+							$condRed = new PHPExcel_Style_Conditional();
+							$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+					                ->addCondition("=MOD(".$arras[$i].$flag.",".$v['cuantos1'].")>0")
+					                ->getStyle()
+					                ->applyFromArray(
+					                	array(
+										  'font'=>array(
+										   'color'=>array('argb'=>'FF9C0006')
+										  ),
+										  'fill'=>array(
+											  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+											  'startcolor' =>array('argb' => 'FFFFC7CE'),
+											  'endcolor' =>array('argb' => 'FFFFC7CE')
+											)
+										)
+									);
+							$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle(''.$arras[$i].$flag)->getConditionalStyles();
+							array_push($conditionalStyles,$condRed);
+							$this->excelfile->getActiveSheet()->getStyle(''.$arras[$i].$flag)->setConditionalStyles($conditionalStyles);
+						}elseif ($v["promo"] === 3 || $v["promo"] === "3") {
+							$condRed = new PHPExcel_Style_Conditional();
+							$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_EXPRESSION)
+					                ->addCondition("=MOD(".$arras[$i].$flag.",".$v['cuantos1'].")>0")
+					                ->getStyle()
+					                ->applyFromArray(
+					                	array(
+										  'font'=>array(
+										   'color'=>array('argb'=>'FF9C0006')
+										  ),
+										  'fill'=>array(
+											  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+											  'startcolor' =>array('argb' => 'FFFFC7CE'),
+											  'endcolor' =>array('argb' => 'FFFFC7CE')
+											)
+										)
+									);
+							$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle(''.$arras[$i].$flag)->getConditionalStyles();
+							array_push($conditionalStyles,$condRed);
+							$this->excelfile->getActiveSheet()->getStyle(''.$arras[$i].$flag)->setConditionalStyles($conditionalStyles);
+						}	
+					}
 
 					$col = 6;
 					 foreach ($v["existencias"] as $k => $vs) {
@@ -2797,6 +2891,29 @@ class Lunes extends MY_Controller {
 						$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["ped"]);
 						$col++;
 					 }
+
+					if ($v["mins"] <> "" && $v["mins"] > 0 && $v["mins"] <> NULL) {
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+			                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_LESSTHAN)
+			                ->addCondition($v["mins"])
+			                ->getStyle()
+			                ->applyFromArray(
+			                	array(
+								  'font'=>array(
+								   'color'=>array('argb'=>'FF9C0006')
+								  ),
+								  'fill'=>array(
+									  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+									  'startcolor' =>array('argb' => 'FFFFC7CE'),
+									  'endcolor' =>array('argb' => 'FFFFC7CE')
+									)
+								)
+							);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('BM'.$flag)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle('BM'.$flag)->setConditionalStyles($conditionalStyles);
+					}
 					 
 
 					 $proveedor[$key]->estatus->setCellValue("I{$flag}", $v["pend"][1]["pend"]);
@@ -2853,27 +2970,27 @@ class Lunes extends MY_Controller {
 
 				$this->excelfile->getActiveSheet()->getStyle('BB'.$flag.':BL'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("BB".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BB{$flag}", "=SUM(BB{$flageas}:BB".($flag-1).")")->getStyle("BB{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BB{$flag}", "=SUM(BB{$flageas}:BB".($flag-1).")")->getStyle("BB{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BC".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BC{$flag}", "=SUM(BC{$flageas}:BC".($flag-1).")")->getStyle("BC{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BC{$flag}", "=SUM(BC{$flageas}:BC".($flag-1).")")->getStyle("BC{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BD".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BD{$flag}", "=SUM(BD{$flageas}:BD".($flag-1).")")->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BD{$flag}", "=SUM(BD{$flageas}:BD".($flag-1).")")->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BE".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BE{$flag}", "=SUM(BE{$flageas}:BE".($flag-1).")")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BE{$flag}", "=SUM(BE{$flageas}:BE".($flag-1).")")->getStyle("BE{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BF".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BF{$flag}", "=SUM(BF{$flageas}:BF".($flag-1).")")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BF{$flag}", "=SUM(BF{$flageas}:BF".($flag-1).")")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BG".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BG{$flag}", "=SUM(BG{$flageas}:BG".($flag-1).")")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BG{$flag}", "=SUM(BG{$flageas}:BG".($flag-1).")")->getStyle("BG{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BH".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BH{$flag}", "=SUM(BH{$flageas}:BH".($flag-1).")")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BH{$flag}", "=SUM(BH{$flageas}:BH".($flag-1).")")->getStyle("BH{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BI".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=SUM(BI{$flageas}:BI".($flag-1).")")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=SUM(BI{$flageas}:BI".($flag-1).")")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BJ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BJ{$flag}", "=SUM(BJ{$flageas}:BJ".($flag-1).")")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BJ{$flag}", "=SUM(BJ{$flageas}:BJ".($flag-1).")")->getStyle("BJ{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BK".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BK{$flag}", "=SUM(BK{$flageas}:BK".($flag-1).")")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BK{$flag}", "=SUM(BK{$flageas}:BK".($flag-1).")")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$this->cellStyle("BL".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BL{$flag}", "=SUM(BL{$flageas}:BL".($flag-1).")")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("BL{$flag}", "=SUM(BL{$flageas}:BL".($flag-1).")")->getStyle("BL{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$totis = $flag;
 				$flag+=5;
 
@@ -2882,67 +2999,67 @@ class Lunes extends MY_Controller {
 				$va->alias = "PEDIDO LUNES";
 				$this->cellStyle("C".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "CEDIS/SUPER");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BB{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BB{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$ced=$ced."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "CD INDUSTRIAL");
 				$this->cellStyle("C".$flag, "FF0066", "000000", TRUE, 12, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BC{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BC{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$sup=$sup."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "ABARROTES");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BE{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BE{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$aba=$aba."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "PEDREGAL");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BF{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BF{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$ped=$ped."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TIENDA");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BG{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BG{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$tie=$tie."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "ULTRAMARINOS");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BH{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BH{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$ult=$ult."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "92D051", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TRINCHERAS");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BI{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BI{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$tri=$tri."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "AZT MERCADO");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BJ{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BJ{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$mer=$mer."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TENENCIA");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BK{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BK{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$ten=$ten."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TIJERAS");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BL{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BL{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$tij=$tij."D{$flag}+";
 				$flag++;
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TOTAL");
-				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=SUM(D".($totis+5).":D".($flag-1).")")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=SUM(D".($totis+5).":D".($flag-1).")")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 			$flag1 += 5;
 
 			$flag += 5;
