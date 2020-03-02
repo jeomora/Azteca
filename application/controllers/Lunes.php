@@ -2697,8 +2697,8 @@ class Lunes extends MY_Controller {
 					$pedide->setCellValue("K{$bande}", $v["pend"][7]["pend"]);
 					$pedide->setCellValue("L{$bande}", $v["pend"][8]["pend"]);
 					$pedide->setCellValue("M{$bande}", $v["pend"][9]["pend"]);
-					$pedide->setCellValue("N{$bande}", $v['promo']);
-					$pedide->setCellValue("O{$bande}", $v['cuantos1']);
+					$pedide->setCellValue("N{$bande}", $v["pend"][10]["pend"]);
+					$pedide->setCellValue("O{$bande}", $v["pend"][11]["pend"]);
 					$this->excelfile->getActiveSheet()->getStyle('A'.$bande.':O'.$bande.'')->applyFromArray($styleArray);
 
 					if ($v["promo"] === 1 || $v["promo"] === "1") {
