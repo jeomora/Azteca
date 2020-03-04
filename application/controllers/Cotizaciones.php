@@ -1063,7 +1063,7 @@ class Cotizaciones extends MY_Controller {
 								);
 							}
 
-							if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) == '2019'){
+							if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
 								$arrayData = array(
 									array("NUEVO")
 								);
@@ -5531,7 +5531,7 @@ class Cotizaciones extends MY_Controller {
 							}elseif ($row['sem2'] <> NULL) {
 								$this->cellStyle("D{$row_print}", "F79646", "000000", FALSE, 10, "Franklin Gothic Book");
 							}
-						if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1))  && date('Y', strtotime($row['fecha_registro'])) == '2019'){
+						if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1))  && date('Y', strtotime($row['fecha_registro'])) == '2020'){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("C{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
