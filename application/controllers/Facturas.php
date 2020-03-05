@@ -279,7 +279,7 @@ class Facturas extends MY_Controller {
 						"precio" => $precio,
 						"codigo" => $descripcion->id_invoice,
 						"descripcion" => $descripcion->descripcion,
-						"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
+						"fecha_factura" => $fecha,
 						"cantidad" => $cantidad,
 						"id_tienda"=> $id_tienda
 					];
@@ -304,7 +304,7 @@ class Facturas extends MY_Controller {
 						"precio" => $precio,
 						"codigo" => $descripcion->id_invoice,
 						"descripcion" => $descripcion->descripcion,
-						"fecha_registro" 	=> $fecha->format('Y-m-d H:i:s'),
+						"fecha_factura"	=> $fecha,
 						"cantidad" => $cantidad,
 						"id_tienda"=> $id_tienda
 					];
@@ -539,7 +539,7 @@ class Facturas extends MY_Controller {
 		$this->excelfile->getActiveSheet()->getStyle('F2:I2')->applyFromArray($styleleft);
 		$hoja->mergeCells('F3:I3');
 		$this->cellStyle("F3", "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
-		$hoja->setCellValue("F3", "Fecha en Factura");
+		$hoja->setCellValue("F3", $facturas[0]->fecha_factura);
 		$this->excelfile->getActiveSheet()->getStyle('F3:I3')->applyFromArray($styleleft);
 
 		$hoja->mergeCells('A4:A5');
@@ -1152,7 +1152,7 @@ class Facturas extends MY_Controller {
 					$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':E'.$flag.'')->applyFromArray($styleright);
 					$hoja->mergeCells('F'.$flag.':I'.$flag.'');
 					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
-					$hoja->setCellValue("F".$flag, "Fecha en Factura");
+					$hoja->setCellValue("F".$flag, $facturas[0]->fecha_factura);
 					$this->excelfile->getActiveSheet()->getStyle('F'.$flag.':I'.$flag.'')->applyFromArray($styleleft);
 					$flag++;
 
