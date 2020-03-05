@@ -12,6 +12,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	select{padding:10px;border-radius:5px;margin-bottom:15px;}
 	.top-navigation .nav>li.active{background:#ffffff;border:none;}
 	.top-navigation .nav > li.active > a {color: #000;background: #FFF;}
+	.elimPed{border:2px solid #ef4c4c;font-size:16px;padding:10px 50px;border-radius:2px;color:#ef4c4c;background:#FFF}
+	.elimPed:hover{background:#ef4c4c;color:#FFF;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -59,7 +61,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-4" style="border-top:1px solid #c5c5c5;padding-top:20px;">
-									<button>
+									<button class="elimPed" type="button">
 										Eliminar Pedidos Del Proveedor
 									</button>
 								</div>
