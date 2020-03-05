@@ -219,6 +219,12 @@ class Facturas extends MY_Controller {
 		$this->jsonResponse(array($arrays,$array,$num_rows));
 	}
 
+	public function deletePedidos(){
+		$proveedor = $this->input->post('proveedor');
+		$this->db->query("delete from finales where WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) AND id_proveedor = ".$proveedor." ;");
+		$this->jsonResponse($proveedor);
+	}
+
 	public function getOldVal($sheets,$i,$le){
 		$cellB = $sheets->getCell($le.$i)->getValue();
 		if(strstr($cellB,'=')==true){
@@ -259,7 +265,7 @@ class Facturas extends MY_Controller {
 		}
 		
 		if ($fecha === "" || $fecha === null) {
-			$fecha = new DateTime(date('Y-m-d H:i:s'));
+			$fecha = date("d/m/Y h:i:sa");
 		}
 
 		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
@@ -1754,60 +1760,6 @@ class Facturas extends MY_Controller {
 		//$this->jsonResponse();
 	}
 
-	/*public function uploadExi(){
-		$proveedor = $this->session->userdata('id_usuario');
-		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
-		$filen = "Productos por ".$cfile->nombre."".rand();
-		$config['upload_path']          = './assets/uploads/cotizaciones/';
-        $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 768;
-
-
-        $estatus = 1;
-        $this->load->library('upload', $config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload('file_codes',$filen);
-		$this->load->library("excelfile");
-		ini_set("memory_limit", -1);
-		$file = $_FILES["file_codes"]["tmp_name"];
-		$filename=$_FILES['file_codes']['name'];
-		$sheet = PHPExcel_IOFactory::load($file);
-		$objExcel = PHPExcel_IOFactory::load($file);
-		$sheet = $objExcel->getSheet(0);
-		$num_rows = $sheet->getHighestDataRow();
-		
-		for ($i=1; $i<=$num_rows; $i++) {
-			$invoice = $this->invoice_md->get(NULL,["codigo"=>$sheet->getCell('A'.$i)->getValue(),"id_proveedor"=>4])[0];
-			$product = $this->pro_md->get(NULL,["id_producto"=>$sheet->getCell('B'.$i)->getValue()])[0];
-			if ($invoice && $product) {
-				$new_producto=[
-					"id_invoice" 	=> $invoice->id_invoice,
-					"id_producto" 	=> $product->id_producto,
-					"id_proveedor" 	=> 4
-				];
-				$data ['id_producto'] = $this->pcaja_md->insert($new_producto);
-			}
-		}
-		if (!isset($new_producto)) {
-			$mensaje	=	[	"id"	=>	'Error',
-								"desc"	=>	'El Archivo esta sin productos',
-								"type"	=>	'error'];
-		}else{
-			if (sizeof($new_producto) > 0) {
-				$mensaje=[	"id"	=>	'Éxito',
-							"desc"	=>	'Productos cargados correctamente en el Sistema',
-							"type"	=>	'success'];
-			}else{
-				$mensaje=[	"id"	=>	'Error',
-							"desc"	=>	'Los Productos no se cargaron al Sistema',
-							"type"	=>	'error'];
-			}
-		}
-		$this->jsonResponse($mensaje);
-	}*/
-
 	public function codigos(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
@@ -1837,6 +1789,7 @@ class Facturas extends MY_Controller {
 		$this->estructura("Facturas/codigos", $data);
 	}
 	
+
 }
 
 /* End of file Productos.php */

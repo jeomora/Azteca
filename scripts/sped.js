@@ -108,11 +108,13 @@ $(document).off("change", "#file_codigos").on("change", "#file_codigos", functio
 		uploadPedidos(fdata)
 		.done(function (resp) {
 			if (resp.type == 'error'){
-				toastr.error(resp.desc, user_name)
+				toastr.error(resp.desc, user_name);
+				$("#file_codigos").val("");
 				//setTimeout("location.reload()", 1700, toastr.error(resp.desc, user_name), "");
 			}else{
 				unblockPage();
-				toastr.success(resp.desc, user_name)
+				toastr.success(resp.desc, user_name);
+				$("#file_codigos").val("");
 				//setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
 			}
 		});
@@ -123,6 +125,33 @@ $(document).off("change", "#file_codigos").on("change", "#file_codigos", functio
 function uploadPedidos(formData) {
 	return $.ajax({
 		url: site_url+"Facturas/uploadPedidos",
+		type: "POST",
+		cache: false,
+		contentType: false,
+		processData:false,
+		dataType:"JSON",
+		data: formData,
+	});
+}
+
+$(document).off("click", ".elimPed").on("click", ".elimPed", function (){
+	event.preventDefault();
+	blockPage();
+	var fdata = new FormData($("#upload_codigos")[0]);
+	deletePedidos(fdata)
+	.done(function (resp) {
+		if (resp.type == 'error'){
+			toastr.error(resp.desc, user_name);
+		}else{
+			unblockPage();
+			toastr.success(resp.desc, user_name);
+		}
+	});
+})
+
+function deletePedidos(formData) {
+	return $.ajax({
+		url: site_url+"Facturas/deletePedidos",
 		type: "POST",
 		cache: false,
 		contentType: false,
