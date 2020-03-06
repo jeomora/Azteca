@@ -222,6 +222,12 @@ class Facturas extends MY_Controller {
 	public function deletePedidos(){
 		$proveedor = $this->input->post('proveedor');
 		$this->db->query("delete from finales where WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) AND id_proveedor = ".$proveedor." ;");
+		$user = $this->session->userdata();
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "El usuario elimino pedidos finales",
+				"despues" => "Del proveedor ".$proveedor.". "];
 		$this->jsonResponse($proveedor);
 	}
 
@@ -412,6 +418,11 @@ class Facturas extends MY_Controller {
 		$flag = 0;
 		$this->db->query("delete from comparacion where folio = '".$value["folio"]."' AND id_proveedor = ".$value["proveedor"]."");
 		$this->db->query("delete from facturas where folio = '".$value["folio"]."' AND id_proveedor = ".$value["proveedor"]."");
+		$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "El usuario elimino factura",
+				"despues" => "FOLIO : ".$value['folio']." del proveedor ".$value['proveedor'].". "];
 		$this->jsonResponse("Se elimino la factura");
 	}
 
