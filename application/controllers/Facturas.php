@@ -356,8 +356,7 @@ class Facturas extends MY_Controller {
 			"desc"	=>	'Factura se cargó correctamente en el Sistema',
 			"type"	=>	'success'];
 
-		$this->jsonResponse(array($factus,$factus2,$num_rows,$folio));
-		
+		$this->jsonResponse(array($factus,$factus2,$num_rows,$folio));		
 	}
 
 	public function guardaComparacion(){
@@ -1648,23 +1647,23 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("A".$flag9, $val->codigo)->getStyle("A{$flag9}")->getNumberFormat()->setFormatCode('# ???/???');
 					$hoja->setCellValue("B".$flag9, $val->nombre);
 					$hoja->setCellValue("C".$flag9, $val->cedis);
-					$hoja->setCellValue("E".$flag9, "=C".$flag9."-D".$flag9."");
+					$hoja->setCellValue("E".$flag9, "=(C".$flag9."-D".$flag9.")");
 					$hoja->setCellValue("F".$flag9, $val->abarrotes);
-					$hoja->setCellValue("H".$flag9, "=F".$flag9."-G".$flag9."");
+					$hoja->setCellValue("H".$flag9, "=(F".$flag9."-G".$flag9.")");
 					$hoja->setCellValue("I".$flag9, $val->villas);
-					$hoja->setCellValue("K".$flag9, "=I".$flag9."-K".$flag9."");
+					$hoja->setCellValue("K".$flag9, "=(I".$flag9."-J".$flag9.")");
 					$hoja->setCellValue("L".$flag9, $val->tienda);
-					$hoja->setCellValue("N".$flag9, "=L".$flag9."-M".$flag9."");
+					$hoja->setCellValue("N".$flag9, "=(L".$flag9."-M".$flag9.")");
 					$hoja->setCellValue("O".$flag9, $val->ultra);
-					$hoja->setCellValue("Q".$flag9, "=O".$flag9."-P".$flag9."");
+					$hoja->setCellValue("Q".$flag9, "=(O".$flag9."-P".$flag9.")");
 					$hoja->setCellValue("R".$flag9, $val->trincheras);
-					$hoja->setCellValue("T".$flag9, "=R".$flag9."-S".$flag9."");
+					$hoja->setCellValue("T".$flag9, "=(R".$flag9."-S".$flag9.")");
 					$hoja->setCellValue("U".$flag9, $val->mercado);
-					$hoja->setCellValue("W".$flag9, "=U".$flag9."-V".$flag9."");
+					$hoja->setCellValue("W".$flag9, "=(U".$flag9."-V".$flag9.")");
 					$hoja->setCellValue("X".$flag9, $val->tenencia);
-					$hoja->setCellValue("Z".$flag9, "=X".$flag9."-Y".$flag9."");
+					$hoja->setCellValue("Z".$flag9, "=(X".$flag9."-Y".$flag9.")");
 					$hoja->setCellValue("AA".$flag9, $val->tijeras);
-					$hoja->setCellValue("AC".$flag9, "=AA".$flag9."-AB".$flag9."");
+					$hoja->setCellValue("AC".$flag9, "=(AA".$flag9."-AB".$flag9.")");
 					$hoja->setCellValue("D".$flag9, 0);
 					$hoja->setCellValue("G".$flag9, 0);
 					$hoja->setCellValue("J".$flag9, 0);
@@ -1704,6 +1703,30 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("AD".$flag9, "=C".$flag9."+F".$flag9."+I".$flag9."+L".$flag9."+O".$flag9."+R".$flag9."+U".$flag9."+X".$flag9."+AA".$flag9."");
 					$hoja->setCellValue("AE".$flag9, "=D".$flag9."+G".$flag9."+J".$flag9."+M".$flag9."+P".$flag9."+S".$flag9."+V".$flag9."+Y".$flag9."+AB".$flag9."");
 					$hoja->setCellValue("AF".$flag9, "=AD".$flag9."-AE".$flag9."");
+
+					$arras = array(1=>"E",2=>"H",3=>"K",4=>"N",5=>"Q",6=>"T",7=>"W",8=>"Z",9=>"AC");
+					for ($i=1; $i <=9 ; $i++){
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_NOTEQUAL)
+				                ->addCondition(0)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($arras[$i].''.$flag9)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle($arras[$i].''.$flag9)->setConditionalStyles($conditionalStyles);
+					}
 					$flag9++;
 				}
 				$flag9 = $flag9 + 4;
