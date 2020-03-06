@@ -312,6 +312,8 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 		$(".devuel").html("");
 		$(".difer").html("");
 		var compara = 0;
+		var folicho = $(this).attr('id');
+		var provicho = $(this).val();
 		var values = {"proveedor":$(this).val(),"folio":$(this).attr('id'),"tienda":tiendis,"which":tiendas[tiendis]};
 		var diferencia = 0;var credito = 0;var totis = 0;var devuel = 0;var cred = 0;var tot = 0;var difer = 0;
 		getDetails(JSON.stringify(values))
@@ -408,8 +410,8 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			
 			$(".BE1").html('<button type="button" class="btnExcel pedfact" id="'+compara+'"><i class="fa fa-download"'+
 				' aria-hidden="true"></i> DESCARGAR FORMATO FACTURA</button>');
-			/*$(".BE2").html('<button type="button" class="btnExcel formato" id="'+compara+'"><i class="fa fa-download"'+
-				' aria-hidden="true"></i> DESCARGAR FORMATO</button>');*/
+			$(".BE3").html('<button type="button" class="btnExcel elimbtn" data-id-folio="'+folicho+'" data-id-proveedor="'+provicho+'" style="background:#ec8b5c;border:0"><i class='+
+				'"fa fa-download" aria-hidden="true"></i> ELIMINAR FACTURA</button>');
 			calculaFactura();
 		})
 	}else{
@@ -445,8 +447,28 @@ $(document).off("click", ".pedfact").on("click", ".pedfact", function (){
 	} else {
 		alert('Por favor, activar la opción de abrir pestañas para este sitio.');
 	}
-
 })
+
+$(document).off("click",".elimbtn").on("click",".elimbtn",function(){
+	var values = {"proveedor":$(this).data("idProveedor"),"folio":$(this).data("idFolio")};
+	eliminaFactura(JSON.stringify(values)).done(function(resp){
+		toastr.success("Se elimino la factura", user_name);
+			location.reload();
+	})
+})
+
+function eliminaFactura(values){
+    return $.ajax({
+        url: site_url+"/Facturas/eliminaFactura",
+        type: "POST",
+        dataType: "JSON",
+        data: {
+            values : values
+        },
+    });
+}
+
+
 $(document).off("click", ".cerra").on("click", ".cerra", function (){
 	var pedsist = $(this).closest(".pedsist");
 	pedsist.addClass("pedsi")
@@ -464,9 +486,6 @@ $(document).off("click", ".cerra").on("click", ".cerra", function (){
 	pedsist.closest(".col-md-12").find(".body1").css({"background":"white !important","color":"black !important"});
 })
 
-$(document).off("click", ".divcont").on("click", ".divcont", function (){
-	console.log(this)
-})
 
 function cantidades(uno,dos){
 	if(uno > dos){

@@ -244,12 +244,22 @@ class Facturas extends MY_Controller {
 		$user = $this->session->userdata();
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
+		$nombreFolio = $_FILES["file_factura"]['name'];
 		$file = $_FILES["file_factura"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 		$proveedor = $id_proveedor;
+		$folio = substr($nombreFolio,0,strlen($nombreFolio)-5);
+		$config['upload_path']          = './assets/uploads/facturas/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10240;
+        $config['max_height']           = 7680;
+        $this->load->library('upload', $config);
+        $this->upload->do_upload('file_factura',substr($nombreFolio,0,strlen($nombreFolio)-5).''.date('dmYHis'));
+		$this->load->library("excelfile");
 		if ($sheet->getCell('A1')->getValue() === "FOLIO FACTURA") {
 			$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');	
 			$fecha = $sheet->getCell('D1')->getValue();
@@ -267,7 +277,7 @@ class Facturas extends MY_Controller {
 		if ($fecha === "" || $fecha === null) {
 			$fecha = date("d/m/Y h:i:sa");
 		}
-
+		$folio = substr($nombreFolio,0,strlen($nombreFolio)-5);
 		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
 		for ($i=$no; $i<=$num_rows; $i++) {
 			$codigo = $sheet->getCell('A'.$i)->getValue();
@@ -341,6 +351,7 @@ class Facturas extends MY_Controller {
 			"type"	=>	'success'];
 
 		$this->jsonResponse(array($factus,$factus2,$num_rows,$folio));
+		
 	}
 
 	public function guardaComparacion(){
@@ -393,6 +404,15 @@ class Facturas extends MY_Controller {
 				$data['prodcaja'] = $this->comp_md->insert($new_compara);
 			}*/
 		}		
+	}
+
+	public function eliminaFactura(){
+		$user = $this->session->userdata();
+		$value = json_decode($this->input->post('values'), true);
+		$flag = 0;
+		$this->db->query("delete from comparacion where folio = '".$value["folio"]."' AND id_proveedor = ".$value["proveedor"]."");
+		$this->db->query("delete from facturas where folio = '".$value["folio"]."' AND id_proveedor = ".$value["proveedor"]."");
+		$this->jsonResponse("Se elimino la factura");
 	}
 
 	public function fill_excel($folio,$which){
