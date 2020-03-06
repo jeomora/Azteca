@@ -66,6 +66,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.inputtab{width:100%;height:100%;border:0;margin:-1px;border-bottom:1px solid;}
 	.downl{width:100%;font-size:16px;padding:10px;background:#7db7ff;border:2px solid #7db7ff;border-radius:5px;}
 	.downl:hover{background:transparent;color: #7db7ff}
+	.elimbtn{border:2px solid #ec3939 !important;color:#ec3939;background:#FFF !important}
+	.elimbtn:hover{background:#ec3939 !important;color:#FFF;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -143,7 +145,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</button>
 			</div>-->
 		</div>
-		<div class="col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;">
+		<!-- RESULTADOS DE LA FACTURA  -->
+		<div class="col-lg-12 col-md-12 elvis2" style="margin-top:20px;border:1px solid #000;padding:30px;display:block;">
 			<div class="col-md-12 col-lg-12" style="margin-top:20px">
 				<div class="ibox">
 					<div class="col-md-12 col-lg-12 ibox-content">
@@ -161,9 +164,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 									
 								</div>
 								<div class="col-md-4 col-lg-4 btnExcelComp BE3" style="text-align:center;">
-									<!--<button type="button" class="btnExcel" style="background:#ec8b5c;border:0">
-										<i class="fa fa-download" aria-hidden="true"></i> GUARDAR
-									</button>-->
+									
 								</div>
 							</div>
 							<div class="col-lg-12 col-md-12" style="padding:0">
@@ -290,6 +291,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 			</div>
 		</div>
+		<!-- RESULTADOS DE LA FACTURA  -->
 	</div>
 </div>
 
