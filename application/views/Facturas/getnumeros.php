@@ -30,31 +30,31 @@
 					<?php if($numeros):foreach ($numeros as $key => $value):?>
 						<tr>
 							<td><?php echo $value["nombre"] ?></td>
-							<td style="background-color:rgb(192,0,0,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(192,0,0,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[87] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(1,76,240,.1);font-family:monospace;border:1px solid #ccc">
-								<?php foreach ($value[90] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
-							</td>
-							<td style="background-color:rgb(255,0,0,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(1,76,240,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[57] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(226,108,11,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(255,0,0,.1);font-family:monospace;border:1px solid #ccc;">
+								<?php foreach ($value[90] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
+							</td>
+							<td style="background-color:rgb(226,108,11,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[58] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(197,197,197,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(197,197,197,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[59] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(146,208,91,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(146,208,91,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[60] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(177,160,199,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(177,160,199,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[61] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(218,150,148,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(218,150,148,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[62] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
-							<td style="background-color:rgb(76,172,198,.1);font-family:monospace;border:1px solid #ccc">
+							<td style="background-color:rgb(76,172,198,.1);font-family:monospace;border:1px solid #ccc;">
 								<?php foreach ($value[63] as $key => $val):echo "=>  ".$val["folio"]."<br>";endforeach;?>
 							</td>
 						</tr>
