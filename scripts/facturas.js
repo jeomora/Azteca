@@ -325,6 +325,7 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$(".subheadfact").html("REPORTE "+resp[0].prove);
 			$(".fecharep").html(resp[0].fecha);
 			$(".fechafact").html(resp[0].fecha_factura);
+			$(".factlist").html("");
 			$(".notafolio").html(resp[0].folio);
 			$.each(resp,function (indx,val) {
 				val.cantidad = val.cuantos;
