@@ -246,7 +246,7 @@ class Facturas_model extends MY_Model {
 		}
 	}
 
-	Public function getFacts2($where=[], $proveedor){
+	public function getFacts2($where=[], $proveedor){
 		$this->db->select("c.id_tienda,c.producto,SUM(c.cuantos) as cuants,c.factura,f.codigo,f.descripcion FROM comparacion c LEFT JOIN facturas f ON c.folio = f.folio AND c.factura = f.codigo WHERE WEEKOFYEAR(c.fecha) = WEEKOFYEAR(CURDATE()) AND c.id_proveedor = ".$proveedor." AND c.producto = 'FACTURA' GROUP BY c.factura,c.id_tienda");
 		if ($where !== NULL){
 			if(is_array($where)){
@@ -284,6 +284,57 @@ class Facturas_model extends MY_Model {
 			}
 
 			$comparativaIndexada[$comparativa[$i]->codigo][$comparativa[$i]->id_tienda]	=	$comparativa[$i]->cuants;
+			
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	Public function getnumeros($where=[]){
+		$this->db->select("f.id_tienda,f.id_proveedor,f.folio,u.nombre FROM facturas f LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) GROUP BY f.id_tienda,f.id_proveedor,f.folio")
+		->order_by("f.id_proveedor,f.id_tienda");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$flag = 0;
+
+		// echo $this->db->last_query();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if (isset($comparativaIndexada[$comparativa[$i]->id_proveedor])) {
+				# code...
+			}else{
+				$comparativaIndexada[$comparativa[$i]->id_proveedor]		=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor]["nombre"]	=	$comparativa[$i]->nombre;
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][57]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][58]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][59]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][60]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][61]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][62]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][63]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][87]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][89]	=	[];
+				$comparativaIndexada[$comparativa[$i]->id_proveedor][90]	=	[];
+			}
+
+			$comparativaIndexada[$comparativa[$i]->id_proveedor][$comparativa[$i]->id_tienda][$comparativa[$i]->folio]["folio"]	=	$comparativa[$i]->folio;
 			
 		}
 		if ($comparativaIndexada) {
