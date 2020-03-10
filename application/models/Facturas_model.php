@@ -57,7 +57,7 @@ class Facturas_model extends MY_Model {
 	}
 
 	public function getFacturas($where=[],$values){
-		$this->db->select("f.folio,f.id_tienda,f.fecha_registro,fecha_factura,u.nombre,f.id_proveedor FROM comparacion c LEFT JOIN facturas f on c.folio = f.folio LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE c.id_tienda = ".$values." AND WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) GROUP BY f.folio");
+		$this->db->select("f.folio,f.id_tienda,f.fecha_registro,fecha_factura,u.nombre,f.id_proveedor FROM comparacion c LEFT JOIN facturas f on c.folio = f.folio LEFT JOIN usuarios u ON f.id_proveedor = u.id_usuario WHERE c.id_tienda = ".$values." AND WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) GROUP BY f.folio,id_proveedor");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {
