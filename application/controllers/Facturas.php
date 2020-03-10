@@ -1727,6 +1727,29 @@ class Facturas extends MY_Controller {
 						array_push($conditionalStyles,$condRed);
 						$this->excelfile->getActiveSheet()->getStyle($arras[$i].''.$flag9)->setConditionalStyles($conditionalStyles);
 					}
+					$arras2 = array(1=>"D",2=>"G",3=>"J",4=>"M",5=>"P",6=>"S",7=>"V",8=>"Y",9=>"AB");
+					for ($i=1; $i <=9 ; $i++){
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_NOTEQUAL)
+				                ->addCondition(0)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF000000')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFF00'),
+										  'endcolor' =>array('argb' => 'FFFF00')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($arras2[$i].''.$flag9)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle($arras2[$i].''.$flag9)->setConditionalStyles($conditionalStyles);
+					}
 					$flag9++;
 				}
 				$flag9 = $flag9 + 4;
