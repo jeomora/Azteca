@@ -59,7 +59,7 @@ class Facturas extends MY_Controller {
 	public function getDetails(){
 		$busca = $this->input->post("values");
 		$facturas = $this->fact_md->getDetails(NULL,$busca);
-		$this->jsonResponse($busca);
+		$this->jsonResponse($facturas);
 	}
 
 	public function getPedidos(){

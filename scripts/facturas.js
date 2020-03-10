@@ -327,7 +327,9 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 			$(".fechafact").html(resp[0].fecha_factura);
 			$(".factlist").html("");
 			$(".notafolio").html(resp[0].folio);
+			console.log(resp);
 			$.each(resp,function (indx,val) {
+
 				val.cantidad = val.cuantos;
 				compara = val.id_comparacion;
 				val.descripcion = val.pprod === null ? val.descripcion : val.pprod;
@@ -696,7 +698,7 @@ function uploadExiaa(formData) {
 
 $(document).off("click", ".sinFact").on("click", ".sinFact", function(event){
 	event.preventDefault();
-	getModal("Facturas/getnumeros/", function (){
+	getModal("Facturas/getnumeros", function (){
 		
 	});
 });
