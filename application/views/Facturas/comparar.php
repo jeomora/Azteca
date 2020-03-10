@@ -68,11 +68,13 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.downl:hover{background:transparent;color: #7db7ff}
 	.elimbtn{border:2px solid #ec3939 !important;color:#ec3939;background:#FFF !important}
 	.elimbtn:hover{background:#ec3939 !important;color:#FFF;}
+	.sinFact{background:#7db7ff;border:2px solid #7db7ff;border-radius:5px;color:#FFF;font-size:16px;padding:20px;width:100%;}
+	.sinFact:hover{background:#FFF;color:#7db7ff}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-md-12 col-lg-12">
-			<div class="col-md-12 col-lg-12" style="margin-top:20px">
+			<div class="col-md-10 col-lg-10" style="margin-top:20px">
 				<div class="ibox">
 					<div class="col-md-12 col-lg-12 ibox-content" style="border:1px solid #7db7ff;">
 						<h1 style="border-bottom:1px solid #7db7ff;margin-bottom:15px;color:#7db7ff">Seleccione un proveedor para descargar todas las facturas de la semana</h1>
@@ -84,6 +86,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						<?php endforeach;endif; ?>
 					</div> 
 				</div>
+			</div>
+			<div class="col-md-2 col-lg-2" style="border:1px solid #7db7ff;margin-top:20px;padding:24px;border-radius:5px">
+				<button type="button" class="sinFact">
+					Número De Facturas Registradas Por Proveedor
+				</button>
 			</div>
 		</div>
 		<div class="col-lg-12 col-md-12">

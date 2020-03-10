@@ -59,7 +59,7 @@ class Facturas extends MY_Controller {
 	public function getDetails(){
 		$busca = $this->input->post("values");
 		$facturas = $this->fact_md->getDetails(NULL,$busca);
-		$this->jsonResponse($facturas);
+		$this->jsonResponse($busca);
 	}
 
 	public function getPedidos(){
@@ -1864,6 +1864,13 @@ class Facturas extends MY_Controller {
 		$data["tiendas"]	 = $this->usua_mdl->getColors(NULL);
 		$data["provis"] = $this->fact_md->getFactProv(NULL);
 		$this->estructura("Facturas/codigos", $data);
+	}
+
+	public function getnumeros(){
+		$data["title"]="Facturas Registradas";
+		$data["numeros"] = $this->fact_md->getnumeros(NULL);
+		$data["view"] =$this->load->view("Facturas/getnumeros", $data, TRUE);
+		$this->jsonResponse($data);
 	}
 	
 

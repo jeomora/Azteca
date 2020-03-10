@@ -693,3 +693,10 @@ function uploadExiaa(formData) {
 		data: formData,
 	});
 }*/
+
+$(document).off("click", ".sinFact").on("click", ".sinFact", function(event){
+	event.preventDefault();
+	getModal("Facturas/getnumeros/", function (){
+		
+	});
+});
