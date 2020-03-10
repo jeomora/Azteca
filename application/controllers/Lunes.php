@@ -3362,7 +3362,6 @@ class Lunes extends MY_Controller {
         $config['max_height']           = 7068;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
-        $this->upload->do_upload('file_otizaciones2',$filen);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
 		$file = $_FILES["file_otizaciones2"]["tmp_name"];
@@ -3374,31 +3373,79 @@ class Lunes extends MY_Controller {
 		$mensaje=[	"id"	=>	'Error',
 					"desc"	=>	'No se pudo cargar el archivo excel',
 					"type"	=>	'error'];
-		$folio = $this->getOldVal($sheet,2,'D');
-		if ($folio === "" || strlen($folio) < 6 || $folio === NULL){
+		$nombreFolio = $_FILES["file_otizaciones2"]['name'];
+		$this->upload->do_upload('file_otizaciones2',substr($nombreFolio,0,strlen($nombreFolio)-5).''.date('dmYHis'));
+		$this->load->library("excelfile");
+		if ($sheet->getCell('A1')->getValue() === "FOLIO") {
+			$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');	
+			$fecha = $sheet->getCell('D1')->getValue();
+			$no = 3;
+		}else{
+			$folio = htmlspecialchars($sheet->getCell('E1')->getValue(), ENT_QUOTES, 'UTF-8');
+			$fecha = $sheet->getCell('F1')->getValue();
+			$no = 1;
+		}
+		
+		if ($folio === "" || strlen($folio) < 5) {
 			$folio = rand(1000000000, 9000000000);
 		}
-		for ($i=2; $i<=$num_rows; $i++) {
-			if(strlen($this->getOldVal($sheet,$i,'B')) > 0){
-				$new_pedido=[
-							"folio"			=> $folio,
-							"codigo" 		=> $this->getOldVal($sheet,$i,'B'),
-							"cantidad" 		=> $this->getOldVal($sheet,$i,'A'),
-							"precio"		=> $this->getOldVal($sheet,$i,'C'),
-							"id_proveedor"	=> 7,
-							"id_sucursal"	=> $tienda,
-							"id_producto"	=> 0
-						];
-				$producto = $this->cata_mdl->get(NULL,['id_catalogo'=> htmlspecialchars($this->getOldVal($sheet,$i,'B'), ENT_QUOTES, 'UTF-8')])[0];
+		
+		if ($fecha === "" || $fecha === null) {
+			$fecha = date("d/m/Y h:i:sa");
+		}
+		$folio = substr($nombreFolio,0,strlen($nombreFolio)-5);
+		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
+		for ($i=$no; $i<=$num_rows; $i++) {
+			$codigo = $sheet->getCell('A'.$i)->getValue();
+			$cantidad = $this->getOldVal($sheet,$i,"C");
+			$precio = $this->getOldVal($sheet,$i,"D");
+			$desc = $this->getOldVal($sheet,$i,"B");
+			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
+			
+			
+			if ($codigo <> NULL || $codigo <> "") {
+				if (sizeof($descripcion) > 0) {
+					$new_producto=[
+						"folio" => $folio,
+						"id_proveedor" => $proveedor,
+						"precio" => $precio,
+						"codigo" => $descripcion->id_invoice,
+						"descripcion" => $descripcion->descripcion,
+						"fecha_factura" => $fecha,
+						"cantidad" => $cantidad,
+						"id_tienda"=> $id_tienda
+					];
 
-				if (sizeof($producto)>0){
-					$new_pedido["id_producto"] = $producto->id_producto;
-				}
-				$folios = $this->fac_mdl->get(NULL,['folio'=> $folio,"codigo"=>$this->getOldVal($sheet,$i,'B')])[0];
-				if (sizeof($folios) > 0) {
-					$data['existencia']=$this->fac_mdl->update($new_pedido, $folios->id_factura);
+					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
+					if ($codiga) {
+					}else{
+						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+					}
 				}else{
-					$data['existencia']=$this->fac_mdl->insert($new_pedido);
+					$new_invoice=[
+						"codigo" => $codigo,
+						"id_proveedor" => $id_proveedor,
+						"descripcion" => $desc,
+						"unidad" => "CJ"
+					];
+					$data['id_invoice']=$this->invoice_md->insert($new_invoice);
+					$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
+					$new_producto=[
+						"folio" => $folio,
+						"id_proveedor" => $proveedor,
+						"precio" => $precio,
+						"codigo" => $descripcion->id_invoice,
+						"descripcion" => $descripcion->descripcion,
+						"fecha_factura"	=> $fecha,
+						"cantidad" => $cantidad,
+						"id_tienda"=> $id_tienda
+					];
+
+					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
+					if ($codiga) {
+					}else{
+						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
+					}
 				}
 			}
 		}
