@@ -70,6 +70,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	.elimbtn:hover{background:#ec3939 !important;color:#FFF;}
 	.sinFact{background:#7db7ff;border:2px solid #7db7ff;border-radius:5px;color:#FFF;font-size:16px;padding:20px;width:100%;}
 	.sinFact:hover{background:#FFF;color:#7db7ff}
+	.gifted2{font-size:20px;background:#c388e8;border-radius:0px;cursor:pointer;border:1px solid;line-height:normal;height:80%;margin-top:1%;z-index:10000000;}
+	.gifted2:hover{background:#FFF;color:#c388e8;}
+	.devolucion2{font-size:20px;background:#efff00;cursor:pointer;z-index:10000000;margin-top:1%;height:80%;border:1px solid;display:inline-flex;}
+	.devolucion2:hover{background:#FFF}
+	#difis2{width:50px;height:105%;border:1px solid #000;color:#000;padding:3px;font-size:14px;margin-top:-2%;display:none}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">

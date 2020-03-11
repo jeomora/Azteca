@@ -1872,7 +1872,25 @@ class Facturas extends MY_Controller {
 		$data["view"] =$this->load->view("Facturas/getnumeros", $data, TRUE);
 		$this->jsonResponse($data);
 	}
+
+	public function setGifted($id_comparacion,$estats,$gifted){
+		if ($estats) {
+			$facturas = $this->comp_md->update(["gift"=>1,"gifted"=>$gifted],$id_comparacion);
+		}else{
+			$facturas = $this->comp_md->update(["gift"=>0,"gifted"=>0],$id_comparacion);
+		}
+		$this->jsonResponse($facturas);
+	}
 	
+
+	public function setDevolution($id_comparacion,$estats,$gifted){
+		if ($estats) {
+			$facturas = $this->comp_md->update(["devolucion"=>1,"devueltos"=>$gifted],$id_comparacion);
+		}else{
+			$facturas = $this->comp_md->update(["devolucion"=>0,"devueltos"=>0],$id_comparacion);
+		}
+		$this->jsonResponse($facturas);
+	}
 
 }
 
