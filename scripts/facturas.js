@@ -352,8 +352,10 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 						' id="tottable'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 				}else{
 					if (val.gift === 1 || val.gift === "1") {
-						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-						val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style=";background:#e08989;color:blue;border-left:0;"><input type="text"'+
+						$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem" style="line-height:normal;background:#c388e8;"><div class="gifted2 col-md-1" name="'+
+						val.id_comparacion+'" data-id-cant="'+val.cantidad+'"><i class="fa fa-gift" aria-hidden="true"></i></div>'+
+						'<div class="devolucion2 col-md-2" style="display:none"><i class="fa fa-retweet" aria-hidden="true" name="'+val.id_comparacion+'" id="idev2" data-id-cant="'+val.cantidad+'"></i><input type="text" name="'+val.id_comparacion+'" id="difis2" value=""/></div>'+
+						'<div class="col-md-9">'+val.descripcion+'</div></div><div class="col-md-1 col-lg-1 factlistItem" style=";background:#e08989;color:blue;border-left:0;"><input type="text"'+
 						' id="direc'+indx+'" value="S/C"	class="inputtab" style=";background:#e08989;color:blue;border-left:0;" readonly/></div><div class="col-md-1 col-lg-1'+
 						' factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable'+indx+'" value="'+val.costo+'" class="costable'+
 						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
@@ -366,8 +368,11 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 						' id="tottable'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 					} else {
 						if (val.cantidad === val.devueltos) {
-							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;"><input type="text"'+
+							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem" style="line-height:normal;background:#efff00;"><div class="gifted2 col-md-1" name="'+
+						val.id_comparacion+'" data-id-cant="'+val.cantidad+'" style="display:none"><i class="fa fa-gift" aria-hidden="true"></i></div>'+
+						'<div class="devolucion2 col-md-2"><i class="fa fa-retweet" aria-hidden="true" name="'+val.id_comparacion+'" id="idev2" data-id-cant="'+val.cantidad+'"></i><input type="text" name="'+
+						val.id_comparacion+'" id="difis2" value="'+val.cantidad+'" style="display:block"/></div>'+
+						'<div class="col-md-9">'+val.descripcion+'</div></div>  <div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:red;background:#e08989;"><input type="text"'+
 						' id="direc0'+indx+'" value="DEVUELTO"	class="inputtab" style="border-left:0;color:red;background:#e08989;" readonly/></div>'+
 							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable0'+indx+'" value="'+val.costo+'" class="costable'+
 						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
@@ -379,8 +384,11 @@ $(document).off("click", ".facty").on("click", ".facty", function (){
 						' inputtab" placeholder="" readonly/></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="tottable"'+
 						' id="tottable0'+indx+'" value="" class="tottable inputtab" placeholder="" readonly/></div></div>')
 						} else {
-							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem">'+
-							val.descripcion+'</div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;"><input type="text"'+
+							$(".factlist").append('<div class="col-md-12 col-lg-12 factlisty" style="padding:0"><div class="col-lg-4 col-md-4 factlistItem" style="line-height:normal;background:#efff00;"><div class="gifted2 col-md-1" name="'+
+						val.id_comparacion+'" data-id-cant="'+val.cantidad+'" style="display:none"><i class="fa fa-gift" aria-hidden="true"></i></div>'+
+						'<div class="devolucion2 col-md-2"><i class="fa fa-retweet" aria-hidden="true" name="'+val.id_comparacion+'" id="idev2" data-id-cant="'+val.cantidad+'"></i><input type="text" name="'+
+						val.id_comparacion+'" id="difis2" value="'+parseFloat(val.devueltos)+'" style="display:block"/></div>'+
+						'<div class="col-md-9">'+val.descripcion+'</div></div><div class="col-md-1 col-lg-1 factlistItem" style="border-left:0;color:black;background:white;"><input type="text"'+
 						' id="direc'+indx+'" value="DIRECTO"	class="inputtab" readonly/></div>'+
 							'<div class="col-md-1 col-lg-1 factlistItem" style="border-left:0"><input type="text" name="'+val.id_comparacion+'" id="costable'+indx+'" value="'+val.costo+'" class="costable'+
 						' inputtab" placeholder="'+val.costo+'"/></div><div class="col-md-1 col-lg-1 factlistItem" '+
