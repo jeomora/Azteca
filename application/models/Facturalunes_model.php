@@ -41,6 +41,53 @@ class Facturalunes_model extends MY_Model {
 		}
 	}
 
+	public function getSemFacts($where=[],$prove){
+		$this->db->select("folio,nombre,color,id_tienda FROM factura_lunes f LEFT JOIN suc_lunes s ON f.id_tienda = s.id_sucursal WHERE WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE()) AND id_proveedor = ".$prove." GROUP BY f.folio,f.id_tienda");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function getFactClic($where=[],$tienda,$folio,$cual){
+		$this->db->select("pl.promo,pl.descuento,pl.prod,pl.cuantos1,pl.cuantos2,pl.mins,pl.ieps,p.observaciones,p.precio as prices,f.folio,f.id_factura,".$cual." as pedido,fl.costo,f.codigo,f.descripcion,f.cantidad,f.precio,f.id_proveedor,f.id_tienda,f.fecha_registro,f.fecha_factura,c.id_producto FROM factura_lunes f LEFT JOIN catalogos c ON f.codigo = c.id_catalogo LEFT JOIN finalunes fl on c.id_producto = fl.id_producto AND WEEKOFYEAR(fl.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN pro_lunes p ON c.id_producto = p.codigo LEFT JOIN promo_lunes pl ON c.id_producto = pl.codigo WHERE f.folio = '".$folio."' AND f.id_tienda = ".$tienda." AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE())")
+		->order_by("f.codigo,f.precio","DESC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Menus_model.php */
