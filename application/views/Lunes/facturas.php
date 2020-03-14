@@ -34,17 +34,26 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
     .head-1-factura-title{background:#ffb100;}
     .custom-select2{background:#bf1e61;border-color:#bf1e61;font-size:16px;border-radius:2px}
     .disponibles{border-radius:3px;padding:20px}
-    .btn-dispon{background:indianred;font-size:16px;text-align:center;padding:10px;border:2px solid;font-weight:bold;cursor:pointer;}
-    .disponhover,.btn-dispon:hover{background:#FFF;border-color:indianred;color:indianred}
+    .btn-dispon{font-size:16px;text-align:center;padding:10px;font-weight:bold;cursor:pointer;}
+    .disponhover{background:#FFF;border-color:indianred;color:indianred;height:68px;overflow:hidden;}
+    .btn-dispon:hover{background:#c5c5c5 !important;}
     .lista-body-desc,.lista-body-piden,.lista-body-llegan,.lista-body-promo,.lista-body-factura,.lista-body-pedido,.lista-body-sub,.lista-body-iva,.lista-body-ieps,.lista-body-total,.lista-body-totalgen,.lista-body-diferencia{height:50px;border:1px solid;padding-top:5px;font-family:monospace;}
     .lista-body-desc{font-size:12px;}
-    .lista-body-piden,.lista-body-llegan{text-align:center;padding-top:15px;font-family:monospace;}
+    .lista-body-piden,.lista-body-llegan{text-align:center;padding-top:15px;font-family:monospace;font-size:14px}
     .lista-body{padding:0}
     .lista-body-factura,.lista-body-pedido,.lista-body-sub,.lista-body-iva,.lista-body-ieps,.lista-body-total,.lista-body-totalgen,.lista-body-diferencia{text-align:right;}
     @media (max-width: 1400px){
     	.head-1-promo,.head-1-des,.head-1-piden,.head-1-llegan,.head-1-precios1,.head-1-precios2,.head-1-factura-title,.head-1-factura1,.head-1-factura2,.head-1-factura3,.head-1-factura4,.head-1-diferencia,.head-1-pedido,.head-1-diferencia{font-size:12px}
     	.head-1-piden,.head-1-llegan{font-size:7px}
+    	.lista-body-factura{font-size:14px;}
+    	.lista-body-piden,.lista-body-llegan{font-size:12px;padding:0px;padding-top:15px}
     }
+    .factSem,.pedFinales{display:none}
+    .btnSemFact{background:#2fbf1e;color:#FFF;border:2px solid #2fbf1e;font-size:20px;padding:5px 40px;font-family:inherit;}
+    .btnSemFact:hover{background:#FFF;color:#2fbf1e;}
+    .btnSemFactAct{background:#FFF !important;}
+    .lista-body .col-md-6, .lista-body .col-md-1, .lista-body .col-md-2 {height:50px !important;overflow:hidden;}
+    .renglon:hover{background:#e5ffe7;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -55,15 +64,23 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 
 				<div class="col-sm-12" style="padding-top:50px;border:0px;padding-bottom:20px">
-					<div class="btn-group">
-						<select class="custom-select" id="id_proveedor">
-							<option value="0">Seleccione un proveedor...</option>
-							<?php if($proveedores):foreach ($proveedores as $key => $value):?>
-								<option value="<?php echo $value->id_proveedor ?>"><?php echo $value->nombre ?></option>
-							<?php endforeach;endif; ?>
-						</select>
+					<div class="col-md-6">
+						<div class="btn-group">
+							<select class="custom-select" id="id_proveedor">
+								<option value="0">Seleccione un proveedor...</option>
+								<?php if($proveedores):foreach ($proveedores as $key => $value):?>
+									<option value="<?php echo $value->id_proveedor ?>"><?php echo $value->nombre ?></option>
+								<?php endforeach;endif; ?>
+							</select>
+						</div>
 					</div>
-					<div class="col-sm-12" style="margin-top:20px;border:1px solid #1e92bf;">
+					<div class="col-md-3">
+						<button class="btnSemFact" type="button">Facturas Por Proveedor</button>
+					</div>
+					<div class="col-md-3">
+						
+					</div>
+					<div class="col-sm-12 pedFinales" style="margin-top:20px;border:1px solid #1e92bf;">
 						<div class="col-sm-12">
 							<h2 style="margin-bottom:0px">Pedidos Finales</h2>
 							<span>Agregue los pedidos finales antes de subir facturas, esto para que se realice la comparación de precios y número de productos.</span>
@@ -91,7 +108,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</div>
 					</div>
 					
-					<div class="col-sm-12" style="margin-top:20px;border:1px solid #bf1e61;padding-bottom: 20px">
+					<div class="col-sm-12 factSem" style="margin-top:20px;border:1px solid #bf1e61;padding-bottom: 20px">
 						<div class="col-sm-12">
 							<h2 style="margin-bottom:0px">Facturas de la semana</h2>
 							<span>A continuación se muestran las facturas que se han registrado en el sistema y puede descargar y/o revisar</span>
@@ -120,39 +137,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</div>
 							</div>
 							<div class="col-md-12 disponibles">
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
-								<div class="col-md-2 btn-dispon">
-									P539939-3ER
-								</div>
+
 							</div>
 							<div class="col-sm-12" id="lista">
 								<div class="col-md-12 lista-head">

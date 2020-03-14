@@ -1247,13 +1247,13 @@ class Cotizaciones extends MY_Controller {
 		$num_rows = $sheet->getHighestDataRow();
 		for ($i=3; $i<=$num_rows; $i++) {
 			if($sheet->getCell('C'.$i)->getValue() > 0){
-				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace", $sheet->getCell('C'.$i)->getValue()));
-					$column_one = $sheet->getCell('E'.$i)->getValue();
-					$column_two = $sheet->getCell('F'.$i)->getValue();
-					$descuento = $sheet->getCell('G'.$i)->getValue();
+					$precio = str_replace("$", "", str_replace(",", "replace",$this->getOldVal($sheet,$i,"C")));
+					$column_one =$this->getOldVal($sheet,$i,"E");
+					$column_two = $this->getOldVal($sheet,$i,"F");
+					$descuento = $this->getOldVal($sheet,$i,"G");
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($column_one >=1 && $column_two >1) {
@@ -1275,7 +1275,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
 							"estatus" => 0];
 						if($cotiz){
 							$data['cotizacion']=$this->ct_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
@@ -1294,7 +1294,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$sheet->getCell('D'.$i)->getValue(),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
 							"estatus"			=> 1
 						];
 						if($cotiz){
@@ -6518,6 +6518,14 @@ class Cotizaciones extends MY_Controller {
 	    } else {
 	        return $letter;
 	    }
+	}
+
+	public function getOldVal($sheets,$i,$le){
+		$cellB = $sheets->getCell($le.$i)->getValue();
+		if(strstr($cellB,'=')==true){
+		    $cellB = $sheets->getCell($le.$i)->getOldCalculatedValue();
+		}
+		return $cellB;
 	}
 
 }

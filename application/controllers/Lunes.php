@@ -3352,7 +3352,7 @@ class Lunes extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function sube_factura($tienda){
+	public function sube_factura($tienda,$proveedor){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$filen = "FacturaLunes".date("dmyHis");
 		$config['upload_path']          = './assets/uploads/lunes/';
@@ -3376,10 +3376,10 @@ class Lunes extends MY_Controller {
 		$nombreFolio = $_FILES["file_otizaciones2"]['name'];
 		$this->upload->do_upload('file_otizaciones2',substr($nombreFolio,0,strlen($nombreFolio)-5).''.date('dmYHis'));
 		$this->load->library("excelfile");
-		if ($sheet->getCell('A1')->getValue() === "FOLIO") {
-			$folio = htmlspecialchars($sheet->getCell('B1')->getValue(), ENT_QUOTES, 'UTF-8');	
-			$fecha = $sheet->getCell('D1')->getValue();
-			$no = 3;
+		if ($sheet->getCell('E1')->getValue() === "FOLIO") {
+			$folio = htmlspecialchars($sheet->getCell('E2')->getValue(), ENT_QUOTES, 'UTF-8');	
+			$fecha = $sheet->getCell('F2')->getValue();
+			$no = 2;
 		}else{
 			$folio = htmlspecialchars($sheet->getCell('E1')->getValue(), ENT_QUOTES, 'UTF-8');
 			$fecha = $sheet->getCell('F1')->getValue();
@@ -3394,13 +3394,13 @@ class Lunes extends MY_Controller {
 			$fecha = date("d/m/Y h:i:sa");
 		}
 		$folio = substr($nombreFolio,0,strlen($nombreFolio)-5);
-		$this->db->query("delete from facturas where folio = '".$folio."' AND id_proveedor = ".$proveedor."");
+		$this->db->query("delete from factura_lunes where folio = '".$folio."' AND id_proveedor = ".$proveedor." AND id_tienda = ".$tienda."");
 		for ($i=$no; $i<=$num_rows; $i++) {
 			$codigo = $sheet->getCell('A'.$i)->getValue();
 			$cantidad = $this->getOldVal($sheet,$i,"C");
 			$precio = $this->getOldVal($sheet,$i,"D");
 			$desc = $this->getOldVal($sheet,$i,"B");
-			$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
+			$descripcion = $this->cata_mdl->get(NULL,["id_catalogo"=>$codigo])[0];
 			
 			
 			if ($codigo <> NULL || $codigo <> "") {
@@ -3409,52 +3409,42 @@ class Lunes extends MY_Controller {
 						"folio" => $folio,
 						"id_proveedor" => $proveedor,
 						"precio" => $precio,
-						"codigo" => $descripcion->id_invoice,
+						"codigo" => $descripcion->id_catalogo,
 						"descripcion" => $descripcion->descripcion,
 						"fecha_factura" => $fecha,
 						"cantidad" => $cantidad,
-						"id_tienda"=> $id_tienda
+						"id_tienda"=> $tienda
 					];
 
-					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
-					if ($codiga) {
-					}else{
-						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
-					}
+					$data['id_prodcaja']=$this->fac_mdl->insert($new_producto);
 				}else{
 					$new_invoice=[
-						"codigo" => $codigo,
-						"id_proveedor" => $id_proveedor,
+						"id_catalogo" => $codigo,
 						"descripcion" => $desc,
-						"unidad" => "CJ"
 					];
-					$data['id_invoice']=$this->invoice_md->insert($new_invoice);
-					$descripcion = $this->invoice_md->get(NULL,["id_proveedor"=>$id_proveedor,"codigo"=>$codigo])[0];
+					$data['id_invoice']=$this->cata_mdl->insert($new_invoice);
+					$descripcion = $this->cata_mdl->get(NULL,["codigo"=>$codigo])[0];
 					$new_producto=[
 						"folio" => $folio,
 						"id_proveedor" => $proveedor,
 						"precio" => $precio,
-						"codigo" => $descripcion->id_invoice,
+						"codigo" => $descripcion->id_catalogo,
 						"descripcion" => $descripcion->descripcion,
-						"fecha_factura"	=> $fecha,
+						"fecha_factura" => $fecha,
 						"cantidad" => $cantidad,
-						"id_tienda"=> $id_tienda
+						"id_tienda"=> $tienda
 					];
 
-					$codiga = $this->fact_md->getThem(NULL,$folio,$proveedor,$id_tienda,$codigo,$precio,$cantidad);
-					if ($codiga) {
-					}else{
-						$data['id_prodcaja']=$this->fact_md->insert($new_producto);
-					}
+					$data['id_prodcaja']=$this->fac_mdl->insert($new_producto);
 				}
 			}
 		}
-		if (!isset($new_pedido)) {
+		if (!isset($new_producto)) {
 			$mensaje=[	"id"	=>	'Error',
 						"desc"	=>	'El Archivo esta sin datos',
 						"type"	=>	'error'];
 		}else{
-			if (sizeof($new_pedido) > 0) {
+			if (sizeof($new_producto) > 0) {
 				$cambios=[
 						"id_usuario"		=>	$this->session->userdata('id_usuario'),
 						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
@@ -3471,7 +3461,26 @@ class Lunes extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function getSemFacts($prove){
+		$facts = $this->fac_mdl->getSemFacts(NULL,$prove);
+		$this->jsonResponse($facts);
+	}
 
+	public function getFactClic($tienda,$folio,$cual){
+		switch($cual){
+				  case 57: $day = "abarrotes";break;
+				  case 87: $day = "cedis";break;
+				  case 90: $day = "villas";break;
+				  case 58: $day = "tienda";break;
+				  case 59: $day = "ultra";break;
+				  case 60: $day = "trincheras";break;
+				  case 61: $day = "mercado";break;
+				  case 62: $day = "tenencia";break;
+				  case 63: $day = "tijeras";break;
+				}
+		$facts = $this->fac_mdl->getFactClic(NULL,$tienda,$folio,$day);
+		$this->jsonResponse($facts);	
+	}
 
 }
 
