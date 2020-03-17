@@ -4,6 +4,7 @@ class Cotizaciones extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("Cotizaciones_model", "ct_mdl");
+		$this->load->model("Cotizprovs_model", "ctpr_mdl");
 		$this->load->model("Cotizacionesback_model","ctb_mdl");
 		$this->load->model("Productos_model", "prod_mdl");
 		$this->load->model("Usuarios_model", "usua_mdl");
@@ -28,7 +29,6 @@ class Cotizaciones extends MY_Controller {
 			'/assets/css/plugins/dataTables/buttons.dataTables.min',
 		];
 		$data['scripts'] = [
-			'/scripts/cotizaciones',
 			'/assets/js/plugins/dataTables/jquery.dataTables.min',
 			'/assets/js/plugins/dataTables/jquery.dataTables',
 			'/assets/js/plugins/dataTables/dataTables.buttons.min',
@@ -48,15 +48,17 @@ class Cotizaciones extends MY_Controller {
 		if(!$this->session->userdata("username")){
 			redirect("Compras/Login", "");
 		}elseif($user['id_grupo'] == 2){//Solo mostrar sus Productos cotizados cuando es proveedor
+			array_push($data['scripts'], '/scripts/cotizacionesP');
 			$fecha = new DateTime(date('Y-m-d H:i:s'));
 			$intervalo = new DateInterval('P3D');
 			$fecha->add($intervalo);
-			$where=["cotizaciones.id_proveedor" => $user['id_usuario'],
-					"WEEKOFYEAR(cotizaciones.fecha_registro)" => $this->weekNumber()];
-			$data["cotizaciones"] = $this->ct_mdl->getAllCotizaciones($where);
+			$where=["ctr.id_proveedor" => $user['id_usuario'],
+					"WEEKOFYEAR(ctr.fecha_registro)" => $this->weekNumber()];
+			$data["cotizaciones"] = $this->ctpr_mdl->getAllCotizaciones($where);
 			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/table_cotizaciones", $data, FALSE);
 		}else{
+			array_push($data['scripts'], '/scripts/cotizaciones');
 			$data["proveedores"] = $this->usua_mdl->getUsuarios();
 			$data["usuarios"] = $this->user_md->getUsuarios();
 			$this->estructura("Cotizaciones/cotizaciones_view", $data, FALSE);
@@ -88,6 +90,135 @@ class Cotizaciones extends MY_Controller {
 		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
 		$this->estructura("Cotizaciones/anteriores", $data);
+	}
+	public function autorizar(){
+		ini_set("memory_limit", "-1");
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+		$data['scripts'] = [
+			'/scripts/autorizar',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$where=["usuarios.id_grupo" => 2];
+		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$this->estructura("Cotizaciones/autorizar", $data);
+	}
+	public function get_cotzprov($id_proveedor){
+		$where=["ctr.id_proveedor" => $id_proveedor,
+				"ctr.estatus <> "=>0,
+				"WEEKOFYEAR(ctr.fecha_registro)" => $this->weekNumber()];
+		$dat = $this->ctpr_mdl->getAllCotizaciones($where);
+		$this->jsonResponse($dat);
+	}
+
+	public function deleteRenglon($id_cot){
+		$data['cotizacion']=$this->ctpr_mdl->update(["estatus"=>0], ['id_cotizacion' => $id_cot]);
+		$this->jsonResponse($data['cotizacion']);
+	}
+
+	public function agregaRenglon($idprov){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		$user = $this->session->userdata();
+
+		$cotizaciones =  $this->ctpr_mdl->getAllCotizaciones(['ctr.id_proveedor'=>$idprov,'ctr.estatus <> '=>0,'WEEKOFYEAR(ctr.fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s'))]);
+		$i = 0;
+		$new_cotizacion = null;
+		if ($cotizaciones){
+			foreach ($cotizaciones as $key => $value){
+				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $idprov])[0];
+				$fecha = new DateTime(date('Y-m-d H:i:s'));
+				$intervalo = new DateInterval('P3D');
+				$num_one = $value->num_one == '' ? 0 : $value->num_one;
+				$num_two = $value->num_two == '' ? 0 : $value->num_two;
+				$descuento = $value->descuento == '' ? 0 : $value->descuento;
+				$fecha->add($intervalo);
+				$cotiz =  $this->ct_mdl->get(NULL, ['id_producto' => $value->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $idprov])[0];
+				if($antes){
+					$new_cotizacion[$i] = [
+						"id_proveedor"		=>	$idprov,
+						"id_producto"		=>	$value->id_producto,
+						"precio"			=>	$value->precio,
+						"num_one"			=>	$value->num_one,
+						"num_two"			=>	$value->num_two,
+						"descuento"			=>	$value->descuento,
+						"precio_promocion"	=>	$value->precio_promocion,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+						"observaciones"		=>	strtoupper($value->observaciones),
+						'estatus' => 0
+					];
+				}else{
+					$new_cotizacion[$i] = [
+						"id_producto"		=>	$value->id_producto,
+						"id_proveedor"		=>	$idprov,
+						"precio"			=>	$value->precio,
+						"num_one"			=>	$value->num_one,
+						"num_two"			=>	$value->num_two,
+						"descuento"			=>	$value->descuento,
+						"precio_promocion"	=>	$value->precio_promocion,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+						"observaciones"		=>	strtoupper($value->observaciones),
+						'estatus' => 1
+					];
+				}
+				if($cotiz){
+					$data['cotizacion']=$this->ct_mdl->update($new_cotizacion[$i], ['id_cotizacion' => $cotiz->id_cotizacion]);
+				}else{
+					$data['cotizacion']=$this->ct_mdl->insert($new_cotizacion[$i]);
+				}
+
+				$i++;
+			}
+		}else{
+			$mensaje = [
+				"id" 	=> 'Error',
+				"desc"	=> 'No se pudieron cargar las cotizaciones',
+				"type"	=> 'error'
+			];
+		}
+
+		if (!isset($new_cotizacion)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'No se pudo completar la operación',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_cotizacion) > 0) {
+				$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$idprov])[0];
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"			=>	"Se autorizó la cotización de ".$aprov->nombre,
+						"despues"			=>	"Cotizaciones ya en sistema",
+						"accion"			=>	"----"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		
+		$this->jsonResponse($mensaje);
 	}
 	public function proveedorCots($ides){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
@@ -399,6 +530,87 @@ class Cotizaciones extends MY_Controller {
 			}else{
 				$data['cotizacion']=$this->ct_mdl->insert($cotizacion);
 				$data['cotizacin']=$this->ctb_mdl->insert($cotizacion);
+			}
+			$cambios = [
+				"id_usuario" => $this->session->userdata('id_usuario'),
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Cotizacion Nueva",
+				"antes" => "Nueva cotización",
+				"despues" => "Producto: ".$aprod->nombre."\n///Proveedor: ".$aprov->nombre."\n///Precio: ".str_replace(',', '', $this->input->post('precio'))."\n///Precio promoción: ".
+							(($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')))." ".
+							"\n///".$this->input->post('num_one')." EN ".$this->input->post('num_two')."\n///Descuento: ".str_replace(',', '', $this->input->post('porcentaje')).
+							"\n///Observaciones: ".strtoupper($this->input->post('observaciones'))
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+		}
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Cotización registrada correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+	public function saveP($idesp){
+		if($idesp == 0){
+			$proveedor = $this->session->userdata('id_usuario');
+		}else{
+			$proveedor = $idesp;
+		}
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $proveedor])[0];
+		$cotiz =  $this->ctpr_mdl->get(NULL, ['id_producto' => $this->input->post('id_producto'), 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
+		$aprod = $this->prod_mdl->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
+		$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$proveedor])[0];
+		$num_one = $this->input->post('num_one') == '' ? 0 : $this->input->post('num_one');
+		$num_two = $this->input->post('num_two') == '' ? 0 : $this->input->post('num_two');
+		$descuento = str_replace(',', '', $this->input->post('porcentaje')) == '' ? 0 : str_replace(',', '', $this->input->post('porcentaje'));
+		if($antes){
+			$cotizacion = [
+				'id_producto'		=>	$this->input->post('id_producto'),
+				'id_proveedor'		=>	$proveedor,
+				'num_one'			=>	$this->input->post('num_one'),
+				'num_two'			=>	$this->input->post('num_two'),
+				'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
+				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
+				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
+				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
+				'observaciones'		=>	strtoupper($this->input->post('observaciones')),
+				'estatus' => 0
+			];
+			if($cotiz){
+				$data['cotizacion']=$this->ctpr_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+			}else{
+				$data['cotizacion']=$this->ctpr_mdl->insert($cotizacion);
+			}
+			$cambios = [
+				"id_usuario" => $this->session->userdata('id_usuario'),
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"accion" => "Cotizacion Nueva Con Faltante",
+				"antes" => "Nueva cotización",
+				"despues" => "Producto: ".$aprod->nombre."\n///Proveedor: ".$aprov->nombre."\n///Precio: ".str_replace(',', '', $this->input->post('precio'))."\n///Precio promoción: ".
+							(($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')))." ".
+							"\n///".$this->input->post('num_one')." EN ".$this->input->post('num_two')."\n///Descuento: ".str_replace(',', '', $this->input->post('porcentaje')).
+							"\n///Observaciones: ".strtoupper($this->input->post('observaciones'))
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+		}else{
+			$cotizacion = [
+				'id_producto'		=>	$this->input->post('id_producto'),
+				'id_proveedor'		=>	$proveedor,
+				'num_one'			=>	$this->input->post('num_one'),
+				'num_two'			=>	$this->input->post('num_two'),
+				'precio'			=>	str_replace(',', '', $this->input->post('precio')),//precio base
+				'precio_promocion'	=>	($this->input->post('precio_promocion') > 0) ? str_replace(',', '', $this->input->post('precio_promocion')) : str_replace(',', '', $this->input->post('precio')),//precio con promoción
+				'descuento'			=>	str_replace(',', '', $this->input->post('porcentaje')),
+				'fecha_registro'	=>	$fecha->format('Y-m-d H:i:s'),
+				'observaciones'		=>	strtoupper($this->input->post('observaciones'))
+			];
+			if($cotiz){
+				$data['cotizacion']=$this->ctpr_mdl->update($cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+			}else{
+				$data['cotizacion']=$this->ctpr_mdl->insert($cotizacion);
 			}
 			$cambios = [
 				"id_usuario" => $this->session->userdata('id_usuario'),
@@ -1227,8 +1439,8 @@ class Cotizaciones extends MY_Controller {
 			$proveedor = $idesp;
 		}
 		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
-		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
-		$filen = "Cotizacion".$nams."".rand();
+		$nams = "user".date("dmyHis");
+		$filen = "cotizacion".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
@@ -1317,6 +1529,122 @@ class Cotizaciones extends MY_Controller {
 						"id_usuario"		=>	$this->session->userdata('id_usuario'),
 						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
 						"antes"			=>	"El usuario sube archivo de cotizaciones de ".$aprov->nombre,
+						"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
+						"accion"			=>	"Sube Archivo"
+					];
+				$data['cambios']=$this->cambio_md->insert($cambios);
+				$mensaje=[	"id"	=>	'Éxito',
+							"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"id"	=>	'Error',
+							"desc"	=>	'Las Cotizaciones no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}
+	public function upload_cotizacionesP($idesp){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		if($idesp == 0){
+			$proveedor = $this->session->userdata('id_usuario');
+		}else{
+			$proveedor = $idesp;
+		}
+
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$nams = "prov".date("dmyHis");
+		$filen = "cotizacion".$nams."".rand();
+		$config['upload_path']          = './assets/uploads/cotizaciones/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7680;
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_otizaciones',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) {
+			if($sheet->getCell('C'.$i)->getValue() > 0){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
+					$precio = str_replace("$", "", str_replace(",", "replace",$this->getOldVal($sheet,$i,"C")));
+					$column_one =$this->getOldVal($sheet,$i,"E");
+					$column_two = $this->getOldVal($sheet,$i,"F");
+					$descuento = $this->getOldVal($sheet,$i,"G");
+					if ($column_one ==1 && $column_two ==1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($column_one >=1 && $column_two >1) {
+						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
+					}elseif ($descuento >0) {
+						$precio_promocion = ($precio - ($precio * ($descuento/100)));
+					}else{
+						$precio_promocion = $precio;
+					}
+					$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $proveedor])[0];
+					$cotiz =  $this->ctpr_mdl->get(NULL, ['id_producto' => $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s')), 'id_proveedor' => $proveedor])[0];
+					if($antes){
+						$new_cotizacion=[
+							"id_producto"		=>	$productos->id_producto,
+							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+							"precio"			=>	$precio,
+							"num_one"			=>	$column_one,
+							"num_two"			=>	$column_two,
+							"descuento"			=>	$descuento,
+							"precio_promocion"	=>	$precio_promocion,
+							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
+							"estatus" => 0];
+						if($cotiz){
+							$data['cotizacion']=$this->ctpr_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+							//$data['cotizacin']=$this->ctb_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+						}else{
+							$data['cotizacion']=$this->ctpr_mdl->insert($new_cotizacion);
+							//$data['cotizacin']=$this->ctb_mdl->insert($new_cotizacion);
+						}
+					}else{
+						$new_cotizacion=[
+							"id_producto"		=>	$productos->id_producto,
+							"id_proveedor"		=>	$proveedor,//Recupera el id_usuario activo
+							"precio"			=>	$precio,
+							"num_one"			=>	$column_one,
+							"num_two"			=>	$column_two,
+							"descuento"			=>	$descuento,
+							"precio_promocion"	=>	$precio_promocion,
+							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
+							"estatus"			=> 1
+						];
+						if($cotiz){
+							$data['cotizacion']=$this->ctpr_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
+						}else{
+							$data['cotizacion']=$this->ctpr_mdl->insert($new_cotizacion);
+						}
+					}
+				}
+			}
+		}
+		if (!isset($new_cotizacion)) {
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'El Archivo esta sin precios',
+						"type"	=>	'error'];
+		}else{
+			if (sizeof($new_cotizacion) > 0) {
+				$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$proveedor])[0];
+				$cambios=[
+						"id_usuario"		=>	$this->session->userdata('id_usuario'),
+						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+						"antes"			=>	"El proveedor sube archivo de cotizaciones de ".$aprov->nombre,
 						"despues"			=>	"assets/uploads/cotizaciones/".$filen.".xlsx",
 						"accion"			=>	"Sube Archivo"
 					];

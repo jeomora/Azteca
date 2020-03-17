@@ -65,7 +65,7 @@ class Facturalunes_model extends MY_Model {
 	}
 
 	public function getFactClic($where=[],$tienda,$folio,$cual){
-		$this->db->select("pl.promo,pl.descuento,pl.prod,pl.cuantos1,pl.cuantos2,pl.mins,pl.ieps,p.observaciones,p.precio as prices,f.folio,f.id_factura,".$cual." as pedido,fl.costo,f.codigo,f.descripcion,f.cantidad,f.precio,f.id_proveedor,f.id_tienda,f.fecha_registro,f.fecha_factura,c.id_producto FROM factura_lunes f LEFT JOIN catalogos c ON f.codigo = c.id_catalogo LEFT JOIN finalunes fl on c.id_producto = fl.id_producto AND WEEKOFYEAR(fl.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN pro_lunes p ON c.id_producto = p.codigo LEFT JOIN promo_lunes pl ON c.id_producto = pl.codigo WHERE f.folio = '".$folio."' AND f.id_tienda = ".$tienda." AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE())")
+		$this->db->select("pl.prods,pl.promo,pl.descuento,pl.prod,pl.cuantos1,pl.cuantos2,pl.mins,pl.ieps,p.observaciones,p.precio as prices,f.folio,f.id_factura,".$cual." as pedido,fl.costo,f.codigo,f.descripcion,f.cantidad,f.precio,f.id_proveedor,f.id_tienda,f.fecha_registro,f.fecha_factura,c.id_producto FROM factura_lunes f LEFT JOIN catalogos c ON f.codigo = c.id_catalogo LEFT JOIN finalunes fl on c.id_producto = fl.id_producto AND WEEKOFYEAR(fl.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN pro_lunes p ON c.id_producto = p.codigo LEFT JOIN (SELECT pll.promo,pll.descuento,pll.codigo,pll.prod,pll.cuantos1,pll.cuantos2,pll.mins,pll.ieps,plll.id_catalogo as prods FROM promo_lunes pll LEFT JOIN catalogos plll ON pll.prod = plll.id_producto) pl ON c.id_producto = pl.codigo WHERE f.folio = '".$folio."' AND f.id_tienda = ".$tienda." AND WEEKOFYEAR(f.fecha_registro) = WEEKOFYEAR(CURDATE())")
 		->order_by("f.codigo,f.precio","DESC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -77,11 +77,23 @@ class Facturalunes_model extends MY_Model {
 			}
 		}
 		$result = $this->db->get()->result();
+		$comparativaIndexada = [];
+		for ($i=0; $i<sizeof($result); $i++) {
+			if (isset($comparativaIndexada[$result[$i]->codigo])) {
+				$comparativaIndexada[$result[$i]->codigo]["cantidad"]	+= 	$result[$i]->cantidad;
+			}else{
+				$comparativaIndexada[$result[$i]->codigo]["cantidad"]	= 	$result[$i]->cantidad;
+
+			}
+
+			//$comparativaIndexada[$comparativa[$i]->producto][$comparativa[$i]->id_tienda]	=	$comparativa[$i]->cuants;
+			
+		}
 		if ($result) {
 			if (is_array($where)) {
-				return $result;
+				return array($result,$comparativaIndexada);
 			} else {
-				return $result;
+				return array($result,$comparativaIndexada);
 			}
 		} else {
 			return false;
