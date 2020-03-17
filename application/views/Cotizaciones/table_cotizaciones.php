@@ -57,9 +57,8 @@ if(!$this->session->userdata("username")){
 									<th>FECHA REGISTRO</th>
 									<th>PRECIO FACTURA</th>
 									<th>PRECIO FACTURA C/PROMOCIÓN</th>
-									<th>DESCUENTO ADICIONAL</th>
-									<th colspan="2">PROMOCIÓN</th>
-									<th>OBSERVACIONES</th>
+									<th>% DESCUENTO</th>
+									<th colspan="2">OBSERVACIONES</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -71,7 +70,6 @@ if(!$this->session->userdata("username")){
 											<td><?php echo ($value->precio_promocion >0) ? '$ '.number_format($value->precio_promocion,2,'.',',') : ''?></td>
 											<td><?php echo ($value->descuento > 0) ? number_format($value->descuento,0,'.',',').' %' : ''  ?></td>
 											<td><?php echo ($value->num_one > 0 && $value->num_two > 0) ? $value->num_one.'&nbsp; EN &nbsp;'.$value->num_two : '' ?></td>
-											<td><?php echo $value->promocion ?></td>
 											<td><?php echo $value->observaciones ?></td>
 										</tr>
 								<?php endforeach; endif ?>

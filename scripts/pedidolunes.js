@@ -127,53 +127,87 @@ $(document).off("click", ".btn-dispon").on("click", ".btn-dispon", function(even
 	$(".lista-body").html("");
 	var sameProd = 0;var codi = "";
 	getFactClic(tienda,folio,cual).done(function(resp){
-		$.each(resp,function(index,val){
-			var subtotal = (val.precio * val.cantidad);
-			var subtotal2 = (val.costo * val.cantidad)
-			var color1 = "#FFF";
-			var cantidad = val.cantidad;
-			var bords = "";
-			if (resp.length > (index+1)) {
-				if (val.codigo === resp[index+1].codigo) {
-					cantidad = parseFloat(resp[index+1].cantidad) + parseFloat(val.cantidad);
-					sameProd = 1
-					bords = "border-top:5px solid #00b8ff;border-left:5px solid #00b8ff;border-right:5px solid #00b8ff;"
-				}else{
-					sameProd = 0;
+		console.log(resp[1]);
+		if (resp[0]) {
+			var flagFactura = resp[1];
+			var flagPedido = resp[1];
+			$.each(resp[0],function(index,val){
+				var subtotal = (val.precio * val.cantidad);
+				var subtotal2 = (val.costo * val.cantidad)
+				var color1 = "#FFF";
+				var cantidad = val.cantidad; var pedido = formatMoney(val.pedido,0);
+				var bords = ""; var cumplio = false;var backPromo = "background:white;";
+				if (resp[0].length > (index+1)) {
+					if (val.codigo === resp[0][index+1].codigo) {
+						cantidad =  parseFloat(val.cantidad);//parseFloat(resp[index+1].cantidad) +
+						sameProd = 1
+						bords = ""
+						flagFactura[val.codigo].cantidad -= val.cantidad;
+						flagFactura[val.codigo].cantidad -= parseFloat(resp[0][index+1].cantidad);
+						if(val.promo === "1" || val.promo === 1){
+							if (((cantidad - (cantidad % val.cuantos1)) / val.cuantos1 * val.cuantos2) === parseFloat(resp[0][index+1].cantidad) && (flagFactura[val.codigo].cantidad >= 0)){
+								backPromo = "background:#3dca3d;";
+							}else{
+								backPromo = "background:#f56565;";
+							}
+						}
+					}else{
+						sameProd = 0;
+					}
 				}
-			}
-			if (cantidad > val.pedido) {
-					color = "#f59191";
-				}else if(cantidad < val.pedido){
-					color = "#f7f782";
-				}else{
-					color = "#a7fda7";
+				if (cantidad > val.pedido) {
+						color = "#f59191";
+					}else if(cantidad < val.pedido){
+						color = "#f7f782";
+					}else{
+						color = "#a7fda7";
+					}
+				if (codi === val.codigo) {
+					color = "white";
+					bords = "";
+					if(val.promo === "1" || val.promo === 1){
+						pedido = "";//(pedido - (pedido % val.cuantos1)) / val.cuantos1 * val.cuantos2;
+						val.observaciones = "";
+					}else{
+						bords = bords+"background:#94ceffc9";
+						backPromo = "background:#94ceffc9"; 
+						color = "background:#94ceffc9";
+					}
 				}
-			if (codi === val.codigo) {
-				color = "white";
-				bords = "border-bottom:5px solid #00b8ff;border-left:5px solid #00b8ff;border-right:5px solid #00b8ff;";
-			}
+				if(val.promo === "3" || val.promo === 3){
+					flagFactura[val.codigo].cantidad -= cantidad;
+					if ( flagFactura[val.prods].cantidad  >= 0) {
+						backPromo = "background-image:linear-gradient(to bottom right, #3dca3d 50%, #94ceffc9 50%);";
+					}else{
+						backPromo = "background-image:linear-gradient(to bottom right, #f56565 50%, #94ceffc9 50%);";
+					}
+				}
 
-			$(".lista-body").append('<div class="col-md-12 renglon" style="padding:0;border-left:5px solid #FFF;border-right:5px solid #FFF;'+bords+'"><div class="col-md-2 lista-body-desc">'+val.codigo+' => '+val.descripcion+'</div>'+
-				'<div class="col-md-1" style="padding:0"><div class="col-md-6 lista-body-piden">'+formatMoney(val.pedido,0)+'</div>'+
-				'<div class="col-md-6 lista-body-llegan" style="background:'+color+'">'+formatMoney(val.cantidad,0)+'</div></div>'+
-				'<div class="col-md-1 lista-body-promo">SIN PROMOCIÓN</div>'+
-				'<div class="col-md-1 lista-body-factura">$ '+formatMoney(val.precio,2)+'</div>'+
-				'<div class="col-md-1 lista-body-pedido">$'+formatMoney(val.costo,2)+'</div>'+
-				'<div class="col-md-1 lista-body-sub">$ '+formatMoney(subtotal,2)+'</div>'+
-				'<div class="col-md-1 lista-body-iva">$ '+formatMoney((subtotal * 0.16),2)+'</div>'+
-				'<div class="col-md-1 lista-body-ieps"></div>'+
-				'<div class="col-md-1 lista-body-total">$ '+formatMoney((subtotal * 1.16),2)+'</div>'+
-				'<div class="col-md-1 lista-body-totalgen">$ '+formatMoney(subtotal2,2)+'</div>'+
-				'<div class="col-md-1 lista-body-diferencia">$ '+formatMoney((subtotal - subtotal2),2)+'</div></div>')
+				if(val.promo === "0" || val.promo === 0 || val.promo === null){
+					flagFactura[val.codigo].cantidad -= cantidad;
+				}
 
-			if (codi === val.codigo) {
-				$(".lista-body").append("<div class='col-md-12' style='border:1px solid'></div>")
-			}
-			codi = val.codigo;
-			bords = ""
 
-		});
+				$(".lista-body").append('<div class="col-md-12 renglon" style="padding:0;'+bords+'"><div class="col-md-2 lista-body-desc">'+val.codigo+' => '+val.descripcion+'</div>'+
+					'<div class="col-md-1" style="padding:0"><div class="col-md-6 lista-body-piden">'+pedido+'</div>'+
+					'<div class="col-md-6 lista-body-llegan" style="background:'+color+'">'+formatMoney(val.cantidad,0)+'</div></div>'+
+					'<div class="col-md-1 lista-body-promo" style="'+backPromo+'">'+val.observaciones+'</div>'+
+					'<div class="col-md-1 lista-body-factura">$ '+formatMoney(val.precio,2)+'</div>'+
+					'<div class="col-md-1 lista-body-pedido">$'+formatMoney(val.costo,2)+'</div>'+
+					'<div class="col-md-1 lista-body-sub">$ '+formatMoney(subtotal,2)+'</div>'+
+					'<div class="col-md-1 lista-body-iva">$ '+formatMoney((subtotal * 0.16),2)+'</div>'+
+					'<div class="col-md-1 lista-body-ieps"></div>'+
+					'<div class="col-md-1 lista-body-total">$ '+formatMoney((subtotal * 1.16),2)+'</div>'+
+					'<div class="col-md-1 lista-body-totalgen">$ '+formatMoney(subtotal2,2)+'</div>'+
+					'<div class="col-md-1 lista-body-diferencia">$ '+formatMoney((subtotal - subtotal2),2)+'</div></div>')
+
+				
+				codi = val.codigo;
+				bords = ""
+
+			});
+			console.log(flagFactura);
+		}
 	});
 
 })

@@ -53,7 +53,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
     .btnSemFact:hover{background:#FFF;color:#2fbf1e;}
     .btnSemFactAct{background:#FFF !important;}
     .lista-body .col-md-6, .lista-body .col-md-1, .lista-body .col-md-2 {height:50px !important;overflow:hidden;}
-    .renglon:hover{background:#e5ffe7;}
+    .renglon:hover{background:#c5c5c560;}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
