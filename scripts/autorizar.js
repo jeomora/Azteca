@@ -2,7 +2,7 @@ $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
 	var id_proveedor = $("#id_pro option:selected").val();
 	var proveedor = $("#id_pro option:selected").text();
-	if (id_proveedor === 0) {
+	if (id_proveedor === "nope") {
 		$(".cotiz").css("display","none");
 	} else {
 		$(".cotiz").css("display","block");
