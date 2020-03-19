@@ -75,6 +75,7 @@ $(document).off("change", "#file_otizaciones2").on("change", "#file_otizaciones2
 				unblockPage();
 				toastr.success(resp.desc, user_name);
 				$("#file_otizaciones2").val("");
+				printFacturas(proveedor)
 				//setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
 			}
 		});
@@ -91,6 +92,17 @@ function uploadCotizaciones2(formData,tienda,proveedor) {
 	});
 }
 
+function printFacturas(proveedor){
+	$(".disponibles").html("")
+	getSemFacts(proveedor).done(function(resp){
+		$.each(resp,function(index,val){
+			var day = "0";
+			$(".disponibles").append('<div class="col-md-2 btn-dispon" data-id-cual="'+val.id_tienda+'" data-id-folio="'+val.folio+'" data-id-tienda="'+val.id_tienda+'" style="background:'+val.color+
+				'80;border:2px solid '+val.color+'">'+val.folio+'<br>('+val.nombre+')</div>');
+		})
+	})
+}
+
 $(document).off("change", "#id_proveedor").on("change", "#id_proveedor", function(event){
 	var proveedor = $(this).children("option:selected").val();
 	$(".disponibles").html("")
@@ -100,13 +112,7 @@ $(document).off("change", "#id_proveedor").on("change", "#id_proveedor", functio
 	} else {
 		$(".pedFinales").css("display","block");
 		$(".factSem").css("display","block");
-		getSemFacts(proveedor).done(function(resp){
-			$.each(resp,function(index,val){
-				var day = "0";
-				$(".disponibles").append('<div class="col-md-2 btn-dispon" data-id-cual="'+val.id_tienda+'" data-id-folio="'+val.folio+'" data-id-tienda="'+val.id_tienda+'" style="background:'+val.color+
-					'80;border:2px solid '+val.color+'">'+val.folio+'<br>('+val.nombre+')</div>');
-			})
-		})
+		printFacturas(proveedor);
 
 	}
 });
@@ -126,8 +132,9 @@ $(document).off("click", ".btn-dispon").on("click", ".btn-dispon", function(even
 	var cual = $(this).data("idCual");
 	$(".lista-body").html("");
 	var sameProd = 0;var codi = "";
-	getFactClic(tienda,folio,cual).done(function(resp){
-		console.log(resp[1]);
+	var values = {'tienda': tienda,'folio': folio,'cual': cual};
+	getFactClic(JSON.stringify(values)).done(function(resp){
+		
 		if (resp[0]) {
 			var flagFactura = resp[1];
 			var flagPedido = resp[1];
@@ -135,9 +142,10 @@ $(document).off("click", ".btn-dispon").on("click", ".btn-dispon", function(even
 				var subtotal = (val.precio * val.cantidad);
 				var subtotal2 = (val.costo * val.cantidad)
 				var color1 = "#FFF";
-				var cantidad = val.cantidad; var pedido = formatMoney(val.pedido,0);
-				var bords = ""; var cumplio = false;var backPromo = "background:white;";
-				if (resp[0].length > (index+1)) {
+				val.pedido = val.pedido == null ? 0 : val.pedido == "" ? 0 : val.pedido;
+				var cantidad = val.cantidad; var pedido = formatMoney(val.pedido,0);var ieps2 = 1;
+				var bords = ""; var cumplio = false;var backPromo = "background:white;";var difs = 0;
+				if(resp[0].length > (index+1)){
 					if (val.codigo === resp[0][index+1].codigo) {
 						cantidad =  parseFloat(val.cantidad);//parseFloat(resp[index+1].cantidad) +
 						sameProd = 1
@@ -146,21 +154,21 @@ $(document).off("click", ".btn-dispon").on("click", ".btn-dispon", function(even
 						flagFactura[val.codigo].cantidad -= parseFloat(resp[0][index+1].cantidad);
 						if(val.promo === "1" || val.promo === 1){
 							if (((cantidad - (cantidad % val.cuantos1)) / val.cuantos1 * val.cuantos2) === parseFloat(resp[0][index+1].cantidad) && (flagFactura[val.codigo].cantidad >= 0)){
-								backPromo = "background:#3dca3d;";
+								backPromo = "background:#c6efce;color:#006100";
 							}else{
-								backPromo = "background:#f56565;";
+								backPromo = "background:#ffc7ce;color:#9c0005";
 							}
 						}
 					}else{
 						sameProd = 0;
 					}
 				}
-				if (cantidad > val.pedido) {
-						color = "#f59191";
-					}else if(cantidad < val.pedido){
-						color = "#f7f782";
+				if (parseFloat(cantidad) > parseFloat(val.pedido)) {
+						color = "background:#ffc7ce;color:#9c0005";
+					}else if(parseFloat(cantidad) < parseFloat(val.pedido)){
+						color = "background:#ffeb9c;color:#9c6500";
 					}else{
-						color = "#a7fda7";
+						color = "background:#c6efce;color:#006100";
 					}
 				if (codi === val.codigo) {
 					color = "white";
@@ -173,6 +181,9 @@ $(document).off("click", ".btn-dispon").on("click", ".btn-dispon", function(even
 						backPromo = "background:#94ceffc9"; 
 						color = "background:#94ceffc9";
 					}
+					difs = "";
+				}else{
+					difs = formatMoney((pedido-cantidad),0)
 				}
 				if(val.promo === "3" || val.promo === 3){
 					flagFactura[val.codigo].cantidad -= cantidad;
@@ -187,35 +198,71 @@ $(document).off("click", ".btn-dispon").on("click", ".btn-dispon", function(even
 					flagFactura[val.codigo].cantidad -= cantidad;
 				}
 
+				if(val.ieps !== "0.00" && val.ieps !== null){
+					ieps2 = val.ieps;
+				}else{
+					ieps2 = 1;
+				}
+
+
 
 				$(".lista-body").append('<div class="col-md-12 renglon" style="padding:0;'+bords+'"><div class="col-md-2 lista-body-desc">'+val.codigo+' => '+val.descripcion+'</div>'+
-					'<div class="col-md-1" style="padding:0"><div class="col-md-6 lista-body-piden">'+pedido+'</div>'+
-					'<div class="col-md-6 lista-body-llegan" style="background:'+color+'">'+formatMoney(val.cantidad,0)+'</div></div>'+
+					'<div class="col-md-1" style="padding:0">'+
+					'<div class="col-md-4 lista-body-piden">'+pedido+'</div>'+
+					'<div class="col-md-4 lista-body-llegan">'+formatMoney(val.cantidad,0)+'</div>'+
+					'<div class="col-md-4 lista-body-piden" style="'+color+'">'+difs+'</div></div>'+
 					'<div class="col-md-1 lista-body-promo" style="'+backPromo+'">'+val.observaciones+'</div>'+
-					'<div class="col-md-1 lista-body-factura">$ '+formatMoney(val.precio,2)+'</div>'+
-					'<div class="col-md-1 lista-body-pedido">$'+formatMoney(val.costo,2)+'</div>'+
-					'<div class="col-md-1 lista-body-sub">$ '+formatMoney(subtotal,2)+'</div>'+
-					'<div class="col-md-1 lista-body-iva">$ '+formatMoney((subtotal * 0.16),2)+'</div>'+
-					'<div class="col-md-1 lista-body-ieps"></div>'+
-					'<div class="col-md-1 lista-body-total">$ '+formatMoney((subtotal * 1.16),2)+'</div>'+
-					'<div class="col-md-1 lista-body-totalgen">$ '+formatMoney(subtotal2,2)+'</div>'+
-					'<div class="col-md-1 lista-body-diferencia">$ '+formatMoney((subtotal - subtotal2),2)+'</div></div>')
+					'<div class="col-md-1 lista-body-factura" id="factura'+(index+1)+'">$ '+formatMoney(val.precio,2)+'</div>'+
+					'<div class="col-md-1 lista-body-pedido" id="pedido'+(index+1)+'">$ '+formatMoney(val.costo,2)+'</div>'+
+					'<div class="col-md-1 lista-body-sub" id="sub'+(index+1)+'">$ '+formatMoney(subtotal,2)+'</div>'+
+					'<div class="col-md-1 lista-body-iva" id="iva'+(index+1)+'">$ '+formatMoney((subtotal * 0.16),2)+'</div>'+
+					'<div class="col-md-1 lista-body-ieps" id="ieps'+(index+1)+'">$ '+formatMoney((subtotal * val.ieps),2)+'</div>'+
+					'<div class="col-md-1 lista-body-total" id="total'+(index+1)+'">$ '+formatMoney((subtotal * 1.16),2)+'</div>'+
+					'<div class="col-md-1 lista-body-totalgen" id="totalgen'+(index+1)+'">$ '+formatMoney(subtotal2,2)+'</div>'+
+					'<div class="col-md-1 lista-body-diferencia" id="diferencia'+(index+1)+'">$ '+formatMoney(((subtotal*1.16*ieps2) - subtotal2),2)+'</div></div>')
 
 				
 				codi = val.codigo;
 				bords = ""
 
 			});
-			console.log(flagFactura);
+			calculafactura();
 		}
 	});
 
 })
 
-function getFactClic(tienda,folio,cual){
+function getFactClic(values){
     return $.ajax({
-        url: site_url+"Lunes/getFactClic/"+tienda+"/"+folio+"/"+cual,
+        url: site_url+"Lunes/getFactClic",
         type: "POST",
         dataType: "JSON",
+        data: {
+            values : values
+        },
     });
+}
+
+function calculafactura(){
+	var cuantos = $('.lista-body-diferencia').length;
+	var diferencia = 0;var factura = 0;var pedido = 0;var sub = 0;var iva = 0;var ieps = 0;var total = 0;var totalgen = 0;
+	for(var i = 1; i <= cuantos; i++) {
+		if ($("#diferencia"+i).html().includes("-")) {
+			diferencia -= parseFloat( $("#diferencia"+i).html().replace(/[^0-9\.]+/g,"") )
+		} else {
+			diferencia += parseFloat( $("#diferencia"+i).html().replace(/[^0-9\.]+/g,"") )
+		}
+		sub += parseFloat( $("#sub"+i).html().replace(/[^0-9\.]+/g,"") );
+		iva += parseFloat( $("#iva"+i).html().replace(/[^0-9\.]+/g,"") );
+		ieps += parseFloat( $("#ieps"+i).html().replace(/[^0-9\.]+/g,"") );
+		total += parseFloat( $("#total"+i).html().replace(/[^0-9\.]+/g,"") );
+		totalgen += parseFloat( $("#totalgen"+i).html().replace(/[^0-9\.]+/g,"") );
+	}
+	$(".diferenciaTotal").html( "$ "+formatMoney(diferencia,2) )
+	$(".subTotal").html( "$ "+formatMoney(sub,2) )
+	$(".ivaTotal").html( "$ "+formatMoney(iva,2) )
+	$(".iepsTotal").html( "$ "+formatMoney(ieps,2) )
+	$(".totalTotal").html( "$ "+formatMoney(total,2) )
+	$(".totalgenTotal").html( "$ "+formatMoney(totalgen,2) )
+
 }
