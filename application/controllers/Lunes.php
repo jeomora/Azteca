@@ -3413,7 +3413,8 @@ class Lunes extends MY_Controller {
 						"descripcion" => $descripcion->descripcion,
 						"fecha_factura" => $fecha,
 						"cantidad" => $cantidad,
-						"id_tienda"=> $tienda
+						"id_tienda"=> $tienda,
+						"id_producto" => $descripcion->id_producto
 					];
 
 					$data['id_prodcaja']=$this->fac_mdl->insert($new_producto);
@@ -3423,18 +3424,16 @@ class Lunes extends MY_Controller {
 						"descripcion" => $desc,
 					];
 					$data['id_invoice']=$this->cata_mdl->insert($new_invoice);
-					$descripcion = $this->cata_mdl->get(NULL,["codigo"=>$codigo])[0];
 					$new_producto=[
 						"folio" => $folio,
 						"id_proveedor" => $proveedor,
 						"precio" => $precio,
-						"codigo" => $descripcion->id_catalogo,
-						"descripcion" => $descripcion->descripcion,
+						"codigo" => $codigo,
+						"descripcion" => $desc,
 						"fecha_factura" => $fecha,
 						"cantidad" => $cantidad,
 						"id_tienda"=> $tienda
 					];
-
 					$data['id_prodcaja']=$this->fac_mdl->insert($new_producto);
 				}
 			}
@@ -3466,8 +3465,11 @@ class Lunes extends MY_Controller {
 		$this->jsonResponse($facts);
 	}
 
-	public function getFactClic($tienda,$folio,$cual){
-		switch($cual){
+	public function getFactClic(){
+		$busca = $this->input->post("values");
+		$values = $busca;
+		$value = json_decode($values); 
+		switch($value->cual){
 				  case 57: $day = "abarrotes";break;
 				  case 87: $day = "cedis";break;
 				  case 90: $day = "villas";break;
@@ -3478,7 +3480,7 @@ class Lunes extends MY_Controller {
 				  case 62: $day = "tenencia";break;
 				  case 63: $day = "tijeras";break;
 				}
-		$facts = $this->fac_mdl->getFactClic(NULL,$tienda,$folio,$day);
+		$facts = $this->fac_mdl->getFactClic(NULL,$busca,$day);
 		$this->jsonResponse($facts);	
 	}
 

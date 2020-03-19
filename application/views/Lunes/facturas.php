@@ -54,6 +54,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
     .btnSemFactAct{background:#FFF !important;}
     .lista-body .col-md-6, .lista-body .col-md-1, .lista-body .col-md-2 {height:50px !important;overflow:hidden;}
     .renglon:hover{background:#c5c5c560;}
+    .totalite{height:65px;border:1px solid;padding:0;font-size:16px;text-align:center;line-height:65px;overflow:hidden;font-family:monospace;font-weight:bold;}
+    .lista-foot{padding:0}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -141,18 +143,21 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 							<div class="col-sm-12" id="lista">
 								<div class="col-md-12 lista-head">
-									ABARROTES - GRUPO AZTECA, S.A DE C.V
+									GRUPO AZTECA, S.A DE C.V
 								</div>
 								<div class="col-md-12 lista-head-1">
 									<div class="col-md-2 head-1-des">
 										DESCRIPCIÓN
 									</div>
 									<div class="col-md-1" style="padding:0">
-										<div class="col-md-6 head-1-piden">
-											# PEDIDO
+										<div class="col-md-4 head-1-piden">
+											# P
 										</div>
-										<div class="col-md-6 head-1-llegan">
-											# FACTURA
+										<div class="col-md-4 head-1-llegan">
+											# F
+										</div>
+										<div class="col-md-4 head-1-llegan">
+											DIF
 										</div>
 									</div>
 									<div class="col-md-1 head-1-promo">
@@ -191,46 +196,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 									</div>
 								</div>
 								<div class="col-md-12 lista-body">
-									<?php if($factura):foreach ($factura as $key => $value): ?>
-										<div class="col-md-2 lista-body-desc">
-											<?php echo $value->codigo."<br>".$value->pdesc ?>
-										</div>
-										<div class="col-md-1" style="padding:0">
-											<div class="col-md-6 lista-body-piden">
-												<?php echo number_format($value->cedis,0,".",",") ?>
-											</div>
-											<div class="col-md-6 lista-body-llegan">
-												<?php echo number_format($value->cantidad,0,".",",") ?>
-											</div>
-										</div>
-										<div class="col-md-1 lista-body-promo">
-											SIN PROMOCIÓN
-										</div>
-										<div class="col-md-1 lista-body-factura">
-											<?php echo "$ ".number_format($value->precio,2,".",",") ?>
-										</div>
-										<div class="col-md-1 lista-body-pedido">
-											
-										</div>
-										<div class="col-md-1 lista-body-sub">
-											<?php $subtotal = ($value->precio * $value->cantidad);echo "$ ".number_format($subtotal,2,".",",") ?>
-										</div>
-										<div class="col-md-1 lista-body-iva">
-											<?php echo "$ ".number_format(($subtotal * 0.16),2,".",",") ?>
-										</div>
-										<div class="col-md-1 lista-body-ieps">
-											$ 0.00
-										</div>
-										<div class="col-md-1 lista-body-total">
-											<?php echo "$ ".number_format(($subtotal * 1.16),2,".",",") ?>
-										</div>
-										<div class="col-md-1 lista-body-totalgen">
-											
-										</div>
-										<div class="col-md-1 lista-body-diferencia">
-											
-										</div>
-									<?php endforeach;endif; ?>
+									
+								</div>
+								<div class="col-md-12 lista-foot">
+									<div class="col-md-6 totalite totalitetos" style="font-size:30px;text-align:right;padding-right:20px;">TOTALES</div>
+									<div class="col-md-1 totalite subTotal"></div>
+									<div class="col-md-1 totalite ivaTotal"></div>
+									<div class="col-md-1 totalite iepsTotal"></div>
+									<div class="col-md-1 totalite totalTotal"></div>
+									<div class="col-md-1 totalite totalgenTotal"></div>
+									<div class="col-md-1 totalite diferenciaTotal"></div>
+
 								</div>
 							</div>
 						</div>
