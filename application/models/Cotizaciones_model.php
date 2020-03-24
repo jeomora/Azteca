@@ -859,11 +859,11 @@ $this->db->select("c.id_cotizacion,
 		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
 		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
 		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
-		->join("prodcaja fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
+		->join("(select * from prodcaja order by id_prodcaja DESC) fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
 		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
 		->join("mayoreo my","prod.codigo = my.codigo","LEFT")
 		->group_by("prod.nombre")
-		->order_by("prod.id_familia,prod.nombre ASC,fac.id_prodcaja DESC");
+		->order_by("prod.id_familia,prod.nombre", "ASC");
 
 		if ($where !== NULL){
 			if(is_array($where)){
