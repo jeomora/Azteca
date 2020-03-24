@@ -2138,7 +2138,7 @@ class Cotizaciones extends MY_Controller {
 		$id_proves = $this->input->post('id_proves4');
 		$proves = $this->input->post('id_proves2');
 		$prs = substr($id_proves,0,6);
-		if (($id_proves <> "3" || $id_proves <> 3) && ($id_proves <> "6" || $id_proves <> 6)) {
+		if (($id_proves <> "3" || $id_proves <> 3) && ($id_proves <> "6" || $id_proves <> 6) && ($id_proves <> "4" || $id_proves <> 4)) {
 			if ($prs === "VARIOS") {
 				$array = $this->usua_mdl->get(NULL, ["conjunto" => $id_proves]);
 				$filenam = $id_proves;
