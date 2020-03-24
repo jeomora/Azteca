@@ -863,7 +863,7 @@ $this->db->select("c.id_cotizacion,
 		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
 		->join("mayoreo my","prod.codigo = my.codigo","LEFT")
 		->group_by("prod.nombre")
-		->order_by("prod.id_familia,prod.nombre", "ASC");
+		->order_by("prod.id_familia,prod.nombre ASC,fac.id_prodcaja DESC");
 
 		if ($where !== NULL){
 			if(is_array($where)){
