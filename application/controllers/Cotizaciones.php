@@ -3345,7 +3345,7 @@ class Cotizaciones extends MY_Controller {
 		}elseif ($id_proves === "6" || $id_proves === 6) {
 			$this->fill_hermanos();
 		}elseif ($id_proves === "4" || $id_proves === 4) {
-			$this->fill_hermanos("SAHUAYO");
+			$this->fill_duerazo("SAHUAYO");
 		}else{
 			$this->fill_duerazo("DUERO");
 		}
