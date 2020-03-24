@@ -36,6 +36,15 @@
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/colorpicker/bootstrap-colorpicker.min.css') ?>" >
 	
 	<link rel="stylesheet" href="<?php echo base_url('/assets/css/plugins/chosen/chosen.css')?>" >
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122943105-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-122943105-1');
+	</script>
 
 
 </head>

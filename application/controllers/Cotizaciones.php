@@ -3344,8 +3344,10 @@ class Cotizaciones extends MY_Controller {
 			$excel_Writer->save("php://output");*/
 		}elseif ($id_proves === "6" || $id_proves === 6) {
 			$this->fill_hermanos();
+		}elseif ($id_proves === "4" || $id_proves === 4) {
+			$this->fill_hermanos("SAHUAYO");
 		}else{
-			$this->fill_duerazo();
+			$this->fill_duerazo("DUERO");
 		}
 	}
 	public function archivo_precios(){
@@ -5078,14 +5080,21 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
-	private function fill_duerazo(){
+	private function fill_duerazo($cualess){
 		$flag =1;
 		$flag2=1;
 		$array = "";
 		$array2 = "";
 		$filenam = "";
 		$flag1 = 5;
-		$array = $this->usua_mdl->getD(NULL);
+		$excname = "";
+		if ($cualess === "SAHUAYO") {
+			$array = $this->usua_mdl->getSAH(NULL);	
+			$excname = "SAHUAYO";
+		}else{
+			$array = $this->usua_mdl->getD(NULL);
+			$excname = "DUERO - PROCTER";
+		}
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
@@ -5762,13 +5771,12 @@ class Cotizaciones extends MY_Controller {
 		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "FORMATO DUERO - PROCTER ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "FORMATO ".$excname." ".$fecha.".xlsx"; //Nombre del documento con extención
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer->save("php://output");
-
 	}
 	public function fill_excel_duero(){
 		ini_set("memory_limit", "-1");

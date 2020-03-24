@@ -56,6 +56,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
     .renglon:hover{background:#c5c5c560;}
     .totalite{height:65px;border:1px solid;padding:0;font-size:16px;text-align:center;line-height:65px;overflow:hidden;font-family:monospace;font-weight:bold;}
     .lista-foot{padding:0}
+    .btnAsocia{background:#ed143d;color:#FFF;border:2px solid #ed143d;width:100%;height:100%;}
+    .btnAsocia:hover{background:#FFF;color:#ed143d}
+    .delFactura{background:red;color:#FFF;border:2px solid red;font-size:20px;display:none}
+    .delFactura:hover{color:red;background:#FFF}
+    .excelFact{background:rgb(30,146,191);width:100%;font-size:20px;color:#FFF;border:2px solid rgb(30, 146, 191);}
+    .excelFact:hover{color:rgb(30, 146, 191);background:#FFF}
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -77,12 +83,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</div>
 					</div>
 					<div class="col-md-3">
-						<button class="btnSemFact" type="button">Facturas Por Proveedor</button>
+						<!--<button class="btnSemFact" type="button">Facturas Por Proveedor</button>-->
 					</div>
 					<div class="col-md-3">
 						
 					</div>
-					<div class="col-sm-12 pedFinales" style="margin-top:20px;border:1px solid #1e92bf;">
+					<div class="col-sm-8 pedFinales" style="margin-top:20px;border:1px solid #1e92bf;">
 						<div class="col-sm-12">
 							<h2 style="margin-bottom:0px">Pedidos Finales</h2>
 							<span>Agregue los pedidos finales antes de subir facturas, esto para que se realice la comparación de precios y número de productos.</span>
@@ -108,6 +114,10 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								</button>
 							</div>
 						</div>
+					</div>
+					<div class="col-sm-1"></div>
+					<div class="col-sm-3 pedFinales" style="margin-top:20px;border:1px solid #1e92bf;padding:20px">
+						<button class="excelFact"><i class="fa fa-file-excel-o" aria-hidden="true"></i> DESCARGAR EXCEL <br>FACTURAS PROVEEDOR</button>
 					</div>
 					
 					<div class="col-sm-12 factSem" style="margin-top:20px;border:1px solid #bf1e61;padding-bottom: 20px">
@@ -143,7 +153,12 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							</div>
 							<div class="col-sm-12" id="lista">
 								<div class="col-md-12 lista-head">
-									GRUPO AZTECA, S.A DE C.V
+									<div class="col-md-10 lista-head" style="border-bottom:0">
+										GRUPO AZTECA, S.A DE C.V
+									</div>
+									<div class="col-md-2" style="padding:8px;">
+										<button class="delFactura">ELIMINAR FACTURA</button>
+									</div>
 								</div>
 								<div class="col-md-12 lista-head-1">
 									<div class="col-md-2 head-1-des">
