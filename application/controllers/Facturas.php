@@ -160,6 +160,15 @@ class Facturas extends MY_Controller {
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
 		$file = $_FILES["file_codigos"]["tmp_name"];
+
+		$config['upload_path']          = './assets/uploads/facturas/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10240;
+        $config['max_height']           = 7680;
+        $this->load->library('upload', $config);
+        $this->upload->do_upload('file_factura','PedidoFinal'.date('dmYHis'));
+
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
