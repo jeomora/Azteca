@@ -167,7 +167,7 @@ class Facturas extends MY_Controller {
         $config['max_width']            = 10240;
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
-        $this->upload->do_upload('file_factura','PedidoFinal'.date('dmYHis'));
+        $this->upload->do_upload('file_factura','PedidoFinal'.$this->input->post('proveedor').''.date('dmYHis'));
 
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
