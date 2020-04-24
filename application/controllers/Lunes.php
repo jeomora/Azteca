@@ -693,7 +693,7 @@ class Lunes extends MY_Controller {
 	public function upload_precios(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$filen = "Precios Proveedores Lunes";
-		$config['upload_path']          = './assets/uploads/cotizaciones/';
+		$config['upload_path']          = './assets/uploads/lunes/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
         $config['max_width']            = 10204;
@@ -709,13 +709,15 @@ class Lunes extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
-		for ($i=1; $i<=$num_rows; $i++) {
+		for ($i=2; $i<=$num_rows; $i++) {
 			if(strlen($sheet->getCell('A'.$i)->getValue()) > 0){
 				$productos = $this->prolu_md->get("codigo",['codigo'=> htmlspecialchars($sheet->getCell('A'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$sistema = $sheet->getCell('C'.$i)->getValue();
+					$observaciones = $sheet->getCell('D'.$i)->getValue();
 					$new_existencia=[
-							"precio" =>	$sistema
+							"precio" =>	$sistema,
+							"observaciones" =>	$observaciones,
 						];
 					$data['existencia']=$this->prolu_md->update($new_existencia, ['codigo' => $productos->codigo]);
 				}
@@ -731,7 +733,7 @@ class Lunes extends MY_Controller {
 						"id_usuario"		=>	$this->session->userdata('id_usuario'),
 						"fecha_cambio"		=>	date("Y-m-d H:i:s"),
 						"antes"			=>	"El usuario sube precio sitema lunes ",
-						"despues"			=>	"assets/uploads/cotizaciones/Precios Sistema.xlsx",
+						"despues"			=>	"assets/uploads/lunes/Precios Provs.xlsx",
 						"accion"			=>	"Sube Archivo"
 					];
 				$data['cambios']=$this->cambio_md->insert($cambios);

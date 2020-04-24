@@ -41,7 +41,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 					</div> 
 					<div class="btn-group col-sm-3" style="border:1px solid #af23c8;margin-right:30px;">
 						<div class="col-sm-12" style="text-align:center;font-size:16px;color:#af23c8;margin-top: 2rem;">
-							Subir precios proveedor
+							Subir precios proveedor<a href="<?php echo base_url('assets/uploads/preciolune.xlsx') ?>" target="_blank"><i class='fa fa-download'></i> <span style="font-size:10px">(Descargar Formato)</span></a>
 						</div>
 						<?php echo form_open_multipart("", array('id' => 'upload_precios')); ?>
 							<div class="col-sm-4">
