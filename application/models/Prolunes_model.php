@@ -167,7 +167,7 @@ class Prolunes_model extends MY_Model {
 
 	public function printProdis($where=[],$prove,$tiendas){
 		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
-		$this->db->select("pro.promo,pro.descuento,pro.cuantos1,pro.cuantos2,pro.mins,p.codigo,ss.orden,p.descripcion,p.observaciones,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal LEFT JOIN promo_lunes pro ON p.codigo = pro.codigo WHERE p.id_proveedor = ".$prove." AND p.estatus =1 ")
+		$this->db->select("r.precio as real,pro.promo,pro.descuento,pro.cuantos1,pro.cuantos2,pro.mins,p.codigo,ss.orden,p.descripcion,p.observaciones,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal LEFT JOIN promo_lunes pro ON p.codigo = pro.codigo LEFT JOIN realunes r on p.codigo = r.id_producto AND WEEKOFYEAR(r.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(r.fecha_registro) = YEAR(CURDATE()) WHERE p.id_proveedor = ".$prove." AND p.estatus =1 ")
 		->order_by("ss.orden,p.orden","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -193,6 +193,7 @@ class Prolunes_model extends MY_Model {
 				$flag++;
 				$comparativaIndexada[$comparativa[$i]->codigo]					=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["codigo"]		=	$comparativa[$i]->codigo;
+				$comparativaIndexada[$comparativa[$i]->codigo]["real"]		=	$comparativa[$i]->real;
 				$comparativaIndexada[$comparativa[$i]->codigo]["descripcion"]	=	$comparativa[$i]->descripcion;
 				$comparativaIndexada[$comparativa[$i]->codigo]["precio"]		=	$comparativa[$i]->precio;
 				$comparativaIndexada[$comparativa[$i]->codigo]["sistema"]	=	$comparativa[$i]->sistema;
