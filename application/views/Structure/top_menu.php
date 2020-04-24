@@ -25,7 +25,7 @@
     }
 </style>
 <div id="wrapper">
-	<div id="page-wrapper" class="blue-bg">
+	<div id="page-wrapper" class="blue-bg" style="overflow-y:scroll">
 		<div class="row border-bottom white-bg">
 			<nav class="navbar navbar-static-top" role="navigation">
 				<div class="navbar-header">
