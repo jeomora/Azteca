@@ -2763,7 +2763,6 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", $v["codigo"])->getStyle("A{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("C".$flag."", $v["descripcion"]);
-					$proveedor[$key]->estatus->setCellValue("G".$flag."", $v["real"]);
 					$this->cellStyle("C".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("D{$flag}", $v["precio"])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -2772,7 +2771,8 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("F{$flag}", $v["unidad"]);
 
 
-					
+					$proveedor[$key]->estatus->setCellValue("G{$flag}", $v["real"])->getStyle("G{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 
 					$proveedor[$key]->estatus->setCellValue("AZ{$flag}", $v["observaciones"]);					
 
@@ -2893,7 +2893,7 @@ class Lunes extends MY_Controller {
 						}	
 					}
 
-					$col = 6;
+					$col = 7;
 					 foreach ($v["existencias"] as $k => $vs) {
 						$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["cja"]);
 						$col++;
