@@ -6657,7 +6657,7 @@ class Cotizaciones extends MY_Controller {
 		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "FORMATO 19 HNOS - CORONA ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "FORMATO 19 HNOS - CORONA - DL BAJIO ".$fecha.".xlsx"; //Nombre del documento con extención
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
