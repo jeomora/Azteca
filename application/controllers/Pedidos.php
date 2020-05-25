@@ -387,8 +387,8 @@ class Pedidos extends MY_Controller {
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
-		$filen = "Pedidos Pendientes".rand();
-		$config['upload_path']          = base_url('./assets/uploads/pedidos/');
+		$filen = "PedidosPendientes".rand();
+		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 100;
         $config['max_width']            = 1024;
