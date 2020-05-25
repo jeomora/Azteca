@@ -1945,8 +1945,8 @@ class Lunes extends MY_Controller {
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
-		$filen = "Pedidos Pendientes".rand();
-		$config['upload_path']          = base_url('./assets/uploads/pedidos/');
+		$filen = "PedidosLunesPendientes".rand();
+		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 1000;
         $config['max_width']            = 10024;
