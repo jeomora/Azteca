@@ -71,16 +71,7 @@ class Compras extends MY_Controller {
 				$filename='database_backup_'.date('G_mmss_a_m_d_y').'.gz';
 				$this->load->dbutil();
 
-				// Backup your entire database and assign it to a variable
-				$backup = $this->dbutil->backup();
-
-				// Load the file helper and write the file to your server
-				$this->load->helper('file');
-				write_file('./assets/'.$filename, $backup);
-
-				// Load the download helper and send the file to your desktop
-				$this->load->helper('download');
-				force_download($filename, $backup);
+				
 				if($user['id_grupo'] ==2){
 					redirect("cotizaciones/", $data);
 				}else{
