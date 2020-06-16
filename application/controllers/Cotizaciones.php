@@ -6823,7 +6823,6 @@ class Cotizaciones extends MY_Controller {
 						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->setConditionalStyles($conditionalStyles);
 					}
 					$this->excelfile->getActiveSheet()->getStyle('H'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
-					$this->excelfile->getActiveSheet()->freezePane('H2');
 
 					$rws++;
 				}
