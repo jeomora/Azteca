@@ -6799,29 +6799,7 @@ class Cotizaciones extends MY_Controller {
 						}
 					}
 					
-					$condRed = new PHPExcel_Style_Conditional();
-					$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
-			                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_EQUAL)
-			                ->addCondition('=MIN(H'.$rws.':'.$this->getColumna($colFlag).''.$rws.')')
-			                ->getStyle()
-			                ->applyFromArray(
-			                	array(
-								  'font'=>array(
-								   'color'=>array('argb'=>'FF9C0006')
-								  ),
-								  'fill'=>array(
-									  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
-									  'startcolor' =>array('argb' => 'FFFFC7CE'),
-									  'endcolor' =>array('argb' => 'FFFFC7CE')
-									)
-								)
-							);
-			        $bandera = 7;
-					for ($i=$bandera;$i<$colFlag;$i++) {
-						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->getConditionalStyles();
-						array_push($conditionalStyles,$condRed);
-						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($i).''.$rws)->setConditionalStyles($conditionalStyles);
-					}
+					
 					$this->excelfile->getActiveSheet()->getStyle('H'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
 
 					$rws++;
