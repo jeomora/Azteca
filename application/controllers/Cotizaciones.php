@@ -6901,7 +6901,7 @@ class Cotizaciones extends MY_Controller {
 				$this->excelfile->createSheet();
 				$hoja = $this->excelfile->setActiveSheetIndex($hojs);
 				$hojs++;
-				if(strlen($probns->nombre) > 30){
+				if(strlen($probns->nombre) < 30){
 					$hoja->setTitle(" ".$probns->nombre);
 				}else{
 					$hoja->setTitle(" ".substr($probns->nombre,0,30));
