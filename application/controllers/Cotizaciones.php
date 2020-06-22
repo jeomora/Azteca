@@ -6934,7 +6934,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("B{$row_print}", $value['familia']);
 						$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
 						
-						$this->excelfile->getStyle("B{$row_print}")->applyFromArray(
+						$hoja->getStyle("B{$row_print}")->applyFromArray(
 							array(
 								'font' => array('size' => 12,'bold' => true,'color' => array('rgb' => 'FFFFFF')),
 								'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '000000'))
@@ -6948,21 +6948,21 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("B{$row_print}", $row['producto']);
 								$hoja->setCellValue("C{$row_print}", $row['precio']);
 								$hoja->setCellValue("D{$row_print}", $row['observaciones']);
-								$this->excelfile->getStyle("B{$row_print}:H{$row_print}")->applyFromArray(
+								$hoja->getStyle("B{$row_print}:H{$row_print}")->applyFromArray(
 									array(
 										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
 										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
 									)
 								);
 								if($row['color'] == '#92CEE3'){
-									$this->excelfile->getStyle("A{$row_print}")->applyFromArray(
+									$hoja->getStyle("A{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '92CEE3'))
 										)
 									);
 								}else{
-									$this->excelfile->getStyle("A{$row_print}")->applyFromArray(
+									$hoja->getStyle("A{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
@@ -6971,7 +6971,7 @@ class Cotizaciones extends MY_Controller {
 								}
 
 								if($row['estatus'] == 2){
-									$this->excelfile->getStyle("B{$row_print}")->applyFromArray(
+									$hoja->getStyle("B{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '00B0F0'))
@@ -6979,7 +6979,7 @@ class Cotizaciones extends MY_Controller {
 									);
 								}
 								if($row['estatus'] == 3){
-									$this->excelfile->getStyle("B{$row_print}")->applyFromArray(
+									$hoja->getStyle("B{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFF900'))
@@ -6987,7 +6987,7 @@ class Cotizaciones extends MY_Controller {
 									);
 								}
 								if($row['estatus'] >= 4){
-									$this->excelfile->getStyle("B{$row_print}:C{$row_print}")->applyFromArray(
+									$hoja->getStyle("B{$row_print}:C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '04B486'))
@@ -6995,7 +6995,7 @@ class Cotizaciones extends MY_Controller {
 									);
 								}
 								if($row['colorp'] == 1){
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'D6DCE4'))
@@ -7003,7 +7003,7 @@ class Cotizaciones extends MY_Controller {
 									);
 								}else{
 									$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
@@ -7011,31 +7011,46 @@ class Cotizaciones extends MY_Controller {
 									);
 								}
 								if($row['sem4'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '8064A2'))
 										)
 									);
 								}elseif ($row['sem3'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '8064A2'))
 										)
 									);
 								}elseif ($row['sem2'] <> NULL) {
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'F79646'))
 										)
 									);
 								}elseif ($row['sem1'] <> NULL) {
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
 										array(
 											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
 											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'F79646'))
+										)
+									);
+								}
+								if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
+									$hoja->setCellValue("E{$row_print}", "NUEVO");
+									$hoja->getStyle("A{$row_print}:G{$row_print}")->applyFromArray(
+										array(
+											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
+											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF7F71'))
+										)
+									);
+									$hoja->getStyle("C{$row_print}")->applyFromArray(
+										array(
+											'font' => array('size' => 10,'bold' => true,'color' => array('rgb' => '000000')),
+											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF7F71'))
 										)
 									);
 								}
