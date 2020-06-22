@@ -6894,7 +6894,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		$hojs = 2;
+		$hojs = 1;
 		$probes = $this->usua_mdl->get(NULL,["id_grupo"=>2,"estatus<>"=>0]);
 		if ($probes){
 			foreach ($probes as $key => $probns){
