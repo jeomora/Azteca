@@ -7015,35 +7015,7 @@ class Cotizaciones extends MY_Controller {
 										)
 									);
 								}
-								if($row['sem4'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '8064A2'))
-										)
-									);
-								}elseif ($row['sem3'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '8064A2'))
-										)
-									);
-								}elseif ($row['sem2'] <> NULL) {
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'F79646'))
-										)
-									);
-								}elseif ($row['sem1'] <> NULL) {
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'F79646'))
-										)
-									);
-								}
+								
 								if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
 									$hoja->setCellValue("E{$row_print}", "NUEVO");
 									$hoja->getStyle("A{$row_print}:G{$row_print}")->applyFromArray(
