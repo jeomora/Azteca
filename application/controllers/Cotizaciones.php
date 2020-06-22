@@ -6683,7 +6683,6 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
@@ -6700,88 +6699,10 @@ class Cotizaciones extends MY_Controller {
 				}else{
 					$hoja->setTitle(" ".substr($probns->nombre,0,30));
 				}
-				
-
 				$hoja = $this->excelfile->getActiveSheet();
-				$hoja->getDefaultStyle()
-				    ->getBorders()
-				    ->getTop()
-				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-				$hoja->getDefaultStyle()
-				    ->getBorders()
-				    ->getBottom()
-				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-				$hoja->getDefaultStyle()
-				    ->getBorders()
-				    ->getLeft()
-				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-				$hoja->getDefaultStyle()
-				    ->getBorders()
-				    ->getRight()
-				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-
-				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-				$border_style= array('borders' => array('right' => array('style' =>
-					PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
-				$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
-				$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
-				$hoja->setCellValue("D1", "PROMOCIÓN")->getColumnDimension('D')->setWidth(50);
-				$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30);
-				$productos = $this->prod_mdl->getProdFam22(NULL,$probns->id_usuario);
-				$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$probns->id_usuario])[0];
-				$row_print = 2;
-				if ($productos){
-					foreach ($productos as $key => $value){
-						$hoja->setCellValue("B{$row_print}", $value['familia']);
-						$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
-
-						$row_print +=1;
-						if ($value['articulos']) {
-							foreach ($value['articulos'] as $key => $row){
-								$hoja->setCellValue("A{$row_print}", $row['codigo']);
-								$hoja->setCellValue("B{$row_print}", $row['producto']);
-								$hoja->setCellValue("C{$row_print}", $row['precio']);
-								$hoja->setCellValue("D{$row_print}", $row['observaciones']);
-								$hoja->getStyle("B{$row_print}:H{$row_print}")->applyFromArray(
-									array(
-										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
-										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
-									)
-								);
-
-								if($row['color'] == '#92CEE3'){
-									$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
-								}
-
-								if($row['estatus'] == 2){
-									$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Book");	
-								}
-								if($row['estatus'] == 3){
-									$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");	
-								}
-								if($row['estatus'] >= 4){
-									$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 10, "Franklin Gothic Book");
-								}
-								if($row['colorp'] == 1){
-									$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
-								}
-								
-								if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
-									$hoja->setCellValue("E{$row_print}", "NUEVO");
-									$this->cellStyle("A{$row_print}:E{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
-								}
-								$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray($border_style);
-								$row_print++;
-							}
-						}
-					}
-				}
 			}
 		}
 
-		
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
