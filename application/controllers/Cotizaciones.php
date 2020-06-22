@@ -6683,26 +6683,89 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
+		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$probes = $this->usua_mdl->getDudes(NULL);
 		$hojs = 1;
+
+		$this->load->library("excelfile");
+		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("COTIZACIÓN");
+		$styleArray = array(
+			  'borders' => array(
+			    'allborders' => array(
+			      'style' => PHPExcel_Style_Border::BORDER_THIN
+			    )
+			  )
+			);
+
+
 		if ($probes){
 			foreach ($probes as $key => $probns){
 				$this->excelfile->createSheet();
 				$hoja = $this->excelfile->setActiveSheetIndex($hojs);
 				$hojs++;
-				if(strlen($probns->nombre) < 30){
+				if(strlen($probns->nombre) < 25){
 					$hoja->setTitle(" ".$probns->nombre);
 				}else{
-					$hoja->setTitle(" ".substr($probns->nombre,0,30));
+					$hoja->setTitle(" ".substr($probns->nombre,0,25));
 				}
+				
+
 				$hoja = $this->excelfile->getActiveSheet();
+
+				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$border_style= array('borders' => array('right' => array('style' =>
+					PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+				$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
+				$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
+				$hoja->setCellValue("D1", "PROMOCIÓN")->getColumnDimension('D')->setWidth(50);
+				$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30);
+
+				$productos = $this->prod_mdl->getProdFam22(NULL,$probns->id_usuario);
+				$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$probns->id_usuario])[0];
+				$row_print = 2;
+				if ($productos){
+					foreach ($productos as $key => $value){
+						$hoja->setCellValue("B{$row_print}", $value['familia']);
+						$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
+						$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+						$row_print +=1;
+						if ($value['articulos']) {
+							foreach ($value['articulos'] as $key => $row){
+								$hoja->setCellValue("A{$row_print}", $row['codigo']);
+								$hoja->setCellValue("B{$row_print}", $row['producto']);
+								$hoja->setCellValue("C{$row_print}", $row['precio'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("D{$row_print}", $row['observaciones']);
+								if($row['color'] == '#92CEE3'){
+									$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
+								}else{
+									$this->cellStyle("A{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+								}
+								if($row['estatus'] == 2){
+									$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Book");
+								}
+								if($row['estatus'] == 3){
+									$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");
+								}
+								if($row['estatus'] >= 4){
+									$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 10, "Franklin Gothic Book");
+								}
+								$this->excelfile->getActiveSheet()->getStyle('A'.$row_print.':D'.$row_print)->applyFromArray($styleArray);
+								$row_print++;
+							}
+						}
+					}
+				}
+				
 			}
 		}
 
+		
         $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
