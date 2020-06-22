@@ -6931,14 +6931,9 @@ class Cotizaciones extends MY_Controller {
 				$row_print = 2;
 				if ($productos){
 					foreach ($productos as $key => $value){
-						$arrayData = array(
-							array($value['familia'],$provs->nombre.' '.$provs->apellido,)
-						);
-						$this->excelfile->fromArray(
-						    $arrayData,
-						    NULL,
-						    'B'.$row_print
-						);
+						$hoja->setCellValue("B{$row_print}", $value['familia']);
+						$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
+						
 						$this->excelfile->getStyle("B{$row_print}")->applyFromArray(
 							array(
 								'font' => array('size' => 12,'bold' => true,'color' => array('rgb' => 'FFFFFF')),
@@ -6949,14 +6944,10 @@ class Cotizaciones extends MY_Controller {
 						$row_print +=1;
 						if ($value['articulos']) {
 							foreach ($value['articulos'] as $key => $row){
-								$arrayData = array(
-									array($row['codigo'],$row['producto'],$row['precio'],$row['observaciones'],$row['num_one'],$row['num_two'],$row['descuento'])
-								);
-								$this->excelfile->fromArray(
-								    $arrayData,
-								    NULL,
-								    'A'.$row_print
-								);
+								$hoja->setCellValue("A{$row_print}", $row['codigo']);
+								$hoja->setCellValue("B{$row_print}", $row['producto']);
+								$hoja->setCellValue("C{$row_print}", $row['precio']);
+								$hoja->setCellValue("D{$row_print}", $row['observaciones']);
 								$this->excelfile->getStyle("B{$row_print}:H{$row_print}")->applyFromArray(
 									array(
 										'font' => array('size' => 12,'bold' => false,'color' => array('rgb' => '000000')),
@@ -7049,28 +7040,7 @@ class Cotizaciones extends MY_Controller {
 									);
 								}
 
-								if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
-									$arrayData = array(
-										array("NUEVO")
-									);
-									$this->excelfile->fromArray(
-									    $arrayData,
-									    NULL,
-									    'H'.$row_print
-									);
-									$this->excelfile->getStyle("A{$row_print}:G{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF7F71'))
-										)
-									);
-									$this->excelfile->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => true,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF7F71'))
-										)
-									);
-								}
+								
 								$row_print++;
 							}
 						}
