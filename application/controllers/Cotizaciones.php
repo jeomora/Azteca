@@ -6781,8 +6781,8 @@ class Cotizaciones extends MY_Controller {
 			}
 		}
 
-		$this->excelfile->getActiveSheet()->getStyle('A1:BZ1')->getAlignment()->setWrapText(true);
-        $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		
+        	$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "COTIZACIONES ".$fecha.".xlsx"; //Nombre del documento con extención
