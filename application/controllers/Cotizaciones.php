@@ -6683,17 +6683,11 @@ class Cotizaciones extends MY_Controller {
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
-		$objReader = PHPExcel_IOFactory::createReader("Excel2007");
-		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
-		$hoja->setActiveSheetIndex(0);
-
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
-		
-		$hojs = 1;
 		$probes = $this->usua_mdl->getDudes(NULL);
 		if ($probes){
 			foreach ($probes as $key => $probns){
@@ -6707,22 +6701,26 @@ class Cotizaciones extends MY_Controller {
 				}
 				
 
+				$hoja = $this->excelfile->getActiveSheet();
 				$hoja->getDefaultStyle()
 				    ->getBorders()
 				    ->getTop()
-					->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 				$hoja->getDefaultStyle()
 				    ->getBorders()
 				    ->getBottom()
-					->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 				$hoja->getDefaultStyle()
 				    ->getBorders()
 				    ->getLeft()
-					->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 				$hoja->getDefaultStyle()
 				    ->getBorders()
 				    ->getRight()
-					->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+
+				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$border_style= array('borders' => array('right' => array('style' =>
 					PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
@@ -6737,13 +6735,6 @@ class Cotizaciones extends MY_Controller {
 					foreach ($productos as $key => $value){
 						$hoja->setCellValue("B{$row_print}", $value['familia']);
 						$hoja->setCellValue("C{$row_print}", $provs->nombre.' '.$provs->apellido);
-						
-						$hoja->getStyle("B{$row_print}")->applyFromArray(
-							array(
-								'font' => array('size' => 12,'bold' => true,'color' => array('rgb' => 'FFFFFF')),
-								'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '000000'))
-							)
-						);
 
 						$row_print +=1;
 						if ($value['articulos']) {
@@ -6758,80 +6749,29 @@ class Cotizaciones extends MY_Controller {
 										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
 									)
 								);
+
 								if($row['color'] == '#92CEE3'){
-									$hoja->getStyle("A{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '92CEE3'))
-										)
-									);
-								}else{
-									$hoja->getStyle("A{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
-										)
-									);
+									$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
 								}
 
 								if($row['estatus'] == 2){
-									$hoja->getStyle("B{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '00B0F0'))
-										)
-									);
+									$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Book");	
 								}
 								if($row['estatus'] == 3){
-									$hoja->getStyle("B{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFF900'))
-										)
-									);
+									$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 10, "Franklin Gothic Book");	
 								}
 								if($row['estatus'] >= 4){
-									$hoja->getStyle("B{$row_print}:C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '04B486'))
-										)
-									);
+									$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 10, "Franklin Gothic Book");
 								}
 								if($row['colorp'] == 1){
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'D6DCE4'))
-										)
-									);
-								}else{
-									$this->cellStyle("C{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FFFFFF'))
-										)
-									);
+									$this->cellStyle("C{$row_print}", "D6DCE4", "000000", FALSE, 10, "Franklin Gothic Book");
 								}
 								
 								if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
 									$hoja->setCellValue("E{$row_print}", "NUEVO");
-									$hoja->getStyle("A{$row_print}:G{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF7F71'))
-										)
-									);
-									$hoja->getStyle("C{$row_print}")->applyFromArray(
-										array(
-											'font' => array('size' => 10,'bold' => true,'color' => array('rgb' => '000000')),
-											'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'FF7F71'))
-										)
-									);
+									$this->cellStyle("A{$row_print}:E{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 								}
-
-								
+								$hoja->getStyle("A{$row_print}:E{$row_print}")->applyFromArray($border_style);
 								$row_print++;
 							}
 						}
@@ -6839,16 +6779,14 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-		
-		
-		
-		
-        	$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+
+		$this->excelfile->getActiveSheet()->getStyle('A1:BZ1')->getAlignment()->setWrapText(true);
+        $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
+		$file_name = "COTIZACIONES ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
-		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Content-Disposition: attachment;filename=".$file_name."");
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
