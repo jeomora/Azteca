@@ -1895,9 +1895,9 @@ $this->db->select("c.id_cotizacion,
 
 		$comparativaIndexada = [];
 		$flag = 0;
-		$columna = 7;
+		$columna = 21;
 		for ($i=0; $i<sizeof($comparativa); $i++) {
-			if ($comparativa[$i]->sumale > 10) {
+			if ($comparativa[$i]->sumale > 0) {
 				$comparativaIndexada[$comparativa[$i]->id_usuario]["cuantos"]	= $comparativa[$i]->sumale;
 				$comparativaIndexada[$comparativa[$i]->id_usuario]["nombre"]	= $comparativa[$i]->nombre;
 				$comparativaIndexada[$comparativa[$i]->id_usuario]["columna"]	= $columna;
