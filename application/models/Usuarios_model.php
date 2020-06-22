@@ -8,6 +8,34 @@ class Usuarios_model extends MY_Model {
 		$this->TABLE_NAME = "usuarios";
 		$this->PRI_INDEX = "id_usuario";
 	} 
+	
+	public function getDudes($where=[]){
+		$this->db->select("*")
+		->from("usuarios u")
+		->where("u.id_grupo", 2)
+		->where("u.estatus <>", 0)
+		->where("u.id_usuario IN (select id.proveedor from cotizaciones where WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) and estatus <> 0)")
+		->order_by("iu.nombre","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
 
 	public function getUsuarios($where=[]){
 		$this->db->select("
