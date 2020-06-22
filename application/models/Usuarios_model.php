@@ -15,6 +15,7 @@ class Usuarios_model extends MY_Model {
 		->where("u.id_grupo", 2)
 		->where("u.estatus <>", 0)
 		->where("u.id_usuario IN (select id_proveedor from cotizaciones where WEEKOFYEAR(fecha_registro) = WEEKOFYEAR(CURDATE()) and estatus <> 0)")
+		->group_by("u.id_usuario")
 		->order_by("u.nombre","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
