@@ -6926,8 +6926,8 @@ class Cotizaciones extends MY_Controller {
 				$hoja->setCellValue("C1", "PRECIO")->getColumnDimension('C')->setWidth(15);
 				$hoja->setCellValue("D1", "PROMOCIÓN")->getColumnDimension('D')->setWidth(50);
 				$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30);
-				$productos = $this->prod_mdl->getProdFam(NULL,$probns->id_proveedor);
-				$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$probns->id_proveedor])[0];
+				$productos = $this->prod_mdl->getProdFam(NULL,$probns["id_proveedor"]);
+				$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$probns["id_proveedor"]])[0];
 				$row_print = 2;
 				if ($productos){
 					foreach ($productos as $key => $value){
