@@ -6722,7 +6722,7 @@ class Cotizaciones extends MY_Controller {
 
 
 				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-				$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				
 				$border_style= array('borders' => array('right' => array('style' =>
 					PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 				$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
