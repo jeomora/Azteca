@@ -6686,6 +6686,89 @@ class Cotizaciones extends MY_Controller {
 		$objReader = PHPExcel_IOFactory::createReader("Excel2007");
 		$hoja = $objReader->load("./assets/uploads/cotiz.xlsx");
 		$hoja->setActiveSheetIndex(0);
+		//FECHA EN FORMATO COMPLETO PARA LOS TITULOS Y TABLAS
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$day = date('w');
+
+		$hoja = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle($dias[date('w')]." ".date('d'));
+        $this->excelfile->setActiveSheetIndex(0);
+
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+		$styleArray2 = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  )
+		);
+		$hoja = $this->excelfile->getActiveSheet();
+
+		$rws = 1;
+
+		$columnas = $this->ct_mdl->columnas(NULL);
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones3(NULL,$fecha,0);
+		
+
+		$colFlag = 21;
+		$rws = 1;
+		foreach ($columnas as $key => $val) {
+			if ($val["cuantos"] > 0) {
+				$this->cellStyle($this->getColumna($colFlag).''.$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue($this->getColumna($colFlag).''.$rws, $val["nombre"])->getColumnDimension($this->getColumna($colFlag).'')->setWidth(20);
+				$this->excelfile->getActiveSheet()->getStyle($this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray2);
+				$colFlag++;
+			}elseif ($val["cuantos"] === -1) {
+				$this->cellStyle($this->getColumna($colFlag).''.$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue($this->getColumna($colFlag).''.$rws, "P. D.")->getColumnDimension($this->getColumna($colFlag).'')->setWidth(20);
+				$this->excelfile->getActiveSheet()->getStyle($this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray2);
+				$colFlag++;
+			}
+		}
+		
+		if ($cotizacionesProveedor) {
+			foreach ($cotizacionesProveedor as $key => $value) {
+				foreach ($value["articulos"] as $key => $val) {
+
+					if (isset($columnas[ $val["primero"] ])) {
+						$this->cellStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+						$hoja->setCellValue($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->applyFromArray($styleArray);
+					}else{
+						$this->cellStyle($this->getColumna($columnas["none"]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+						$hoja->setCellValue($this->getColumna($columnas["none"]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas["none"]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas["none"]["columna"]).''.$rws)->applyFromArray($styleArray);
+					}
+					if (isset($val["otros"])) {
+						foreach ($val["otros"] as $key => $v) {
+							if (isset($columnas[ $v["proveedor"] ])) {
+								$this->cellStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+								$hoja->setCellValue($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws, $v["precio"])->getStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+								$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws)->applyFromArray($styleArray);
+							}
+						}
+					}
+					
+					
+					$this->excelfile->getActiveSheet()->getStyle('H'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
+
+					$rws++;
+				}
+
+			}
+		}
 
 		
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
@@ -6894,92 +6977,6 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-        
-		//FECHA EN FORMATO COMPLETO PARA LOS TITULOS Y TABLAS
-		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
-		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
-		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
-		$day = date('w');
-
-		$hoja = $this->excelfile->setActiveSheetIndex(0);
-		$this->excelfile->setActiveSheetIndex(0)->setTitle($dias[date('w')]." ".date('d'));
-        $this->excelfile->setActiveSheetIndex(0);
-
-		$styleArray = array(
-		  'borders' => array(
-		    'allborders' => array(
-		      'style' => PHPExcel_Style_Border::BORDER_THIN
-		    )
-		  )
-		);
-		$styleArray2 = array(
-		  'borders' => array(
-		    'allborders' => array(
-		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
-		    )
-		  )
-		);
-		$hoja = $this->excelfile->getActiveSheet();
-
-		$rws = 1;
-
-		$columnas = $this->ct_mdl->columnas(NULL);
-		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P2D');
-		$fecha->add($intervalo);
-		$fecha = $fecha->format('Y-m-d H:i:s');
-		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones3(NULL,$fecha,0);
-		
-
-		$colFlag = 21;
-		$rws = 1;
-		foreach ($columnas as $key => $val) {
-			if ($val["cuantos"] > 0) {
-				$this->cellStyle($this->getColumna($colFlag).''.$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-				$hoja->setCellValue($this->getColumna($colFlag).''.$rws, $val["nombre"])->getColumnDimension($this->getColumna($colFlag).'')->setWidth(20);
-				$this->excelfile->getActiveSheet()->getStyle($this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray2);
-				$colFlag++;
-			}elseif ($val["cuantos"] === -1) {
-				$this->cellStyle($this->getColumna($colFlag).''.$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-				$hoja->setCellValue($this->getColumna($colFlag).''.$rws, "P. D.")->getColumnDimension($this->getColumna($colFlag).'')->setWidth(20);
-				$this->excelfile->getActiveSheet()->getStyle($this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray2);
-				$colFlag++;
-			}
-		}
-		
-		if ($cotizacionesProveedor) {
-			foreach ($cotizacionesProveedor as $key => $value) {
-				foreach ($value["articulos"] as $key => $val) {
-
-					if (isset($columnas[ $val["primero"] ])) {
-						$this->cellStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-						$hoja->setCellValue($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->applyFromArray($styleArray);
-					}else{
-						$this->cellStyle($this->getColumna($columnas["none"]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-						$hoja->setCellValue($this->getColumna($columnas["none"]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas["none"]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas["none"]["columna"]).''.$rws)->applyFromArray($styleArray);
-					}
-					if (isset($val["otros"])) {
-						foreach ($val["otros"] as $key => $v) {
-							if (isset($columnas[ $v["proveedor"] ])) {
-								$this->cellStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-								$hoja->setCellValue($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws, $v["precio"])->getStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-								$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws)->applyFromArray($styleArray);
-							}
-						}
-					}
-					
-					
-					$this->excelfile->getActiveSheet()->getStyle('H'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
-
-					$rws++;
-				}
-
-			}
-		}
-
-
 
 
 		$this->excelfile->getActiveSheet()->getStyle('A1:BZ1')->getAlignment()->setWrapText(true);
