@@ -6689,6 +6689,7 @@ class Cotizaciones extends MY_Controller {
 		$fecha->add($intervalo);
 		$fecha = $fecha->format('Y-m-d H:i:s');
 		$probes = $this->usua_mdl->getDudes(NULL);
+		$hojs = 1;
 		if ($probes){
 			foreach ($probes as $key => $probns){
 				$this->excelfile->createSheet();
