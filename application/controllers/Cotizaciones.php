@@ -6850,7 +6850,25 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("M2","PRECIO");
 		$hoja->setCellValue("N1","TERCER")->getColumnDimension('N')->setWidth(20);
 		$hoja->setCellValue("N2","PROVEEDOR");
-		$hoja->setCellValue("O2","OBSERVACIÓN")->getColumnDimension('L')->setWidth(40);
+		$hoja->setCellValue("O2","OBSERVACIÓN")->getColumnDimension('O')->setWidth(40);
+
+		$hoja->setCellValue("Q2","")->getColumnDimension('Q')->setWidth(30);
+		$hoja->setCellValue("R2","")->getColumnDimension('R')->setWidth(30);
+		$hoja->setCellValue("S2","")->getColumnDimension('S')->setWidth(30);
+		$hoja->setCellValue("T2","")->getColumnDimension('T')->setWidth(30);
+		$hoja->setCellValue("P2","")->getColumnDimension('P')->setWidth(30);
+		$hoja->setCellValue("U2","")->getColumnDimension('U')->setWidth(30);
+		$hoja->setCellValue("V2","")->getColumnDimension('V')->setWidth(30);
+		$hoja->setCellValue("W2","")->getColumnDimension('W')->setWidth(30);
+		$hoja->setCellValue("X2","")->getColumnDimension('X')->setWidth(30);
+		$hoja->setCellValue("Y2","")->getColumnDimension('Y')->setWidth(30);
+		$hoja->setCellValue("Z2","")->getColumnDimension('Z')->setWidth(30);
+		$hoja->setCellValue("AA2","")->getColumnDimension('AA')->setWidth(30);
+		$hoja->setCellValue("AB2","")->getColumnDimension('AB')->setWidth(30);
+		$hoja->setCellValue("AC2","")->getColumnDimension('AC')->setWidth(30);
+		$hoja->setCellValue("AD2","")->getColumnDimension('AD')->setWidth(30);
+		$hoja->setCellValue("AE2","")->getColumnDimension('AE')->setWidth(30);
+		
 		
 
 		$this->cellStyle("A1:O2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");
@@ -6892,7 +6910,7 @@ class Cotizaciones extends MY_Controller {
 						}
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Bold");
 						$this->cellStyle("B{$row_print}:".$this->getColumna($celda)."{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Bold");
-						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:P{$row_print}")->applyFromArray($styleArray);
+						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:U{$row_print}")->applyFromArray($styleArray);
 						$this->excelfile->getActiveSheet()->getStyle("P{$row_print}:".$this->getColumna($celda)."{$row_print}")->applyFromArray($styleArray);
 						if($row['estatus'] == 2){
 							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
