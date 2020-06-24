@@ -6910,8 +6910,7 @@ class Cotizaciones extends MY_Controller {
 						}
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Bold");
 						$this->cellStyle("B{$row_print}:".$this->getColumna($celda)."{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Bold");
-						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:U{$row_print}")->applyFromArray($styleArray);
-						$this->excelfile->getActiveSheet()->getStyle("P{$row_print}:".$this->getColumna($celda)."{$row_print}")->applyFromArray($styleArray);
+						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:AE{$row_print}")->applyFromArray($styleArray);
 						if($row['estatus'] == 2){
 							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
