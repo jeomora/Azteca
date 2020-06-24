@@ -6796,6 +6796,135 @@ class Cotizaciones extends MY_Controller {
 		return $cellB;
 	}
 
+	public function fill_cotize(){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		//FECHA EN FORMATO COMPLETO PARA LOS TITULOS Y TABLAS
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$day = date('w');
+
+		$hoja = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle($dias[date('w')]." ".date('d'));
+        $this->excelfile->setActiveSheetIndex(0);
+
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+		$styleArray2 = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  )
+		);
+		$hoja = $this->excelfile->getActiveSheet();
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("COTIZACIÓN");
+
+		$rws = 1;
+
+		$hoja->setCellValue("A2","CÓDIGO")->getColumnDimension('A')->setWidth(20);
+		$hoja->setCellValue("B1","DESCRIPCIÓN")->getColumnDimension('B')->setWidth(63);
+		$hoja->setCellValue("C2","SISTEMA")->getColumnDimension('C')->setWidth(18);
+		$hoja->setCellValue("D2","PRECIO 4")->getColumnDimension('D')->setWidth(18);
+		$hoja->setCellValue("E1","PRIMER")->getColumnDimension('E')->setWidth(20);
+		$hoja->setCellValue("E2","PRECIO");
+		$hoja->setCellValue("F1","PROVEEDOR")->getColumnDimension('F')->setWidth(25);
+		$hoja->setCellValue("G1","OBSERVACIONES")->getColumnDimension('G')->setWidth(40);
+		$hoja->setCellValue("H1","PRECIO")->getColumnDimension('H')->setWidth(20);
+		$hoja->setCellValue("H2","MÁXIMO");
+		$hoja->setCellValue("I1","PRECIO")->getColumnDimension('I')->setWidth(20);
+		$hoja->setCellValue("I2","PROMEDIO");
+		$hoja->setCellValue("J1","SEGUNDO")->getColumnDimension('J')->setWidth(20);
+		$hoja->setCellValue("J2","PRECIO");
+		$hoja->setCellValue("K1","SEGUNDO")->getColumnDimension('K')->setWidth(20);
+		$hoja->setCellValue("K2","PROVEEDOR");
+		$hoja->setCellValue("L1","OBSERVACIÓN")->getColumnDimension('L')->setWidth(40);
+		$hoja->setCellValue("M1","TERCER")->getColumnDimension('M')->setWidth(20);
+		$hoja->setCellValue("M2","PRECIO");
+		$hoja->setCellValue("N1","TERCER")->getColumnDimension('N')->setWidth(20);
+		$hoja->setCellValue("N2","PROVEEDOR");
+		$hoja->setCellValue("O2","OBSERVACIÓN")->getColumnDimension('L')->setWidth(40);
+		
+
+		$this->cellStyle("A1:O2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");
+
+		$cotizacionesProveedor = $this->prod_mdl->sinpestanias(NULL, $fecha);
+		$row_print =2;
+		if ($cotizacionesProveedor){
+			foreach ($cotizacionesProveedor as $key => $value){
+				$hoja->setCellValue('B'.$row_print, $value['familia']);
+				$this->cellStyle("B{$row_print}", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");				
+				$row_print +=1;
+				if ($value['articulos']) {
+					foreach ($value['articulos'] as $key => $row){
+						$hoja->setCellValue("A{$row_print}",$row['codigo']);
+						$hoja->setCellValue("B{$row_print}",$row['producto']);
+						$hoja->setCellValue("C{$row_print}",$row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$hoja->setCellValue("D{$row_print}",$row['precio_four'])->getStyle("D{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$hoja->setCellValue("H{$row_print}",$row['precio_maximo'])->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$hoja->setCellValue("I{$row_print}",$row['precio_promedio'])->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						
+						$flag = 1;
+						$celda = 9;
+						if($row["cotizaciones"]){
+							foreach ($row["cotizaciones"] as $key => $vcotz) {
+								if($flag === 1){
+									$hoja->setCellValue("E{$row_print}",$vcotz['precio'])->getStyle("E{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+									$hoja->setCellValue("F{$row_print}",$vcotz['proveedor']);
+									$hoja->setCellValue("G{$row_print}",$vcotz['promocion']);
+									$flag++;
+								}else{
+									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['precio'])->getStyle($this->getColumna($celda)."{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+									$celda++;
+									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['proveedor']);
+									$celda++;
+									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['promocion']);
+									$celda++;
+								}
+							}
+						}
+						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Bold");
+						$this->cellStyle("B{$row_print}:".$this->getColumna($celda)."{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Bold");
+						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:P{$row_print}")->applyFromArray($styleArray);
+						$this->excelfile->getActiveSheet()->getStyle("P{$row_print}:".$this->getColumna($celda)."{$row_print}")->applyFromArray($styleArray);
+						if($row['estatus'] == 2){
+							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						if($row['estatus'] == 3){
+							$this->cellStyle("B{$row_print}", "FFF900", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						if($row['estatus'] >= 4){
+							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
+						}
+						$row_print +=1;
+					}
+				}
+			}
+		}
+
+
+
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name."");
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+
+	}
+
+
+
 }
 /* End of file Cotizaciones.php */
 /* Location: ./application/controllers/Cotizaciones.php */

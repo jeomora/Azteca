@@ -81,6 +81,14 @@ if(!$this->session->userdata("username")){
 							</button></a>
 						</div>
 					</div>
+
+					<div class="btn-group">
+						<div class="col-sm-2">
+							<a href="Cotizaciones/fill_cotiz22" rel="external-new-window" id="proveedorCotz"><button id="ver_proveedor" class="btn btn-info" data-toggle="tooltip" title="Filtrar 1 proveedor" style="background:#c82386;border-color:#c82386">
+								<i class="fa fa-cloud-download"></i> FORMATO SR. COSME <br>(SIN PESTAÑAS)
+							</button></a>
+						</div>
+					</div>
 					<!--<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
 							Subir cotizaciones de varios proveedores
