@@ -9,7 +9,7 @@
 	<head>
 
 		<!--begin::Base Path (base relative path for assets of this page) -->
-		<base href="<?php echo base_url('../../') ?>">
+		<base href="<?php echo base_url('../') ?>">
 
 		<!--end::Base Path -->
 		<meta charset="utf-8" />
@@ -77,8 +77,8 @@
 		<!--end::Layout Skins -->
 		<link rel="shortcut icon" href="./assets/img/progra.ico" />
 		<script type="text/javascript">
-			var base_url = "<?php echo base_url('../') ?>";//No carga el archivo index
-			var site_url = "<?php echo site_url('../') ?>";//Si carga el index 
+			var base_url = "<?php echo base_url('') ?>";//No carga el archivo index
+			var site_url = "<?php echo site_url('') ?>";//Si carga el index 
 			var user_name = "<?php echo "Usuario" ?>";////strtoupper($usuario['nombre'])
 		</script>
 
