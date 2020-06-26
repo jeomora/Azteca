@@ -9,8 +9,7 @@ class Inicio extends MY_Controller {
 	}
 
 	public function index(){
-		$this->data["message"] =NULL;
-		$this->estructura_login("Catalogo/admin", $this->data, FALSE);
+		redirect("Catalogo/admin", $data);
 	}
 
 	public function allpedido(){
