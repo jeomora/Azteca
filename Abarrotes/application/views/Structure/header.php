@@ -9,7 +9,7 @@
 	<head>
 
 		<!--begin::Base Path (base relative path for assets of this page) -->
-		<base href="<?php echo base_url('../') ?>">
+		<base href="<?php echo base_url('') ?>">
 
 		<!--end::Base Path -->
 		<meta charset="utf-8" />
