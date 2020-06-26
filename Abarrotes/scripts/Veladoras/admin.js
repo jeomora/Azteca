@@ -173,7 +173,7 @@ $(document).off("click", ".update_usuario").on("click", ".update_usuario", funct
         var values = {"id_producto":$("#id_produs").val(),"imagen":imageName}
         
         altaVela(JSON.stringify(values)).done(function (resp){
-            toastr.success("Se agrego la veladora", user_name)
+            toastr.success("Se agrego la imagen", user_name)
             setTimeout("location.reload()", 700, toastr.success("Se actualizara la pestaña", user_name), "");
         })
     }

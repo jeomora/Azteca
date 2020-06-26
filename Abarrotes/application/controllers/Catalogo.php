@@ -45,7 +45,7 @@ class Catalogo extends MY_Controller {
 
 	public function subirImg(){
 		ini_set("memory_limit", -1);
-		$filen = "vela".date("dmyHis");
+		$filen = date("dmyHis");
 		$config['upload_path']          = './assets/img/productos/';
         $config['allowed_types']        = 'jpg|jpeg|png|jfif';
         $config['max_size']             = 10000;
@@ -87,8 +87,8 @@ class Catalogo extends MY_Controller {
 	}
 
 	public function resizeImage($filename){
-      $source_path = $_SERVER['DOCUMENT_ROOT'] . '/assets/img/productos/' . $filename;
-      $target_path = $_SERVER['DOCUMENT_ROOT'] . '/assets/img/productos/';
+      $source_path = $_SERVER['DOCUMENT_ROOT'] . './assets/img/productos/' . $filename;
+      $target_path = $_SERVER['DOCUMENT_ROOT'] . './assets/img/productos/';
       list($width, $height, $type, $attr) = getimagesize($source_path);
       if ($width > $height) {
       	$config_manip = array(
