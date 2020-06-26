@@ -154,7 +154,7 @@ $(document).off("click", "#edituser").on("click", "#edituser", function(event) {
     getUser($(this).data("idUser"))
         .done(function (resp) {
             $("#id_produs").val(resp.id_producto);
-            $(".imgprod").attr("src",resp.imagen);
+            $(".imgprod").attr("src",site_url+"/assets/img/productos/"+resp.imagen);
         });
 });
 
