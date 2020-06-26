@@ -554,6 +554,11 @@ class Productos extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
+	public function getIms(){
+		$productos = $this->pro_md->getProductos(["productos.estatus<>0"]);
+		$this->jsonResponse($productos);
+	}
+
 }
 
 /* End of file Productos.php */
