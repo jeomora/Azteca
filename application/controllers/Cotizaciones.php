@@ -6831,22 +6831,22 @@ class Cotizaciones extends MY_Controller {
 
 		$hoja->setCellValue("A2","CÓDIGO")->getColumnDimension('A')->setWidth(20);
 		$hoja->setCellValue("B1","DESCRIPCIÓN")->getColumnDimension('B')->setWidth(63);
-		$hoja->setCellValue("C2","SISTEMA")->getColumnDimension('C')->setWidth(18);
-		$hoja->setCellValue("D2","PRECIO 4")->getColumnDimension('D')->setWidth(18);
-		$hoja->setCellValue("E1","PRIMER")->getColumnDimension('E')->setWidth(20);
+		$hoja->setCellValue("C2","SISTEMA")->getColumnDimension('C')->setWidth(16);
+		$hoja->setCellValue("D2","PRECIO 4")->getColumnDimension('D')->setWidth(16);
+		$hoja->setCellValue("E1","PRIMER")->getColumnDimension('E')->setWidth(16);
 		$hoja->setCellValue("E2","PRECIO");
 		$hoja->setCellValue("F1","PROVEEDOR")->getColumnDimension('F')->setWidth(25);
 		$hoja->setCellValue("G1","OBSERVACIONES")->getColumnDimension('G')->setWidth(40);
-		$hoja->setCellValue("H1","PRECIO")->getColumnDimension('H')->setWidth(20);
+		$hoja->setCellValue("H1","PRECIO")->getColumnDimension('H')->setWidth(16);
 		$hoja->setCellValue("H2","MÁXIMO");
-		$hoja->setCellValue("I1","PRECIO")->getColumnDimension('I')->setWidth(20);
+		$hoja->setCellValue("I1","PRECIO")->getColumnDimension('I')->setWidth(16);
 		$hoja->setCellValue("I2","PROMEDIO");
-		$hoja->setCellValue("J1","SEGUNDO")->getColumnDimension('J')->setWidth(20);
+		$hoja->setCellValue("J1","SEGUNDO")->getColumnDimension('J')->setWidth(16);
 		$hoja->setCellValue("J2","PRECIO");
 		$hoja->setCellValue("K1","SEGUNDO")->getColumnDimension('K')->setWidth(20);
 		$hoja->setCellValue("K2","PROVEEDOR");
 		$hoja->setCellValue("L1","OBSERVACIÓN")->getColumnDimension('L')->setWidth(40);
-		$hoja->setCellValue("M1","TERCER")->getColumnDimension('M')->setWidth(20);
+		$hoja->setCellValue("M1","TERCER")->getColumnDimension('M')->setWidth(16);
 		$hoja->setCellValue("M2","PRECIO");
 		$hoja->setCellValue("N1","TERCER")->getColumnDimension('N')->setWidth(20);
 		$hoja->setCellValue("N2","PROVEEDOR");
@@ -6870,6 +6870,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("AE2","")->getColumnDimension('AE')->setWidth(30);
 		
 		
+		
 
 		$this->cellStyle("A1:O2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");
 
@@ -6882,6 +6883,8 @@ class Cotizaciones extends MY_Controller {
 				$row_print +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
+						$condRed = new PHPExcel_Style_Conditional();
+						$condGreen = new PHPExcel_Style_Conditional();
 						$hoja->setCellValue("A{$row_print}",$row['codigo']);
 						$hoja->setCellValue("B{$row_print}",$row['producto']);
 						$hoja->setCellValue("C{$row_print}",$row['precio_sistema'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
@@ -6889,6 +6892,44 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("H{$row_print}",$row['precio_maximo'])->getStyle("H{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 						$hoja->setCellValue("I{$row_print}",$row['precio_promedio'])->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 						
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_GREATERTHAN)
+				                ->addCondition("C".$row_print)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$condGreen->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_LESSTHAN)
+				                ->addCondition("C".$row_print)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF006100')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFC6EFCE'),
+										  'endcolor' =>array('argb' => 'FFC6EFCE')
+										)
+									)
+								);
+
+				        $conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('E'.$row_print)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						array_push($conditionalStyles,$condGreen);
+						$this->excelfile->getActiveSheet()->getStyle('E'.$row_print)->setConditionalStyles($conditionalStyles);
+
 						$flag = 1;
 						$celda = 9;
 						if($row["cotizaciones"]){
@@ -6900,6 +6941,10 @@ class Cotizaciones extends MY_Controller {
 									$flag++;
 								}else{
 									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['precio'])->getStyle($this->getColumna($celda)."{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+									$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($celda)."{$row_print}")->getConditionalStyles();
+									array_push($conditionalStyles,$condRed);
+									array_push($conditionalStyles,$condGreen);
+									$this->excelfile->getActiveSheet()->getStyle($this->getColumna($celda)."{$row_print}")->setConditionalStyles($conditionalStyles);
 									$celda++;
 									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['proveedor']);
 									$celda++;
@@ -6920,6 +6965,8 @@ class Cotizaciones extends MY_Controller {
 						if($row['estatus'] >= 4){
 							$this->cellStyle("B{$row_print}", "04B486", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
+
+						
 						$row_print +=1;
 					}
 				}
