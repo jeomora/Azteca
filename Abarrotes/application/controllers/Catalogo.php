@@ -87,8 +87,8 @@ class Catalogo extends MY_Controller {
 	}
 
 	public function resizeImage($filename){
-      $source_path = $_SERVER['DOCUMENT_ROOT'] . '/Abarrotes/assets/img/productos/' . $filename;
-      $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Abarrotes/assets/img/productos/';
+      $source_path = $_SERVER['DOCUMENT_ROOT'] . '/assets/img/productos/' . $filename;
+      $target_path = $_SERVER['DOCUMENT_ROOT'] . '/assets/img/productos/';
       list($width, $height, $type, $attr) = getimagesize($source_path);
       if ($width > $height) {
       	$config_manip = array(
