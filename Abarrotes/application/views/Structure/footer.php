@@ -802,7 +802,7 @@
 		<!--end::Page Vendors -->
 		<?php if (isset($scripts) && $scripts): ?>
 			<?php foreach ($scripts as $row): ?>
-			<script type="text/javascript" src="<?php echo "../".base_url('/'.$row.'.js') ?>"></script>
+			<script type="text/javascript" src="<?php echo base_url('/'.$row.'.js') ?>"></script>
 			<?php endforeach ?>
 		<?php endif ?>
 
