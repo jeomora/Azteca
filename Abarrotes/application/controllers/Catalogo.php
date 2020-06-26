@@ -153,8 +153,8 @@ class Catalogo extends MY_Controller {
 		$rws = 1;
 		$this->cellStyle("A".$rws.":D".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");
 		$this->excelfile->getActiveSheet()->getStyle("A".$rws.":D".$rws)->getAlignment()->setWrapText(true);
-		$hoja->setCellValue("A".$rws, "CÓDIGO PIEZA")->getColumnDimension('A')->setWidth(30);
-		$hoja->setCellValue("B".$rws, "CÓDIGO CAJA")->getColumnDimension('B')->setWidth(30);
+		$hoja->setCellValue("A".$rws, "CÓDIGO")->getColumnDimension('A')->setWidth(30);
+		$hoja->setCellValue("B".$rws, "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(30);
 		$hoja->setCellValue("C".$rws, "DESCRIPCIÓN")->getColumnDimension('C')->setWidth(70);
 		$hoja->setCellValue("D".$rws, "IMAGEN")->getColumnDimension('D')->setWidth(25);
 		$this->excelfile->getActiveSheet()->getStyle('A'.$rws.":D".$rws)->applyFromArray($styleArray2);

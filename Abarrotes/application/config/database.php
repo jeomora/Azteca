@@ -80,7 +80,7 @@ $db['default'] = array(
 	'username' => 'root',
 	'password' => 'IRCcgv33478',
 	//	'password' => '',
-	'database' => 'aztecas',
+	'database' => 'azteca',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'db_debug' => (ENVIRONMENT !== 'production'),
