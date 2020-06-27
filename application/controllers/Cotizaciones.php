@@ -5148,6 +5148,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja1->getColumnDimension('C')->setWidth("6");
 		$hoja1->getColumnDimension('D')->setWidth("25");
 		$hoja1->getColumnDimension('E')->setWidth("47");
+		$hoja1->getColumnDimension('F')->setWidth("15");
 
 		$hoja1->getColumnDimension('G')->setWidth("50");
 
@@ -5174,7 +5175,7 @@ class Cotizaciones extends MY_Controller {
 			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
 			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
 			$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':G'.$flag2.'')->applyFromArray($styleArray);
 
 			$this->cellStyle("H".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->setCellValue("H".$flag2."", "PENDIENT");
@@ -5197,7 +5198,7 @@ class Cotizaciones extends MY_Controller {
 			
 
 			$flag2++;
-			$this->cellStyle("A".$flag2.":F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("A".$flag2.":G".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja1->setCellValue("A".$flag2."", "CAJAS");
 			$hoja1->setCellValue("B".$flag2."", "PZAS");
 			$hoja1->setCellValue("C".$flag2."", "PEDIDO");
@@ -6058,6 +6059,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja1->getColumnDimension('D')->setWidth("25");
 		$hoja1->getColumnDimension('E')->setWidth("47");
 		$hoja1->getColumnDimension('G')->setWidth("50");
+		$hoja1->getColumnDimension('F')->setWidth("15");
 
 		foreach ($array as $key => $v3) {
 			$this->excelfile->setActiveSheetIndex(0);
