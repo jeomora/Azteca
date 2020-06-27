@@ -29,16 +29,7 @@
             </div>
         </div>
         <div class="kt-portlet__body">
-            <div class="kt-form__section kt-form__section--first">
-                <div class="form-group row" style="padding:20px;margin-bottom:0px;padding-bottom:0px">
-                    <div class="col-lg-2 col-md-2 col-sm-12"></div>
-                    <label class="col-form-label col-lg-2 col-sm-12">
-                        <a href="Catalogo/fill_excel" target="_blank">
-                            <button type="submit" class="btn btn-outline-brand"><i class="flaticon-download"></i> Descargar CON IMAGENES</button>
-                        </a>
-                    </label>
-                </div>
-            </div>
+            
 
             <!--begin: Search Form -->
             <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">

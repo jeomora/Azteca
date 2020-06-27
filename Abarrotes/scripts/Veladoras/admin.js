@@ -117,7 +117,7 @@ var KTDatatableDataLocalDemo = function() {
         });
 
         $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
+        },1800)
 
         
 
