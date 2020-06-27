@@ -3044,7 +3044,7 @@ class Cotizaciones extends MY_Controller {
 									}
 									
 									$this->excelfile->setActiveSheetIndex(0);
-									$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':O'.$flag1)->applyFromArray($styleArray);
+									$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':P'.$flag1)->applyFromArray($styleArray);
 									$hoja->getStyle("A{$flag}:I{$flag}")
 							                 ->getAlignment()
 							                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -5634,7 +5634,7 @@ class Cotizaciones extends MY_Controller {
 							$this->excelfile->getActiveSheet()->getStyle('BO'.$flag)->applyFromArray($styleArray);
 							$this->excelfile->getActiveSheet()->getStyle('BP'.$flag)->applyFromArray($styleArray);
 							$this->excelfile->setActiveSheetIndex(0);
-							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':O'.$flag1)->applyFromArray($styleArray);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':P'.$flag1)->applyFromArray($styleArray);
 							$hoja->getStyle("A{$flag}:K{$flag}")
 					                 ->getAlignment()
 					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -6354,7 +6354,7 @@ class Cotizaciones extends MY_Controller {
 								$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 								$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
 							}
-							
+
 							$hoja1->getStyle("A{$flag1}:P{$flag1}")
 					                 ->getAlignment()
 					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
@@ -6540,7 +6540,7 @@ class Cotizaciones extends MY_Controller {
 							$this->excelfile->getActiveSheet()->getStyle('BO'.$flag)->applyFromArray($styleArray);
 							$this->excelfile->getActiveSheet()->getStyle('BP'.$flag)->applyFromArray($styleArray);
 							$this->excelfile->setActiveSheetIndex(0);
-							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':O'.$flag1)->applyFromArray($styleArray);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':P'.$flag1)->applyFromArray($styleArray);
 							$hoja->getStyle("A{$flag}:K{$flag}")
 					                 ->getAlignment()
 					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
