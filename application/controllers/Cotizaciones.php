@@ -2265,6 +2265,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja1->setCellValue("C".$flag1, "PEDIDO");
 						$hoja1->setCellValue("D".$flag1, "CÓDIGO");
 						$hoja1->setCellValue("F".$flag1, "PROMOCIÓN");
+						$hoja1->setCellValue("P".$flag1, "IMAGEN")->getColumnDimension('P')->setWidth(25);
 						
 						$this->cellStyle("G".$flag1, "C00000", "000000", TRUE, 10, "Franklin Gothic Book");
 						$this->cellStyle("H".$flag1, "01B0F0", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -2659,7 +2660,23 @@ class Cotizaciones extends MY_Controller {
 									$hoja1->setCellValue("M{$flag1}", $row['mercado']);
 									$hoja1->setCellValue("N{$flag1}", $row['tenencia']);
 									$hoja1->setCellValue("O{$flag1}", $row['tijeras']);
-									$hoja1->getStyle("A{$flag1}:O{$flag1}")
+
+									if ($row["imagen"] <> "" && !is_null($row["imagen"]) ) {
+										$objDrawing = new PHPExcel_Worksheet_Drawing();
+										$objDrawing->setName('COD'.$row['producto']);
+										$objDrawing->setDescription('DESC'.$row['codigo']);
+										$objDrawing->setPath("./Abarrotes/assets/img/productos/".str_replace(".","_thumb.",$row["imagen"])."");
+										$objDrawing->setWidth(100);
+										$objDrawing->setHeight(100);
+										$objDrawing->setCoordinates('P'.$flag1);
+										$objDrawing->setOffsetX(5); 
+										$objDrawing->setOffsetY(5);
+										$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
+										$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(125);
+										$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+									}
+
+									$hoja1->getStyle("A{$flag1}:P{$flag1}")
 							                 ->getAlignment()
 							                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 							         
