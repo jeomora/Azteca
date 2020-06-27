@@ -2671,10 +2671,10 @@ class Cotizaciones extends MY_Controller {
 										$objDrawing->setCoordinates('P'.$flag1);
 										$objDrawing->setOffsetX(5); 
 										$objDrawing->setOffsetY(5);
+										$objDrawing->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
 										$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
 										$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 										$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
-										$this->excelfile->getActiveSheet()->getCell()->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
 									}
 
 									$hoja1->getStyle("A{$flag1}:P{$flag1}")
