@@ -2666,14 +2666,15 @@ class Cotizaciones extends MY_Controller {
 										$objDrawing->setName('COD'.$row['producto']);
 										$objDrawing->setDescription('DESC'.$row['codigo']);
 										$objDrawing->setPath("./Abarrotes/assets/img/productos/".str_replace(".","_thumb.",$row["imagen"])."");
-										$objDrawing->setWidth(100);
-										$objDrawing->setHeight(100);
+										$objDrawing->setWidth(50);
+										$objDrawing->setHeight(50);
 										$objDrawing->setCoordinates('P'.$flag1);
 										$objDrawing->setOffsetX(5); 
 										$objDrawing->setOffsetY(5);
 										$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
-										$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(125);
+										$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 										$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+										$this->excelfile->getActiveSheet()->getCell()->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
 									}
 
 									$hoja1->getStyle("A{$flag1}:P{$flag1}")
