@@ -2265,7 +2265,7 @@ class Cotizaciones extends MY_Controller {
 						$hoja1->setCellValue("C".$flag1, "PEDIDO");
 						$hoja1->setCellValue("D".$flag1, "CÓDIGO");
 						$hoja1->setCellValue("F".$flag1, "PROMOCIÓN");
-						$hoja1->setCellValue("P".$flag1, "IMAGEN")->getColumnDimension('P')->setWidth(25);
+						$hoja1->setCellValue("P".$flag1, "IMAGEN")->getColumnDimension('P')->setWidth(18);
 						
 						$this->cellStyle("G".$flag1, "C00000", "000000", TRUE, 10, "Franklin Gothic Book");
 						$this->cellStyle("H".$flag1, "01B0F0", "000000", TRUE, 10, "Franklin Gothic Book");
@@ -2671,10 +2671,11 @@ class Cotizaciones extends MY_Controller {
 										$objDrawing->setCoordinates('P'.$flag1);
 										$objDrawing->setOffsetX(5); 
 										$objDrawing->setOffsetY(5);
-										$objDrawing->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
+										//$objDrawing->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
 										$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
 										$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 										$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+										$this->excelfile->getActiveSheet()->getCell('P'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
 									}
 
 									$hoja1->getStyle("A{$flag1}:P{$flag1}")
