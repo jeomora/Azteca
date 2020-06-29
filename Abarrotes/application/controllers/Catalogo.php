@@ -78,7 +78,7 @@ class Catalogo extends MY_Controller {
 					$longs = strlen((string)$i);
 					if ($longs === 1){
 						$ima = "image00".$i.".png";
-					}else($longs === 2){
+					}elseif($longs === 2){
 						$ima = "image0".$i.".png";
 					}else{
 						$ima = "image".$i.".png";

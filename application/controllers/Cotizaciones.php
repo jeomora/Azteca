@@ -6802,7 +6802,7 @@ class Cotizaciones extends MY_Controller {
 							foreach ($value['articulos'] as $key => $row){
 								$hoja->setCellValue("A{$row_print}", $row['codigo']);
 								$hoja->setCellValue("B{$row_print}", $row['producto']);
-								$hoja->setCellValue("C{$row_print}", $row['precio'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("C{$row_print}", $row['precio_promocion'])->getStyle("C{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("D{$row_print}", $row['observaciones']);
 								if($row['color'] == '#92CEE3'){
 									$this->cellStyle("A{$row_print}", "92CEE3", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -7214,7 +7214,7 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function resizeImage($filename){
-		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/CATALOGO DE ABARROTES_25508_' . $filename;
 	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/ppp/';
 	    list($width, $height, $type, $attr) = getimagesize($source_path);
 	    if ($width > $height) {
@@ -7224,7 +7224,7 @@ class Cotizaciones extends MY_Controller {
 		          'new_image' => $target_path,
 		          'create_thumb' => TRUE,
 		          'maintain_ratio' => TRUE,
-		          'width' => 100,
+		          'width' => $width,
 		      );
 	      }else{
 	      	$config_manip = array(
@@ -7233,7 +7233,7 @@ class Cotizaciones extends MY_Controller {
 		          'new_image' => $target_path,
 		          'create_thumb' => TRUE,
 		          'maintain_ratio' => TRUE,
-		          'height' => 100,
+		          'height' => $height,
 		      );
 	      }
 	      
@@ -7249,7 +7249,7 @@ class Cotizaciones extends MY_Controller {
 
    public function didi(){
    	$this->load->library('image_lib');
-   	for ($i=3; $i < 2672; $i++) { 
+   	for ($i=1; $i < 2672; $i++) { 
 			$flags = $i;
 			$longs = $this->couns($flags);
 			if ($longs === 1){
