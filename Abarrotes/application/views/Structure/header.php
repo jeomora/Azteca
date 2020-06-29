@@ -116,7 +116,7 @@
 		<!-- begin:: Header Mobile -->
 		<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
 			<div class="kt-header-mobile__logo">
-				<a href="demo4/index.html">
+				<a href="http:/abarrotesazteca.com/Main">
 					<img alt="Logo" src="./assets/img/abarrotes.png" style="max-width: 70px" />
 				</a>
 			</div>
@@ -137,7 +137,7 @@
 
 							<!-- begin:: Brand -->
 							<div class="kt-header__brand   kt-grid__item" id="kt_header_brand">
-								<a class="kt-header__brand-logo" href="<?php echo base_url() ?>">
+								<a class="kt-header__brand-logo" href="http:/abarrotesazteca.com/Main">
 									<img alt="Logo" src="./assets/img/abarrotes.png" class="kt-header__brand-logo-default" style="max-width:80px" />
 									<img alt="Logo" src="./assets/img/logo_abarrotes.png" class="kt-header__brand-logo-sticky" style="max-width:80px" />
 								</a>

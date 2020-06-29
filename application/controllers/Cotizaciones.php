@@ -6742,7 +6742,7 @@ class Cotizaciones extends MY_Controller {
 		return $ip;
 	}
 
-	public function fill_cotiz(){
+	/*public function fill_cotiz(){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 		$this->load->library("excelfile");
@@ -6833,6 +6833,169 @@ class Cotizaciones extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "COTIZACIONES ".$fecha.".xlsx"; //Nombre del documento con extención
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name."");
+		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		$excel_Writer->save("php://output");
+	}*/
+
+	public function fill_cotiz(){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		//FECHA EN FORMATO COMPLETO PARA LOS TITULOS Y TABLAS
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$day = date('w');
+
+		$hoja = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle($dias[date('w')]." ".date('d'));
+        $this->excelfile->setActiveSheetIndex(0);
+
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+		$styleArray2 = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  )
+		);
+		$hoja = $this->excelfile->getActiveSheet();
+
+		$rws = 1;
+
+		$columnas = $this->ct_mdl->columnas(NULL);
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$fecha = $fecha->format('Y-m-d H:i:s');
+		$cotizacionesProveedor = $this->ct_mdl->comparaCotizaciones3(NULL,$fecha,0);
+		$this->excelfile->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
+
+		$this->cellStyle("A".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("A".$rws, "CÓDIGO")->getColumnDimension('A')->setWidth(20);
+		$this->cellStyle("B".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("B".$rws, "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(50);
+		$this->cellStyle("C".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("C".$rws, "PRECIO SISTEMA")->getColumnDimension('C')->setWidth(20);
+		$this->cellStyle("D".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("D".$rws, "PRECIO 4")->getColumnDimension('D')->setWidth(20);
+		$this->cellStyle("E".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("E".$rws, "PRECIO REAL")->getColumnDimension('E')->setWidth(20);
+		$this->cellStyle("F".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("F".$rws, "1ER PRECIO")->getColumnDimension('F')->setWidth(20);
+		$this->cellStyle("G".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja->setCellValue("G".$rws, "PROVEEDOR")->getColumnDimension('G')->setWidth(30);
+		$this->excelfile->getActiveSheet()->getStyle('A'.$rws.":G".$rws)->applyFromArray($styleArray2);
+		$colFlag = 7;
+		$rws = 1;
+		foreach ($columnas as $key => $val) {
+			if ($val["cuantos"] > 10) {
+				$this->cellStyle($this->getColumna($colFlag).''.$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue($this->getColumna($colFlag).''.$rws, $val["nombre"])->getColumnDimension($this->getColumna($colFlag).'')->setWidth(20);
+				$this->excelfile->getActiveSheet()->getStyle($this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray2);
+				$colFlag++;
+			}elseif ($val["cuantos"] === -1) {
+				$this->cellStyle($this->getColumna($colFlag).''.$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue($this->getColumna($colFlag).''.$rws, "P. D.")->getColumnDimension($this->getColumna($colFlag).'')->setWidth(20);
+				$this->excelfile->getActiveSheet()->getStyle($this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray2);
+				$colFlag++;
+			}
+		}
+		
+		if ($cotizacionesProveedor) {
+			foreach ($cotizacionesProveedor as $key => $value) {
+				$this->cellStyle("B".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("B".$rws, $value["familia"]);
+				$this->excelfile->getActiveSheet()->getStyle('B'.$rws)->applyFromArray($styleArray);
+				$rws++;
+				foreach ($value["articulos"] as $key => $val) {
+					$this->cellStyle("A".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("A".$rws, $val["codigo"]);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$rws)->applyFromArray($styleArray);
+					$this->cellStyle("B".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("B".$rws, $val["producto"]);
+					$this->excelfile->getActiveSheet()->getStyle('B'.$rws)->applyFromArray($styleArray);
+					$this->cellStyle("C".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("C".$rws, $val["precio_sistema"])->getStyle("C{$rws}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->excelfile->getActiveSheet()->getStyle('C'.$rws)->applyFromArray($styleArray);
+					$this->cellStyle("D".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("D".$rws, $val["precio_four"])->getStyle("D{$rws}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->excelfile->getActiveSheet()->getStyle('D'.$rws)->applyFromArray($styleArray);
+					$this->cellStyle("E".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("E".$rws, $val["reales"])->getStyle("E{$rws}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->excelfile->getActiveSheet()->getStyle('E'.$rws)->applyFromArray($styleArray);
+
+					$this->cellStyle("F".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("F".$rws, $val["precio"])->getStyle("F{$rws}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+					$this->excelfile->getActiveSheet()->getStyle('F'.$rws)->applyFromArray($styleArray);
+					$this->cellStyle("G".$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+					$hoja->setCellValue("G".$rws, $val["provefirst"]);
+					$this->excelfile->getActiveSheet()->getStyle('G'.$rws)->applyFromArray($styleArray);
+
+					if (isset($columnas[ $val["primero"] ])) {
+						$this->cellStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+						$hoja->setCellValue($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas[$val["primero"]]["columna"]).''.$rws)->applyFromArray($styleArray);
+					}else{
+						$this->cellStyle($this->getColumna($columnas["none"]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+						$hoja->setCellValue($this->getColumna($columnas["none"]["columna"]).''.$rws, $val["precio"])->getStyle($this->getColumna($columnas["none"]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas["none"]["columna"]).''.$rws)->applyFromArray($styleArray);
+					}
+					if (isset($val["otros"])) {
+						foreach ($val["otros"] as $key => $v) {
+							if (isset($columnas[ $v["proveedor"] ])) {
+								$this->cellStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
+								$hoja->setCellValue($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws, $v["precio"])->getStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws)->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+								$this->excelfile->getActiveSheet()->getStyle($this->getColumna($columnas[$v["proveedor"]]["columna"]).''.$rws)->applyFromArray($styleArray);
+							}
+						}
+					}
+					
+					$condRed = new PHPExcel_Style_Conditional();
+					$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+			                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_EQUAL)
+			                ->addCondition('=MIN(H'.$rws.':'.$this->getColumna($colFlag).''.$rws.')')
+			                ->getStyle()
+			                ->applyFromArray(
+			                	array(
+								  'font'=>array(
+								   'color'=>array('argb'=>'FF9C0006')
+								  ),
+								  'fill'=>array(
+									  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+									  'startcolor' =>array('argb' => 'FFFFC7CE'),
+									  'endcolor' =>array('argb' => 'FFFFC7CE')
+									)
+								)
+							);
+			        $bandera = 7;
+					
+					$this->excelfile->getActiveSheet()->getStyle('H'.$rws.':'.$this->getColumna($colFlag).''.$rws)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->freezePane('H2');
+
+					$rws++;
+				}
+
+			}
+		}
+
+
+
+
+		$this->excelfile->getActiveSheet()->getStyle('A1:BZ1')->getAlignment()->setWrapText(true);
+        $dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "COTIZACIÓN ".$fecha.".xlsx"; //Nombre del documento con extención
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name."");
 		header("Cache-Control: max-age=0");
@@ -7049,6 +7212,62 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 
 	}
+
+	public function resizeImage($filename){
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/ppp/';
+	    list($width, $height, $type, $attr) = getimagesize($source_path);
+	    if ($width > $height) {
+	      	$config_manip = array(
+		          'image_library' => 'gd2',
+		          'source_image' => $source_path,
+		          'new_image' => $target_path,
+		          'create_thumb' => TRUE,
+		          'maintain_ratio' => TRUE,
+		          'width' => 100,
+		      );
+	      }else{
+	      	$config_manip = array(
+		          'image_library' => 'gd2',
+		          'source_image' => $source_path,
+		          'new_image' => $target_path,
+		          'create_thumb' => TRUE,
+		          'maintain_ratio' => TRUE,
+		          'height' => 100,
+		      );
+	      }
+	      
+	   
+	      $this->image_lib->initialize($config_manip);
+	      if (!$this->image_lib->resize()) {
+	          echo $this->image_lib->display_errors();
+	      }
+	      var_dump($this->image_lib);
+	      echo $source_path;
+	      
+   }
+
+   public function didi(){
+   	$this->load->library('image_lib');
+   	for ($i=3; $i < 2672; $i++) { 
+			$flags = $i;
+			$longs = $this->couns($flags);
+			if ($longs === 1){
+				$filename = "image00".$flags.".png";
+			}elseif($longs === 2){
+				$filename = "image0".$flags.".png";
+			}else{
+				$filename = "image".$flags.".png";
+			}
+			$this->resizeImage($filename);
+			$this->image_lib->clear();
+
+		}
+   }
+
+   public function couns($number){
+   	return strlen((string)$number);
+   }
 
 
 

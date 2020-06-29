@@ -44,7 +44,7 @@ class Catalogo extends MY_Controller {
 	}
 
 	public function subirImg(){
-		ini_set("memory_limit", -1);
+		/*ini_set("memory_limit", -1);
 		$filen = date("dmyHis");
 		$config['upload_path']          = './assets/img/productos/';
         $config['allowed_types']        = 'jpg|jpeg|png|jfif';
@@ -61,7 +61,36 @@ class Catalogo extends MY_Controller {
 		}
 		$path_parts = pathinfo($_FILES["file_otizaciones"]["name"]);
 		$extension = $path_parts['extension'];
-		$this->jsonResponse($filen.".".$extension);
+		$this->jsonResponse($filen.".".$extension);*/
+
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_otizaciones"]["tmp_name"];
+		$filename=$_FILES['file_otizaciones']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+
+		for ($i=1; $i<=$num_rows; $i++) {
+			if($this->getOldVal($sheet,$i,'A') > 0){
+				$productos = $this->vela_md->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,'A'), ENT_QUOTES, 'UTF-8')])[0];
+				if(sizeof($productos) > 0) {
+					$longs = strlen((string)$i);
+					if ($longs === 1){
+						$ima = "image00".$i.".png";
+					}else($longs === 2){
+						$ima = "image0".$i.".png";
+					}else{
+						$ima = "image".$i.".png";
+					}					
+					$new_cotizacion=[
+						"id_producto"	=>	$productos->id_producto,
+						"imagen"		=>	$ima,
+					];
+					$data['cotizacion']=$this->img_md->insert($new_cotizacion);
+				}
+			}
+		}
 	}
 
 	public function altaVela(){
