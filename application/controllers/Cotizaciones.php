@@ -6895,7 +6895,7 @@ class Cotizaciones extends MY_Controller {
 		$this->cellStyle("G".$rws, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja->setCellValue("G".$rws, "PROVEEDOR")->getColumnDimension('G')->setWidth(30);
 		$this->excelfile->getActiveSheet()->getStyle('A'.$rws.":G".$rws)->applyFromArray($styleArray2);
-		$colFlag = 5;
+		$colFlag = 7;
 		$rws = 1;
 		foreach ($columnas as $key => $val) {
 			if ($val["cuantos"] > 10) {
