@@ -5951,6 +5951,7 @@ class Cotizaciones extends MY_Controller {
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
+		$cuafile = $_FILES["file_cotizaciones"]['name'];
 		$file = $_FILES["file_cotizaciones"]["tmp_name"];
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
@@ -6003,7 +6004,7 @@ class Cotizaciones extends MY_Controller {
 					"fecha_cambio"		=>	date("Y-m-d H:i:s"),
 					"antes"			=>	"El usuario sube archivo de pedidos de la tienda ".$aprov->nombre,
 					"despues"			=>	"assets/uploads/pedidos/".$filen.".xlsx",
-					"accion"			=>	"Sube Pedidos"
+					"accion"			=>	"Pedidos ( ".$cuafile." )"
 				];
 			$data['cambios']=$this->cambio_md->insert($cambios);
 			$mensaje=[	"id"	=>	'Éxito',

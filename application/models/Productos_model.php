@@ -16,7 +16,7 @@ class Productos_model extends MY_Model {
 		$this->db->select("c.observaciones,ff.id_familia, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,c.precio_promocion,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
 			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
-			WEEKOFYEAR(CURDATE()) AND c.id_proveedor = ".$prove."  WHERE p.estatus <> 0");
+			WEEKOFYEAR(CURDATE()) AND c.id_proveedor = ".$prove."  WHERE p.estatus <> 0 p.id_familia,p.id_producto");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
