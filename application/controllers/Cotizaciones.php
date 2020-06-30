@@ -2667,7 +2667,7 @@ class Cotizaciones extends MY_Controller {
 										$objDrawing = new PHPExcel_Worksheet_Drawing();
 										$objDrawing->setName('COD'.$row['producto']);
 										$objDrawing->setDescription('DESC'.$row['codigo']);
-										$objDrawing->setPath("./Abarrotes/assets/img/productos/".str_replace(".","_thumb.",$row["imagen"])."");
+										$objDrawing->setPath("./Abarrotes/assets/img/productos/".$row["imagen"]."");
 										$objDrawing->setWidth(50);
 										$objDrawing->setHeight(50);
 										$objDrawing->setCoordinates('F'.$flag1);
@@ -2677,7 +2677,7 @@ class Cotizaciones extends MY_Controller {
 										$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
 										$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 										$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
-										$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
+										$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]));
 									}
 
 									$hoja1->getStyle("A{$flag1}:P{$flag1}")
@@ -5437,7 +5437,7 @@ class Cotizaciones extends MY_Controller {
 								$objDrawing = new PHPExcel_Worksheet_Drawing();
 								$objDrawing->setName('COD'.$row['producto']);
 								$objDrawing->setDescription('DESC'.$row['codigo']);
-								$objDrawing->setPath("./Abarrotes/assets/img/productos/".str_replace(".","_thumb.",$row["imagen"])."");
+								$objDrawing->setPath("./Abarrotes/assets/img/productos/".$row["imagen"]."");
 								$objDrawing->setWidth(50);
 								$objDrawing->setHeight(50);
 								$objDrawing->setCoordinates('F'.$flag1);
@@ -5447,7 +5447,7 @@ class Cotizaciones extends MY_Controller {
 								$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
 								$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 								$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
-								$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
+								$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]));
 							}
 
 							$hoja1->getStyle("A{$flag1}:P{$flag1}")
@@ -6346,7 +6346,7 @@ class Cotizaciones extends MY_Controller {
 								$objDrawing = new PHPExcel_Worksheet_Drawing();
 								$objDrawing->setName('COD'.$row['producto']);
 								$objDrawing->setDescription('DESC'.$row['codigo']);
-								$objDrawing->setPath("./Abarrotes/assets/img/productos/".str_replace(".","_thumb.",$row["imagen"])."");
+								$objDrawing->setPath("./Abarrotes/assets/img/productos/".$row["imagen"]."");
 								$objDrawing->setWidth(50);
 								$objDrawing->setHeight(50);
 								$objDrawing->setCoordinates('F'.$flag1);
@@ -6356,7 +6356,7 @@ class Cotizaciones extends MY_Controller {
 								$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
 								$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 								$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
-								$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
+								$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]));
 							}
 
 							$hoja1->getStyle("A{$flag1}:P{$flag1}")
