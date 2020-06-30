@@ -17,6 +17,7 @@ class Cotizaciones extends MY_Controller {
 		$this->load->model("Precio_sistemaback_model", "preb_mdl");
 		$this->load->model("Faltantes_model", "falt_mdl");
 		$this->load->model("Prodandprice_model", "prodand_mdl");
+		$this->load->model("Images_model", "img_md");
 		$this->load->model("Expocotz_model", "expo_mdl");
 		$this->load->model("Reales_model","real_mdl");
 	}
@@ -7215,8 +7216,8 @@ class Cotizaciones extends MY_Controller {
 	}
 
 	public function resizeImage($filename){
-		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/CATALOGO DE ABARROTES_25508_' . $filename;
-	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/ppp/';
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/ppp/'.$filename;
 	    list($width, $height, $type, $attr) = getimagesize($source_path);
 	    if ($width > $height) {
 	      	$config_manip = array(
@@ -7225,7 +7226,8 @@ class Cotizaciones extends MY_Controller {
 		          'new_image' => $target_path,
 		          'create_thumb' => TRUE,
 		          'maintain_ratio' => TRUE,
-		          'width' => $width,
+		          'width' => 100,
+		          'wm_name'	=>	$filename
 		      );
 	      }else{
 	      	$config_manip = array(
@@ -7234,7 +7236,8 @@ class Cotizaciones extends MY_Controller {
 		          'new_image' => $target_path,
 		          'create_thumb' => TRUE,
 		          'maintain_ratio' => TRUE,
-		          'height' => $height,
+		          'height' => 100,
+		          'wm_name'	=>	$filename
 		      );
 	      }
 	      
@@ -7268,6 +7271,38 @@ class Cotizaciones extends MY_Controller {
 
    public function couns($number){
    	return strlen((string)$number);
+   }
+
+   public function subimg(){
+   		ini_set("memory_limit", -1);
+   		$this->load->library("excelfile");
+		$file = $_FILES["file_productos"]["tmp_name"];
+		$filename=$_FILES['file_productos']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+
+		for ($i=1; $i<=$num_rows; $i++) {
+			if($this->getOldVal($sheet,$i,'A') > 0){
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,'A'), ENT_QUOTES, 'UTF-8')])[0];
+				if(sizeof($productos) > 0) {
+					$longs = strlen((string)$i);
+					if ($longs === 1){
+						$ima = "image00".$i.".png";
+					}elseif($longs === 2){
+						$ima = "image0".$i.".png";
+					}else{
+						$ima = "image".$i.".png";
+					}					
+					$new_cotizacion=[
+						"id_producto"	=>	$productos->id_producto,
+						"imagen"		=>	$ima,
+					];
+					$data['cotizacion']=$this->img_md->insert($new_cotizacion);
+				}
+			}
+		}
    }
 
 

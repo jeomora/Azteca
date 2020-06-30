@@ -44,7 +44,7 @@ class Catalogo extends MY_Controller {
 	}
 
 	public function subirImg(){
-		/*ini_set("memory_limit", -1);
+		ini_set("memory_limit", -1);
 		$filen = date("dmyHis");
 		$config['upload_path']          = './assets/img/productos/';
         $config['allowed_types']        = 'jpg|jpeg|png|jfif';
@@ -54,16 +54,16 @@ class Catalogo extends MY_Controller {
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_otizaciones',$filen);
-        $filen = $filen."min";
+        $filen = $filen."_thumb";
 		if ($this->upload->do_upload('file_otizaciones',$filen)){
 			$uploadedImage = $this->upload->data();
         	$this->resizeImage($uploadedImage['file_name']);
 		}
 		$path_parts = pathinfo($_FILES["file_otizaciones"]["name"]);
 		$extension = $path_parts['extension'];
-		$this->jsonResponse($filen.".".$extension);*/
+		$this->jsonResponse($filen.".".$extension);
 
-		ini_set("memory_limit", -1);
+		/*ini_set("memory_limit", -1);
 		$file = $_FILES["file_otizaciones"]["tmp_name"];
 		$filename=$_FILES['file_otizaciones']['name'];
 		$sheet = PHPExcel_IOFactory::load($file);
@@ -78,7 +78,7 @@ class Catalogo extends MY_Controller {
 					$longs = strlen((string)$i);
 					if ($longs === 1){
 						$ima = "image00".$i.".png";
-					}elseif($longs === 2){
+					}else($longs === 2){
 						$ima = "image0".$i.".png";
 					}else{
 						$ima = "image".$i.".png";
@@ -90,7 +90,7 @@ class Catalogo extends MY_Controller {
 					$data['cotizacion']=$this->img_md->insert($new_cotizacion);
 				}
 			}
-		}
+		}*/
 	}
 
 	public function altaVela(){
