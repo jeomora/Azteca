@@ -7074,11 +7074,6 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("K1","SEGUNDO")->getColumnDimension('K')->setWidth(20);
 		$hoja->setCellValue("K2","PROVEEDOR");
 		$hoja->setCellValue("L1","OBSERVACIÓN")->getColumnDimension('L')->setWidth(40);
-		$hoja->setCellValue("M1","TERCER")->getColumnDimension('M')->setWidth(16);
-		$hoja->setCellValue("M2","PRECIO");
-		$hoja->setCellValue("N1","TERCER")->getColumnDimension('N')->setWidth(20);
-		$hoja->setCellValue("N2","PROVEEDOR");
-		$hoja->setCellValue("O2","OBSERVACIÓN")->getColumnDimension('O')->setWidth(40);
 
 		$hoja->setCellValue("Q2","")->getColumnDimension('Q')->setWidth(30);
 		$hoja->setCellValue("R2","")->getColumnDimension('R')->setWidth(30);
@@ -7100,10 +7095,18 @@ class Cotizaciones extends MY_Controller {
 		
 		
 
-		$this->cellStyle("A1:O2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");
-
+		$this->cellStyle("A1:DA2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Bold");
+		$headers = 1;
 		$cotizacionesProveedor = $this->prod_mdl->sinpestanias(NULL, $fecha);
+		$cotzi = $this->prod_mdl->byProveedor(NULL);
 		$row_print =2;
+
+		foreach($cotzi["proveedores"] as $key => $vv){
+			$hoja->mergeCells($this->getColumna($vv["columna"])."1:".$this->getColumna($vv["columna"]+1)."1");
+			$hoja->mergeCells($this->getColumna($vv["columna"])."2:".$this->getColumna($vv["columna"]+1)."2");
+			$hoja->setCellValue($this->getColumna($vv["columna"])."1","PRECIO/OBSERVACIÓN")->getColumnDimension($this->getColumna($vv["columna"]))->setWidth(16);
+			$hoja->setCellValue($this->getColumna($vv["columna"])."2", $vv["nombre"])->getColumnDimension($this->getColumna($vv["columna"] + 1))->setWidth(22);
+		}
 		if ($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value){
 				$hoja->setCellValue('B'.$row_print, $value['familia']);
@@ -7167,7 +7170,7 @@ class Cotizaciones extends MY_Controller {
 									$hoja->setCellValue("F{$row_print}",$vcotz['proveedor']);
 									$hoja->setCellValue("G{$row_print}",$vcotz['promocion']);
 									$flag++;
-								}else{
+								}elseif($flag === 2){
 									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['precio'])->getStyle($this->getColumna($celda)."{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 									$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($celda)."{$row_print}")->getConditionalStyles();
 									array_push($conditionalStyles,$condRed);
@@ -7178,12 +7181,25 @@ class Cotizaciones extends MY_Controller {
 									$celda++;
 									$hoja->setCellValue($this->getColumna($celda)."{$row_print}",$vcotz['promocion']);
 									$celda++;
+									$flag++;
 								}
 							}
 						}
+
+						if(isset($cotzi[$row['id_producto']]["cotiza"])){
+							foreach ($cotzi[$row["id_producto"]]["cotiza"] as $key => $vpr) {
+								$hoja->setCellValue($this->getColumna($vpr["columna"])."{$row_print}",$vpr['precio'])->getStyle($this->getColumna($vpr["columna"])."{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+								$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"])."{$row_print}")->getConditionalStyles();
+								array_push($conditionalStyles,$condRed);
+								array_push($conditionalStyles,$condGreen);
+								$this->excelfile->getActiveSheet()->getStyle($vpr["columna"]."{$row_print}")->setConditionalStyles($conditionalStyles);
+								$hoja->setCellValue($this->getColumna($vpr["columna"]+1)."{$row_print}",$vpr['observaciones']);
+							}
+						}
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Bold");
-						$this->cellStyle("B{$row_print}:".$this->getColumna($celda)."{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Bold");
-						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:AE{$row_print}")->applyFromArray($styleArray);
+						$this->cellStyle("B{$row_print}:M{$row_print}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Bold");
+						$this->cellStyle("M{$row_print}:DA{$row_print}", "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Bold");
+						$this->excelfile->getActiveSheet()->getStyle("A{$row_print}:DA{$row_print}")->applyFromArray($styleArray);
 						if($row['estatus'] == 2){
 							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 12, "Franklin Gothic Book");
 						}

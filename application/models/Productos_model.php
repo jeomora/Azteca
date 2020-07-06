@@ -532,6 +532,63 @@ class Productos_model extends MY_Model {
 		}
 	}
 
+	public function byProveedor($where = []){
+		$this->db->select("c.id_cotizacion,c.id_producto,c.id_proveedor,c.precio_promocion,c.observaciones,u.nombre")
+		->from("cotizaciones c")
+		->join("usuarios u","c.id_proveedor = u.id_usuario","LEFT")
+		->where("c.estatus <> 0")
+		->where("WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR(CURDATE())")
+		->order_by("c.id_proveedor,c.id_producto", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$comparativa = $this->db->get()->result();
+		$flag = 12;
+
+		$comparativaIndexada = [];
+		$comparativaIndexada["proveedores"]	= [];
+		for ($i=0; $i<sizeof($comparativa); $i++) {
+			if (!is_null($comparativa[$i]->id_proveedor)){
+				if(isset($comparativaIndexada[$comparativa[$i]->id_producto])){
+				}else{
+					$comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"]	= [];
+				}
+				if ( isset($comparativaIndexada["proveedores"][$comparativa[$i]->id_proveedor]) ) {
+				} else {
+					$comparativaIndexada["proveedores"][$comparativa[$i]->id_proveedor]["nombre"] = $comparativa[$i]->nombre;
+					$comparativaIndexada["proveedores"][$comparativa[$i]->id_proveedor]["columna"] = $flag;
+					$flag+=2;
+				}
+				if(isset($comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"][$comparativa[$i]->id_proveedor])) {
+				}else{
+					$comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"][$comparativa[$i]->id_proveedor]  =	[];
+				}
+				
+				$comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"][$comparativa[$i]->id_proveedor]["precio"]	=	$comparativa[$i]->precio_promocion;
+				$comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"][$comparativa[$i]->id_proveedor]["observaciones"]	=	$comparativa[$i]->observaciones;
+				$comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"][$comparativa[$i]->id_proveedor]["nombre"]	=	$comparativa[$i]->nombre;
+				$comparativaIndexada[$comparativa[$i]->id_producto]["cotiza"][$comparativa[$i]->id_proveedor]["columna"]	=	$flag;
+			}
+		}
+		if ($comparativaIndexada) {
+			if (is_array($where)) {
+				return $comparativaIndexada;
+			} else {
+				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 /* End of file Productos_model.php */
