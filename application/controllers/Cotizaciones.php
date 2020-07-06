@@ -7188,12 +7188,12 @@ class Cotizaciones extends MY_Controller {
 
 						if(isset($cotzi[$row['id_producto']]["cotiza"])){
 							foreach ($cotzi[$row["id_producto"]]["cotiza"] as $key => $vpr) {
-								$hoja->setCellValue($this->getColumna($vpr["columna"])."{$row_print}",$vpr['precio'])->getStyle($this->getColumna($vpr["columna"])."{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-								$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"])."{$row_print}")->getConditionalStyles();
+								$hoja->setCellValue($this->getColumna($vpr["columna"]-2)."{$row_print}",$vpr['precio'])->getStyle($this->getColumna($vpr["columna"]-2)."{$row_print}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+								$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"]-2)."{$row_print}")->getConditionalStyles();
 								array_push($conditionalStyles,$condRed);
 								array_push($conditionalStyles,$condGreen);
-								$this->excelfile->getActiveSheet()->getStyle($vpr["columna"]."{$row_print}")->setConditionalStyles($conditionalStyles);
-								$hoja->setCellValue($this->getColumna($vpr["columna"]+1)."{$row_print}",$vpr['observaciones']);
+								$this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"]-1)."{$row_print}")->setConditionalStyles($conditionalStyles);
+								$hoja->setCellValue($this->getColumna($vpr["columna"]-1)."{$row_print}",$vpr['observaciones']);
 							}
 						}
 						$this->cellStyle("A{$row_print}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Bold");
