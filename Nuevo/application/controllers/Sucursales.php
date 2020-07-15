@@ -149,7 +149,7 @@ class Sucursales extends MY_Controller {
 	}
 
 	public function sizeme($filename){
-		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/NewCotiz/assets/img/productos/' . $filename;
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Nuevo/assets/img/productos/' . $filename;
 	    list($width, $height, $type, $attr) = getimagesize($source_path);
 	    if ($width > $height) {
 	      	return 1;
@@ -159,13 +159,13 @@ class Sucursales extends MY_Controller {
    	}
 
    	public function sizem1($filename){
-		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Nuevo/assets/img/productos/' . $filename;
 	    list($width, $height, $type, $attr) = getimagesize($source_path);
 	    return $height;	      
    	}
 
    	public function sizem2($filename){
-		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Nuevo/assets/img/productos/' . $filename;
 	    list($width, $height, $type, $attr) = getimagesize($source_path);
 	    return $width;	      
    	}
