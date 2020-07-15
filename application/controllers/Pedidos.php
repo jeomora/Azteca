@@ -575,6 +575,290 @@ class Pedidos extends MY_Controller {
 	}
 	
 
+	public function pruebaexcel(){
+		$flag =1;
+		$flag2=1;
+		$array = "";
+		$array2 = "";
+		$filenam = "";
+		$flag1 = 4;
+		$array = $this->usua_mdl->getH(NULL);
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		
+		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+	
+		$hoja1->getColumnDimension('A')->setWidth("6");
+		$hoja1->getColumnDimension('B')->setWidth("6");
+		$hoja1->getColumnDimension('C')->setWidth("6");
+		$hoja1->getColumnDimension('D')->setWidth("25");
+		$hoja1->getColumnDimension('E')->setWidth("60");
+		$hoja1->getColumnDimension('F')->setWidth("80");
+		$hoja1->getColumnDimension('G')->setWidth("28");
+
+		$this->excelfile->setActiveSheetIndex(0);
+		foreach ($array as $key => $v3) {
+			$flag2 = $flag;
+			$hoja1->mergeCells('A'.$flag2.':F'.$flag2);
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "GRUPO ABARROTES AZTECA");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$hoja1->mergeCells('A'.$flag2.':F'.$flag2.'');
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "FORMATO DE EXISTENCIAS ".date("d-m-Y"));
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A".$flag2.":D".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->mergeCells('A'.$flag2.':C'.$flag2.'');
+			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
+			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
+			$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("F".$flag2."", "PROMOCIÓN DE LA SEMANA");
+			$this->cellStyle("F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A".$flag2.":F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "CAJAS");
+			$hoja1->setCellValue("B".$flag2."", "PZAS");
+			$hoja1->setCellValue("C".$flag2."", "PEDIDO");
+			$hoja1->setCellValue("D".$flag2."", "CÓDIGO");
+			$cotizacionesProveedor = $this->ct_mdl->getCodesPromos(NULL);
+
+			if($cotizacionesProveedor){
+				foreach ($cotizacionesProveedor as $key => $value) {
+					$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+					$hoja1->setCellValue("E".$flag1, $value['familia']);
+					$flag1 +=1;
+					if ($value['articulos']) {
+						foreach ($value['articulos'] as $key => $row){
+							$this->excelfile->setActiveSheetIndex(0);
+							$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							
+							$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							if($row['color'] == '#92CEE3'){
+								$this->cellStyle("D{$flag1}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+							$hoja1->setCellValue("E{$flag1}", $row['producto']);
+							$hoja1->setCellValue("F{$flag1}", $row['observaciones']);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':F'.$flag1.'')->applyFromArray($styleArray);
+							if ($row["imagen"] <> "" && !is_null($row["imagen"]) ) {
+								$objDrawing = new PHPExcel_Worksheet_Drawing();
+								$objDrawing->setName('COD'.$row['producto']);
+								$objDrawing->setDescription('DESC'.$row['codigo']);
+								$objDrawing->setPath("./Abarrotes/assets/img/productos/".$row["imagen"]."");
+								if($this->sizeme($row["imagen"]) === 1 || $this->sizeme($row["imagen"]) === "1"){
+									$objDrawing->setWidth(100);	
+									$objDrawing->setHeight($this->sizem1($row["imagen"]) * 1.60);
+									$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(120);
+									$objDrawing->setOffsetX(5); 
+									$objDrawing->setOffsetY(20);
+								} else {
+									$objDrawing->setHeight(100);
+									$objDrawing->setWidth($this->sizem2($row["imagen"]) * 1.60);
+									$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(160);
+									$objDrawing->setOffsetX(30); 
+									$objDrawing->setOffsetY(5);
+								}
+								$objDrawing->setCoordinates('G'.$flag1);
+								
+								//$objDrawing->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
+								$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
+								$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+								//$this->excelfile->getActiveSheet()->getCell('G'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]);
+							}else{
+								$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(120);
+							}
+							$hoja1->getStyle("A{$flag1}:F{$flag1}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					        $hoja1->getStyle("A{$flag1}:F{$flag1}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+							$flag1 ++;
+						}
+					}
+				}
+			}
+		}
+		
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "FORMATO EXISTENCIAS ".$fecha.".xlsx"; //Nombre del documento con extención
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer->save("php://output");
+	}
+
+
+	public function pruebaexcel2(){
+		$flag =1;
+		$flag2=1;
+		$array = "";
+		$array2 = "";
+		$filenam = "";
+		$flag1 = 4;
+		$array = $this->usua_mdl->getH(NULL);
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		
+		$hoja1 = $this->excelfile->setActiveSheetIndex(0);
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("EXISTENCIAS");
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  )
+		);
+	
+		$hoja1->getColumnDimension('A')->setWidth("6");
+		$hoja1->getColumnDimension('B')->setWidth("6");
+		$hoja1->getColumnDimension('C')->setWidth("6");
+		$hoja1->getColumnDimension('D')->setWidth("25");
+		$hoja1->getColumnDimension('E')->setWidth("60");
+		$hoja1->getColumnDimension('F')->setWidth("80");
+		$hoja1->getColumnDimension('G')->setWidth("28");
+
+		$this->excelfile->setActiveSheetIndex(0);
+		foreach ($array as $key => $v3) {
+			$flag2 = $flag;
+			$hoja1->mergeCells('A'.$flag2.':F'.$flag2);
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "GRUPO ABARROTES AZTECA");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$hoja1->mergeCells('A'.$flag2.':F'.$flag2.'');
+			$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "FORMATO DE EXISTENCIAS ".date("d-m-Y"));
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A".$flag2.":D".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->mergeCells('A'.$flag2.':C'.$flag2.'');
+			$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
+			$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
+			$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("F".$flag2."", "PROMOCIÓN DE LA SEMANA");
+			$this->cellStyle("F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+			$flag2++;
+			$this->cellStyle("A".$flag2.":F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja1->setCellValue("A".$flag2."", "CAJAS");
+			$hoja1->setCellValue("B".$flag2."", "PZAS");
+			$hoja1->setCellValue("C".$flag2."", "PEDIDO");
+			$hoja1->setCellValue("D".$flag2."", "CÓDIGO");
+			$cotizacionesProveedor = $this->ct_mdl->getCodesPromos(NULL);
+
+			if($cotizacionesProveedor){
+				foreach ($cotizacionesProveedor as $key => $value) {
+					$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+					$hoja1->setCellValue("E".$flag1, $value['familia']);
+					$flag1 +=1;
+					if ($value['articulos']) {
+						foreach ($value['articulos'] as $key => $row){
+							$this->excelfile->setActiveSheetIndex(0);
+							$this->cellStyle("A".$flag1.":E".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							
+							$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
+							if($row['color'] == '#92CEE3'){
+								$this->cellStyle("D{$flag1}", "92CEE3", "000000", FALSE, 12, "Franklin Gothic Book");
+							}else{
+								$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+							}
+							$hoja1->setCellValue("E{$flag1}", $row['producto']);
+							$hoja1->setCellValue("F{$flag1}", $row['observaciones']);
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':F'.$flag1.'')->applyFromArray($styleArray);
+							if ($row["imagen"] <> "" && !is_null($row["imagen"]) ) {
+								$objDrawing = new PHPExcel_Worksheet_Drawing();
+								$objDrawing->setName('COD'.$row['producto']);
+								$objDrawing->setDescription('DESC'.$row['codigo']);
+								$objDrawing->setPath("./Abarrotes/assets/img/productos/".str_replace("_thumb.",".",$row["imagen"])."");
+								if($this->sizeme($row["imagen"]) === 1 || $this->sizeme($row["imagen"]) === "1"){
+									$objDrawing->setWidth(120);	
+									$objDrawing->setHeight($this->sizem1($row["imagen"]) * 1.80);
+									$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(120);
+									$objDrawing->setOffsetX(5); 
+									$objDrawing->setOffsetY(20);
+								} else {
+									$objDrawing->setHeight(120);
+									$objDrawing->setWidth($this->sizem2($row["imagen"]) * 1.80);
+									$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(160);
+									$objDrawing->setOffsetX(30); 
+									$objDrawing->setOffsetY(5);
+								}
+								$objDrawing->setCoordinates('G'.$flag1);
+								
+								//$objDrawing->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.$row["imagen"]);
+								$objDrawing->setWorksheet($this->excelfile->getActiveSheet());
+								$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
+								//$this->excelfile->getActiveSheet()->getCell('G'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]);
+							}else{
+								$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(120);
+							}
+							$hoja1->getStyle("A{$flag1}:F{$flag1}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					        $hoja1->getStyle("A{$flag1}:F{$flag1}")
+					                 ->getAlignment()
+					                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+							$flag1 ++;
+						}
+					}
+				}
+			}
+		}
+		
+		$dias = array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
+		$file_name = "FORMATO EXISTENCIAS ".$fecha.".xlsx"; //Nombre del documento con extención
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+		header("Content-Disposition: attachment;filename=".$file_name);
+		header("Cache-Control: max-age=0");
+		$excel_Writer->save("php://output");
+	}
+
+	public function sizeme($filename){
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+	    list($width, $height, $type, $attr) = getimagesize($source_path);
+	    if ($width > $height) {
+	      	return 1;
+	      }else{
+	      	return 0;
+	      }
+	      
+   }
+
+   public function sizem1($filename){
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+	    list($width, $height, $type, $attr) = getimagesize($source_path);
+	    return $height;
+	      
+   }
+
+   public function sizem2($filename){
+		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
+	    list($width, $height, $type, $attr) = getimagesize($source_path);
+	    return $width;
+	      
+   }
+
 }
 
 /* End of file Pedidos.php */

@@ -1444,7 +1444,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "cotizacion".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
@@ -1560,7 +1560,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "cotizacion".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
@@ -1672,7 +1672,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Cotizacion".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/cotizaciones/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 100;
+        $config['max_size']             = 10000;
         $config['max_width']            = 1024;
         $config['max_height']           = 768;
         $this->load->library('upload', $config);
@@ -1786,7 +1786,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Pedidos".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7608;
         $this->load->library('upload', $config);
@@ -1911,7 +1911,7 @@ class Cotizaciones extends MY_Controller {
 		$user = $this->session->userdata();
 		$config['upload_path']          = './assets/uploads/precios/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10240;
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
@@ -3729,7 +3729,7 @@ class Cotizaciones extends MY_Controller {
 		$user = $this->session->userdata();
 		$config['upload_path']          = './assets/uploads/faltantes/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7068;
 	    $user = $this->session->userdata();
@@ -3902,7 +3902,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Cotizacion".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/expo/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10204;
         $config['max_height']           = 7608;
         $this->load->library('upload', $config);
@@ -4922,7 +4922,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Pedidos".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7608;
         $config['max_height']           = 7068;
@@ -5969,7 +5969,7 @@ class Cotizaciones extends MY_Controller {
 		$filen = "Pedidos".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
@@ -7192,7 +7192,7 @@ class Cotizaciones extends MY_Controller {
 								$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"]-2)."{$row_print}")->getConditionalStyles();
 								array_push($conditionalStyles,$condRed);
 								array_push($conditionalStyles,$condGreen);
-								$this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"]-1)."{$row_print}")->setConditionalStyles($conditionalStyles);
+								$this->excelfile->getActiveSheet()->getStyle($this->getColumna($vpr["columna"]-2)."{$row_print}")->setConditionalStyles($conditionalStyles);
 								$hoja->setCellValue($this->getColumna($vpr["columna"]-1)."{$row_print}",$vpr['observaciones']);
 							}
 						}
@@ -7231,28 +7231,30 @@ class Cotizaciones extends MY_Controller {
 
 	}
 
-	public function resizeImage($filename){
+	public function resizeImage($filename,$filename2){
 		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
-	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/ppp/'.$filename;
+	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/aswwsets/img/ppp/'.$filename2;
 	    list($width, $height, $type, $attr) = getimagesize($source_path);
 	    if ($width > $height) {
+	    	$w = $width * .50;
 	      	$config_manip = array(
 		          'image_library' => 'gd2',
 		          'source_image' => $source_path,
 		          'new_image' => $target_path,
 		          'create_thumb' => TRUE,
 		          'maintain_ratio' => TRUE,
-		          'width' => 100,
+		          'width' => intval($w),
 		          'wm_name'	=>	$filename
 		      );
 	      }else{
+	      	$w = $height * .50;
 	      	$config_manip = array(
 		          'image_library' => 'gd2',
 		          'source_image' => $source_path,
 		          'new_image' => $target_path,
 		          'create_thumb' => TRUE,
 		          'maintain_ratio' => TRUE,
-		          'height' => 100,
+		          'height' => intval($w),
 		          'wm_name'	=>	$filename
 		      );
 	      }
@@ -7267,29 +7269,32 @@ class Cotizaciones extends MY_Controller {
 	      
    }
 
-   public function didi(){
-   	$this->load->library('image_lib');
-   	for ($i=1; $i < 2672; $i++) { 
+    public function didi(){
+   		$this->load->library('image_lib');
+   		for ($i=1; $i < 1394; $i++) { 
 			$flags = $i;
 			$longs = $this->couns($flags);
 			if ($longs === 1){
 				$filename = "image00".$flags.".png";
+				$filename2 = "image00".$flags.".png";
 			}elseif($longs === 2){
 				$filename = "image0".$flags.".png";
+				$filename2 = "image0".$flags.".png";
 			}else{
 				$filename = "image".$flags.".png";
+				$filename2 = "image".$flags.".png";
 			}
-			$this->resizeImage($filename);
+			$this->resizeImage($filename,$filename2);
 			$this->image_lib->clear();
 
 		}
-   }
+    }
 
-   public function couns($number){
-   	return strlen((string)$number);
-   }
+    public function couns($number){
+   		return strlen((string)$number);
+   	}
 
-   public function subimg(){
+   	public function subimg(){
    		ini_set("memory_limit", -1);
    		$this->load->library("excelfile");
 		$file = $_FILES["file_productos"]["tmp_name"];
@@ -7319,7 +7324,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
-   }
+   	}
 
 
 
