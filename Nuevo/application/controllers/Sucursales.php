@@ -744,7 +744,7 @@ class Sucursales extends MY_Controller {
 
 	public function upload_existencias(){
 		ini_set("memory_limit", -1);
-		ini_set("max_execution_time", "-1");
+		ini_set("max_execution_time", -1);
 
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$id_tienda = $this->session->userdata('id_usuario');
