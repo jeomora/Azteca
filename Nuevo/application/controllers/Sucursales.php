@@ -744,7 +744,6 @@ class Sucursales extends MY_Controller {
 
 	public function upload_existencias(){
 		ini_set("memory_limit", -1);
-		ini_set("max_execution_time", -1);
 
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$id_tienda = $this->session->userdata('id_usuario');
@@ -753,9 +752,9 @@ class Sucursales extends MY_Controller {
 		$filen = "Existencias".$nams."".rand();
 		$config['upload_path']          = './assets/uploads/existencias/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000024;
-        $config['max_width']            = 1000024;
-        $config['max_height']           = 1000024;
+        $config['max_size']             = 100002400;
+        $config['max_width']            = 100002400;
+        $config['max_height']           = 100002400;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_existencias',$filen);
