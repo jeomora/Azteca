@@ -247,4 +247,23 @@
 		$("html").unblock();
 	}
 
+	function blockPageE(){
+		$("html").block({
+			centerY: 0,
+			message: "<h1 style='color:#FFF;font-family:unset;'>Por favor espere,</h1> <img style='max-width:350px;border-radius:30%' src='<?php echo base_url('/assets/img/loading4.gif') ?>'/> <h1 style='color:#FFF;font-family:unset;'>se esta procesando la información...</h1>",
+			css: { top: '50px', left: '', right: '10px', borderRadius: '15px' },
+			overlayCSS: { backgroundColor: '#AAAAA9' }
+		});
+	}
+
+	function blockPageBlocks(){
+		$("html").block({
+			centerY: 0,
+			message: "<h1 style='color:#FFF;font-family:unset;'>Por favor espere,</h1> <img style='max-width:350px;border-radius:30%' src='<?php echo base_url('/assets/img/loading.gif') ?>'/> <h1 style='color:#FFF;font-family:unset;'>se esta procesando la información...</h1>",
+			css: { top: '50px', left: '', right: '10px', borderRadius: '15px' },
+			overlayCSS: { backgroundColor: '#AAAAA9' }
+		});
+	}
+
+
 </script>

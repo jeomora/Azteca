@@ -23,8 +23,7 @@ class Inicio extends MY_Controller {
 			$data["fecha"] =  $data["dias"][date('w')]." ".date('d')." DE ".$data["meses"][date('n')-1]. " DEL ".date('Y') ;
 			
 			if ($user["id_grupo"] === "1" || $user["id_grupo"] === 1) { // Compras
-				$data['scripts'] = ['/scripts/dashboard'];
-				$this->estructura("Admin/welcome", $data);
+				redirect("Cotizaciones/anteriores", $data);
 			}elseif ($user["id_grupo"] <> "2" || $user["id_grupo"] <> 2) { //Sucursales Existencias y Pedidos
 				$data['scripts'] = ['/scripts/Sucursales/index'];
 				$data["cuantas"] = $this->ex_lun_md->getCuantasTienda(NULL,$user["id_usuario"])[0];

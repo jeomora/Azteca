@@ -58,7 +58,7 @@
 									<input type="email" class="form-control" placeholder="ejemplo@email.com" name="email" required="" value="<?php echo set_value('email')?>" >
 								</div>
 								<div class="form-group">
-									<input type="password" class="form-control" placeholder="********" name="password" required="">
+									<input type="password" id="password" class="form-control" placeholder="********" name="password" required="">
 								</div>
 								<button type="submit" class="btn btn-success block full-width m-b">Entrar</button>
 							<?php echo form_close();?>

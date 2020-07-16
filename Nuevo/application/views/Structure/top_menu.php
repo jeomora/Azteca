@@ -51,7 +51,7 @@
                     <!--begin::Brand-->
                     <div class="aside-brand d-flex flex-column align-items-center flex-column-auto py-4 py-lg-8">
                         <!--begin::Logo-->
-                        <a href="<?php echo base_url('') ?>">
+                        <a href="http://abarrotesazteca.com">
                             <img alt="Logo" src="assets/img/abarrotes.png" class="max-h-50px"/>
                         </a>
                         <!--end::Logo-->
@@ -178,7 +178,7 @@
                                         <!--begin::Header Nav-->
                                         <ul class="menu-nav ">
                                             <li class="menu-item  menu-item-active "  aria-haspopup="true">
-                                                <a  href="<?php echo base_url('') ?>" class="menu-link ">
+                                                <a  href="http://abarrotesazteca.com" class="menu-link ">
                                                     <span class="menu-text">Inicio</span>
                                                 </a>
                                             </li>

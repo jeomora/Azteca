@@ -58,10 +58,11 @@ class Compras extends MY_Controller {
 				$values=[	"id_usuario"=>	$validar->id_usuario,
 							"id_grupo"	=>	$validar->id_grupo,
 							"nombre"	=>	$validar->nombre,
-							"apellido"	=>	$validar->apellido,
-							"telefono"	=>	$validar->telefono,
-							"email"		=>	$validar->email,
+							"nombres"	=>	explode(' ', $validar->nombre, 3),
 							"password"	=>	$validar->password,
+							"email"		=>	$validar->email,
+							"imagen"	=>	$avas->nombre,
+							"grupo"		=>	$grupo->nombre,
 							"estatus"	=>	$validar->estatus ];
 				$this->session->set_userdata("username", $values['nombre']);
 				$this->session->set_userdata($values);

@@ -10980,3 +10980,39 @@ $(document).off("click", ".save_pass").on("click", ".save_pass", function(event)
     }
 });
 
+function formatMoney(n, c, d, t) {
+  var c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+function formatMon(n, c, d, t) {
+  var c = isNaN(c = Math.abs(c)) ? 0 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+var calcus = "";
+function formatDate(fecha){
+    var f = new Date(fecha);
+    var d = f.getDate();
+    var dd = f.getDay();
+    var m =  f.getMonth();
+    var y = f.getFullYear();
+    var h = f.getHours();
+    var minutes = f.getMinutes();
+    var mm = ( minutes < 10 ? "0" : "" ) + minutes;
+    var seconds = f.getSeconds();
+    var s = ( seconds < 10 ? "0" : "" ) + seconds
+    var dias = new Array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+    var meses = new Array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+    return (dias[dd]+" "+d+" DE "+meses[m]+" "+h+":"+mm+":"+s);
+}

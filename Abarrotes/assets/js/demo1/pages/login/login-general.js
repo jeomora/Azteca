@@ -222,3 +222,46 @@ var KTLoginGeneral = function() {
 jQuery(document).ready(function() {
     KTLoginGeneral.init();
 });
+
+
+
+$('#password').keypress(function(event){
+
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        event.preventDefault();
+        var btn = $("#kt_login_signin_submit");
+        var form = $("#kt_login_signin_submit").closest('form');           
+
+        form.validate({
+            rules: {
+                email: {
+                    required: true,
+                },
+                password: {
+                    required: true
+                }
+            }
+        });
+
+        if (!form.valid()) {
+            return;
+        }
+
+        btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
+        form.ajaxSubmit({
+            url: site_url+'Inicio/validamesta/',
+            type:"POST",
+            success: function(response, status, xhr, $form) {
+                // similate 2s delay
+                if (response) {
+                    window.location.replace(site_url+"Inicio");
+                }else{
+                    btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
+                    showErrorMsg(form, 'danger', 'Usuario o contraseña incorrectos.<br>Por favor inténtelo nuevamente.');
+                }
+            },
+        });
+    }
+
+});

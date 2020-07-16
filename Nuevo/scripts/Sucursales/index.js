@@ -822,7 +822,7 @@ var myDropzone = new Dropzone("div#kt_dropzone_sucursal", {
     paramName: "file_existencias",
     maxFiles: 1,
     maxFilesize: 200, // MB
-    timeout: 180000,
+    timeout: 1800000,
     renameFilename: function (filename) {
         return theDate + '_' + filename;
     },
