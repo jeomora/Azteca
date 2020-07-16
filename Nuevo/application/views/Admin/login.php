@@ -96,7 +96,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!--begin::Form group-->
                     <div class="form-group">
                         <label class="font-size-h6 font-weight-bolder text-dark">Correo</label>
-                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg username" type="text" name="username" autocomplete="off"/>
+                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg username" type="text" id="username" name="username" autocomplete="off"/>
                     </div>
                     <!--end::Form group-->
 
@@ -110,7 +110,7 @@ License: You must have a valid license purchased only from themeforest(the above
         					</a>
                         </div>
 
-                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg password" type="password" name="password" autocomplete="off"/>
+                        <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg password" type="password" name="password" id="password" autocomplete="off"/>
                     </div>
                     <!--end::Form group-->
 
