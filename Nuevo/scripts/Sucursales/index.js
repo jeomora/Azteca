@@ -23,67 +23,63 @@ var KTDatatableDataLocalDemo = function() {
                 });
                 dataJSONArray = JSON.parse(yeison.slice(0,-1).slice(0,-1)+']');
             }
+
+            setTimeout(function(){
+                var datatable = $('#lunessin').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'local',
+                    source: dataJSONArray,
+                    pageSize: 10,
+                }, 
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    // height: 450, // datatable's body's fixed height
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#generalSearch2'),
+                },
+                rows:{autoHide:!1},
+
+                // columns definition
+                columns: [
+                    {
+                        field: 'Codigo',
+                        title: 'Codigo',
+                        width: 150,
+                    }, {
+                        field: 'Descripcion',
+                        title: 'Descripción',
+                        template:function(row){
+                            return '<div class="kt-user-card-v2">' +
+                                    '<div class="kt-user-card-v2__details">' +
+                                    '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+                        },
+                    }],
+            });
+
+            $('#kt_form_status').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_form_type').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_form_status,#kt_form_type').selectpicker();
+            },1000)
         });
-
-
-        setTimeout(function(){
-            var datatable = $('#lunessin').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'local',
-                source: dataJSONArray,
-                pageSize: 10,
-            }, 
-
-            // layout definition
-            layout: {
-                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-                // height: 450, // datatable's body's fixed height
-                footer: false, // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#generalSearch2'),
-            },
-            rows:{autoHide:!1},
-
-            // columns definition
-            columns: [
-                {
-                    field: 'Codigo',
-                    title: 'Codigo',
-                    width: 150,
-                }, {
-                    field: 'Descripcion',
-                    title: 'Descripción',
-                    template:function(row){
-                        return '<div class="kt-user-card-v2">' +
-                                '<div class="kt-user-card-v2__details">' +
-                                '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
-                                '</div>' +
-                                '</div>'
-                    },
-                }],
-        });
-
-        $('#kt_form_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
-
-        $('#kt_form_type').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Type');
-        });
-
-        $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
-
-        
-
     };
 
     return {
@@ -113,133 +109,132 @@ var KTDatatableDataLocalDemo2 = function() {
                 });
                 dataJSONArray2 = JSON.parse(yeison.slice(0,-1).slice(0,-1)+']');
             }
+            setTimeout(function(){
+                var datatable = $('#lunescon').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'local',
+                    source: dataJSONArray2,
+                    pageSize: 5,
+                }, 
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    // height: 450, // datatable's body's fixed height
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#generalSearch3'),
+                },
+                rows:{autoHide:!1},
+
+                // columns definition
+                columns: [
+                    {
+                        field: 'Codigo',
+                        title: 'Codigo',
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Codigo + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Descripcion',
+                        title: 'Descripción',
+                        template: function(row) {
+                            var stateNo = KTUtil.getRandomInt(0, 6);
+                            var states = [
+                                'success',
+                                'brand',
+                                'danger',
+                                'success',
+                                'warning',
+                                'primary',
+                                'info'
+                            ];
+                            var state = states[stateNo];
+                            return '<div class="kt-user-card-v2">' +
+                                    '<div class="kt-user-card-v2__details">' +
+                                    '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+                        },
+                    }, {
+                        field: 'Cajas',
+                        title: 'Cajas',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Cajas + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Piezas',
+                        title: 'Piezas',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Piezas + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Pedido',
+                        title: 'Pedido',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Pedido + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }],
+            });
+
+            $('#kt_form_status').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_form_type').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_form_status,#kt_form_type').selectpicker();
+            },1000)
         });
 
-
-        setTimeout(function(){
-            var datatable = $('#lunescon').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'local',
-                source: dataJSONArray2,
-                pageSize: 5,
-            }, 
-
-            // layout definition
-            layout: {
-                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-                // height: 450, // datatable's body's fixed height
-                footer: false, // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#generalSearch3'),
-            },
-            rows:{autoHide:!1},
-
-            // columns definition
-            columns: [
-                {
-                    field: 'Codigo',
-                    title: 'Codigo',
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Codigo + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Descripcion',
-                    title: 'Descripción',
-                    template: function(row) {
-                        var stateNo = KTUtil.getRandomInt(0, 6);
-                        var states = [
-                            'success',
-                            'brand',
-                            'danger',
-                            'success',
-                            'warning',
-                            'primary',
-                            'info'
-                        ];
-                        var state = states[stateNo];
-                        return '<div class="kt-user-card-v2">' +
-                                '<div class="kt-user-card-v2__details">' +
-                                '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
-                                '</div>' +
-                                '</div>'
-                    },
-                }, {
-                    field: 'Cajas',
-                    title: 'Cajas',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Cajas + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Piezas',
-                    title: 'Piezas',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Piezas + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Pedido',
-                    title: 'Pedido',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Pedido + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }],
-        });
-
-        $('#kt_form_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
-
-        $('#kt_form_type').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Type');
-        });
-
-        $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
     };
 
     return {
@@ -288,67 +283,63 @@ var KTDatatableDataLocalDemo3 = function() {
                 });
                 dataJSONArray3 = JSON.parse(yeison.slice(0,-1).slice(0,-1)+']');
             }
+
+            setTimeout(function(){
+                var datatable = $('#generalsin').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'local',
+                    source: dataJSONArray3,
+                    pageSize: 10,
+                }, 
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    // height: 450, // datatable's body's fixed height
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#generalSearch3'),
+                },
+                rows:{autoHide:!1},
+
+                // columns definition
+                columns: [
+                    {
+                        field: 'Codigo',
+                        title: 'Codigo',
+                        width: 150,
+                    }, {
+                        field: 'Descripcion',
+                        title: 'Descripción',
+                        template:function(row){
+                            return '<div class="kt-user-card-v2">' +
+                                    '<div class="kt-user-card-v2__details">' +
+                                    '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+                        },
+                    }],
+            });
+
+            $('#kt_form_status').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_form_type').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_form_status,#kt_form_type').selectpicker();
+            },1000)
         });
-
-
-        setTimeout(function(){
-            var datatable = $('#generalsin').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'local',
-                source: dataJSONArray3,
-                pageSize: 10,
-            }, 
-
-            // layout definition
-            layout: {
-                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-                // height: 450, // datatable's body's fixed height
-                footer: false, // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#generalSearch3'),
-            },
-            rows:{autoHide:!1},
-
-            // columns definition
-            columns: [
-                {
-                    field: 'Codigo',
-                    title: 'Codigo',
-                    width: 150,
-                }, {
-                    field: 'Descripcion',
-                    title: 'Descripción',
-                    template:function(row){
-                        return '<div class="kt-user-card-v2">' +
-                                '<div class="kt-user-card-v2__details">' +
-                                '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
-                                '</div>' +
-                                '</div>'
-                    },
-                }],
-        });
-
-        $('#kt_form_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
-
-        $('#kt_form_type').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Type');
-        });
-
-        $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
-
-        
-
     };
 
     return {
@@ -381,133 +372,132 @@ var KTDatatableDataLocalDemo4 = function() {
                 });
                 dataJSONArray4 = JSON.parse(yeison.slice(0,-1).slice(0,-1)+']');
             }
+
+            setTimeout(function(){
+                var datatable = $('#generalcon').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'local',
+                    source: dataJSONArray4,
+                    pageSize: 5,
+                }, 
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    // height: 450, // datatable's body's fixed height
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#generalSearch4'),
+                },
+                rows:{autoHide:!1},
+
+                // columns definition
+                columns: [
+                    {
+                        field: 'Codigo',
+                        title: 'Codigo',
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Codigo + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Descripcion',
+                        title: 'Descripción',
+                        template: function(row) {
+                            var stateNo = KTUtil.getRandomInt(0, 6);
+                            var states = [
+                                'success',
+                                'brand',
+                                'danger',
+                                'success',
+                                'warning',
+                                'primary',
+                                'info'
+                            ];
+                            var state = states[stateNo];
+                            return '<div class="kt-user-card-v2">' +
+                                    '<div class="kt-user-card-v2__details">' +
+                                    '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+                        },
+                    }, {
+                        field: 'Cajas',
+                        title: 'Cajas',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Cajas + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Piezas',
+                        title: 'Piezas',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Piezas + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Pedido',
+                        title: 'Pedido',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Pedido + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }],
+            });
+
+            $('#kt_form_status').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_form_type').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_form_status,#kt_form_type').selectpicker();
+            },1000)
         });
-
-
-        setTimeout(function(){
-            var datatable = $('#generalcon').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'local',
-                source: dataJSONArray4,
-                pageSize: 5,
-            }, 
-
-            // layout definition
-            layout: {
-                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-                // height: 450, // datatable's body's fixed height
-                footer: false, // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#generalSearch4'),
-            },
-            rows:{autoHide:!1},
-
-            // columns definition
-            columns: [
-                {
-                    field: 'Codigo',
-                    title: 'Codigo',
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Codigo + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Descripcion',
-                    title: 'Descripción',
-                    template: function(row) {
-                        var stateNo = KTUtil.getRandomInt(0, 6);
-                        var states = [
-                            'success',
-                            'brand',
-                            'danger',
-                            'success',
-                            'warning',
-                            'primary',
-                            'info'
-                        ];
-                        var state = states[stateNo];
-                        return '<div class="kt-user-card-v2">' +
-                                '<div class="kt-user-card-v2__details">' +
-                                '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
-                                '</div>' +
-                                '</div>'
-                    },
-                }, {
-                    field: 'Cajas',
-                    title: 'Cajas',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Cajas + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Piezas',
-                    title: 'Piezas',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Piezas + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Pedido',
-                    title: 'Pedido',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Pedido + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }],
-        });
-
-        $('#kt_form_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
-
-        $('#kt_form_type').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Type');
-        });
-
-        $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
     };
 
     return {
@@ -556,67 +546,63 @@ var KTDatatableDataLocalDemo7 = function() {
                 });
                 dataJSONArray5 = JSON.parse(yeison.slice(0,-1).slice(0,-1)+']');
             }
+
+            setTimeout(function(){
+                var datatable = $('#volumensin').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'local',
+                    source: dataJSONArray5,
+                    pageSize: 10,
+                }, 
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    // height: 450, // datatable's body's fixed height
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#generalSearch6'),
+                },
+                rows:{autoHide:!1},
+
+                // columns definition
+                columns: [
+                    {
+                        field: 'Codigo',
+                        title: 'Codigo',
+                        width: 150,
+                    }, {
+                        field: 'Descripcion',
+                        title: 'Descripción',
+                        template:function(row){
+                            return '<div class="kt-user-card-v2">' +
+                                    '<div class="kt-user-card-v2__details">' +
+                                    '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+                        },
+                    }],
+            });
+
+            $('#kt_form_status').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_form_type').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_form_status,#kt_form_type').selectpicker();
+            },1000)
         });
-
-
-        setTimeout(function(){
-            var datatable = $('#volumensin').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'local',
-                source: dataJSONArray5,
-                pageSize: 10,
-            }, 
-
-            // layout definition
-            layout: {
-                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-                // height: 450, // datatable's body's fixed height
-                footer: false, // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#generalSearch6'),
-            },
-            rows:{autoHide:!1},
-
-            // columns definition
-            columns: [
-                {
-                    field: 'Codigo',
-                    title: 'Codigo',
-                    width: 150,
-                }, {
-                    field: 'Descripcion',
-                    title: 'Descripción',
-                    template:function(row){
-                        return '<div class="kt-user-card-v2">' +
-                                '<div class="kt-user-card-v2__details">' +
-                                '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
-                                '</div>' +
-                                '</div>'
-                    },
-                }],
-        });
-
-        $('#kt_form_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
-
-        $('#kt_form_type').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Type');
-        });
-
-        $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
-
-        
-
     };
 
     return {
@@ -649,133 +635,132 @@ var KTDatatableDataLocalDemo6 = function() {
                 });
                 dataJSONArray6 = JSON.parse(yeison.slice(0,-1).slice(0,-1)+']');
             }
+
+            setTimeout(function(){
+                var datatable = $('#volumencon').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'local',
+                    source: dataJSONArray6,
+                    pageSize: 5,
+                }, 
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    // height: 450, // datatable's body's fixed height
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: $('#generalSearch7'),
+                },
+                rows:{autoHide:!1},
+
+                // columns definition
+                columns: [
+                    {
+                        field: 'Codigo',
+                        title: 'Codigo',
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Codigo + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Descripcion',
+                        title: 'Descripción',
+                        template: function(row) {
+                            var stateNo = KTUtil.getRandomInt(0, 6);
+                            var states = [
+                                'success',
+                                'brand',
+                                'danger',
+                                'success',
+                                'warning',
+                                'primary',
+                                'info'
+                            ];
+                            var state = states[stateNo];
+                            return '<div class="kt-user-card-v2">' +
+                                    '<div class="kt-user-card-v2__details">' +
+                                    '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
+                                    '</div>' +
+                                    '</div>'
+                        },
+                    }, {
+                        field: 'Cajas',
+                        title: 'Cajas',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Cajas + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Piezas',
+                        title: 'Piezas',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Piezas + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }, {
+                        field: 'Pedido',
+                        title: 'Pedido',
+                        width: 60,
+                        autoHide: false,
+                        // callback function support for column rendering
+                        template: function(data, i) {
+                            var output = '\
+                                <div class="kt-user-card-v2">\
+                                    <div class="kt-user-card-v2__details">\
+                                        <a class="kt-user-card-v2__name">' + data.Pedido + '</a>\
+                                    </div>\
+                                </div>';
+
+                            return output;
+                        }
+                    }],
+            });
+
+            $('#kt_form_status').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_form_type').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_form_status,#kt_form_type').selectpicker();
+            },1000)
         });
-
-
-        setTimeout(function(){
-            var datatable = $('#volumencon').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'local',
-                source: dataJSONArray6,
-                pageSize: 5,
-            }, 
-
-            // layout definition
-            layout: {
-                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-                // height: 450, // datatable's body's fixed height
-                footer: false, // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#generalSearch7'),
-            },
-            rows:{autoHide:!1},
-
-            // columns definition
-            columns: [
-                {
-                    field: 'Codigo',
-                    title: 'Codigo',
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Codigo + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Descripcion',
-                    title: 'Descripción',
-                    template: function(row) {
-                        var stateNo = KTUtil.getRandomInt(0, 6);
-                        var states = [
-                            'success',
-                            'brand',
-                            'danger',
-                            'success',
-                            'warning',
-                            'primary',
-                            'info'
-                        ];
-                        var state = states[stateNo];
-                        return '<div class="kt-user-card-v2">' +
-                                '<div class="kt-user-card-v2__details">' +
-                                '<a class="kt-user-card-v2__name">' + row.Descripcion + '</a>' +
-                                '</div>' +
-                                '</div>'
-                    },
-                }, {
-                    field: 'Cajas',
-                    title: 'Cajas',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Cajas + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Piezas',
-                    title: 'Piezas',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Piezas + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }, {
-                    field: 'Pedido',
-                    title: 'Pedido',
-                    width: 60,
-                    autoHide: false,
-                    // callback function support for column rendering
-                    template: function(data, i) {
-                        var output = '\
-                            <div class="kt-user-card-v2">\
-                                <div class="kt-user-card-v2__details">\
-                                    <a class="kt-user-card-v2__name">' + data.Pedido + '</a>\
-                                </div>\
-                            </div>';
-
-                        return output;
-                    }
-                }],
-        });
-
-        $('#kt_form_status').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Status');
-        });
-
-        $('#kt_form_type').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'Type');
-        });
-
-        $('#kt_form_status,#kt_form_type').selectpicker();
-        },1000)
     };
 
     return {

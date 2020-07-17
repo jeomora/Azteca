@@ -81,35 +81,82 @@ var KTLogin = function() {
                     });
                 }
             })
+        });
 
-            /*validation.validate().then(function(status) {
-                console.log(status)
-		        if (status == 'Valid') {
-                    swal.fire({
-		                text: "Sus datos son correctos, en un momento lo redigiremos al dashboard.",
-		                icon: "success",
-		                buttonsStyling: false,
-		                confirmButtonText: "Listo",
-                        customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
-						KTUtil.scrollTop();
-					});
-				} else {
-					swal.fire({
-		                text: "Lo sentimos, sus datos son incorrectos, por favor inténtelo nuevamente.",
-		                icon: "error",
-		                buttonsStyling: false,
-		                confirmButtonText: "Intentar nuevamente",
-                        customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
-						KTUtil.scrollTop();
-					});
-				}
-		    });*/
+        $('#password').keypress(function(event){
+            event.preventDefault();
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                var values = {"email":$(".username").val(),"password":$(".password").val()};
+                validamesta(JSON.stringify(values)).done(function(resp){
+                    if (resp === "true") {
+                        swal.fire({
+                            text: "Sus datos son correctos, en un momento lo redigiremos al dashboard.",
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "Listo",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light-primary"
+                            }
+                        }).then(function() {
+                            KTUtil.scrollTop();
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        },1000)
+                    } else {
+                        swal.fire({
+                            text: "Lo sentimos, sus datos son incorrectos, por favor inténtelo nuevamente.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Intentar nuevamente",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light-primary"
+                            }
+                        }).then(function() {
+                            KTUtil.scrollTop();
+                        });
+                    }
+                })
+            }
+        });
+
+        $('#username').keypress(function(event){
+            event.preventDefault();
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                var values = {"email":$(".username").val(),"password":$(".password").val()};
+                validamesta(JSON.stringify(values)).done(function(resp){
+                    if (resp === "true") {
+                        swal.fire({
+                            text: "Sus datos son correctos, en un momento lo redigiremos al dashboard.",
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "Listo",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light-primary"
+                            }
+                        }).then(function() {
+                            KTUtil.scrollTop();
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        },1000)
+                    } else {
+                        swal.fire({
+                            text: "Lo sentimos, sus datos son incorrectos, por favor inténtelo nuevamente.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Intentar nuevamente",
+                            customClass: {
+                                confirmButton: "btn font-weight-bold btn-light-primary"
+                            }
+                        }).then(function() {
+                            KTUtil.scrollTop();
+                        });
+                    }
+                })
+            }
         });
 
         // Handle forgot button
@@ -211,85 +258,3 @@ function validamesta(value) {
         }
     });
 }
-
-$('#password').keypress(function(event){
-
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-        event.preventDefault();
-        var btn = $("#kt_login_signin_submit");
-        var form = $("#kt_login_signin_submit").closest('form');           
-
-        form.validate({
-            rules: {
-                email: {
-                    required: true,
-                },
-                password: {
-                    required: true
-                }
-            }
-        });
-
-        if (!form.valid()) {
-            return;
-        }
-
-        btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
-        form.ajaxSubmit({
-            url: site_url+'Inicio/validamesta/',
-            type:"POST",
-            success: function(response, status, xhr, $form) {
-                // similate 2s delay
-                if (response) {
-                    window.location.replace(site_url+"Inicio");
-                }else{
-                    btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
-                    showErrorMsg(form, 'danger', 'Usuario o contraseña incorrectos.<br>Por favor inténtelo nuevamente.');
-                }
-            },
-        });
-    }
-
-});
-
-$('#username').keypress(function(event){
-
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-        event.preventDefault();
-        var btn = $("#kt_login_signin_submit");
-        var form = $("#kt_login_signin_submit").closest('form');           
-
-        form.validate({
-            rules: {
-                email: {
-                    required: true,
-                },
-                password: {
-                    required: true
-                }
-            }
-        });
-
-        if (!form.valid()) {
-            return;
-        }
-
-        btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
-        form.ajaxSubmit({
-            url: site_url+'Inicio/validamesta/',
-            type:"POST",
-            success: function(response, status, xhr, $form) {
-                // similate 2s delay
-                if (response) {
-                    window.location.replace(site_url+"Inicio");
-                }else{
-                    btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
-                    showErrorMsg(form, 'danger', 'Usuario o contraseña incorrectos.<br>Por favor inténtelo nuevamente.');
-                }
-            },
-        });
-    }
-
-});

@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    $("#titlePrincipal").html("Cotizaciones");
+    $("#titlePrincipal").html("Anteriores");
 });
 
 $(document).off("click", "#RepCotz").on("click", "#RepCotz", function(event){

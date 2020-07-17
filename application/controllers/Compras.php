@@ -8,6 +8,8 @@ class Compras extends MY_Controller {
 		$this->load->model("Usuarios_model", "user_md");
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Grupos_model", "gr_md");
+		$this->load->model("Grupos_model", "grupo_md");
+		$this->load->model("Avatars_model", "ava_md");
 		$this->load->library("form_validation");
 	}
 
@@ -55,6 +57,8 @@ class Compras extends MY_Controller {
 					"password"	=>	$this->encryptPassword($this->input->post('password'))];
 			$validar = $this->user_md->login($where)[0];
 			if(sizeof($validar) > 0){
+				$avas = $this->ava_md->get(NULL,["id_avatar"=>$validar->imagen])[0];
+				$grupo = $this->grupo_md->get(NULL,["id_grupo"=>$validar->id_grupo])[0];
 				$values=[	"id_usuario"=>	$validar->id_usuario,
 							"id_grupo"	=>	$validar->id_grupo,
 							"nombre"	=>	$validar->nombre,
