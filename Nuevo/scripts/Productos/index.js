@@ -14,7 +14,6 @@ var KTDatatableDataLocalDemo = function() {
             var yeison = "[";
             if (resp) {
                 $.each(resp,function(index, value){
-                    console.log("----------")
                     value.familia =  value.familia === null ? "" :  value.familia;
                     value.pieza =  value.pieza === null ? "---" :  value.pieza;
                     value.producto =  value.producto === null ? "" :  value.producto;
@@ -67,7 +66,8 @@ var KTDatatableDataLocalDemo = function() {
                     {
                         field: 'RecordID',
                         title: '#',
-                        width: 1,
+                        width: 50,
+                        type: "number"
                     },{
                         field: 'Codigo',
                         title: 'Código',
@@ -163,7 +163,7 @@ var KTDatatableDataLocalDemo = function() {
                                         </svg>\
                                     </span>\
                                 </a>\
-                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Eliminar" data-toggle="modal" data-target="#kt_del_prod" data-id-prod="'+row.RecordID+'">\
+                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Eliminar" data-toggle="modal" data-target="#kt_del_prod" data-id-prod="'+row.RecordID+'" id="liusered">\
                                     <span class="svg-icon svg-icon-md">\
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -211,5 +211,24 @@ function getProductos(){
 
 $(document).off("click", ".delete_usuario").on("click", ".delete_usuario", function(event) {
     event.preventDefault();
+    blockPageDelete()
+    $(".blockElement").css("background-color","rgba(177,110,41,0.8) !important")
     sendForm("Productos/delete_producto", $("#form_producto_delete"), "");
 });
+
+$(document).off("click", "#liusered").on("click", "#liusered", function(event) {
+    event.preventDefault();
+    getProds($(this).data("idProd"))
+        .done(function (resp) {
+            $("#spanprodr").html(resp.nombre);
+            $("#id_producto").val(resp.id_producto);
+        });
+});
+
+function getProds(formData) {
+    return $.ajax({
+        url: site_url+"Productos/getProds/"+formData,
+        type: "POST",
+        dataType: "JSON",
+    });
+}

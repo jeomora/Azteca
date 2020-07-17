@@ -9,6 +9,7 @@ class Productos extends MY_Controller {
 		$this->load->model("Cotizaciones_model", "ct_mdl");
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Faltantes_model", "falt_mdl");
+		$this->load->model("Familias_model", "fam_mdl");
 		$this->load->model("Productos_model", "pro_md");
 		$this->load->library("form_validation");
 	}
@@ -128,17 +129,24 @@ class Productos extends MY_Controller {
 
 	public function delete_producto(){
 		$user = $this->session->userdata();
-		$data ['id_usuario'] = $this->prod_md->update(["estatus" => 0,"codigo"=>"Eliminado"], $this->input->post('id_usuario'));
+		//$this->jsonResponse($this->input->post('id_producto'));
+		$antes = $this->pro_md->get(NULL, ['id_producto'=>$this->input->post('id_producto')])[0];
+		$data ['id_usuario'] = $this->pro_md->update(["estatus" => 0,"codigo"=>"Eliminado"], $this->input->post('id_producto'));
 		$cambios = [
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
 				"antes" => "id: ".$antes->id_producto." /Código: ".$antes->codigo." /Nombre: ".$antes->nombre." /Familia: ".$antes->id_familia,
 				"despues" => "Producto eliminado"];
 		$data['cambios'] = $this->cambio_md->insert($cambios);
-		
+
 		$mensaje = ["id" 	=> 'Éxito',
 					"desc"	=> 'Producto eliminado correctamente',
 					"type"	=> 'success'];
 		$this->jsonResponse($mensaje);
+	}
+
+	public function getProds($id_producto){
+		$producto = $this->pro_md->get(NULL,["id_producto"=>$id_producto])[0];
+		$this->jsonResponse($producto);
 	}
 }

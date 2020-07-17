@@ -147,10 +147,12 @@
 <!--end::Content-->
 
 
-<!--begin::Modal Lunes-->
+<!--begin::Modal Eliminar-->
 <div class="modal fade" id="kt_del_prod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
+        	<?php echo form_open("", array("id"=>'form_producto_delete')); ?>
+            <input type="hidden" name="id_producto" id="id_producto" value="">
             <div class="modal-header">
                 <h5 class="modal-title">¿Desea eliminar el producto?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -160,96 +162,76 @@
             	<p>Sí esta completamente seguro de eliminar el producto <br><span style="font-weight:bold;" id="spanprodr"></span>, por favor haga clic en el botón eliminar. <br><span style="font-weight:bold;color:red;">Esta acción no se puede deshacer</span></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background:#F64E60;border-color:#F64E60;color:#FFF">Cancelar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-danger delete_usuario">Eliminar</button>
             </div>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>
 <!--end::Modal-->
 
-<!--begin::Modal General-->
-<div class="modal fade" id="kt_modal_sgen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background:#EEE5FF">
-                <h5 class="modal-title" id="exampleModalLabel">Existencias/Pedidos <span style="font-size:1.5rem;font-weight:bold;font-style:oblique;color:#8950FC">General</span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-            <div class="modal-body" style="display:inline-flex;">
-            	<div class="kt-portlet kt-portlet--mobile col-xl-4">
-
-			        <div class="kt-portlet__body">
-			        	<h2 style="color:red">Sin Existencias</h2>
-			            <!--begin: Search Form -->
-			            <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
-			                <div class="row align-items-center">
-			                    <div class="col-xl-12 order-2 order-xl-1">
-			                        <div class="row align-items-center">
-			                            <div class="kt-margin-b-20-tablet-and-mobile">
-			                                <div class="kt-input-icon kt-input-icon--left">
-			                                    <input type="text" class="form-control" placeholder="Buscar..." id="generalSearch4">
-			                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
-			                                        <span><i class="la la-search"></i></span>
-			                                    </span>
-			                                </div>
-			                            </div>
-
-			                        </div>
-			                    </div>
-			                </div>
-			            </div>
-
-			            <!--end: Search Form -->
-			        </div>
-			        <div class="kt-portlet__body kt-portlet__body--fit">
-			            <!--begin: Datatable -->
-			            <div class="kt-datatable datatable datatable-bordered datatable-head-custom" id="generalsin"></div>
-			            <!--end: Datatable -->
-			        </div>
-			    </div>
-			    <div class="kt-portlet kt-portlet--mobile col-xl-1" style="border-right:2px solid #4e0000"></div>
-            	<!-- Con Existencias -->
-        		<div class="kt-portlet kt-portlet--mobile col-xl-6" style="padding-left:30px">
-
-			        <div class="kt-portlet__body">
-			        	<h2 style="color:green">Con Existencias</h2>
-			            <!--begin: Search Form -->
-			            <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
-			                <div class="row align-items-center">
-			                    <div class="col-xl-12 order-2 order-xl-1">
-			                        <div class="row align-items-center">
-			                            <div class="kt-margin-b-20-tablet-and-mobile">
-			                                <div class="kt-input-icon kt-input-icon--left">
-			                                    <input type="text" class="form-control" placeholder="Buscar..." id="generalSearch5">
-			                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
-			                                        <span><i class="la la-search"></i></span>
-			                                    </span>
-			                                </div>
-			                            </div>
-
-			                        </div>
-			                    </div>
-			                </div>
-			            </div>
-
-			            <!--end: Search Form -->
-			        </div>
-			        <div class="kt-portlet__body kt-portlet__body--fit">
-			            <!--begin: Datatable -->
-			            <div class="kt-datatable datatable datatable-bordered datatable-head-custom" id="generalcon"></div>
-			            <!--end: Datatable -->
-			        </div>
-			    </div>
-            </div>
-            <div class="modal-footer" style="background:#EEE5FF">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background:#8950FC;border-color:#8950FC;color:#FFF">Cerrar</button>
+<!--begin::Modal Editar-->
+    <div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <?php echo form_open("", array("id"=>'form_usuario_edit')); ?>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id_productos" id="id_productos" value="">
+                    <div class="row">
+                    	<div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="caja">Código Caja</label>
+                                <input id="caja" type="text" name="caja" class="form-control" placeholder="Código Caja">
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input id="nombre" type="text" name="nombre" value="" class="form-control" placeholder="Descripción del producto">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="unidad">Unidad medida</label>
+                                <input id="unidad" type="text" name="unidad" value="" class="form-control" placeholder="Unidad Medida">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="codigo">Código pieza</label>
+                                <input id="codigo" type="text" name="codigo" value="" class="form-control" placeholder="Código">
+                            </div>
+                        </div>	
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="id_familia">Familia</label>
+                                <select name="id_familia" class="form-control chosen-select" id="id_familia">
+                                    <option value="-1">Seleccionar...</option>
+                                    <?php if ($familias):foreach ($familias as $key => $value): ?>
+                                        <option value="<?php echo $value->id_familia ?>"><?php echo $value->nombre ?></option>
+                                    <?php endforeach; endif ?>
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary update_producto">Editar Producto</button>
+                </div>
+                <?php echo form_close(); ?>
             </div>
         </div>
     </div>
-</div>
-<!--end::Modal-->
+
+    <!--end::Modal-->
 
 
 <!--begin::Modal Volúmen-->

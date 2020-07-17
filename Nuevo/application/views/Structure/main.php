@@ -209,13 +209,13 @@
 				case "success":
 					emptyModal();
 					$("#mainModal").modal("hide");
-					setTimeout("location.reload()", 1300, toastr.success(response.desc, user_name), "");
+					setTimeout("location.reload()", 600, toastr.success(response.desc, user_name), "");
 				break;
 
 				case "info":
 					emptyModal();
 					$("#mainModal").modal("hide");
-					setTimeout("location.reload()", 1300, toastr.info(response.desc, user_name), "");
+					setTimeout("location.reload()", 600, toastr.info(response.desc, user_name), "");
 				break;
 
 				case "warning":
@@ -260,6 +260,15 @@
 		$("html").block({
 			centerY: 0,
 			message: "<h1 style='color:#FFF;font-family:unset;'>Por favor espere,</h1> <img style='max-width:350px;border-radius:30%' src='<?php echo base_url('/assets/img/loading.gif') ?>'/> <h1 style='color:#FFF;font-family:unset;'>se esta procesando la información...</h1>",
+			css: { top: '50px', left: '', right: '10px', borderRadius: '15px' },
+			overlayCSS: { backgroundColor: '#AAAAA9' }
+		});
+	}
+
+	function blockPageDelete(){
+		$("html").block({
+			centerY: 0,
+			message: "<h1 style='color:#FFF;font-family:unset;'>Por favor espere,</h1> <img style='max-width:350px;border-radius:30%' src='<?php echo base_url('/assets/img/delete.gif') ?>'/> <h1 style='color:#FFF;font-family:unset;'>se esta eliminando la información...</h1>",
 			css: { top: '50px', left: '', right: '10px', borderRadius: '15px' },
 			overlayCSS: { backgroundColor: '#AAAAA9' }
 		});
