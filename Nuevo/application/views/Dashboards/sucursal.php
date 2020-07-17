@@ -42,7 +42,7 @@
 					    </div>
     					<!--end::Header-->
 
-					    <!--begin::Body-->
+					    <!--begin::Body--> 
 					    <div class="card-body d-flex flex-column p-0">
 					        <!--begin::Items-->
 					        <div class="flex-grow-1 card-spacer">
