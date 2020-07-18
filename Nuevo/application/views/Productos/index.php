@@ -1,6 +1,3 @@
-<style>
-	.modal-dialog.modal-xl{min-width:95vw !important;max-height:90vh !important;}
-</style>
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
 	<!--begin::Subheader-->
@@ -171,9 +168,21 @@
 </div>
 <!--end::Modal-->
 
+<!--begin::Modal Eliminar-->
+<div class="modal fade" id="kt_imagen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="background:rgba(255,255,255,0.5)">
+        	<div class="modal-body" style="text-align:center;">
+        		<img src="" id="imgprod">
+        	</div>
+        </div>
+    </div>
+</div>
+<!--end::Modal-->
+
 <!--begin::Modal Editar-->
-    <div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" id="kt_edit_prod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <?php echo form_open("", array("id"=>'form_usuario_edit')); ?>
                 <div class="modal-header">
@@ -186,29 +195,29 @@
                     <div class="row">
                     	<div class="col-sm-4">
                             <div class="form-group">
-                                <label for="caja">Código Caja</label>
-                                <input id="caja" type="text" name="caja" class="form-control" placeholder="Código Caja">
+                                <label for="codigo">Código Caja</label>
+                                <input id="codigo" type="text" name="codigo" class="form-control" placeholder="Código Caja">
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
                                 <input id="nombre" type="text" name="nombre" value="" class="form-control" placeholder="Descripción del producto">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="unidad">Unidad medida</label>
+                                <label for="unidad">UM</label>
                                 <input id="unidad" type="text" name="unidad" value="" class="form-control" placeholder="Unidad Medida">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="codigo">Código pieza</label>
                                 <input id="codigo" type="text" name="codigo" value="" class="form-control" placeholder="Código">
                             </div>
                         </div>	
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="id_familia">Familia</label>
                                 <select name="id_familia" class="form-control chosen-select" id="id_familia">
@@ -219,7 +228,28 @@
                                 </select>
                             </div>
                         </div>
-                        
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="estatus">Tipo Producto</label>
+                                <select name="estatus" class="form-control chosen-select" id="estatus">
+                                    <option value="1">Normal</option>
+                                    <option value="2">Volúmen</option>
+                                    <option value="3">Amarillo</option>
+                                    <option value="4">Moderna</option>
+                                    <option value="5">Costeña</option>
+                                    <option value="6">cuetara</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="colorp">Conversión</label>
+                                <select name="colorp" class="form-control chosen-select" id="colorp">
+                                    <option value="0">No</option>
+                                    <option value="1">Si</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

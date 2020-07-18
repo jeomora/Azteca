@@ -99,7 +99,7 @@ class Usuarios_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d'));
 		$intervalo = new DateInterval('P3D'); 
 		$fecha->add($intervalo);
-		$this->db->select("* from (SELECT COUNT(id_cotizacion) as total,c.id_cotizacion,c.id_proveedor,c.fecha_registro,u.nombre,u.email FROM cotizaciones c LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE c.id_proveedor NOT IN (SELECT cotizaciones.id_proveedor FROM cotizaciones WHERE cotizaciones.estatus = 1 AND WEEKOFYEAR(cotizaciones.fecha_registro) = WEEKOFYEAR(CURDATE())) GROUP BY c.id_proveedor,WEEK(c.fecha_registro),nombre ORDER BY c.fecha_registro DESC) dude GROUP BY nombre");
+		$this->db->select("* from (SELECT COUNT(id_cotizacion) as total,c.id_cotizacion,c.id_proveedor,c.fecha_registro,u.nombre,u.email FROM cotizaciones c LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE c.id_proveedor NOT IN (SELECT cotizaciones.id_proveedor FROM cotizaciones WHERE cotizaciones.estatus = 1 AND WEEKOFYEAR(cotizaciones.fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."')) GROUP BY c.id_proveedor,WEEK(c.fecha_registro),nombre ORDER BY c.fecha_registro DESC) dude GROUP BY nombre");
 		if ($where !== NULL) {
 			if (is_array($where)) {
 				foreach ($where as $field=>$value) {

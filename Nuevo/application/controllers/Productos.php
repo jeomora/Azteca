@@ -23,6 +23,7 @@ class Productos extends MY_Controller {
 		$data["meses"] = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
+		$data["familias"] = $this->fam_mdl->get(NULL,["estatus"=>1]);
 		$this->estructura("Productos/index", $data);
 		//$this->jsonResponse($data["cotizados"]);
 	}
@@ -120,6 +121,11 @@ class Productos extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
+	}
+
+	public function getProducto($id){
+		$producto = $this->pro_md->get(NULL, ['id_producto'=>$id])[0];
+		$this->jsonResponse($producto);
 	}
 
 	public function getProductos(){

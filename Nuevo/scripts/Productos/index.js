@@ -84,7 +84,7 @@ var KTDatatableDataLocalDemo = function() {
 
                              output = '<div class="d-flex align-items-center">\
                                     <div class="symbol symbol-40 flex-shrink-0">\
-                                        <div class="symbol-label" style="' + user_img + '" data-toggle="modal" data-target="#kt_imagen" data-id-prod="'+data.RecordID+'"></div>\
+                                        <div data-id-prod="'+data.Imagen+'" class="symbol-label" style="' + user_img + '" data-toggle="modal" data-target="#kt_imagen" id="prodimg"></div>\
                                     </div>\
                                     <div class="ml-2">\
                                         <div class="text-dark-75 font-weight-bold line-height-sm">' + data.Descripcion + '</div>\
@@ -152,7 +152,7 @@ var KTDatatableDataLocalDemo = function() {
                         template: function(row) {
                             return '\
                                 <div class="dropdown dropdown-inline">\
-                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Editar Producto" data-toggle="modal" data-target="#kt_edit_prod" data-id-prod="'+row.RecordID+'">\
+                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Editar Producto" data-toggle="modal" id="editprod" data-target="#kt_edit_prod" data-id-prod="'+row.RecordID+'">\
                                     <span class="svg-icon svg-icon-md">\
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -201,6 +201,14 @@ var KTDatatableDataLocalDemo = function() {
     };
 }();
 
+function getProducto(id){
+    return $.ajax({
+        url: site_url+"Productos/getProducto/"+id,
+        type: "POST",
+        dataType: "JSON",
+    });
+}
+
 function getProductos(){
     return $.ajax({
         url: site_url+"Productos/getProductos",
@@ -214,6 +222,11 @@ $(document).off("click", ".delete_usuario").on("click", ".delete_usuario", funct
     blockPageDelete()
     $(".blockElement").css("background-color","rgba(177,110,41,0.8) !important")
     sendForm("Productos/delete_producto", $("#form_producto_delete"), "");
+});
+
+$(document).off("click", "#prodimg").on("click", "#prodimg", function(event) {
+    event.preventDefault();
+    $("#imgprod").attr("src","assets/img/productos/"+$(this).data("idProd").replace("_thumb",""));
 });
 
 $(document).off("click", "#liusered").on("click", "#liusered", function(event) {
@@ -232,3 +245,19 @@ function getProds(formData) {
         dataType: "JSON",
     });
 }
+
+$(document).off("click", "#editprod").on("click", "#editprod", function(event) {
+    event.preventDefault();
+
+    getProducto($(this).data("idProd"))
+        .done(function (resp) {
+            $("#id_productos").val(resp.id_producto);
+            $("#codigo").val(resp.codigo);
+            $("#pieza").val(resp.pieza);
+            $("#unidad").val(resp.unidad);
+            $("#nombre").val(resp.nombre);
+            $("#id_familia").val(resp.id_familia);
+            $("#estatus").val(resp.estatus);
+            $("#colorp").val(resp.colorp);
+        });
+});
