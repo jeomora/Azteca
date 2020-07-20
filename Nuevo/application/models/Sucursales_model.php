@@ -105,6 +105,7 @@ class Sucursales_model extends MY_Model {
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$comparativa[$i]->abarrotes;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$comparativa[$i]->cedis;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$comparativa[$i]->cedis;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$comparativa[$i]->tienda;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$comparativa[$i]->trincheras;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$comparativa[$i]->tijeras;
