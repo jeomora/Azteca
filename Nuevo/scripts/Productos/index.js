@@ -1,6 +1,23 @@
 jQuery(document).ready(function() {
     $("#titlePrincipal").html("Productos");
     KTDatatableDataLocalDemo.init();
+    toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "3000",
+          "timeOut": "3000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+    };
 });
 var dataJSONArray ="";
 
@@ -88,7 +105,7 @@ var KTDatatableDataLocalDemo = function() {
                                     </div>\
                                     <div class="ml-2">\
                                         <div class="text-dark-75 font-weight-bold line-height-sm">' + data.Descripcion + '</div>\
-                                        <a href="#" class="font-size-sm text-dark-50 text-hover-primary">' +
+                                        <a class="font-size-sm text-dark-50 text-hover-primary">' +
                                         data.Familia + '</a>\
                                     </div>\
                                 </div>';
@@ -221,7 +238,8 @@ $(document).off("click", ".delete_usuario").on("click", ".delete_usuario", funct
     event.preventDefault();
     blockPageDelete()
     $(".blockElement").css("background-color","rgba(177,110,41,0.8) !important")
-    sendForm("Productos/delete_producto", $("#form_producto_delete"), "");
+    $('.delete_usuario').prop("disabled", true);
+    sendFormas("Productos/delete_producto", $("#form_producto_delete"), "");
 });
 
 $(document).off("click", "#prodimg").on("click", "#prodimg", function(event) {
@@ -252,6 +270,7 @@ $(document).off("click", "#editprod").on("click", "#editprod", function(event) {
     getProducto($(this).data("idProd"))
         .done(function (resp) {
             $("#id_productos").val(resp.id_producto);
+            $("#codigo2").val(resp.codigo);
             $("#codigo").val(resp.codigo);
             $("#pieza").val(resp.pieza);
             $("#unidad").val(resp.unidad);
@@ -260,4 +279,85 @@ $(document).off("click", "#editprod").on("click", "#editprod", function(event) {
             $("#estatus").val(resp.estatus);
             $("#colorp").val(resp.colorp);
         });
+});
+
+$(document).off("click", ".update_producto").on("click", ".update_producto", function(event) {
+    event.preventDefault();
+
+    var flag = 1;
+    flag = valis($("#codigo"),$("#codigoFeed"),flag);
+    flag = valis($("#unidad"),$("#unidadFeed"),flag);
+    flag = valis($("#nombre"),$("#nombreFeed"),flag);
+    flag = valis($("#id_familia"),$("#familiaFeed"),flag);
+    if(flag){
+        $('.update_producto').prop("disabled", true);
+        sendFormas("Productos/update_producto", $("#form_producto_edit"), $('.update_producto'));
+    }
+});
+
+
+$(document).off("click", ".agregar_producto").on("click", ".agregar_producto", function(event) {
+    event.preventDefault();
+
+    var flag = 1;
+    flag = valis($("#codigoA"),$("#codigoFeedA"),flag);
+    flag = valis($("#unidadA"),$("#unidadFeedA"),flag);
+    flag = valis($("#nombreA"),$("#nombreFeedA"),flag);
+    flag = valis($("#id_familia"),$("#familiaFeedA"),flag);
+    if(flag){
+        $('.agregar_producto').prop("disabled", true);
+        sendFormas("Productos/agregar_producto", $("#form_agregar_producto"), $('.agregar_producto'));
+    }
+});
+
+var theDate = new Date().getTime();
+Dropzone.autoDiscover = false;
+var myDropzone = new Dropzone("button#my-dropzoneProd", {
+    paramName: "file_productos",
+    maxFiles: 1,
+    maxFilesize: 1000000, // MB
+    renameFilename: function (filename) {
+        return theDate + '_' + filename;
+    },
+    url: site_url+"Productos/upload_productos",                      
+    autoProcessQueue: true,
+    queuecomplete: function (resp) {
+        blockPageBlocks()
+        setTimeout(function() {
+            unblockPage();
+            myDropzone.removeAllFiles()
+        },1000);
+    },
+    success: function(file, response){
+        console.log(response)
+        if(response.type === "error"){
+            blockPageE()
+            toastr.error("Revise su archivo e intentelo nuevamente",response.desc)
+            setTimeout(function(){unblockPage;},1500)
+        }else if(response.type === "warning"){
+            blockPageBlocks();
+            toastr.warning("Revise su archivo",response.desc)
+            setTimeout(function(){location.reload();},1500)
+        }else{
+            toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": true,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "1000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+            };
+            toastr.success("Listo",response.desc);
+            setTimeout(function(){location.reload();},1100)
+        }
+    }
 });

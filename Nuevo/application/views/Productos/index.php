@@ -1,3 +1,6 @@
+<style>
+	.dz-default{display:none !important}
+</style>
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
 	<!--begin::Subheader-->
@@ -34,7 +37,7 @@
 						<!--begin::Input-->
 						<span class="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
 						<div class="d-flex align-items-center py-3 py-sm-0 px-sm-3">
-							<button type="submit" class="btn btn-light-success font-weight-bold mt-3 mt-sm-0 px-7" >
+							<button type="button" class="btn btn-light-success font-weight-bold mt-3 mt-sm-0 px-7"  data-toggle="modal" data-target="#kt_agregar_prod">
 								<span class="svg-icon svg-icon-lg">
 									<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -75,7 +78,7 @@
 						<!--begin::Input-->
 						<span class="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
 						<div class="d-flex align-items-center py-3 py-sm-0 px-sm-3">
-							<button type="submit" class="btn btn-light-dark font-weight-bold mt-3 mt-sm-0 px-7">
+							<button type="button" class="dropzone btn btn-light-dark font-weight-bold mt-3 mt-sm-0 px-7" id="my-dropzoneProd">
 								<span class="svg-icon svg-icon-lg">
 									<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -168,7 +171,7 @@
 </div>
 <!--end::Modal-->
 
-<!--begin::Modal Eliminar-->
+<!--begin::Modal Imagen-->
 <div class="modal fade" id="kt_imagen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="background:rgba(255,255,255,0.5)">
@@ -181,168 +184,176 @@
 <!--end::Modal-->
 
 <!--begin::Modal Editar-->
-    <div class="modal fade" id="kt_edit_prod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <?php echo form_open("", array("id"=>'form_usuario_edit')); ?>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="id_productos" id="id_productos" value="">
-                    <div class="row">
-                    	<div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="codigo">Código Caja</label>
-                                <input id="codigo" type="text" name="codigo" class="form-control" placeholder="Código Caja">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input id="nombre" type="text" name="nombre" value="" class="form-control" placeholder="Descripción del producto">
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="unidad">UM</label>
-                                <input id="unidad" type="text" name="unidad" value="" class="form-control" placeholder="Unidad Medida">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="codigo">Código pieza</label>
-                                <input id="codigo" type="text" name="codigo" value="" class="form-control" placeholder="Código">
-                            </div>
-                        </div>	
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label for="id_familia">Familia</label>
-                                <select name="id_familia" class="form-control chosen-select" id="id_familia">
-                                    <option value="-1">Seleccionar...</option>
-                                    <?php if ($familias):foreach ($familias as $key => $value): ?>
-                                        <option value="<?php echo $value->id_familia ?>"><?php echo $value->nombre ?></option>
-                                    <?php endforeach; endif ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label for="estatus">Tipo Producto</label>
-                                <select name="estatus" class="form-control chosen-select" id="estatus">
-                                    <option value="1">Normal</option>
-                                    <option value="2">Volúmen</option>
-                                    <option value="3">Amarillo</option>
-                                    <option value="4">Moderna</option>
-                                    <option value="5">Costeña</option>
-                                    <option value="6">cuetara</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="colorp">Conversión</label>
-                                <select name="colorp" class="form-control chosen-select" id="colorp">
-                                    <option value="0">No</option>
-                                    <option value="1">Si</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary update_producto">Editar Producto</button>
-                </div>
-                <?php echo form_close(); ?>
-            </div>
-        </div>
-    </div>
-
-    <!--end::Modal-->
-
-
-<!--begin::Modal Volúmen-->
-<div class="modal fade" id="kt_modal_svol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="kt_edit_prod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="background-color:#C9F7F5">
-                <h5 class="modal-title" id="exampleModalLabel">Existencias/Pedidos <span style="font-size:1.5rem;font-weight:bold;font-style:oblique;color:#1BC5BD">Volúmen</span></h5>
+            <?php echo form_open("", array("id"=>'form_producto_edit')); ?>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <div class="modal-body" style="display:inline-flex;">
-            	<div class="kt-portlet kt-portlet--mobile col-xl-4">
-
-			        <div class="kt-portlet__body">
-			        	<h2 style="color:red">Sin Existencias</h2>
-			            <!--begin: Search Form -->
-			            <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
-			                <div class="row align-items-center">
-			                    <div class="col-xl-12 order-2 order-xl-1">
-			                        <div class="row align-items-center">
-			                            <div class="kt-margin-b-20-tablet-and-mobile">
-			                                <div class="kt-input-icon kt-input-icon--left">
-			                                    <input type="text" class="form-control" placeholder="Buscar..." id="generalSearch6">
-			                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
-			                                        <span><i class="la la-search"></i></span>
-			                                    </span>
-			                                </div>
-			                            </div>
-
-			                        </div>
-			                    </div>
-			                </div>
-			            </div>
-
-			            <!--end: Search Form -->
-			        </div>
-			        <div class="kt-portlet__body kt-portlet__body--fit">
-			            <!--begin: Datatable -->
-			            <div class="kt-datatable datatable datatable-bordered datatable-head-custom" id="volumensin"></div>
-			            <!--end: Datatable -->
-			        </div>
-			    </div>
-			    <div class="kt-portlet kt-portlet--mobile col-xl-1" style="border-right:2px solid #4e0000"></div>
-            	<!-- Con Existencias -->
-        		<div class="kt-portlet kt-portlet--mobile col-xl-6" style="padding-left:30px">
-
-			        <div class="kt-portlet__body">
-			        	<h2 style="color:green">Con Existencias</h2>
-			            <!--begin: Search Form -->
-			            <div class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10">
-			                <div class="row align-items-center">
-			                    <div class="col-xl-12 order-2 order-xl-1">
-			                        <div class="row align-items-center">
-			                            <div class="kt-margin-b-20-tablet-and-mobile">
-			                                <div class="kt-input-icon kt-input-icon--left">
-			                                    <input type="text" class="form-control" placeholder="Buscar..." id="generalSearch7">
-			                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
-			                                        <span><i class="la la-search"></i></span>
-			                                    </span>
-			                                </div>
-			                            </div>
-
-			                        </div>
-			                    </div>
-			                </div>
-			            </div>
-
-			            <!--end: Search Form -->
-			        </div>
-			        <div class="kt-portlet__body kt-portlet__body--fit">
-			            <!--begin: Datatable -->
-			            <div class="kt-datatable datatable datatable-bordered datatable-head-custom" id="volumencon"></div>
-			            <!--end: Datatable -->
-			        </div>
-			    </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_productos" id="id_productos" value="">
+                <input type="hidden" name="codigo2" id="codigo2" value="">
+                <div class="row">
+                	<div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="codigo">Código Caja</label>
+                            <input id="codigo" type="text" name="codigo" class="form-control" placeholder="Código Caja">
+                            <div class="invalid-feedback" id="codigoFeed">Esta campo es requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre" type="text" name="nombre" value="" class="form-control" placeholder="Descripción del producto">
+                            <div class="invalid-feedback" id="nombreFeed">Ingrese la descripción(nombre) del producto.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="unidad">UM</label>
+                            <input id="unidad" type="text" name="unidad" value="" class="form-control" placeholder="Unidad Medida">
+                            <div class="invalid-feedback" id="unidadFeed">Ingrese la unidad de medida.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="pieza">Código pieza</label>
+                            <input id="pieza" type="text" name="pieza" value="" class="form-control" placeholder="Código">
+                        </div>
+                    </div>	
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="id_familia">Familia</label>
+                            <select name="id_familia" class="form-control chosen-select" id="id_familia">
+                                <option value="">Seleccionar...</option>
+                                <?php if ($familias):foreach ($familias as $key => $value): ?>
+                                    <option value="<?php echo $value->id_familia ?>"><?php echo $value->nombre ?></option>
+                                <?php endforeach; endif ?>
+                            </select>
+                            <div class="invalid-feedback" id="familiaFeed">Seleccione una familia.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="estatus">Tipo Producto</label>
+                            <select name="estatus" class="form-control chosen-select" id="estatus">
+                                <option value="1">Normal</option>
+                                <option value="2">Volúmen</option>
+                                <option value="3">Amarillo</option>
+                                <option value="4">Moderna</option>
+                                <option value="5">Costeña</option>
+                                <option value="6">cuetara</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="colorp">Conversión</label>
+                            <select name="colorp" class="form-control chosen-select" id="colorp">
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer" style="background-color:#C9F7F5">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background:#1BC5BD;border-color:#1BC5BD;color:#FFF">Cerrar</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary update_producto">Editar Producto</button>
             </div>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>
+
+<!--end::Modal-->
+
+
+<!--begin::Modal Editar-->
+<div class="modal fade" id="kt_agregar_prod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <?php echo form_open("", array("id"=>'form_agregar_producto')); ?>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                	<div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="codigoA">Código Caja</label>
+                            <input id="codigoA" type="text" name="codigoA" class="form-control" placeholder="Código Caja">
+                            <div class="invalid-feedback" id="codigoFeedA">Esta campo es requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="nombreA">Nombre</label>
+                            <input id="nombreA" type="text" name="nombreA" value="" class="form-control" placeholder="Descripción del producto">
+                            <div class="invalid-feedback" id="nombreFeedA">Ingrese la descripción(nombre) del producto.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="unidadA">UM</label>
+                            <input id="unidadA" type="text" name="unidadA" value="" class="form-control" placeholder="Unidad Medida">
+                            <div class="invalid-feedback" id="unidadFeedA">Ingrese la unidad de medida.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="piezaA">Código pieza</label>
+                            <input id="piezaA" type="text" name="piezaA" value="" class="form-control" placeholder="Código">
+                        </div>
+                    </div>	
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="id_familiaA">Familia</label>
+                            <select name="id_familiaA" class="form-control chosen-select" id="id_familiaA">
+                                <option value="">Seleccionar...</option>
+                                <?php if ($familias):foreach ($familias as $key => $value): ?>
+                                    <option value="<?php echo $value->id_familia ?>"><?php echo $value->nombre ?></option>
+                                <?php endforeach; endif ?>
+                            </select>
+                            <div class="invalid-feedback" id="familiaFeedA">Seleccione una familia.</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="estatusA">Tipo Producto</label>
+                            <select name="estatusA" class="form-control chosen-select" id="estatusA">
+                                <option value="1">Normal</option>
+                                <option value="2">Volúmen</option>
+                                <option value="3">Amarillo</option>
+                                <option value="4">Moderna</option>
+                                <option value="5">Costeña</option>
+                                <option value="6">cuetara</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="colorpA">Conversión</label>
+                            <select name="colorpA" class="form-control chosen-select" id="colorpA">
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary agregar_producto">Agregar Producto</button>
+            </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+
 <!--end::Modal-->

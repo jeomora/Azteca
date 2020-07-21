@@ -11016,3 +11016,25 @@ function formatDate(fecha){
     var meses = new Array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
     return (dias[dd]+" "+d+" DE "+meses[m]+" "+h+":"+mm+":"+s);
 }
+
+function setInvalid(elemento){
+    elemento.toggleClass("is-invalid")
+}
+
+function showErrors(elemento){
+    elemento.css("display","block")
+}
+
+function hideErrors(elemento){
+    elemento.css("display","none")
+}
+
+function valis(eleme,warn,flag){
+    if(eleme.val() === ""){
+        showErrors(warn); 
+        return 0;
+    }else{
+        hideErrors(warn); 
+        return flag;
+    }
+}

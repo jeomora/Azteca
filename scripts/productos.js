@@ -103,7 +103,7 @@ $(document).off("change", "#file_productos").on("change", "#file_productos", fun
 			}
 		});
 });
-
+	
 
 function uploadProductos(formData) {
 	return $.ajax({

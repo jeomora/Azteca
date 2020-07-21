@@ -28,6 +28,14 @@ class Productos extends MY_Controller {
 		//$this->jsonResponse($data["cotizados"]);
 	}
 
+	public function getOldVal($sheets,$i,$le){
+		$cellB = $sheets->getCell($le.$i)->getValue();
+		if(strstr($cellB,'=')==true){
+		    $cellB = $sheets->getCell($le.$i)->getOldCalculatedValue();
+		}
+		return $cellB;
+	}
+
 	public function print_productos(){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
@@ -154,5 +162,128 @@ class Productos extends MY_Controller {
 	public function getProds($id_producto){
 		$producto = $this->pro_md->get(NULL,["id_producto"=>$id_producto])[0];
 		$this->jsonResponse($producto);
+	}
+
+	public function update_producto(){
+		$user = $this->session->userdata();
+		$flag = 1;
+		if ($this->input->post("codigo") <> $this->input->post("codigo2")){
+			$antes = $this->pro_md->get(NULL, ['codigo'=>$this->input->post('codigo')])[0];	
+			if ($antes) {
+				$flag = 0;
+				$mensaje = [
+					"desc"	=> 'El Código ya esta registrado en otro producto',
+					"type"	=> 'error'
+				];
+			}
+		}
+
+		if ($flag) {
+			$producto = [
+				"nombre"		=>	strtoupper($this->input->post('nombre')),
+				"codigo"		=>	$this->input->post('codigo'),
+				"pieza"			=>	$this->input->post('pieza'),
+				"unidad"		=>	$this->input->post('unidad'),
+				"id_familia"	=>	$this->input->post('id_familia'),
+				"estatus"		=>	$this->input->post('estatus'),
+				"colorp"		=>	$this->input->post('colorp'),
+			];
+
+			$data ['id_producto'] = $this->pro_md->update($producto, $this->input->post('id_productos'));
+			$mensaje = [
+				"desc"	=> 'Producto actualizado correctamente',
+				"type"	=> 'success'
+			];
+		}
+		$this->jsonResponse($mensaje);	
+	}
+
+	public function agregar_producto(){
+		$user = $this->session->userdata();
+		$antes = $this->pro_md->get(NULL, ['codigo'=>$this->input->post('codigoA')])[0];	
+		if ($antes) {
+			$mensaje = [
+				"desc"	=> 'El Código ya esta registrado en otro producto',
+				"type"	=> 'error'
+			];
+		}else{
+			$producto = [
+				"nombre"		=>	strtoupper($this->input->post('nombreA')),
+				"codigo"		=>	$this->input->post('codigoA'),
+				"pieza"			=>	$this->input->post('piezaA'),
+				"unidad"		=>	$this->input->post('unidadA'),
+				"id_familia"	=>	$this->input->post('id_familiaA'),
+				"estatus"		=>	$this->input->post('estatusA'),
+				"colorp"		=>	$this->input->post('colorpA'),
+			];
+
+			$data['id_producto'] = $this->pro_md->insert($producto);
+			$mensaje = [
+				"desc"	=> 'Producto actualizado correctamente',
+				"type"	=> 'success'
+			];
+		}
+		$this->jsonResponse($mensaje);	
+	}
+
+	public function upload_productos(){
+		$proveedor = $this->session->userdata('id_usuario');
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$filen = "Productos por ".$cfile->nombre."".rand();
+		$config['upload_path']          = './assets/uploads/productos/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7608;
+
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_productos',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_productos"]["tmp_name"];
+		$filename=$_FILES['file_productos']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		$flag = 1;
+		for ($i=3; $i<=$num_rows; $i++) {
+			if ($this->getOldVal($sheet,$i,'A') <> NULL || $this->getOldVal($sheet,$i,'A') <> "") {
+				$productos = $this->pro_md->get("id_producto",['codigo'=> $this->getOldVal($sheet,$i,'A')])[0];
+				if(!$productos){
+					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
+						$estatus = 1;
+					}else{
+						$estatus = 0;
+					}
+					$new_producto=[
+							"id_familia" 	=> $this->getOldVal($sheet,$i,'C'),//Recupera el id_usuario activo
+							"nombre" 		=> $this->getOldVal($sheet,$i,'B'),
+							"codigo"		=> $this->getOldVal($sheet,$i,'A'),
+							"pieza"			=> $this->getOldVal($sheet,$i,'G'),
+							"unidad" 		=> $this->getOldVal($sheet,$i,'F'),
+							"colorp" 		=> $estatus,
+							"estatus"		=> $this->getOldVal($sheet,$i,'E')
+						];
+					$data ['id_producto'] = $this->pro_md->insert($new_producto);
+				}else{
+					$flag = 0;
+				}
+			}
+		}
+		if ($flag === 0) {
+			$mensaje=[	"desc"	=>	'Algunos códigos ya estaban registrados',
+						"type"	=>	'warning'];
+		}else{
+			if (isset($new_producto)) {
+				$mensaje=[	"desc"	=>	'Productos cargados correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"desc"	=>	'Los Productos no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
 	}
 }

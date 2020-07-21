@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://abarrotesazteca.com';
-//$config['base_url'] = 'http://192.168.0.48/Aztecas';
+//$config['base_url'] = 'http://192.168.0.10/Aztecas';
 
 /*
 |--------------------------------------------------------------------------
