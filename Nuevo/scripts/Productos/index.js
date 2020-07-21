@@ -312,7 +312,7 @@ $(document).off("click", ".agregar_producto").on("click", ".agregar_producto", f
 
 var theDate = new Date().getTime();
 Dropzone.autoDiscover = false;
-var myDropzone = new Dropzone("button#my-dropzoneProd", {
+var myDropzone = new Dropzone("div#my-dropzoneProd", {
     paramName: "file_productos",
     maxFiles: 1,
     maxFilesize: 1000000, // MB
