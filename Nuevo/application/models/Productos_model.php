@@ -9,6 +9,31 @@ class Productos_model extends MY_Model {
 		$this->PRI_INDEX = "id_producto";
 	}
 
+	public function getCuantos($where = []){
+		$this->db->select("COUNT(*) as total")
+		->from($this->TABLE_NAME)
+		->where("estatus <> 0");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public function getProductos($where = []){
 		$this->db->select("p.nombre as producto,p.id_producto,p.codigo,p.estatus,p.color,p.colorp,p.exist,p.unidad,p.pieza,f.nombre as familia,i.imagen")
 		->from("productos p")

@@ -749,7 +749,7 @@ class Sucursales extends MY_Controller {
 		$id_tienda = $this->session->userdata('id_usuario');
 		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $id_tienda])[0];
 		$nams = preg_replace('/\s+/', '_', $cfile->nombre);
-		$filen = "Existencias".$nams."".rand();
+		$filen = "Existencias".$nams."".date("dmyHis");
 		$config['upload_path']          = './assets/uploads/existencias/';
         $config['allowed_types']        = 'xlsx|xls';
         $config['max_size']             = 100002400;

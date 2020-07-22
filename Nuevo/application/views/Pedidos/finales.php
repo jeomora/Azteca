@@ -4,12 +4,11 @@
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
 	<!--begin::Subheader-->
-	<div class="subheader py-5 py-lg-10 gutter-b  subheader-transparent " id="kt_subheader" style="background-color: #663259; background-position: right bottom; background-size: auto 100%; background-repeat: no-repeat; background-image: url(assets/media/svg/illustrations/productos.svg)">
+	<div class="subheader py-5 py-lg-10 gutter-b  subheader-transparent " id="kt_subheader" style="background-color: #663259; background-position: right bottom; background-size: auto 100%; background-repeat: no-repeat; background-image: url(assets/media/svg/illustrations/finales.svg)">
 		<div class=" container  d-flex flex-column">
 			<!--begin::Title-->
 			<div class="d-flex align-items-sm-end flex-column flex-sm-row mb-5">
-				<h2 class="text-white mr-5 mb-0">Productos Registrados</h2>
-				<span class="text-white opacity-60 font-weight-bold"><?php echo $cuantos->total ?> productos </span>
+				<h2 class="text-white mr-5 mb-0">Pedidos Finales</h2>
 			</div>
 			<!--end::Title-->
 			<!--begin::Search Bar-->
@@ -37,48 +36,41 @@
 						<!--begin::Input-->
 						<span class="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
 						<div class="d-flex align-items-center py-3 py-sm-0 px-sm-3">
-							<button type="button" class="btn btn-light-success font-weight-bold mt-3 mt-sm-0 px-7"  data-toggle="modal" data-target="#kt_agregar_prod">
-								<span class="svg-icon svg-icon-lg">
-									<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									        <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
-									        <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
-									    </g>
-									</svg>
-									<!--end::Svg Icon-->
-									Agregar producto
-								</span>
-							</button>
+							<select class="form-control kt-select2" id="kt_select2_1" name="proveedor">
+		                        <option value="-1">Seleccione un proveedor</option>
+		                       <?php if ($proveedores):foreach ($proveedores as $key => $value): ?>
+		                                <option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
+		                        <?php endforeach; endif ?>
+		                    </select>
 						</div>
 						<!--end::Input-->
 
 						<!--begin::Input-->
 						<span class="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
 						<div class="d-flex align-items-center py-3 py-sm-0 px-sm-3">
-							<?php echo form_open("Productos/print_productos", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
-							<button type="submit" class="btn btn-light-warning font-weight-bold mt-3 mt-sm-0 px-7">
-								<span class="svg-icon svg-icon-lg">
-									<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
-									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-									    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									        <polygon points="0 0 24 0 24 24 0 24"/>
-									        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-									        <path d="M14.8875071,11.8306874 L12.9310336,11.8306874 L12.9310336,9.82301606 C12.9310336,9.54687369 12.707176,9.32301606 12.4310336,9.32301606 L11.4077349,9.32301606 C11.1315925,9.32301606 10.9077349,9.54687369 10.9077349,9.82301606 L10.9077349,11.8306874 L8.9512614,11.8306874 C8.67511903,11.8306874 8.4512614,12.054545 8.4512614,12.3306874 C8.4512614,12.448999 8.49321518,12.5634776 8.56966458,12.6537723 L11.5377874,16.1594334 C11.7162223,16.3701835 12.0317191,16.3963802 12.2424692,16.2179453 C12.2635563,16.2000915 12.2831273,16.1805206 12.3009811,16.1594334 L15.2691039,12.6537723 C15.4475388,12.4430222 15.4213421,12.1275254 15.210592,11.9490905 C15.1202973,11.8726411 15.0058187,11.8306874 14.8875071,11.8306874 Z" fill="#000000"/>
-									    </g>
-									</svg>
-									<!--end::Svg Icon-->
-									Descargar formato
-								</span>
-							</button>
-							<?php echo form_close(); ?>
+							<a href="assets/uploads/Finales/finales.xlsx" target="_blank">
+								<button type="submit" class="btn btn-light-warning font-weight-bold mt-3 mt-sm-0 px-7">
+									<span class="svg-icon svg-icon-lg">
+										<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+										    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										        <polygon points="0 0 24 0 24 24 0 24"/>
+										        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+										        <path d="M14.8875071,11.8306874 L12.9310336,11.8306874 L12.9310336,9.82301606 C12.9310336,9.54687369 12.707176,9.32301606 12.4310336,9.32301606 L11.4077349,9.32301606 C11.1315925,9.32301606 10.9077349,9.54687369 10.9077349,9.82301606 L10.9077349,11.8306874 L8.9512614,11.8306874 C8.67511903,11.8306874 8.4512614,12.054545 8.4512614,12.3306874 C8.4512614,12.448999 8.49321518,12.5634776 8.56966458,12.6537723 L11.5377874,16.1594334 C11.7162223,16.3701835 12.0317191,16.3963802 12.2424692,16.2179453 C12.2635563,16.2000915 12.2831273,16.1805206 12.3009811,16.1594334 L15.2691039,12.6537723 C15.4475388,12.4430222 15.4213421,12.1275254 15.210592,11.9490905 C15.1202973,11.8726411 15.0058187,11.8306874 14.8875071,11.8306874 Z" fill="#000000"/>
+										    </g>
+										</svg>
+										<!--end::Svg Icon-->
+										Descargar formato
+									</span>
+								</button>
+							</a>
 						</div>
 						<!--end::Input-->
 
 						<!--begin::Input-->
 						<span class="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
 						<div class="d-flex align-items-center py-3 py-sm-0 px-sm-3">
-							<button type="button" class="btn btn-light-dark font-weight-bold" style="padding:0">
+							<button type="button" class="btn btn-light-dark font-weight-bold" style="padding:0;display:none"  id="subepedidos">
 								<div id="my-dropzoneProd" class="dropzone btn btn-light-dark font-weight-bold" style="background:transparent;">
 	                                <div class="dz-message drop1" data-dz-message>
 	                                    <span class="svg-icon svg-icon-lg">
@@ -91,7 +83,7 @@
 											    </g>
 											</svg>
 											<!--end::Svg Icon-->
-											Subir varios productos
+											Subir pedidos finales
 										</span>
 	                                </div>
 	                            </div>
@@ -119,13 +111,29 @@
 	        		<!--begin::Advance Table Widget 10-->
 					<div class="card card-custom gutter-b card-stretch">
 					    <div class="card-body py-4">
-					    	<div class="alert alert-light alert-elevate" role="alert" style="display:inline-flex;">
-						        <div class="alert-icon" style="padding-right:20px"><i class="flaticon-warning kt-font-danger" style="color:red;font-size:25px;"></i></div>
-						        <div class="alert-text">
-						           Si desea agregar más de un producto, puede descargar el formato (botón amarillo) y completarlo. Posteriormente clic al botón "Subir varios productos" y seleccionar el archivo. <br>Ejemplo de archivo subir productos:
-						           <img src="assets/img/uploadprod.png" style="max-width:100%;padding-top:10px;">
-						        </div>
-						    </div>
+					    	
+
+							<div class="alert alert-custom alert-outline-2x alert-outline-dark fade show mb-5" role="alert">
+							    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+							    <div class="alert-text"> Seleccione el proveedor en la parte superior para que se muestren los pedidos finales. 
+						           Para subir sus pedidos finales: <br>Seleccione el proveedor,<br> Clic al boton "Subir pedidos finales",<br> Seleccione su archivo y se actualizarán los pedidos finales.</div>
+						           <div class="d-flex align-items-center py-3 py-sm-0 px-sm-3">
+							           <button type="button" class="btn btn-light-danger font-weight-bold mt-3 mt-sm-0 px-7 elimPed" style="display:none">
+											<span class="svg-icon svg-icon-lg">
+												<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												        <rect x="0" y="0" width="24" height="24"/>
+												        <path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/>
+												        <path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>
+												    </g>
+												</svg>
+												<!--end::Svg Icon-->
+												Eliminar Pedidos Del Proveedor
+											</span>
+										</button>
+									</div>
+							</div>
 					    </div>
 
 					    <!--begin::Body-->

@@ -24,6 +24,7 @@ class Productos extends MY_Controller {
 		$data["cotizados"] = $this->usua_mdl->getCotizados();
 		$data["usuar"]  = $this->session->userdata();
 		$data["familias"] = $this->fam_mdl->get(NULL,["estatus"=>1]);
+		$data["cuantos"] = $this->pro_md->getCuantos(NULL)[0];
 		$this->estructura("Productos/index", $data);
 		//$this->jsonResponse($data["cotizados"]);
 	}

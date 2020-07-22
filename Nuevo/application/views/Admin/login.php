@@ -54,7 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--begin::Login-->
 <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
     <!--begin::Aside-->
-    <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #F2C98A;">
+    <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #663259;">
         <!--begin::Aside Top-->
         <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
             <!--begin::Aside header-->
@@ -64,7 +64,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!--end::Aside header-->
 
             <!--begin::Aside title-->
-            <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #986923;">
+            <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #FFF;">
                 Abarrotes Azteca<br/>
                 <span style="font-size:12px">Developed by I.T.I Jeovany Mora</span>
             </h3>
@@ -73,7 +73,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!--end::Aside Top-->
 
         <!--begin::Aside Bottom-->
-        <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url(assets/media/svg/illustrations/login-visual-1.svg)"></div>
+        <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url(assets/media/svg/illustrations/login.svg)"></div>
         <!--end::Aside Bottom-->
     </div>
     <!--begin::Aside-->
@@ -112,7 +112,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <!--begin::Action-->
                     <div class="pb-lg-0 pb-5">
-                        <button type="button" id="kt_login_signin_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Ingresar</button>
+                        <button type="button" id="kt_login_signin_submit" style="background-color:#663259" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Ingresar</button>
                     </div>
                     <!--end::Action-->
                 </form>
@@ -152,8 +152,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
         <!--begin::Content footer-->
         <div class="d-flex justify-content-lg-start justify-content-center align-items-end py-7 py-lg-0">
-            <a href="#" class="text-primary font-weight-bolder font-size-h5">Terminos y condiciones</a>
-            <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Contáctanos</a>
+            <!--<a href="#" class="text-primary font-weight-bolder font-size-h5" style="color:#663259 !important">Terminos y condiciones</a>-->
+            <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5" style="color:#663259 !important">Contáctanos</a>
         </div>
         <!--end::Content footer-->
     </div>

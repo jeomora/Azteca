@@ -4,7 +4,7 @@
 <!--begin::Content-->
 <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
 	<!--begin::Subheader-->
-	<div class="subheader py-5 py-lg-10 gutter-b  subheader-transparent " id="kt_subheader" style="background-color: #663259; background-position: right bottom; background-size: auto 100%; background-repeat: no-repeat; background-image: url(assets/media/svg/patterns/taieri.svg)">
+	<div class="subheader py-5 py-lg-10 gutter-b  subheader-transparent " id="kt_subheader" style="background-color:#663259;background-position:right bottom;background-size:auto 100%;background-repeat:no-repeat;background-image:url(assets/media/svg/illustrations/sucursalexcel.svg);height:14vh">
 		<div class=" container  d-flex flex-column">
 			<!--begin::Title-->
 			<div class="d-flex align-items-sm-end flex-column flex-sm-row mb-5">
