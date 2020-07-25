@@ -217,7 +217,7 @@ class Productos extends MY_Controller {
 				"id_familia"	=>	$this->input->post('id_familiaA'),
 				"estatus"		=>	$this->input->post('estatusA'),
 				"colorp"		=>	$this->input->post('colorpA'),
-				"casap"			=>	strtoupper($this->input->post('casaA')),
+				"casa"			=>	strtoupper($this->input->post('casaA')),
 			];
 
 			$data['id_producto'] = $this->pro_md->insert($producto);
