@@ -188,6 +188,7 @@ class Productos extends MY_Controller {
 				"id_familia"	=>	$this->input->post('id_familia'),
 				"estatus"		=>	$this->input->post('estatus'),
 				"colorp"		=>	$this->input->post('colorp'),
+				"casa"			=>	strtoupper($this->input->post('casa')),
 			];
 
 			$data ['id_producto'] = $this->pro_md->update($producto, $this->input->post('id_productos'));
@@ -216,6 +217,7 @@ class Productos extends MY_Controller {
 				"id_familia"	=>	$this->input->post('id_familiaA'),
 				"estatus"		=>	$this->input->post('estatusA'),
 				"colorp"		=>	$this->input->post('colorpA'),
+				"casap"			=>	strtoupper($this->input->post('casaA')),
 			];
 
 			$data['id_producto'] = $this->pro_md->insert($producto);
@@ -267,8 +269,18 @@ class Productos extends MY_Controller {
 							"colorp" 		=> $estatus,
 							"estatus"		=> $this->getOldVal($sheet,$i,'E')
 						];
-					$data ['id_producto'] = $this->pro_md->insert($new_producto);
+					//$data ['id_producto'] = $this->pro_md->insert($new_producto);
 				}else{
+					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
+						$estatus = 1;
+					}else{
+						$estatus = 0;
+					}
+					$new_producto=[
+							"casa" 			=> $this->getOldVal($sheet,$i,'D'),//Recupera el id_usuario activo
+							"unidad"		=> $this->getOldVal($sheet,$i,'C')
+						];
+					$data ['id_producto'] = $this->pro_md->update($new_producto,$productos->id_producto);
 					$flag = 0;
 				}
 			}

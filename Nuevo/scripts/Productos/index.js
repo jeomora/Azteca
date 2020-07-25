@@ -278,6 +278,7 @@ $(document).off("click", "#editprod").on("click", "#editprod", function(event) {
             $("#id_familia").val(resp.id_familia);
             $("#estatus").val(resp.estatus);
             $("#colorp").val(resp.colorp);
+            $("#casa").val(resp.casa);
         });
 });
 
@@ -288,7 +289,7 @@ $(document).off("click", ".update_producto").on("click", ".update_producto", fun
     flag = valis($("#codigo"),$("#codigoFeed"),flag);
     flag = valis($("#unidad"),$("#unidadFeed"),flag);
     flag = valis($("#nombre"),$("#nombreFeed"),flag);
-    flag = valis($("#id_familia"),$("#familiaFeed"),flag);
+    //flag = valis($("#id_familia"),$("#familiaFeed"),flag);
     if(flag){
         $('.update_producto').prop("disabled", true);
         sendFormas("Productos/update_producto", $("#form_producto_edit"), $('.update_producto'));
@@ -303,7 +304,7 @@ $(document).off("click", ".agregar_producto").on("click", ".agregar_producto", f
     flag = valis($("#codigoA"),$("#codigoFeedA"),flag);
     flag = valis($("#unidadA"),$("#unidadFeedA"),flag);
     flag = valis($("#nombreA"),$("#nombreFeedA"),flag);
-    flag = valis($("#id_familia"),$("#familiaFeedA"),flag);
+    //flag = valis($("#id_familia"),$("#familiaFeedA"),flag);
     if(flag){
         $('.agregar_producto').prop("disabled", true);
         sendFormas("Productos/agregar_producto", $("#form_agregar_producto"), $('.agregar_producto'));

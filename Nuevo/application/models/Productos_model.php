@@ -35,7 +35,7 @@ class Productos_model extends MY_Model {
 	}
 
 	public function getProductos($where = []){
-		$this->db->select("p.nombre as producto,p.id_producto,p.codigo,p.estatus,p.color,p.colorp,p.exist,p.unidad,p.pieza,f.nombre as familia,i.imagen")
+		$this->db->select("p.nombre as producto,p.casa,p.id_producto,p.codigo,p.estatus,p.color,p.colorp,p.exist,p.unidad,p.pieza,f.nombre as familia,i.imagen")
 		->from("productos p")
 		->join("familias f","p.id_familia = f.id_familia","LEFT")
 		->join("images i","p.id_producto = i.id_image","LEFT")

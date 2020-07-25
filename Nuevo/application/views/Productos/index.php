@@ -201,14 +201,14 @@
                 <input type="hidden" name="id_productos" id="id_productos" value="">
                 <input type="hidden" name="codigo2" id="codigo2" value="">
                 <div class="row">
-                	<div class="col-sm-4">
+                	<div class="col-sm-3">
                         <div class="form-group">
                             <label for="codigo">Código Caja</label>
                             <input id="codigo" type="text" name="codigo" class="form-control" placeholder="Código Caja">
                             <div class="invalid-feedback" id="codigoFeed">Esta campo es requerido.</div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
                             <input id="nombre" type="text" name="nombre" value="" class="form-control" placeholder="Descripción del producto">
@@ -222,13 +222,22 @@
                             <div class="invalid-feedback" id="unidadFeed">Ingrese la unidad de medida.</div>
                         </div>
                     </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="colorp">Conversión</label>
+                            <select name="colorp" class="form-control chosen-select" id="colorp">
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="pieza">Código pieza</label>
                             <input id="pieza" type="text" name="pieza" value="" class="form-control" placeholder="Código">
                         </div>
                     </div>	
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label for="id_familia">Familia</label>
                             <select name="id_familia" class="form-control chosen-select" id="id_familia">
@@ -240,7 +249,7 @@
                             <div class="invalid-feedback" id="familiaFeed">Seleccione una familia.</div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <label for="estatus">Tipo Producto</label>
                             <select name="estatus" class="form-control chosen-select" id="estatus">
@@ -253,15 +262,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <div class="form-group">
-                            <label for="colorp">Conversión</label>
-                            <select name="colorp" class="form-control chosen-select" id="colorp">
-                                <option value="0">No</option>
-                                <option value="1">Si</option>
-                            </select>
+                            <label for="casa">Casa Comercial</label>
+                            <input id="casa" type="text" name="casa" value="" class="form-control" placeholder="Ejem: MARCAS NESTLE SA DE CV,GRUPO CLARASOL">
                         </div>
-                    </div>
+                    </div>	
                 </div>
             </div>
             <div class="modal-footer">
@@ -288,14 +294,14 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                	<div class="col-sm-4">
+                	<div class="col-sm-3">
                         <div class="form-group">
                             <label for="codigoA">Código Caja</label>
                             <input id="codigoA" type="text" name="codigoA" class="form-control" placeholder="Código Caja">
                             <div class="invalid-feedback" id="codigoFeedA">Esta campo es requerido.</div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="form-group">
                             <label for="nombreA">Nombre</label>
                             <input id="nombreA" type="text" name="nombreA" value="" class="form-control" placeholder="Descripción del producto">
@@ -309,13 +315,22 @@
                             <div class="invalid-feedback" id="unidadFeedA">Ingrese la unidad de medida.</div>
                         </div>
                     </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="colorpA">Conversión</label>
+                            <select name="colorpA" class="form-control chosen-select" id="colorpA">
+                                <option value="0">No</option>
+                                <option value="1">Si</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="piezaA">Código pieza</label>
                             <input id="piezaA" type="text" name="piezaA" value="" class="form-control" placeholder="Código">
                         </div>
                     </div>	
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label for="id_familiaA">Familia</label>
                             <select name="id_familiaA" class="form-control chosen-select" id="id_familiaA">
@@ -327,7 +342,7 @@
                             <div class="invalid-feedback" id="familiaFeedA">Seleccione una familia.</div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <label for="estatusA">Tipo Producto</label>
                             <select name="estatusA" class="form-control chosen-select" id="estatusA">
@@ -340,15 +355,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <div class="form-group">
-                            <label for="colorpA">Conversión</label>
-                            <select name="colorpA" class="form-control chosen-select" id="colorpA">
-                                <option value="0">No</option>
-                                <option value="1">Si</option>
-                            </select>
+                            <label for="casaA">Casa Comercial</label>
+                            <input id="casaA" type="text" name="casaA" value="" class="form-control" placeholder="Ejem: MARCAS NESTLE SA DE CV,GRUPO CLARASOL">
                         </div>
-                    </div>
+                    </div>	
                 </div>
             </div>
             <div class="modal-footer">
