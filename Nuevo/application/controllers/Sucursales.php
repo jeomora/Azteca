@@ -429,54 +429,56 @@ class Sucursales extends MY_Controller {
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
 		$hoja1->getColumnDimension('C')->setWidth("6");
+		$hoja1->getColumnDimension('E')->setWidth("10");
 		$hoja1->getColumnDimension('D')->setWidth("25");
-		$hoja1->getColumnDimension('E')->setWidth("60");
-		$hoja1->getColumnDimension('F')->setWidth("80");
-		$hoja1->getColumnDimension('G')->setWidth("28");
+		$hoja1->getColumnDimension('F')->setWidth("60");
+		$hoja1->getColumnDimension('G')->setWidth("80");
+		$hoja1->getColumnDimension('H')->setWidth("28");
 
 		$this->excelfile->setActiveSheetIndex(0);
 		$flag2 = $flag;
-		$hoja1->mergeCells('A'.$flag2.':F'.$flag2);
+		$hoja1->mergeCells('A'.$flag2.':G'.$flag2);
 		$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja1->setCellValue("A".$flag2."", "GRUPO ABARROTES AZTECA");
-		$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
+		$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':G'.$flag2.'')->applyFromArray($styleArray);
 		$flag2++;
-		$hoja1->mergeCells('A'.$flag2.':F'.$flag2.'');
+		$hoja1->mergeCells('A'.$flag2.':G'.$flag2.'');
 		$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 		$hoja1->setCellValue("A".$flag2."", "FORMATO DE EXISTENCIAS GENERAL ".date("d-m-Y"));
-		$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':E'.$flag2.'')->applyFromArray($styleArray);
+		$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':G'.$flag2.'')->applyFromArray($styleArray);
 		$flag2++;
-		$this->cellStyle("A".$flag2.":G".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A".$flag2.":H".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja1->mergeCells('A'.$flag2.':C'.$flag2.'');
 		$hoja1->setCellValue("A".$flag2."", "EXISTENCIAS");
-		$hoja1->setCellValue("E".$flag2."", "DESCRIPCIÓN");
-		$this->cellStyle("E".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja1->setCellValue("F".$flag2."", "PROMOCIÓN DE LA SEMANA");
+		$hoja1->setCellValue("F".$flag2."", "DESCRIPCIÓN");
 		$this->cellStyle("F".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':F'.$flag2.'')->applyFromArray($styleArray);
-		$this->cellStyle("H".$flag2, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
-		$hoja1->setCellValue("H".$flag2."", "PENDIENTE");
+		$hoja1->setCellValue("G".$flag2."", "PROMOCIÓN DE LA SEMANA");
+		$this->cellStyle("G".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->excelfile->getActiveSheet()->getStyle('A'.$flag2.':G'.$flag2.'')->applyFromArray($styleArray);
+		$this->cellStyle("I".$flag2, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja1->setCellValue("I".$flag2."", "PENDIENTE");
 		$flag2++;
 		$this->cellStyle("A".$flag2.":G".$flag2."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$hoja1->setCellValue("A".$flag2."", "CAJAS");
 		$hoja1->setCellValue("B".$flag2."", "PZAS");
 		$hoja1->setCellValue("C".$flag2."", "PEDIDO");
 		$hoja1->setCellValue("D".$flag2."", "CÓDIGO");
+		$hoja1->setCellValue("E".$flag2."", "SUGS");
 		$cotizacionesProveedor = $this->suc_mdl->getG(NULL);
 		$sucursal = $this->suc_mdl->get(NULL,["id_sucursal"=>$user["id_usuario"]])[0];
-		$hoja1->setCellValue("H".$flag2."", $sucursal->nombre);
-		$this->cellStyle("H".$flag2."", substr($sucursal->color, 1) , "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$hoja1->setCellValue("I".$flag2."", $sucursal->nombre);
+		$this->cellStyle("I".$flag2."", substr($sucursal->color, 1) , "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 
 
 		if($cotizacionesProveedor){
 			foreach ($cotizacionesProveedor as $key => $value) {
-				$this->cellStyle("E".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
-				$hoja1->setCellValue("E".$flag1, $value['familia']);
+				$this->cellStyle("F".$flag1, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+				$hoja1->setCellValue("F".$flag1, $value['familia']);
 				$flag1 +=1;
 				if ($value['articulos']) {
 					foreach ($value['articulos'] as $key => $row){
 						$this->excelfile->setActiveSheetIndex(0);
-						$this->cellStyle("A".$flag1.":H".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+						$this->cellStyle("A".$flag1.":I".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						
 						$hoja1->setCellValue("D{$flag1}", $row['codigo'])->getStyle("D{$flag1}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						if($row['color'] == '#92CEE3'){
@@ -484,13 +486,23 @@ class Sucursales extends MY_Controller {
 						}else{
 							$this->cellStyle("D{$flag1}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 						}
-						$hoja1->setCellValue("E{$flag1}", $row['producto']);
-						$hoja1->setCellValue("F{$flag1}", $row['observaciones']);
-						$hoja1->setCellValue("H{$flag1}", $row[$user["id_usuario"]]);
-						$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':F'.$flag1.'')->applyFromArray($styleArray);
-						$this->excelfile->getActiveSheet()->getStyle('H'.$flag1)->applyFromArray($styleArray);
-						
-				        $hoja1->getStyle("A{$flag1}:H{$flag1}")
+						$hoja1->setCellValue("F{$flag1}", $row['producto']);
+						$hoja1->setCellValue("G{$flag1}", $row['observaciones']);
+						$hoja1->setCellValue("I{$flag1}", $row[$user["id_usuario"]]);
+						$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':G'.$flag1.'')->applyFromArray($styleArray);
+						$this->excelfile->getActiveSheet()->getStyle('I'.$flag1)->applyFromArray($styleArray);
+						if($row["unidad"] === null || $row["unidad"] === 0){
+							$row["unidad"] = 1;
+						}
+						$suggey = (floatval($row["excajas"]) * floatval($row["unidad"])) + (floatval($row["oneweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["expiezas"]);
+						$suggey = $suggey + (floatval($row["ex2cajas"]) * floatval($row["unidad"])) + (floatval($row["twoweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex2piezas"]);
+						$suggey = $suggey + (floatval($row["ex3cajas"]) * floatval($row["unidad"])) + (floatval($row["thrweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex3piezas"]);
+						$suggey = ($suggey / floatval($row["unidad"]))/3;
+
+						$this->cellStyle("E{$flag1}", "FFBF00", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja1->setCellValue("E{$flag1}", "=".$suggey."-(((A{$flag1}*".$row["unidad"].")+B{$flag1})/".$row["unidad"].")")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');
+
+				        $hoja1->getStyle("A{$flag1}:I{$flag1}")
 				                 ->getAlignment()
 				                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 						$flag1 ++;
