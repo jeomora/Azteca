@@ -491,7 +491,7 @@ class Sucursales extends MY_Controller {
 						$hoja1->setCellValue("I{$flag1}", $row[$user["id_usuario"]]);
 						$this->excelfile->getActiveSheet()->getStyle('A'.$flag1.':G'.$flag1.'')->applyFromArray($styleArray);
 						$this->excelfile->getActiveSheet()->getStyle('I'.$flag1)->applyFromArray($styleArray);
-						if($row["unidad"] === null || $row["unidad"] === 0){
+						if($row["unidad"] === null || $row["unidad"] === 0 || $row["unidad"] === "0"){
 							$row["unidad"] = 1;
 						}
 						$suggey = (floatval($row["excajas"]) * floatval($row["unidad"])) + (floatval($row["oneweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["expiezas"]);
