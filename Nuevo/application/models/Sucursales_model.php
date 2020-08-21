@@ -75,8 +75,8 @@ class Sucursales_model extends MY_Model {
 		$fecha2 = new DateTime(date('Y-m-d H:i:s'));
 		$fecha3 = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P7D');
-		$intervalo = new DateInterval('P14D');
-		$intervalo = new DateInterval('P21D');
+		$intervalo2 = new DateInterval('P14D');
+		$intervalo3 = new DateInterval('P21D');
 		$fecha->sub($intervalo);
 		$fecha2->sub($intervalo2);
 		$fecha3->sub($intervalo3);

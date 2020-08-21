@@ -24,8 +24,7 @@ class Cotizaciones_model extends MY_Model {
 			cotizaciones.fecha_caduca,
 			cotizaciones.existencias,
 			cotizaciones.observaciones,
-			UPPER(u.nombre) AS proveedor,
-			p.nombre AS producto")
+			UPPER(u.nombre) AS proveedor, p.nombre AS producto")
 		->from($this->TABLE_NAME)
 		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "LEFT")
 		->join("productos p", $this->TABLE_NAME.".id_producto = p.id_producto", "LEFT")
