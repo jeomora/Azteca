@@ -505,7 +505,7 @@ class Sucursales extends MY_Controller {
 						if($suggey >= floatval($row["unidad"])){
 							$mod = $suggey % floatval($row["unidad"]);
 							$cjs = ($suggey - ($suggey % floatval($row["unidad"]))) / floatval($row["unidad"]);
-							$hoja1->setCellValue("E{$flag1}", $cjs." cajas ".()." pzas semanalmente")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');	
+							$hoja1->setCellValue("E{$flag1}", $cjs." cajas ".$mod." pzas semanalmente")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');	
 						}else{
 							$hoja1->setCellValue("E{$flag1}", $suggey." pzas semanalmente")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');
 						}

@@ -299,4 +299,75 @@ class Productos extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
+
+	public function upload_productosum(){
+		$proveedor = $this->session->userdata('id_usuario');
+		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
+		$filen = "Productos por ".$cfile->nombre."".rand();
+		$config['upload_path']          = './assets/uploads/productos/';
+        $config['allowed_types']        = 'xlsx|xls';
+        $config['max_size']             = 1000;
+        $config['max_width']            = 10024;
+        $config['max_height']           = 7608;
+
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('file_productos',$filen);
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_productos"]["tmp_name"];
+		$filename=$_FILES['file_productos']['name'];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		$flag = 1;
+		for ($i=3; $i<=$num_rows; $i++) {
+			if ($this->getOldVal($sheet,$i,'A') <> NULL || $this->getOldVal($sheet,$i,'A') <> "") {
+				$productos = $this->pro_md->get("id_producto",['codigo'=> $this->getOldVal($sheet,$i,'A')])[0];
+				if(!$productos){
+					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
+						$estatus = 1;
+					}else{
+						$estatus = 0;
+					}
+					$new_producto=[
+							"id_familia" 	=> $this->getOldVal($sheet,$i,'C'),//Recupera el id_usuario activo
+							"nombre" 		=> $this->getOldVal($sheet,$i,'B'),
+							"codigo"		=> $this->getOldVal($sheet,$i,'A'),
+							"pieza"			=> $this->getOldVal($sheet,$i,'G'),
+							"unidad" 		=> $this->getOldVal($sheet,$i,'F'),
+							"colorp" 		=> $estatus,
+							"estatus"		=> $this->getOldVal($sheet,$i,'E')
+						];
+					//$data ['id_producto'] = $this->pro_md->insert($new_producto);
+				}else{
+					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
+						$estatus = 1;
+					}else{
+						$estatus = 0;
+					}
+					$new_producto=[
+							"casa" 			=> $this->getOldVal($sheet,$i,'D'),//Recupera el id_usuario activo
+							"unidad"		=> $this->getOldVal($sheet,$i,'C')
+						];
+					$data ['id_producto'] = $this->pro_md->update($new_producto,$productos->id_producto);
+					$flag = 0;
+				}
+			}
+		}
+		if ($flag === 0) {
+			$mensaje=[	"desc"	=>	'Algunos códigos ya estaban registrados',
+						"type"	=>	'warning'];
+		}else{
+			if (isset($new_producto)) {
+				$mensaje=[	"desc"	=>	'Productos cargados correctamente en el Sistema',
+							"type"	=>	'success'];
+			}else{
+				$mensaje=[	"desc"	=>	'Los Productos no se cargaron al Sistema',
+							"type"	=>	'error'];
+			}
+		}
+		$this->jsonResponse($mensaje);
+	}
 }
