@@ -429,7 +429,7 @@ class Sucursales extends MY_Controller {
 		$hoja1->getColumnDimension('A')->setWidth("6");
 		$hoja1->getColumnDimension('B')->setWidth("6");
 		$hoja1->getColumnDimension('C')->setWidth("6");
-		$hoja1->getColumnDimension('E')->setWidth("10");
+		$hoja1->getColumnDimension('E')->setWidth("30");
 		$hoja1->getColumnDimension('D')->setWidth("25");
 		$hoja1->getColumnDimension('F')->setWidth("60");
 		$hoja1->getColumnDimension('G')->setWidth("80");
@@ -499,10 +499,17 @@ class Sucursales extends MY_Controller {
 						$suggey = $suggey + ( (floatval($row["ex3cajas"]) * floatval($row["unidad"])) + (floatval($row["thrweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex3piezas"]) ) - ( (floatval($row["ex2cajas"]) * floatval($row["unidad"]))+floatval($row["ex2piezas"]) );
 						$suggey = $suggey + ( (floatval($row["ex2cajas"]) * floatval($row["unidad"])) + (floatval($row["twoweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex2piezas"]) ) - ( (floatval($row["excajas"]) * floatval($row["unidad"]))+floatval($row["expiezas"]) );
 						/*$suggey = $suggey + ( (floatval($row["excajas"]) * floatval($row["unidad"])) + (floatval($row["oneweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["expiezas"]) ) - ( (floatval($row["exiscajas"]) * floatval($row["unidad"]))+floatval($row["exispiezas"]) )*/;
-						$suggey = ($suggey / floatval($row["unidad"]))/3;
+						$suggey = $suggey/3;
 
 						$this->cellStyle("E{$flag1}", "FFBF00", "000000", TRUE, 12, "Franklin Gothic Book");
-						$hoja1->setCellValue("E{$flag1}", "=".$suggey."-(((A{$flag1}*".$row["unidad"].")+B{$flag1})/".$row["unidad"].")")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');
+						if($suggey >= floatval($row["unidad"])){
+							$mod = $suggey % floatval($row["unidad"]);
+							$cjs = ($suggey - ($suggey % floatval($row["unidad"]))) / floatval($row["unidad"]);
+							$hoja1->setCellValue("E{$flag1}", $cjs." cajas ".()." pzas semanalmente")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');	
+						}else{
+							$hoja1->setCellValue("E{$flag1}", $suggey." pzas semanalmente")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');
+						}
+						
 
 				        $hoja1->getStyle("A{$flag1}:I{$flag1}")
 				                 ->getAlignment()
