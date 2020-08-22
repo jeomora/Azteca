@@ -463,7 +463,7 @@ class Sucursales extends MY_Controller {
 		$hoja1->setCellValue("B".$flag2."", "PZAS");
 		$hoja1->setCellValue("C".$flag2."", "PEDIDO");
 		$hoja1->setCellValue("D".$flag2."", "CÓDIGO");
-		$hoja1->setCellValue("E".$flag2."", "SUGS");
+		$hoja1->setCellValue("E".$flag2."", "PRO VEN");
 		$cotizacionesProveedor = $this->suc_mdl->getG(NULL);
 		$sucursal = $this->suc_mdl->get(NULL,["id_sucursal"=>$user["id_usuario"]])[0];
 		$hoja1->setCellValue("I".$flag2."", $sucursal->nombre);
@@ -494,10 +494,12 @@ class Sucursales extends MY_Controller {
 						if($row["unidad"] === null || $row["unidad"] === 0 || $row["unidad"] === "0"){
 							$row["unidad"] = 1;
 						}
-						$suggey = (floatval($row["excajas"]) * floatval($row["unidad"])) + (floatval($row["oneweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["expiezas"]);
-						$suggey = $suggey + (floatval($row["ex2cajas"]) * floatval($row["unidad"])) + (floatval($row["twoweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex2piezas"]);
-						$suggey = $suggey + (floatval($row["ex3cajas"]) * floatval($row["unidad"])) + (floatval($row["thrweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex3piezas"]);
-						$suggey = ($suggey / floatval($row["unidad"]))/3;
+
+						$suggey = ( (floatval($row["foxcajas"]) * floatval($row["unidad"])) + (floatval($row["fo"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["foxpiezas"]) ) - ( (floatval($row["ex3cajas"]) * floatval($row["unidad"]))+floatval($row["ex3piezas"]) );
+						$suggey = $suggey + ( (floatval($row["ex3cajas"]) * floatval($row["unidad"])) + (floatval($row["thrweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex3piezas"]) ) - ( (floatval($row["ex2cajas"]) * floatval($row["unidad"]))+floatval($row["ex2piezas"]) );
+						$suggey = $suggey + ( (floatval($row["ex2cajas"]) * floatval($row["unidad"])) + (floatval($row["twoweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["ex2piezas"]) ) - ( (floatval($row["excajas"]) * floatval($row["unidad"]))+floatval($row["expiezas"]) );
+						$suggey = $suggey + ( (floatval($row["excajas"]) * floatval($row["unidad"])) + (floatval($row["oneweek"][$user["id_usuario"]]) * floatval($row["unidad"])) + floatval($row["expiezas"]) ) - ( (floatval($row["exiscajas"]) * floatval($row["unidad"]))+floatval($row["exispiezas"]) );
+						$suggey = ($suggey / floatval($row["unidad"]))/4;
 
 						$this->cellStyle("E{$flag1}", "FFBF00", "000000", TRUE, 12, "Franklin Gothic Book");
 						$hoja1->setCellValue("E{$flag1}", "=".$suggey."-(((A{$flag1}*".$row["unidad"].")+B{$flag1})/".$row["unidad"].")")->getStyle("E{$flag1}")->getNumberFormat()->setFormatCode('#,##0_-');
