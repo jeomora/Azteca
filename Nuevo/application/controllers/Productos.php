@@ -334,8 +334,8 @@ class Productos extends MY_Controller {
 						$estatus = 0;
 					}
 					$new_producto=[
-							"obis" 			=> $this->getOldVal($sheet,$i,'J'),//Recupera el id_usuario activo
-							"unidad"		=> $this->getOldVal($sheet,$i,'I')
+							"obis" 			=> $this->getOldVal($sheet,$i,'K'),//Recupera el id_usuario activo
+							"unidad"		=> $this->getOldVal($sheet,$i,'J')
 						];
 					$data ['id_producto'] = $this->pro_md->update($new_producto,$productos->id_producto);
 					$flag = 0;
