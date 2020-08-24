@@ -300,7 +300,7 @@ class Productos extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function upload_productosum(){
+	public function upload_productos(){
 		$proveedor = $this->session->userdata('id_usuario');
 		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
 		$filen = "Productos por ".$cfile->nombre."".rand();
@@ -348,8 +348,8 @@ class Productos extends MY_Controller {
 						$estatus = 0;
 					}
 					$new_producto=[
-							"casa" 			=> $this->getOldVal($sheet,$i,'D'),//Recupera el id_usuario activo
-							"unidad"		=> $this->getOldVal($sheet,$i,'C')
+							"obis" 			=> $this->getOldVal($sheet,$i,'J'),//Recupera el id_usuario activo
+							"unidad"		=> $this->getOldVal($sheet,$i,'I')
 						];
 					$data ['id_producto'] = $this->pro_md->update($new_producto,$productos->id_producto);
 					$flag = 0;
