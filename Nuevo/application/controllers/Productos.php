@@ -356,4 +356,5 @@ class Productos extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
+	
 }

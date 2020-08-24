@@ -837,9 +837,24 @@ $this->db->select("c.id_cotizacion,
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 
-		$this->db->select("r.precio AS reales,exist,abarrotes,cedis,mercado,pedregal,tienda,trincheras,tenencia,ultra,tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$fecha1 = new DateTime(date('Y-m-d H:i:s'));
+		$fecha2 = new DateTime(date('Y-m-d H:i:s'));
+		$fecha3 = new DateTime(date('Y-m-d H:i:s'));
+		$fecha4 = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P7D');
+		$intervalo2 = new DateInterval('P14D');
+		$intervalo3 = new DateInterval('P21D');
+		$intervalo4 = new DateInterval('P28D');
+		$fecha->sub($intervalo);
+		$fecha2->sub($intervalo2);
+		$fecha3->sub($intervalo3);
+		$fecha4->sub($intervalo4);
+		$user = $this->session->userdata();
+
+		$this->db->select("fpast.fecha_registro as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,fpast.abarrotes as fpastabarrotes,fpast.cedis as fpastcedis,fpast.mercado as fpastmercado,fpast.villas as fpastpedregal,fpast.tienda fpasttienda,fpast.trincheras fpasttrincheras,fpast.tenencia as fpasttenencia,fpast.ultra as fpastultra,fpast.tijeras as fpasttijeras,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
 			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
-			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,my.id_mayoreo,
+			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
@@ -861,7 +876,8 @@ $this->db->select("c.id_cotizacion,
 		->join("stocks sto", "prod.id_producto = sto.id_producto", "LEFT")
 		->join("(select * from prodcaja order by id_prodcaja DESC) fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
 		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
-		->join("mayoreo my","prod.codigo = my.codigo","LEFT")
+		->join("(SELECT * from precio_sistema WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as ppast","prod.id_producto = ppast.id_producto","LEFT" )
+		->join("(SELECT * from finales WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as fpast","prod.id_producto = fpast.id_producto","LEFT" )
 		->group_by("prod.nombre")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
 
@@ -922,7 +938,6 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["id_mayoreo"]	=	$comparativa[$i]->id_mayoreo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["abarrotes"]	=	$comparativa[$i]->abarrotes;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cedis"]	=	$comparativa[$i]->cedis;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tienda"]	=	$comparativa[$i]->tienda;
@@ -932,6 +947,25 @@ $this->db->select("c.id_cotizacion,
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["mercado"]	=	$comparativa[$i]->mercado;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["pedregal"]	=	$comparativa[$i]->pedregal;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tenencia"]	=	$comparativa[$i]->tenencia;
+
+
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["obis"]		=	$comparativa[$i]->obis;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["unidad"]		=	$comparativa[$i]->unidad;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ppastf"]		=	$comparativa[$i]->ppastf;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ppasts"]		=	$comparativa[$i]->ppasts;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ffecha"]		=	$comparativa[$i]->fpastfecha;
+			
+
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$comparativa[$i]->fpastabarrotes;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$comparativa[$i]->fpastcedis;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$comparativa[$i]->fpastcedis;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$comparativa[$i]->fpasttienda;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$comparativa[$i]->fpasttrincheras;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$comparativa[$i]->fpasttijeras;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][59]	=	$comparativa[$i]->fpastultra;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][61]	=	$comparativa[$i]->fpastmercado;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][90]	=	$comparativa[$i]->fpastpedregal;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][62]	=	$comparativa[$i]->fpasttenencia;
 
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["caja0"]		=	"";
 					$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["pz0"]	=	"";
@@ -1036,6 +1070,61 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["ped".$e]	=	$resu[$d]->pedido;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["tienda".$e]	=	$resu[$d]->id_tienda;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
+			}
+
+			$pedidos = $this->db->select('id_pedido,
+				  id_producto,
+				  id_tienda,
+				  cajas,
+				  piezas,
+				  pedido,
+				  fecha_registro')
+				->from('existencias')
+				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($fecha->format('Y-m-d H:i:s')))
+				->where('id_producto',$comparativa[$i]->id_producto)
+				->order_by("id_tienda", "ASC");
+			$resu = $this->db->get()->result();
+			for ($d=0; $d<sizeof($resu); $d++){
+				switch ($resu[$d]->id_tienda) {
+					case '87':
+						$e = "0";
+						break;
+					case '57':
+						$e = "1";
+						break;
+					case '90':
+						$e = "2";
+						break;
+					case '58':
+						$e = "3";
+						break;
+					case '59':
+						$e = "4";
+						break;
+					case '60':
+						$e = "5";
+						break;
+					case '61':
+						$e = "6";
+						break;
+					case '62':
+						$e = "7";
+						break;
+					case '63':
+						$e = "8";
+						break;
+					case '89':
+						$e = "9";
+						break;
+					default:
+						$e = "10";
+						break;
+				}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 		}
 		if ($comparativaIndexada) {
