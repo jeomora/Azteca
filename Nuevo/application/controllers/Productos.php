@@ -300,7 +300,7 @@ class Productos extends MY_Controller {
 		$this->jsonResponse($mensaje);
 	}
 
-	public function upload_productos(){
+	public function upload_productosum(){
 		$proveedor = $this->session->userdata('id_usuario');
 		$cfile =  $this->usua_mdl->get(NULL, ['id_usuario' => $proveedor])[0];
 		$filen = "Productos por ".$cfile->nombre."".rand();
@@ -326,21 +326,7 @@ class Productos extends MY_Controller {
 			if ($this->getOldVal($sheet,$i,'A') <> NULL || $this->getOldVal($sheet,$i,'A') <> "") {
 				$productos = $this->pro_md->get("id_producto",['codigo'=> $this->getOldVal($sheet,$i,'A')])[0];
 				if(!$productos){
-					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
-						$estatus = 1;
-					}else{
-						$estatus = 0;
-					}
-					$new_producto=[
-							"id_familia" 	=> $this->getOldVal($sheet,$i,'C'),//Recupera el id_usuario activo
-							"nombre" 		=> $this->getOldVal($sheet,$i,'B'),
-							"codigo"		=> $this->getOldVal($sheet,$i,'A'),
-							"pieza"			=> $this->getOldVal($sheet,$i,'G'),
-							"unidad" 		=> $this->getOldVal($sheet,$i,'F'),
-							"colorp" 		=> $estatus,
-							"estatus"		=> $this->getOldVal($sheet,$i,'E')
-						];
-					//$data ['id_producto'] = $this->pro_md->insert($new_producto);
+
 				}else{
 					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
 						$estatus = 1;
