@@ -2847,7 +2847,7 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("BM".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("BM{$flag}", "=SUM(BC{$flag}:BL{$flag})")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 					$this->cellStyle("BN".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-					$proveedor[$key]->estatus->setCellValue("BN{$flag}", "=K{$flag}+O{$flag}+S{$flag}+W{$flag}+AA{$flag}+AE{$flag}+AI{$flag}+AM{$flag}+AQ{$flag}+AU{$flag}+AY{$flag}")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
+					$proveedor[$key]->estatus->setCellValue("BN{$flag}", "=K{$flag}+S{$flag}+W{$flag}+AA{$flag}+AE{$flag}+AI{$flag}+AM{$flag}+AQ{$flag}+AU{$flag}+AY{$flag}")->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
 					$arras = array(1=>"K",2=>"O",3=>"S",4=>"W",5=>"AA",6=>"AE",7=>"AI",8=>"AM",9=>"AQ",10=>"AU",11=>"AY",12=>"BN");
 					for ($i=1; $i <=12 ; $i++){
 						if ($v["promo"] === 1 || $v["promo"] === "1") {
