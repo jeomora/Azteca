@@ -126,12 +126,10 @@ class Cotizaciones extends MY_Controller {
 		$dat = $this->ctpr_mdl->getAllCotizaciones($where);
 		$this->jsonResponse($dat);
 	}
-
 	public function deleteRenglon($id_cot){
 		$data['cotizacion']=$this->ctpr_mdl->update(["estatus"=>0], ['id_cotizacion' => $id_cot]);
 		$this->jsonResponse($data['cotizacion']);
 	}
-
 	public function agregaRenglon($idprov){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
@@ -5944,8 +5942,6 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
-
-
 	public function upload_pedid($idesp){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
@@ -6018,7 +6014,6 @@ class Cotizaciones extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
-
 	private function fill_hermanos(){
 		$flag =1;
 		$flag2=1;
@@ -6046,7 +6041,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->getColumnDimension('A')->setWidth("20");
 		$hoja->getColumnDimension('B')->setWidth("20");
 		$hoja->getColumnDimension('C')->setWidth("70");
-		$hoja->getColumnDimension('D')->setWidth("15");
+		$hoja->getColumnDimension('D')->setWidth("7");
 		$hoja->getColumnDimension('E')->setWidth("15");
 		$hoja->getColumnDimension('F')->setWidth("15");
 		$hoja->getColumnDimension('G')->setWidth("8");
@@ -6831,9 +6826,7 @@ class Cotizaciones extends MY_Controller {
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
 		$excel_Writer->save("php://output");
-
 	}
-
 	public function getUserIP(){
 	    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
 	        //ip from share internet
@@ -6846,7 +6839,6 @@ class Cotizaciones extends MY_Controller {
 	    }
 		return $ip;
 	}
-
 	public function fill_cotiz33(){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
@@ -6944,7 +6936,6 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
-
 	public function fill_cotiz(){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
@@ -7107,7 +7098,6 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 	}
-
 	public function getColumna($num) {
 	    $numeric = $num % 26;
 	    $letter = chr(65 + $numeric);
@@ -7118,7 +7108,6 @@ class Cotizaciones extends MY_Controller {
 	        return $letter;
 	    }
 	}
-
 	public function getOldVal($sheets,$i,$le){
 		$cellB = $sheets->getCell($le.$i)->getValue();
 		if(strstr($cellB,'=')==true){
@@ -7126,7 +7115,6 @@ class Cotizaciones extends MY_Controller {
 		}
 		return $cellB;
 	}
-
 	public function fill_cotize(){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
@@ -7331,9 +7319,7 @@ class Cotizaciones extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
-
 	}
-
 	public function resizeImage($filename,$filename2){
 		$source_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/assets/img/productos/' . $filename;
 	    $target_path = $_SERVER['DOCUMENT_ROOT'] . '/Aztecas/Abarrotes/aswwsets/img/ppp/'.$filename2;
@@ -7369,9 +7355,7 @@ class Cotizaciones extends MY_Controller {
 	      }
 	      var_dump($this->image_lib);
 	      echo $source_path;
-	      
-   }
-
+    }
     public function didi(){
    		$this->load->library('image_lib');
    		for ($i=1; $i < 1394; $i++) { 
@@ -7392,11 +7376,9 @@ class Cotizaciones extends MY_Controller {
 
 		}
     }
-
     public function couns($number){
    		return strlen((string)$number);
    	}
-
    	public function subimg(){
    		ini_set("memory_limit", -1);
    		$this->load->library("excelfile");

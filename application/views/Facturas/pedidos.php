@@ -103,3 +103,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		</div>
 	</div>
 </div>
+
+<!--begin::Modal-->
+<div class="modal fade" id="kt_modal_2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style="background-color:yellow">
+                <h1>¡Importante!</h1>
+                <h2>AL TERMINAR DE REVISAR SUS FACTURAS, POR FAVOR SUBA SÓLO LOS PRODUCTOS QUE LE LLEGARON A LA SUCURSAL EN LA SEMANA.</h2>
+                <h2>Para hacerlo, puede subir nuevamente el mismo formato sólo que actualice los pedidos que no llegarón por un cero (0), o elimine el pedido del proveedor y suba el archivo con sólo los productos correctos</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Modal-->

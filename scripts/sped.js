@@ -1,5 +1,6 @@
 $(function($) {
 	$('#home').tab('show');
+	$('#kt_modal_2').modal()
 });
 
 $(document).off("keyup", "#producto").on("keyup", "#producto", function (){
