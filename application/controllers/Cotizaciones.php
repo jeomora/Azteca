@@ -2744,16 +2744,7 @@ class Cotizaciones extends MY_Controller {
 										$hoja->setCellValue("K{$flag}", $row['proveedor_next']);
 										$this->cellStyle("K".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 
-										if ($row['id_mayoreo']) {
-											$this->cellStyle("L".$flag.":M".$flag, "ED7D31", "000000", TRUE, 12, "Franklin Gothic Book");
-											if ($row['exist']) {
-												$this->cellStyle("L".$flag.":M".$flag, "f79646", "ED7D31", TRUE, 12, "Franklin Gothic Book");
-											}
-										}else{
-											if ($row['exist']) {
-												$this->cellStyle("L".$flag.":M".$flag, "f79646", "000000", TRUE, 12, "Franklin Gothic Book");
-											}
-										}
+										
 										
 										$hoja->setCellValue("N{$flag}", $row['cedis']);
 										$hoja->setCellValue("X{$flag}", $row['abarrotes']);
