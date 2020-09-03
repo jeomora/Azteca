@@ -320,7 +320,7 @@ var myDropzone = new Dropzone("div#my-dropzoneProd", {
     renameFilename: function (filename) {
         return theDate + '_' + filename;
     },
-    url: site_url+"Productos/upload_productos",                      
+    url: site_url+"Productos/upload_productosum",                      
     autoProcessQueue: true,
     queuecomplete: function (resp) {
         blockPageBlocks()
