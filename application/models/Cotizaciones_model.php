@@ -877,7 +877,7 @@ $this->db->select("c.id_cotizacion,
 		->join("(select * from prodcaja order by id_prodcaja DESC) fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
 		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
 		->join("(SELECT * from precio_sistema WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as ppast","prod.id_producto = ppast.id_producto","LEFT" )
-		->join("(SELECT * from finales WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as fpast","prod.id_producto = fpast.id_producto","LEFT" )
+		->join("(SELECT * from llegaron WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as fpast","prod.id_producto = fpast.id_producto","LEFT" )
 		->group_by("prod.nombre")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
 
@@ -2138,7 +2138,7 @@ $this->db->select("c.id_cotizacion,
 		->join("(select * from prodcaja order by id_prodcaja DESC) fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
 		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
 		->join("(SELECT * from precio_sistema WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as ppast","prod.id_producto = ppast.id_producto","LEFT" )
-		->join("(SELECT MAX(fecha_registro) as lastfecha,id_producto from finales GROUP BY id_producto) as finlast","prod.id_producto = finlast.id_producto","LEFT" )
+		->join("(SELECT MAX(fecha_registro) as lastfecha,id_producto from llegaron GROUP BY id_producto) as finlast","prod.id_producto = finlast.id_producto","LEFT" )
 		->where("prod.estatus",2)
 		->group_by("prod.nombre")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
@@ -2413,7 +2413,7 @@ $this->db->select("c.id_cotizacion,
 			}
 
 			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('finales')
+				->from('llegaron')
 				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
 				->where('id_producto',$comparativa[$i]->id_producto);
 			$resu = $this->db->get()->result();
@@ -2486,7 +2486,7 @@ $this->db->select("c.id_cotizacion,
 		->join("(select * from prodcaja order by id_prodcaja DESC) fac", "prod.id_producto = fac.id_producto AND ctz_first.id_proveedor = fac.id_proveedor", "LEFT")
 		->join("invoice_codes inv", "fac.id_invoice = inv.id_invoice", "LEFT")
 		->join("(SELECT * from precio_sistema WHERE WEEKOFYEAR(fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND YEAR(fecha_registro) = YEAR('".$fecha->format('Y-m-d H:i:s')."') ) as ppast","prod.id_producto = ppast.id_producto","LEFT" )
-		->join("(SELECT MAX(fecha_registro) as lastfecha,id_producto from finales GROUP BY id_producto) as finlast","prod.id_producto = finlast.id_producto","LEFT" )
+		->join("(SELECT MAX(fecha_registro) as lastfecha,id_producto from llegaron GROUP BY id_producto) as finlast","prod.id_producto = finlast.id_producto","LEFT" )
 		->where("prod.estatus",3)
 		->group_by("prod.nombre")
 		->order_by("prod.id_familia,prod.nombre", "ASC");
@@ -2761,7 +2761,7 @@ $this->db->select("c.id_cotizacion,
 			}
 
 			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('finales')
+				->from('llegaron')
 				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
 				->where('id_producto',$comparativa[$i]->id_producto);
 			$resu = $this->db->get()->result();
