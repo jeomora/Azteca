@@ -21,7 +21,7 @@ jQuery(document).ready(function() {
           "showMethod": "fadeIn",
           "hideMethod": "fadeOut"
     };
-    $('#kt_modal_imm').modal()
+    //$('#kt_modal_imm').modal()
 });
 var provee = $("#kt_select2_1 option:selected").val();
 var dataJSONArray ="";
