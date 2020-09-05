@@ -205,7 +205,7 @@ class Pedidos extends MY_Controller {
 					"promocion" => $cellM,
 				];
 
-				$codiga = $this->fin_md->get(NULL,['id_producto'=> $codigo->id_producto,"id_proveedor"=>$proveedor,"WEEKOFYEAR(fecha_registro)"=>$this->weekNumber()])[0];
+				$codiga = $this->llego_md->get(NULL,['id_producto'=> $codigo->id_producto,"id_proveedor"=>$proveedor,"WEEKOFYEAR(fecha_registro)"=>$this->weekNumber()])[0];
 				if (sizeof($codiga) > 0) {
 					$data ['id_prodcaja']=$this->llego_md->update($new_producto, $codiga->id_final);
 				}else{
