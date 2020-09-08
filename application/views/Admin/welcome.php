@@ -163,7 +163,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		</div>
 		<div class="col-lg-5">
 			<div class="ibox">
-				<div class="ibox-content ">
+				<div class="ibox-content" style="overflow-y:scroll;max-height:525px;">
 					<h2 class="m-b-md">Último Final Volúmen</h2>
 					<div style="width:100%">
 						<table class="table table-striped table-bordered table-hover">
@@ -177,9 +177,9 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<tbody>
 								<?php if($resVol):foreach ($resVol as $key => $value):?>
 									<tr>
-										<td><?php $value->codigo ?></td>
-										<td><?php $value->nombre ?></td>
-										<td><?php $value->lastfecha ?></td>
+										<td><?php echo $value->codigo ?></td>
+										<td><?php echo $value->nombre ?></td>
+										<td><?php echo $value->lastfecha ?></td>
 									</tr>
 								<?php endforeach;endif;?>
 							</tbody>
@@ -190,7 +190,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		</div>
 		<div class="col-lg-3">
 			<div class="ibox">
-				<div class="ibox-content ">
+				<div class="ibox-content" style="overflow-y:scroll;max-height:525px;">
 					<h2 class="m-b-md">General SIN Finales</h2>
 					<div style="width:100%">
 						<table class="table table-striped table-bordered table-hover">
@@ -203,8 +203,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<tbody>
 								<?php if($resGen):foreach ($resGen as $key => $value):?>
 									<tr>
-										<td><?php $value->codigo ?></td>
-										<td><?php $value->nombre ?></td>
+										<td><?php echo $value->codigo ?></td>
+										<td><?php echo $value->nombre ?></td>
 									</tr>
 								<?php endforeach;endif;?>
 							</tbody>
