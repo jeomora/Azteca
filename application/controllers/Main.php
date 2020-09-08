@@ -32,6 +32,8 @@ class Main extends MY_Controller {
 		}
 		$data["cotizaciones"] = $this->cot_md->getCotizaciones($where);
 		$data["ides"] = $user['id_grupo'];
+		$data["resVol"] = $this->cot_md->getResVol(NULL);
+		$data["resGen"] = $this->cot_md->getResGen(NULL);
 
 		$this->estructura("Admin/welcome", $data);
 	}

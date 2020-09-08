@@ -2790,6 +2790,64 @@ $this->db->select("c.id_cotizacion,
 		}
 	}
 
+	public function getResVol($where = []){
+		$this->db->select("p.id_producto,p.nombre,p.codigo,l.cedis,l.abarrotes,l.villas,l.tienda,l.ultra,l.trincheras,l.mercado,l.tenencia,l.tijeras,l.lastfecha")
+		->from("productos p")
+		->join("(SELECT MAX(fecha_registro) as lastfecha,id_producto,cedis,abarrotes,villas,tienda,ultra,trincheras,mercado,tenencia,tijeras from llegaron GROUP BY id_producto) as l", "p.id_producto = l.id_producto", "LEFT")
+		->where("p.estatus", 2)
+		->order_by("l.lastfecha", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function getResGen($where = []){
+		$this->db->select("p.id_producto,p.nombre,p.codigo")
+		->from("productos p")
+		->where("p.estatus ", 1)
+		->where("id_producto NOT IN (SELECT id_producto from llegaron where WEEKOFYEAR(fecha_registro) = ".$this->weekNumber().")")
+		->order_by("l.lastfecha", "ASC");
+		if ($where !== NULL){
+			if(is_array($where)){
+				foreach($where as $field=>$value){
+					if ($value !== NULL) {
+						$this->db->where($field, $value);
+					}
+				}
+			}else{
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
 

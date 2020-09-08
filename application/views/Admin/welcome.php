@@ -80,11 +80,11 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 	</div>
 	<div class="col-lg-12" style="height: 20px"></div>
 	<div class="row col-lg-12">
-		<div class="col-lg-12">
+		<div class="col-lg-4">
 			<div class="ibox">
 				<div class="ibox-content ">
 					<h2 class="m-b-md">EXISTENCIAS TIENDAS</h2>
-					<div style="width:50%">
+					<div style="width:100%">
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
@@ -159,6 +159,58 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</table>
 					</div>
 				</div> 
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="ibox">
+				<div class="ibox-content ">
+					<h2 class="m-b-md">Último Final Volúmen</h2>
+					<div style="width:100%">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th style="color:#FFF;background:#000;width:20%">COD</th>
+									<th style="color:#FFF;background:#000">DESCRIPCIÓN</th>
+									<th style="color:#FFF;background:#000">FECHA</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php if($resVol):foreach ($resVol as $key => $value):?>
+									<tr>
+										<td><?php $value->codigo ?></td>
+										<td><?php $value->nombre ?></td>
+										<td><?php $value->lastfecha ?></td>
+									</tr>
+								<?php endforeach;endif;?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="ibox">
+				<div class="ibox-content ">
+					<h2 class="m-b-md">General SIN Finales</h2>
+					<div style="width:100%">
+						<table class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th style="color:#FFF;background:#000;">COD</th>
+									<th style="color:#FFF;background:#000;">DESCRIPCIÓN</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php if($resGen):foreach ($resGen as $key => $value):?>
+									<tr>
+										<td><?php $value->codigo ?></td>
+										<td><?php $value->nombre ?></td>
+									</tr>
+								<?php endforeach;endif;?>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
