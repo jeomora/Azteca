@@ -5,6 +5,11 @@ $(document).off("click", "#no_cotizo").on("click", "#no_cotizo", function(event)
 	getModal("Main/getCotzUsuario/"+ides, function (){ $(".numeric").inputmask("currency", {radixPoint: ".", prefix: ""}); })
 });
 
+$(document).load(function () {
+	fillDataTable("tableSinV", 10)
+	fillDataTable("tableSinG", 10)
+});
+
 $(document).off("click", "#repeat_cot").on("click", "#repeat_cot", function(event){
 	event.preventDefault();
 	blockPage();

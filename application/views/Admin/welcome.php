@@ -166,7 +166,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				<div class="ibox-content" style="overflow-y:scroll;max-height:525px;">
 					<h2 class="m-b-md">Último Final Volúmen</h2>
 					<div style="width:100%">
-						<table class="table table-striped table-bordered table-hover">
+						<table class="table table-striped table-bordered table-hover tableSinV" id="tableSinG">
 							<thead>
 								<tr>
 									<th style="color:#FFF;background:#000;width:20%">COD</th>
@@ -193,7 +193,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				<div class="ibox-content" style="overflow-y:scroll;max-height:525px;">
 					<h2 class="m-b-md">General SIN Finales</h2>
 					<div style="width:100%">
-						<table class="table table-striped table-bordered table-hover">
+						<table class="table table-striped table-bordered table-hover tableSinG" id="tableSinG">
 							<thead>
 								<tr>
 									<th style="color:#FFF;background:#000;">COD</th>
