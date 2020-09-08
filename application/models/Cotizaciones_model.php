@@ -2824,7 +2824,7 @@ $this->db->select("c.id_cotizacion,
 		->from("productos p")
 		->where("p.estatus ", 1)
 		->where("id_producto NOT IN (SELECT id_producto from llegaron where WEEKOFYEAR(fecha_registro) = ".$this->weekNumber().")")
-		->order_by("l.lastfecha", "ASC");
+		->order_by("p.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
