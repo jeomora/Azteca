@@ -8914,8 +8914,8 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("D{$flag}",$row["unidad"]);
 								$row[87] = $row[87] === NULL ? 0 :  $row[87];
 								$antis = ((floatval($row[87]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja0"]) + $row["past"]["pz0"])/$row["unidad"];
-								$hoja->setCellValue("M{$flag}", $row["past"]['caja0']);
-								$hoja->setCellValue("N{$flag}", $row["past"]['pz0']);
+								$hoja->setCellValue("M{$flag}", $row['caja0']);
+								$hoja->setCellValue("N{$flag}", $row['pz0']);
 								$hoja->setCellValue("P{$flag}", "=".$antis."-(((M{$flag}*D{$flag})+N{$flag})/D{$flag})")->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 								$hoja->setCellValue("Q{$flag}", $row['ped0']);
 								$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
