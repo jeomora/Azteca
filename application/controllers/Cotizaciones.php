@@ -8899,8 +8899,8 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AA{$flag}", $row['abarrotes']);
 								$hoja->setCellValue("AF{$flag}", $row['pedregal']);
 								$hoja->setCellValue("AK{$flag}", $row['tienda']);
-								$hoja->setCellValue("AO{$flag}", $row['ultra']);
-								$hoja->setCellValue("AT{$flag}", $row['trincheras']);
+								$hoja->setCellValue("AP{$flag}", $row['ultra']);
+								$hoja->setCellValue("AU{$flag}", $row['trincheras']);
 								$hoja->setCellValue("AZ{$flag}", $row['mercado']);
 								$hoja->setCellValue("BE{$flag}", $row['tenencia']);
 								$hoja->setCellValue("BJ{$flag}", $row['tijeras']);
