@@ -69,6 +69,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<option value="VARIOS4">VARIOS 4°</option>
 							<option value="VOLUMEN">VOLUMEN</option>
 							<option value="MODERNA">MODERNA</option>
+							<option value="COSTENA">COSTEÑA</option>
+							<option value="CUETARA">CUETARA</option>
 							<option value="AMARILLOS">AMARILLOS</option>
 							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
 								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
@@ -82,6 +84,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 							<option value="VARIOS4">VARIOS 4°</option>
 							<option value="VOLUMEN">VOLUMEN</option>
 							<option value="MODERNA">MODERNA</option>
+							<option value="COSTENA">COSTEÑA</option>
+							<option value="CUETARA">CUETARA</option>
 							<option value="AMARILLOS">AMARILLOS</option>
 							<?php if($conjuntos):foreach ($conjuntos as $key => $value): ?>
 								<option value="<?php echo $value->id_usuario ?>"><?php echo $value->nombre ?></option>
