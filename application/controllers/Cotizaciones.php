@@ -5516,10 +5516,7 @@ class Cotizaciones extends MY_Controller {
 							}
 
 							$hoja->setCellValue("H{$flag}", $row['precio_sistema'])->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("H{$flag}")->getText()->createTextRun("SEMANA ANTERIOR");
-							$this->excelfile->getActiveSheet()->getComment("H{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("H{$flag}")->getText()->createTextRun("$ ".number_format($row["ppasts"],2,".",","));
-							$objCommentRichText->getFont()->setBold(true);
+							
 							$this->cellStyle("H".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
 							if($row['colorp'] == 1){
 								$this->cellStyle("H{$flag}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -5552,14 +5549,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("Q{$flag}", $row['ped0']);
 							$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("PED ANT: ".$row[87]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("".(floatval($row[87]) + floatval($row["past"]["caja0"]))." cajas, ".$row["past"]["pz0"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[89] = $row[89] === NULL ? 0 :  $row[89];
 							$antis = ((floatval($row[89]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja9"]) + $row["past"]["pz9"])/$row["unidad"];							
@@ -5569,15 +5559,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("U{$flag}", $row['ped9']);
 							$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("PED ANT: ".$row[89]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("".$row["past"]["caja9"]." cajas, ".$row["past"]["pz9"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
-
+							
 
 							$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
 							$hoja->setCellValue("W{$flag}", "=N".$flag."+S".$flag);
@@ -5593,14 +5575,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AC{$flag}", $row['ped1']);
 							$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("PED ANT: ".$row[57]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("".$row["past"]["caja1"]." cajas, ".$row["past"]["pz1"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[90] = $row[90] === NULL ? 0 :  $row[90];
 							$antis = ((floatval($row[90]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja2"]) + $row["past"]["pz2"])/$row["unidad"];
@@ -5611,14 +5586,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AH{$flag}", $row['ped2']);
 							$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("PED ANT: ".$row[90]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("".$row["past"]["caja2"]." cajas, ".$row["past"]["pz2"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[58] = $row[58] === NULL ? 0 :  $row[58];
 							$antis = ((floatval($row[58]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja3"]) + $row["past"]["pz3"])/$row["unidad"];
@@ -5629,14 +5597,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AM{$flag}", $row['ped3']);
 							$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("PED ANT: ".$row[58]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("".$row["past"]["caja3"]." cajas, ".$row["past"]["pz3"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[59] = $row[59] === NULL ? 0 :  $row[59];
 							$antis = ((floatval($row[59]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja4"]) + $row["past"]["pz4"])/$row["unidad"];
@@ -5647,14 +5608,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AR{$flag}", $row['ped4']);
 							$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("PED ANT: ".$row[59]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("".$row["past"]["caja4"]." cajas, ".$row["past"]["pz4"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[60] = $row[60] === NULL ? 0 :  $row[60];
 							$antis = ((floatval($row[60]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja5"]) + $row["past"]["pz5"])/$row["unidad"];
@@ -5665,14 +5619,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AW{$flag}", $row['ped5']);
 							$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("PED ANT: ".$row[60]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("".$row["past"]["caja5"]." cajas, ".$row["past"]["pz5"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+				
 
 							$row[61] = $row[61] === NULL ? 0 :  $row[61];
 							$antis = ((floatval($row[61]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja6"]) + $row["past"]["pz6"])/$row["unidad"];
@@ -5683,14 +5630,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BB{$flag}", $row['ped6']);
 							$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("PED ANT: ".$row[61]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("".$row["past"]["caja6"]." cajas, ".$row["past"]["pz6"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[62] = $row[62] === NULL ? 0 :  $row[62];
 							$antis = ((floatval($row[62]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -5701,14 +5641,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BG{$flag}", $row['ped7']);
 							$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("PED ANT: ".$row[62]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("".$row["past"]["caja7"]." cajas, ".$row["past"]["pz7"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[63] = $row[63] === NULL ? 0 :  $row[63];
 							$antis = ((floatval($row[63]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja8"]) + $row["past"]["pz8"])/$row["unidad"];
@@ -5719,14 +5652,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BL{$flag}", $row['ped8']);
 							$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("PED ANT: ".$row[63]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("".$row["past"]["caja8"]." cajas, ".$row["past"]["pz8"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							
 
@@ -6565,10 +6491,7 @@ class Cotizaciones extends MY_Controller {
 							}
 
 							$hoja->setCellValue("H{$flag}", $row['precio_sistema'])->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');//Formto de moneda
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("H{$flag}")->getText()->createTextRun("SEMANA ANTERIOR");
-							$this->excelfile->getActiveSheet()->getComment("H{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("H{$flag}")->getText()->createTextRun("$ ".number_format($row["ppasts"],2,".",","));
-							$objCommentRichText->getFont()->setBold(true);
+						
 							$this->cellStyle("H".$flag, "FFFFFF","000000",  FALSE, 12, "Franklin Gothic Book");
 							if($row['colorp'] == 1){
 								$this->cellStyle("H{$flag}", "D6DCE4", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -6601,14 +6524,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("Q{$flag}", $row['ped0']);
 							$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("PED ANT: ".$row[87]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("".(floatval($row[87]) + floatval($row["past"]["caja0"]))." cajas, ".$row["past"]["pz0"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[89] = $row[89] === NULL ? 0 :  $row[89];
 							$antis = ((floatval($row[89]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja9"]) + $row["past"]["pz9"])/$row["unidad"];							
@@ -6618,14 +6534,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("U{$flag}", $row['ped9']);
 							$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("PED ANT: ".$row[89]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("".$row["past"]["caja9"]." cajas, ".$row["past"]["pz9"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 
 							$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
@@ -6642,14 +6551,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AC{$flag}", $row['ped1']);
 							$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("PED ANT: ".$row[57]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("".$row["past"]["caja1"]." cajas, ".$row["past"]["pz1"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[90] = $row[90] === NULL ? 0 :  $row[90];
 							$antis = ((floatval($row[90]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja2"]) + $row["past"]["pz2"])/$row["unidad"];
@@ -6660,14 +6562,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AH{$flag}", $row['ped2']);
 							$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("PED ANT: ".$row[90]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("".$row["past"]["caja2"]." cajas, ".$row["past"]["pz2"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[58] = $row[58] === NULL ? 0 :  $row[58];
 							$antis = ((floatval($row[58]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja3"]) + $row["past"]["pz3"])/$row["unidad"];
@@ -6678,14 +6573,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AM{$flag}", $row['ped3']);
 							$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("PED ANT: ".$row[58]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("".$row["past"]["caja3"]." cajas, ".$row["past"]["pz3"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[59] = $row[59] === NULL ? 0 :  $row[59];
 							$antis = ((floatval($row[59]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja4"]) + $row["past"]["pz4"])/$row["unidad"];
@@ -6696,14 +6584,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AR{$flag}", $row['ped4']);
 							$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("PED ANT: ".$row[59]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("".$row["past"]["caja4"]." cajas, ".$row["past"]["pz4"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[60] = $row[60] === NULL ? 0 :  $row[60];
 							$antis = ((floatval($row[60]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja5"]) + $row["past"]["pz5"])/$row["unidad"];
@@ -6714,14 +6595,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AW{$flag}", $row['ped5']);
 							$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("PED ANT: ".$row[60]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("".$row["past"]["caja5"]." cajas, ".$row["past"]["pz5"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[61] = $row[61] === NULL ? 0 :  $row[61];
 							$antis = ((floatval($row[61]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja6"]) + $row["past"]["pz6"])/$row["unidad"];
@@ -6732,14 +6606,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BB{$flag}", $row['ped6']);
 							$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("PED ANT: ".$row[61]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("".$row["past"]["caja6"]." cajas, ".$row["past"]["pz6"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[62] = $row[62] === NULL ? 0 :  $row[62];
 							$antis = ((floatval($row[62]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -6750,14 +6617,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BG{$flag}", $row['ped7']);
 							$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("PED ANT: ".$row[62]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("".$row["past"]["caja7"]." cajas, ".$row["past"]["pz7"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							$row[63] = $row[63] === NULL ? 0 :  $row[63];
 							$antis = ((floatval($row[63]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja8"]) + $row["past"]["pz8"])/$row["unidad"];
@@ -6768,14 +6628,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BL{$flag}", $row['ped8']);
 							$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("PED ANT: ".$row[63]);
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("TOTAL: ");
-							$objCommentRichText->getFont()->setBold(true);
-							$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-							$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("".$row["past"]["caja8"]." cajas, ".$row["past"]["pz8"]." piezas");
-							$objCommentRichText->getFont()->setBold(true);
+							
 
 							
 
@@ -8855,11 +8708,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("Q{$flag}", $row['ped0']);
 								$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("PED ANT: ".$row[87]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 
 								$row[89] = $row[89] === NULL ? 0 :  $row[89];
@@ -8870,11 +8719,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("U{$flag}", $row['ped9']);
 								$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("PED ANT: ".$row[89]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
 								$hoja->setCellValue("W{$flag}", "=N".$flag."+S".$flag);
@@ -8890,11 +8735,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AC{$flag}", $row['ped1']);
 								$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("PED ANT: ".$row[57]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[90] = $row[90] === NULL ? 0 :  $row[90];
 								$antis = ((floatval($row[90]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja2"]) + $row["past"]["pz2"])/$row["unidad"];
@@ -8904,11 +8745,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AH{$flag}", $row['ped2']);
 								$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("PED ANT: ".$row[90]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[58] = $row[58] === NULL ? 0 :  $row[58];
 								$antis = ((floatval($row[58]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja3"]) + $row["past"]["pz3"])/$row["unidad"];
@@ -8918,11 +8755,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AM{$flag}", $row['ped3']);
 								$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("PED ANT: ".$row[58]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[59] = $row[59] === NULL ? 0 :  $row[59];
 								$antis = ((floatval($row[59]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja4"]) + $row["past"]["pz4"])/$row["unidad"];
@@ -8932,11 +8765,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AR{$flag}", $row['ped4']);
 								$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("PED ANT: ".$row[59]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[60] = $row[60] === NULL ? 0 :  $row[60];
 								$antis = ((floatval($row[60]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja5"]) + $row["past"]["pz5"])/$row["unidad"];
@@ -8946,11 +8775,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AW{$flag}", $row['ped5']);
 								$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("PED ANT: ".$row[60]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[61] = $row[61] === NULL ? 0 :  $row[61];
 								$antis = ((floatval($row[61]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja6"]) + $row["past"]["pz6"])/$row["unidad"];
@@ -8960,11 +8785,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BB{$flag}", $row['ped6']);
 								$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("PED ANT: ".$row[61]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[62] = $row[62] === NULL ? 0 :  $row[62];
 								$antis = ((floatval($row[62]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -8974,11 +8795,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BG{$flag}", $row['ped7']);
 								$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("PED ANT: ".$row[62]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[63] = $row[63] === NULL ? 0 :  $row[63];
 								$antis = ((floatval($row[63]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -8988,11 +8805,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BL{$flag}", $row['ped8']);
 								$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("PED ANT: ".$row[63]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								
 
@@ -9700,12 +9513,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("Q{$flag}", $row['ped0']);
 								$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("PED ANT: ".$row[87]);
-								$objCommentRichText->getFont()->setBold(true);
-
+								
 
 								$row[89] = $row[89] === NULL ? 0 :  $row[89];
 								$antis = ((floatval($row[89]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja9"]) + $row["past"]["pz9"])/$row["unidad"];
@@ -9715,11 +9523,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("U{$flag}", $row['ped9']);
 								$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("PED ANT: ".$row[89]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
 								$hoja->setCellValue("W{$flag}", "=N".$flag."+S".$flag);
@@ -9735,11 +9539,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AC{$flag}", $row['ped1']);
 								$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("PED ANT: ".$row[57]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[90] = $row[90] === NULL ? 0 :  $row[90];
 								$antis = ((floatval($row[90]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja2"]) + $row["past"]["pz2"])/$row["unidad"];
@@ -9749,11 +9549,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AH{$flag}", $row['ped2']);
 								$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("PED ANT: ".$row[90]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[58] = $row[58] === NULL ? 0 :  $row[58];
 								$antis = ((floatval($row[58]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja3"]) + $row["past"]["pz3"])/$row["unidad"];
@@ -9763,11 +9559,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AM{$flag}", $row['ped3']);
 								$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("PED ANT: ".$row[58]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[59] = $row[59] === NULL ? 0 :  $row[59];
 								$antis = ((floatval($row[59]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja4"]) + $row["past"]["pz4"])/$row["unidad"];
@@ -9777,11 +9569,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AR{$flag}", $row['ped4']);
 								$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("PED ANT: ".$row[59]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[60] = $row[60] === NULL ? 0 :  $row[60];
 								$antis = ((floatval($row[60]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja5"]) + $row["past"]["pz5"])/$row["unidad"];
@@ -9791,11 +9579,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AW{$flag}", $row['ped5']);
 								$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("PED ANT: ".$row[60]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[61] = $row[61] === NULL ? 0 :  $row[61];
 								$antis = ((floatval($row[61]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja6"]) + $row["past"]["pz6"])/$row["unidad"];
@@ -9805,11 +9589,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BB{$flag}", $row['ped6']);
 								$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("PED ANT: ".$row[61]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[62] = $row[62] === NULL ? 0 :  $row[62];
 								$antis = ((floatval($row[62]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -9819,12 +9599,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BG{$flag}", $row['ped7']);
 								$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("PED ANT: ".$row[62]);
-								$objCommentRichText->getFont()->setBold(true);
-
+								
 								$row[63] = $row[63] === NULL ? 0 :  $row[63];
 								$antis = ((floatval($row[63]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
 								$hoja->setCellValue("BH{$flag}", $row['caja8']);
@@ -9833,11 +9608,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BL{$flag}", $row['ped8']);
 								$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("PED ANT: ".$row[63]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								
 
@@ -10545,11 +10316,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("Q{$flag}", $row['ped0']);
 								$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("PED ANT: ".$row[87]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 
 								$row[89] = $row[89] === NULL ? 0 :  $row[89];
@@ -10560,11 +10327,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("U{$flag}", $row['ped9']);
 								$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("PED ANT: ".$row[89]);
-								$objCommentRichText->getFont()->setBold(true);
+								;
 
 								$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
 								$hoja->setCellValue("W{$flag}", "=N".$flag."+S".$flag);
@@ -10580,11 +10343,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AC{$flag}", $row['ped1']);
 								$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("PED ANT: ".$row[57]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[90] = $row[90] === NULL ? 0 :  $row[90];
 								$antis = ((floatval($row[90]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja2"]) + $row["past"]["pz2"])/$row["unidad"];
@@ -10594,11 +10353,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AH{$flag}", $row['ped2']);
 								$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("PED ANT: ".$row[90]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[58] = $row[58] === NULL ? 0 :  $row[58];
 								$antis = ((floatval($row[58]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja3"]) + $row["past"]["pz3"])/$row["unidad"];
@@ -10608,11 +10363,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AM{$flag}", $row['ped3']);
 								$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("PED ANT: ".$row[58]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[59] = $row[59] === NULL ? 0 :  $row[59];
 								$antis = ((floatval($row[59]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja4"]) + $row["past"]["pz4"])/$row["unidad"];
@@ -10622,11 +10373,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AR{$flag}", $row['ped4']);
 								$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("PED ANT: ".$row[59]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[60] = $row[60] === NULL ? 0 :  $row[60];
 								$antis = ((floatval($row[60]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja5"]) + $row["past"]["pz5"])/$row["unidad"];
@@ -10636,11 +10383,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AW{$flag}", $row['ped5']);
 								$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("PED ANT: ".$row[60]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[61] = $row[61] === NULL ? 0 :  $row[61];
 								$antis = ((floatval($row[61]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja6"]) + $row["past"]["pz6"])/$row["unidad"];
@@ -10650,11 +10393,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BB{$flag}", $row['ped6']);
 								$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("PED ANT: ".$row[61]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[62] = $row[62] === NULL ? 0 :  $row[62];
 								$antis = ((floatval($row[62]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -10664,11 +10403,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BG{$flag}", $row['ped7']);
 								$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("PED ANT: ".$row[62]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[63] = $row[63] === NULL ? 0 :  $row[63];
 								$antis = ((floatval($row[63]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -10678,12 +10413,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BL{$flag}", $row['ped8']);
 								$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("PED ANT: ".$row[63]);
-								$objCommentRichText->getFont()->setBold(true);
-
+								
 								
 
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -11390,11 +11120,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("Q{$flag}", $row['ped0']);
 								$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("Q{$flag}")->getText()->createTextRun("PED ANT: ".$row[87]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 
 								$row[89] = $row[89] === NULL ? 0 :  $row[89];
@@ -11405,11 +11131,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("U{$flag}", $row['ped9']);
 								$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("U{$flag}")->getText()->createTextRun("PED ANT: ".$row[89]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
 								$hoja->setCellValue("W{$flag}", "=N".$flag."+S".$flag);
@@ -11425,11 +11147,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AC{$flag}", $row['ped1']);
 								$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AC{$flag}")->getText()->createTextRun("PED ANT: ".$row[57]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[90] = $row[90] === NULL ? 0 :  $row[90];
 								$antis = ((floatval($row[90]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja2"]) + $row["past"]["pz2"])/$row["unidad"];
@@ -11439,11 +11157,6 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AH{$flag}", $row['ped2']);
 								$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AH{$flag}")->getText()->createTextRun("PED ANT: ".$row[90]);
-								$objCommentRichText->getFont()->setBold(true);
 
 								$row[58] = $row[58] === NULL ? 0 :  $row[58];
 								$antis = ((floatval($row[58]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja3"]) + $row["past"]["pz3"])/$row["unidad"];
@@ -11453,11 +11166,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AM{$flag}", $row['ped3']);
 								$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AM{$flag}")->getText()->createTextRun("PED ANT: ".$row[58]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[59] = $row[59] === NULL ? 0 :  $row[59];
 								$antis = ((floatval($row[59]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja4"]) + $row["past"]["pz4"])/$row["unidad"];
@@ -11467,11 +11176,6 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AR{$flag}", $row['ped4']);
 								$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AR{$flag}")->getText()->createTextRun("PED ANT: ".$row[59]);
-								$objCommentRichText->getFont()->setBold(true);
 
 								$row[60] = $row[60] === NULL ? 0 :  $row[60];
 								$antis = ((floatval($row[60]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja5"]) + $row["past"]["pz5"])/$row["unidad"];
@@ -11481,11 +11185,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("AW{$flag}", $row['ped5']);
 								$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("AW{$flag}")->getText()->createTextRun("PED ANT: ".$row[60]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[61] = $row[61] === NULL ? 0 :  $row[61];
 								$antis = ((floatval($row[61]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja6"]) + $row["past"]["pz6"])/$row["unidad"];
@@ -11495,11 +11195,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BB{$flag}", $row['ped6']);
 								$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BB{$flag}")->getText()->createTextRun("PED ANT: ".$row[61]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[62] = $row[62] === NULL ? 0 :  $row[62];
 								$antis = ((floatval($row[62]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -11509,11 +11205,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BG{$flag}", $row['ped7']);
 								$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BG{$flag}")->getText()->createTextRun("PED ANT: ".$row[62]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								$row[63] = $row[63] === NULL ? 0 :  $row[63];
 								$antis = ((floatval($row[63]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja7"]) + $row["past"]["pz7"])/$row["unidad"];
@@ -11523,11 +11215,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BL{$flag}", $row['ped8']);
 								$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("FECHA: ".substr($row["lastfecha"],0,10));
-								$objCommentRichText->getFont()->setBold(true);
-								$this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("\r\n");
-								$objCommentRichText = $this->excelfile->getActiveSheet()->getComment("BL{$flag}")->getText()->createTextRun("PED ANT: ".$row[63]);
-								$objCommentRichText->getFont()->setBold(true);
+								
 
 								
 
