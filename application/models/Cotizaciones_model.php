@@ -3544,7 +3544,7 @@ $this->db->select("c.id_cotizacion,
 		}
 	}
 
-	public function getPedidosAllCuetara($where=[],$fech=0,$tienda){
+	public function getPedidosAllMexicano($where=[],$fech=0,$tienda){
 		ini_set("memory_limit", "-1");
 		ini_set("max_execution_time", "-1");
 
