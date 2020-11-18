@@ -258,7 +258,8 @@
                                 <option value="3">Amarillo</option>
                                 <option value="4">Moderna</option>
                                 <option value="5">Costeña</option>
-                                <option value="6">cuetara</option>
+                                <option value="6">Cuetara</option>
+                                <option value="7">Mexicano</option>
                             </select>
                         </div>
                     </div>
@@ -352,6 +353,7 @@
                                 <option value="4">Moderna</option>
                                 <option value="5">Costeña</option>
                                 <option value="6">cuetara</option>
+                                <option value="7">Mexicano</option>
                             </select>
                         </div>
                     </div>

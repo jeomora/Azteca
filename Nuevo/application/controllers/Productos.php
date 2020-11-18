@@ -115,6 +115,9 @@ class Productos extends MY_Controller {
 		$hoja->setCellValue("I8", "CUETARA");
 		$hoja->setCellValue("J8", "6");
 		$row_print++;
+		$hoja->setCellValue("I9", "MEXICANO");
+		$hoja->setCellValue("J9", "7");
+		$row_print++;
 
 		$hoja->getStyle("A3:M{$row_print}")
                  ->getAlignment()
