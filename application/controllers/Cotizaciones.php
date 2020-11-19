@@ -11458,7 +11458,7 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");*/
 	}
 
-	private function fill_cuetara($id_proves,$proves,$prs){
+	private function fill_mexicano($id_proves,$proves,$prs){
 		$flag =1;
 		$flag1 = 1;
 		$array = "";
