@@ -9622,9 +9622,9 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BU{$flag}", "=E".$flag."*BG".$flag)->getStyle("BU{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BV{$flag}", "=E".$flag."*BL".$flag)->getStyle("BV{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BW{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BW{$flag}", "=SUM(BM".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BW{$flag}", "=SUM(BN".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BX{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BX{$flag}", "=O".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
+								$hoja->setCellValue("BX{$flag}", "=Q".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
 
 								//Begin: TOTALES PEDIDOS PENDIENTES
 								$hoja->setCellValue("CD{$flag}", "=E".$flag."*O".$flag)->getStyle("CD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -10410,9 +10410,6 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BL{$flag}", $row['ped8']);
 								$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
-								
-								
-
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 								$hoja->setCellValue("BM{$flag}", $row['promocion_first']);
 								$hoja->setCellValue("BN{$flag}", "=E".$flag."*O".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -10425,9 +10422,11 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BU{$flag}", "=E".$flag."*BG".$flag)->getStyle("BU{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BV{$flag}", "=E".$flag."*BL".$flag)->getStyle("BV{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BW{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BW{$flag}", "=SUM(BM".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BW{$flag}", "=SUM(BN".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BX{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BX{$flag}", "=O".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
+								$hoja->setCellValue("BX{$flag}", "=Q".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
+
+
 
 								//Begin: TOTALES PEDIDOS PENDIENTES
 								$hoja->setCellValue("CD{$flag}", "=E".$flag."*O".$flag)->getStyle("CD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -10487,6 +10486,7 @@ class Cotizaciones extends MY_Controller {
 					$hoja->setCellValue("BV{$flagf}", "=SUM(BV5:BV".$flagfs.")")->getStyle("BV{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 					$this->cellStyle("BW{$flagf}", "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("BW{$flagf}", "=SUM(BW5:BW".$flagfs.")")->getStyle("BW{$flagf}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
 					$sumall[1] .= "BN".$flagf."+";
 					$sumall[2] .= "BO".$flagf."+";
 					$sumall[3] .= "BP".$flagf."+";
@@ -11228,9 +11228,9 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BU{$flag}", "=E".$flag."*BG".$flag)->getStyle("BU{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BV{$flag}", "=E".$flag."*BL".$flag)->getStyle("BV{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BW{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BW{$flag}", "=SUM(BM".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BW{$flag}", "=SUM(BN".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BX{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BX{$flag}", "=O".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
+								$hoja->setCellValue("BX{$flag}", "=Q".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
 
 								//Begin: TOTALES PEDIDOS PENDIENTES
 								$hoja->setCellValue("CD{$flag}", "=E".$flag."*O".$flag)->getStyle("CD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -12029,9 +12029,9 @@ class Cotizaciones extends MY_Controller {
 								$hoja->setCellValue("BU{$flag}", "=E".$flag."*BG".$flag)->getStyle("BU{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BV{$flag}", "=E".$flag."*BL".$flag)->getStyle("BV{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BW{$flag}", "D4EAEF", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BW{$flag}", "=SUM(BM".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BW{$flag}", "=SUM(BN".$flag.":BV".$flag.")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$this->cellStyle("BX{$flag}", "C2B90A", "000000", FALSE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("BX{$flag}", "=O".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
+								$hoja->setCellValue("BX{$flag}", "=Q".$flag."+AC".$flag."+AH".$flag."+AM".$flag."+AR".$flag."+AW".$flag."+BB".$flag."+BG".$flag."+BL".$flag."");
 
 								//Begin: TOTALES PEDIDOS PENDIENTES
 								$hoja->setCellValue("CD{$flag}", "=E".$flag."*O".$flag)->getStyle("CD{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
