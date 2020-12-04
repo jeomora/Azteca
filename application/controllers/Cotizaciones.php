@@ -7899,12 +7899,14 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("M".$flag.":BM".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 							$this->cellStyle("L".$flag, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 
+
+
 							$row[87] = $row[87] === NULL ? 0 :  $row[87];
 							$antis = ((floatval($row[87]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja0"]) + $row["past"]["pz0"])/$row["unidad"];							
 							$hoja->setCellValue("M{$flag}", $row['caja0']);
 							$hoja->setCellValue("N{$flag}", $row['pz0']);
 							$hoja->setCellValue("O{$flag}", $row['cedis']);
-							$hoja->setCellValue("P{$flag}", "=".$antis."-(((M{$flag}*D{$flag})+N{$flag})/D{$flag})")->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
+							$hoja->setCellValue("P{$flag}", "=".$antis."-((N{$flag}/D{$flag})+M{$flag})")->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
 							$hoja->setCellValue("Q{$flag}", $row['ped0']);
 							$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7914,11 +7916,9 @@ class Cotizaciones extends MY_Controller {
 							$antis = ((floatval($row[89]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja9"]) + $row["past"]["pz9"])/$row["unidad"];							
 							$hoja->setCellValue("R{$flag}", $row['caja9']);
 							$hoja->setCellValue("S{$flag}", $row['pz9']);
-							$hoja->setCellValue("T{$flag}", "=".$antis."-(((R{$flag}*D{$flag})+S{$flag})/D{$flag})")->getStyle("T{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
+							$hoja->setCellValue("T{$flag}", "=".$antis."-((S{$flag}/D{$flag})+R{$flag})")->getStyle("T{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
 							$hoja->setCellValue("U{$flag}", $row['ped9']);
 							$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
-
-							
 
 
 							$hoja->setCellValue("V{$flag}", "=M".$flag."+R".$flag);
@@ -7931,7 +7931,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("Y{$flag}", $row['caja1']);
 							$hoja->setCellValue("Z{$flag}", $row['pz1']);
 							$hoja->setCellValue("AA{$flag}", $row['abarrotes']);
-							$hoja->setCellValue("AB{$flag}", "=".$antis."-( ( (Y{$flag}*D{$flag}) +Z{$flag} )/D{$flag} )")->getStyle("AB{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("AB{$flag}", "=".$antis."-((Z{$flag}/D{$flag})+Y{$flag}*)")->getStyle("AB{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("AC{$flag}", $row['ped1']);
 							$this->cellStyle("AC{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7942,7 +7942,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AD{$flag}", $row['caja2']);
 							$hoja->setCellValue("AE{$flag}", $row['pz2']);
 							$hoja->setCellValue("AF{$flag}", $row['pedregal']);
-							$hoja->setCellValue("AG{$flag}", "=".$antis."-(((AD{$flag}*D{$flag})+AE{$flag})/D{$flag})")->getStyle("AG{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("AG{$flag}", "=".$antis."-((AE{$flag}/D{$flag})+AD{$flag})")->getStyle("AG{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("AH{$flag}", $row['ped2']);
 							$this->cellStyle("AH{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7953,7 +7953,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AI{$flag}", $row['caja3']);
 							$hoja->setCellValue("AJ{$flag}", $row['pz3']);
 							$hoja->setCellValue("AK{$flag}", $row['tienda']);
-							$hoja->setCellValue("AL{$flag}", "=".$antis."-(((AI{$flag}*D{$flag})+AJ{$flag})/D{$flag})")->getStyle("AL{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("AL{$flag}", "=".$antis."-((AJ{$flag}/D{$flag})+AI{$flag})")->getStyle("AL{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("AM{$flag}", $row['ped3']);
 							$this->cellStyle("AM{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7964,7 +7964,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AN{$flag}", $row['caja4']);
 							$hoja->setCellValue("AO{$flag}", $row['pz4']);
 							$hoja->setCellValue("AP{$flag}", $row['ultra']);
-							$hoja->setCellValue("AQ{$flag}", "=".$antis."-(((AN{$flag}*D{$flag})+AO{$flag})/D{$flag})")->getStyle("AQ{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("AQ{$flag}", "=".$antis."-((AO{$flag}/D{$flag})+AN{$flag})")->getStyle("AQ{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("AR{$flag}", $row['ped4']);
 							$this->cellStyle("AR{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7975,7 +7975,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AS{$flag}", $row['caja5']);
 							$hoja->setCellValue("AT{$flag}", $row['pz5']);
 							$hoja->setCellValue("AU{$flag}", $row['trincheras']);
-							$hoja->setCellValue("AV{$flag}", "=".$antis."-(((AS{$flag}*D{$flag})+AT{$flag})/D{$flag})")->getStyle("AV{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("AV{$flag}", "=".$antis."-((AT{$flag}/D{$flag})+AS{$flag})")->getStyle("AV{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("AW{$flag}", $row['ped5']);
 							$this->cellStyle("AW{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7986,7 +7986,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("AX{$flag}", $row['caja6']);
 							$hoja->setCellValue("AY{$flag}", $row['pz6']);
 							$hoja->setCellValue("AZ{$flag}", $row['mercado']);
-							$hoja->setCellValue("BA{$flag}", "=".$antis."-(((AX{$flag}*D{$flag})+AY{$flag})/D{$flag})")->getStyle("BA{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("BA{$flag}", "=".$antis."-((AY{$flag}/D{$flag})+AX{$flag})")->getStyle("BA{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("BB{$flag}", $row['ped6']);
 							$this->cellStyle("BB{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -7997,7 +7997,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BC{$flag}", $row['caja7']);
 							$hoja->setCellValue("BD{$flag}", $row['pz7']);
 							$hoja->setCellValue("BE{$flag}", $row['tenencia']);
-							$hoja->setCellValue("BF{$flag}", "=".$antis."-(((BC{$flag}*D{$flag})+BD{$flag})/D{$flag})")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("BF{$flag}", "=".$antis."-((BD{$flag}/D{$flag})+BC{$flag})")->getStyle("BF{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("BG{$flag}", $row['ped7']);
 							$this->cellStyle("BG{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -8008,7 +8008,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("BH{$flag}", $row['caja8']);
 							$hoja->setCellValue("BI{$flag}", $row['pz8']);
 							$hoja->setCellValue("BJ{$flag}", $row['tijeras']);
-							$hoja->setCellValue("BK{$flag}", "=".$antis."-(((BH{$flag}*D{$flag})+BI{$flag})/D{$flag})")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
+							$hoja->setCellValue("BK{$flag}", "=".$antis."-((BI{$flag}/D{$flag})+BH{$flag})")->getStyle("BK{$flag}")->getNumberFormat()->setFormatCode('#,##0_-');
 							$hoja->setCellValue("BL{$flag}", $row['ped8']);
 							$this->cellStyle("BL{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
@@ -9835,10 +9835,10 @@ class Cotizaciones extends MY_Controller {
 		$meses = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
 		$fecha =  $dias[date('w')]." ".date('d')." DE ".$meses[date('n')-1]. " DEL ".date('Y') ;
 		$file_name = "FORMATO MODERNA ".$fecha.".xlsx"; //Nombre del documento con extención
-		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 		header("Content-Disposition: attachment;filename=".$file_name);
 		header("Cache-Control: max-age=0");
+		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
 		/*$excel_Writer = new PHPExcel_Writer_Excel2007($this->excelfile);
 		$excel_Writer->setOffice2003Compatibility(true);
@@ -10306,7 +10306,7 @@ class Cotizaciones extends MY_Controller {
 									$row["unidad"] = 1;
 								}
 								$hoja->setCellValue("D{$flag}",$row["unidad"]);
-								
+
 								$row[87] = $row[87] === NULL ? 0 :  $row[87];
 								$antis = ((floatval($row[87]) * floatval($row["unidad"])) + ($row["unidad"] * $row["past"]["caja0"]) + $row["past"]["pz0"])/$row["unidad"];
 								$hoja->setCellValue("M{$flag}", $row['caja0']);
