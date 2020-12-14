@@ -74,6 +74,15 @@ class Compras extends MY_Controller {
 				$filename='database_backup_'.date('G_mmss_a_m_d_y').'.gz';
 				$this->load->dbutil();
 
+				$cambios = [
+					"id_usuario" => $validar->id_usuario,
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Inicia Sesión",
+					"despues" => "IP: ".$this->getUserIP,
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
+
 				
 				if($user['id_grupo'] ==2){
 					redirect("cotizaciones/", $data);
@@ -301,6 +310,32 @@ class Compras extends MY_Controller {
 		$this->viewdata = (empty($data)) ? $this->data: $data;
 		$view_html = $this->load->view($view, $this->viewdata, $returnhtml);
 		if ($returnhtml) return $view_html;//This will return html on 3rd argument being true
+	}
+
+	public function getUserIP(){
+	    // Get real visitor IP behind CloudFlare network
+	    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+	              $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	              $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	    }
+	    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+	    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+	    $remote  = $_SERVER['REMOTE_ADDR'];
+
+	    if(filter_var($client, FILTER_VALIDATE_IP))
+	    {
+	        $ip = $client;
+	    }
+	    elseif(filter_var($forward, FILTER_VALIDATE_IP))
+	    {
+	        $ip = $forward;
+	    }
+	    else
+	    {
+	        $ip = $remote;
+	    }
+
+	    return $ip;
 	}
 
 }

@@ -2134,6 +2134,7 @@ class Cotizaciones extends MY_Controller {
 		}
 	}
 	public function fill_formato1(){
+		$user = $this->session->userdata();
 		$flag =1;
 		$flag1 = 1;
 		$array = "";
@@ -2144,26 +2145,74 @@ class Cotizaciones extends MY_Controller {
 		$prs = substr($id_proves,0,6);
 		if (($id_proves <> "3" || $id_proves <> 3) && ($id_proves <> "6" || $id_proves <> 6) && ($id_proves <> "4" || $id_proves <> 4)) {
 			if ($prs === "VARIOS") {
+				$cambios = [
+					"id_usuario" => $user["id_usuario"],
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Descarga formato",
+					"despues" => "VARIOS ",
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$array = $this->usua_mdl->get(NULL, ["conjunto" => $id_proves]);
 				$filenam = $id_proves;
 				$this->fill_varios($id_proves,$proves,$prs);
 			}elseif ($id_proves === "VOLUMEN" || $id_proves === "AMARILLOS") {
+				$cambios = [
+					"id_usuario" => $user["id_usuario"],
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Descarga formato",
+					"despues" => "Volúmen",
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$filenam = $id_proves;
 				$array = (object)['0'=>(object)['nombre' => $id_proves]];
 				$this->fill_volumen($id_proves,$proves,$prs);
 			}elseif ($id_proves === "MODERNA") {
+				$cambios = [
+					"id_usuario" => $user["id_usuario"],
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Descarga formato",
+					"despues" => "MODERNA",
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$filenam = $id_proves;
 				$array = (object)['0'=>(object)['nombre' => $id_proves]];
 				$this->fill_moderna($id_proves,$proves,$prs);
 			}elseif ($id_proves === "CUETARA") {
+				$cambios = [
+					"id_usuario" => $user["id_usuario"],
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Descarga formato",
+					"despues" => "CUETARA",
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$filenam = $id_proves;
 				$array = (object)['0'=>(object)['nombre' => $id_proves]];
 				$this->fill_cuetara($id_proves,$proves,$prs);
 			}elseif ($id_proves === "COSTENA") {
+				$cambios = [
+					"id_usuario" => $user["id_usuario"],
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Descarga formato",
+					"despues" => "COSTENA",
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$filenam = $id_proves;
 				$array = (object)['0'=>(object)['nombre' => $id_proves]];
 				$this->fill_costena($id_proves,$proves,$prs);
 			}elseif ($id_proves === "MEXICANO") {
+				$cambios = [
+					"id_usuario" => $user["id_usuario"],
+					"fecha_cambio" => date('Y-m-d H:i:s'),
+					"antes" => "Descarga formato",
+					"despues" => "MEXICANO",
+					"estatus" => "3",
+				];
+				$data['cambios'] = $this->cambio_md->insert($cambios);
 				$filenam = $id_proves;
 				$array = (object)['0'=>(object)['nombre' => $id_proves]];
 				$this->fill_mexicano($id_proves,$proves,$prs);
@@ -3363,10 +3412,34 @@ class Cotizaciones extends MY_Controller {
 			$excel_Writer->setOffice2003Compatibility(true);
 			$excel_Writer->save("php://output");*/
 		}elseif ($id_proves === "6" || $id_proves === 6) {
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Descarga formato",
+				"despues" => "19 hermanos ",
+				"estatus" => "3",
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$this->fill_hermanos();
 		}elseif ($id_proves === "4" || $id_proves === 4) {
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Descarga formato",
+				"despues" => "SAHUAYO",
+				"estatus" => "3",
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$this->fill_duerazo("SAHUAYO");
 		}else{
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Descarga formato",
+				"despues" => "DUERO",
+				"estatus" => "3",
+			];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
 			$this->fill_duerazo("DUERO");
 		}
 	}
@@ -7343,6 +7416,16 @@ class Cotizaciones extends MY_Controller {
 				}
 			}
 		}
+
+		$user = $this->session->userdata();
+		$cambios = [
+			"id_usuario" => $user["id_usuario"],
+			"fecha_cambio" => date('Y-m-d H:i:s'),
+			"antes" => "Descarga formato",
+			"despues" => "19 hermanos ",
+			"estatus" => "3",
+		];
+		$data['cambios'] = $this->cambio_md->insert($cambios);
 
 
 
@@ -12250,6 +12333,32 @@ class Cotizaciones extends MY_Controller {
 		/*$excel_Writer = new PHPExcel_Writer_Excel2007($this->excelfile);
 		$excel_Writer->setOffice2003Compatibility(true);
 		$excel_Writer->save("php://output");*/
+	}
+
+	public function getUserIP(){
+	    // Get real visitor IP behind CloudFlare network
+	    if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+	              $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	              $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+	    }
+	    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+	    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+	    $remote  = $_SERVER['REMOTE_ADDR'];
+
+	    if(filter_var($client, FILTER_VALIDATE_IP))
+	    {
+	        $ip = $client;
+	    }
+	    elseif(filter_var($forward, FILTER_VALIDATE_IP))
+	    {
+	        $ip = $forward;
+	    }
+	    else
+	    {
+	        $ip = $remote;
+	    }
+
+	    return $ip;
 	}
 }
 /* End of file Cotizaciones.php */
