@@ -78,7 +78,7 @@ class Compras extends MY_Controller {
 					"id_usuario" => $validar->id_usuario,
 					"fecha_cambio" => date('Y-m-d H:i:s'),
 					"antes" => "Inicia Sesión",
-					"despues" => "IP: ".$this->getUserIP,
+					"despues" => $this->getUserIP(),
 					"estatus" => "3",
 				];
 				$data['cambios'] = $this->cambio_md->insert($cambios);
@@ -324,5 +324,4 @@ class Compras extends MY_Controller {
 	    }
 		return $ip;
 	}
-
 }
