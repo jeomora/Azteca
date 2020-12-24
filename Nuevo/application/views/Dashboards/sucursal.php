@@ -46,7 +46,7 @@
 					    <div class="card-body d-flex flex-column p-0">
 					        <!--begin::Items-->
 					        <div class="flex-grow-1 card-spacer">
-					        	<?php if((date('N') == 5 && ( (date('G') == 13 && intval(date("i")) > 30) || date('G') >= 14) ) || in_array(date('N'), array(6,7,1,2)) || (date('N') == 3 && date('G') < 9)): ?>
+					        	
 					            <!--begin::Item-->
 					            <div class="d-flex align-items-center justify-content-between mb-10">
 					                <div class="d-flex align-items-center mr-2">
@@ -123,9 +123,9 @@
 					                </div>
 					            </div>
 					            <!--end::Item-->
-					            <?php else:?>
+					            
 					            	<h3>Los formatos podrán descargarse el día Sábado a partir de la 1:30pm</h3>
-					        	<?php endif?>
+					        
 		                    </div>
 		        			<!--end::Items-->
 					    </div>
