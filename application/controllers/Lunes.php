@@ -2913,7 +2913,9 @@ class Lunes extends MY_Controller {
 							$col++;
 							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["pzs"]);
 							$col++;
-							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["pzs"]);
+							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, "");
+							$col++;
+							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, "");
 							$col++;
 							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["ped"]);
 							$col++;
@@ -2922,9 +2924,7 @@ class Lunes extends MY_Controller {
 							$col++;
 							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["pzs"]);
 							$col++;
-							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, "");
-							$col++;
-							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, "");
+							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["pzs"]);
 							$col++;
 							$proveedor[$key]->estatus->setCellValueByColumnAndRow($col, $flag, $vs["ped"]);
 							$col++;
