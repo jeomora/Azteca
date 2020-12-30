@@ -85,4 +85,4 @@ die();
 		<p>Ir a <a href="http://abarrotesazteca.com/Compras/Login">inicio</a> para empezar a navegar en el sitio.</p>
 	</div>
 </body>
-</html>	
+</html>	 

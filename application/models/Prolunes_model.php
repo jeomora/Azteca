@@ -193,6 +193,7 @@ class Prolunes_model extends MY_Model {
 				$flag++;
 				$comparativaIndexada[$comparativa[$i]->codigo]					=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["codigo"]		=	$comparativa[$i]->codigo;
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]		=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["real"]		=	$comparativa[$i]->real;
 				$comparativaIndexada[$comparativa[$i]->codigo]["descripcion"]	=	$comparativa[$i]->descripcion;
 				$comparativaIndexada[$comparativa[$i]->codigo]["precio"]		=	$comparativa[$i]->precio;
@@ -206,6 +207,19 @@ class Prolunes_model extends MY_Model {
 				$comparativaIndexada[$comparativa[$i]->codigo]["cuantos2"]		=	$comparativa[$i]->cuantos2;
 				$comparativaIndexada[$comparativa[$i]->codigo]["cuantos1"]		=	$comparativa[$i]->cuantos1;
 				$comparativaIndexada[$comparativa[$i]->codigo]["mins"]		=	$comparativa[$i]->mins;
+
+
+
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja0"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja1"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja2"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja3"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja4"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja5"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja6"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja7"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja8"]		=	"";
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja9"]		=	"";
 				
 				$comparativaIndexada[$comparativa[$i]->codigo]["existencias"]	=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["exist"]	=	[];
@@ -248,6 +262,56 @@ class Prolunes_model extends MY_Model {
 					$comparativaIndexada[$comparativa[$i]->codigo]["pend"][11]["pend"]	=	$comparativa3[0]->tijeras;
 				}
 			}
+
+
+			$pedidos = $this->db->select('id_stock,
+				  codigo,
+				  id_tienda,
+				  cantidad')
+				->from('stocklunes')
+				->where('codigo',$comparativa[$i]->codigo)
+				->order_by("id_tienda", "ASC");
+			$resu = $this->db->get()->result();
+			for ($d=0; $d<sizeof($resu); $d++){
+				switch ($resu[$d]->id_tienda) {
+					case '87':
+						$e = "0";
+						break;
+					case '57':
+						$e = "1";
+						break;
+					case '90':
+						$e = "2";
+						break;
+					case '58':
+						$e = "3";
+						break;
+					case '59':
+						$e = "4";
+						break;
+					case '60':
+						$e = "5";
+						break;
+					case '61':
+						$e = "6";
+						break;
+					case '62':
+						$e = "7";
+						break;
+					case '63':
+						$e = "8";
+						break;
+					case '89':
+						$e = "9";
+						break;
+					default:
+						$e = "10";
+						break;
+				}
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja".$e]		=	$resu[$d]->cantidad;
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
+				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["idped".$e]	=	$resu[$d]->id_stock;
+			}	
 
 		}
 

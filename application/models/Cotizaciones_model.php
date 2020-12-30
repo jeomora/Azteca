@@ -2357,15 +2357,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 
-			$pedidos = $this->db->select('id_pedido,
+			$pedidos = $this->db->select('id_stock,
 				  id_producto,
 				  id_tienda,
-				  cajas,
-				  piezas,
-				  pedido,
-				  fecha_registro')
-				->from('existencias')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
+				  cantidad')
+				->from('stocks')
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->order_by("id_tienda", "ASC");
 			$resu = $this->db->get()->result();
@@ -2405,31 +2401,10 @@ $this->db->select("c.id_cotizacion,
 						$e = "10";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cantidad;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
-			}
-
-			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('llegaron')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
-				->where('id_producto',$comparativa[$i]->id_producto);
-			$resu = $this->db->get()->result();
-			if ($resu){
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$resu[0]->abarrotes;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$resu[0]->tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$resu[0]->trincheras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$resu[0]->tijeras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][59]	=	$resu[0]->ultra;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][61]	=	$resu[0]->mercado;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][90]	=	$resu[0]->villas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][62]	=	$resu[0]->tenencia;
-			}
-			
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_stock;
+			}			
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {
@@ -2705,15 +2680,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 
-			$pedidos = $this->db->select('id_pedido,
+			$pedidos = $this->db->select('id_stock,
 				  id_producto,
 				  id_tienda,
-				  cajas,
-				  piezas,
-				  pedido,
-				  fecha_registro')
-				->from('existencias')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
+				  cantidad')
+				->from('stocks')
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->order_by("id_tienda", "ASC");
 			$resu = $this->db->get()->result();
@@ -2753,29 +2724,9 @@ $this->db->select("c.id_cotizacion,
 						$e = "10";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cantidad;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
-			}
-
-			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('llegaron')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
-				->where('id_producto',$comparativa[$i]->id_producto);
-			$resu = $this->db->get()->result();
-			if ($resu){
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$resu[0]->abarrotes;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$resu[0]->tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$resu[0]->trincheras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$resu[0]->tijeras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][59]	=	$resu[0]->ultra;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][61]	=	$resu[0]->mercado;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][90]	=	$resu[0]->villas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][62]	=	$resu[0]->tenencia;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_stock;
 			}
 			
 		}
@@ -3111,15 +3062,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 
-			$pedidos = $this->db->select('id_pedido,
+			$pedidos = $this->db->select('id_stock,
 				  id_producto,
 				  id_tienda,
-				  cajas,
-				  piezas,
-				  pedido,
-				  fecha_registro')
-				->from('existencias')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
+				  cantidad')
+				->from('stocks')
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->order_by("id_tienda", "ASC");
 			$resu = $this->db->get()->result();
@@ -3159,30 +3106,10 @@ $this->db->select("c.id_cotizacion,
 						$e = "10";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cantidad;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
-			}
-
-			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('llegaron')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
-				->where('id_producto',$comparativa[$i]->id_producto);
-			$resu = $this->db->get()->result();
-			if ($resu){
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$resu[0]->abarrotes;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$resu[0]->tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$resu[0]->trincheras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$resu[0]->tijeras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][59]	=	$resu[0]->ultra;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][61]	=	$resu[0]->mercado;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][90]	=	$resu[0]->villas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][62]	=	$resu[0]->tenencia;
-			}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_stock;
+			}	
 			
 		}
 		if ($comparativaIndexada) {
@@ -3459,15 +3386,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 
-			$pedidos = $this->db->select('id_pedido,
+			$pedidos = $this->db->select('id_stock,
 				  id_producto,
 				  id_tienda,
-				  cajas,
-				  piezas,
-				  pedido,
-				  fecha_registro')
-				->from('existencias')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
+				  cantidad')
+				->from('stocks')
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->order_by("id_tienda", "ASC");
 			$resu = $this->db->get()->result();
@@ -3507,30 +3430,10 @@ $this->db->select("c.id_cotizacion,
 						$e = "10";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cantidad;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
-			}
-
-			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('llegaron')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
-				->where('id_producto',$comparativa[$i]->id_producto);
-			$resu = $this->db->get()->result();
-			if ($resu){
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$resu[0]->abarrotes;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$resu[0]->tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$resu[0]->trincheras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$resu[0]->tijeras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][59]	=	$resu[0]->ultra;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][61]	=	$resu[0]->mercado;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][90]	=	$resu[0]->villas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][62]	=	$resu[0]->tenencia;
-			}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_stock;
+			}	
 			
 		}
 		if ($comparativaIndexada) {
@@ -3807,15 +3710,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 
-			$pedidos = $this->db->select('id_pedido,
+			$pedidos = $this->db->select('id_stock,
 				  id_producto,
 				  id_tienda,
-				  cajas,
-				  piezas,
-				  pedido,
-				  fecha_registro')
-				->from('existencias')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
+				  cantidad')
+				->from('stocks')
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->order_by("id_tienda", "ASC");
 			$resu = $this->db->get()->result();
@@ -3855,30 +3754,10 @@ $this->db->select("c.id_cotizacion,
 						$e = "10";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cantidad;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
-			}
-
-			$pedidos = $this->db->select('abarrotes,cedis,mercado,villas,tienda,trincheras,tenencia,ultra,tijeras')
-				->from('llegaron')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($comparativa[$i]->lastfecha))
-				->where('id_producto',$comparativa[$i]->id_producto);
-			$resu = $this->db->get()->result();
-			if ($resu){
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][57]	=	$resu[0]->abarrotes;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][87]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][89]	=	$resu[0]->cedis;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][58]	=	$resu[0]->tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][60]	=	$resu[0]->trincheras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][63]	=	$resu[0]->tijeras;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][59]	=	$resu[0]->ultra;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][61]	=	$resu[0]->mercado;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][90]	=	$resu[0]->villas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto][62]	=	$resu[0]->tenencia;
-			}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_stock;
+			}	
 			
 		}
 		if ($comparativaIndexada) {
