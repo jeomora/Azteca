@@ -2968,7 +2968,7 @@ class Lunes extends MY_Controller {
 
 					 $proveedor[$key]->estatus->setCellValue("J{$flag}", $v["pend"][1]["pend"]);
 					 $proveedor[$key]->estatus->setCellValue("X{$flag}", $v["pend"][4]["pend"]);
-					 $proveedor[$key]->estatus->setCellValue("AD{$flag}", $v["pend"][5]["pend"]);
+					 $proveedor[$key]->estatus->setCellValue("AC{$flag}", $v["pend"][5]["pend"]);
 					 $proveedor[$key]->estatus->setCellValue("AH{$flag}", $v["pend"][6]["pend"]);
 					 $proveedor[$key]->estatus->setCellValue("AM{$flag}", $v["pend"][7]["pend"]);
 					 $proveedor[$key]->estatus->setCellValue("AR{$flag}", $v["pend"][8]["pend"]);
