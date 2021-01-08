@@ -9495,7 +9495,7 @@ class Cotizaciones extends MY_Controller {
 								}
 								$hoja->setCellValue("B{$flag}", $row['producto']);
 								$hoja->setCellValue("F{$flag}", $row['proveedor_first']);
-								$hoja->setCellValue("C{$flag}", $row['codigo_factura'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("C{$flag}", $row['codigo_factura'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 
 								
 
@@ -10257,7 +10257,7 @@ class Cotizaciones extends MY_Controller {
 								}
 								$hoja->setCellValue("B{$flag}", $row['producto']);
 								$hoja->setCellValue("F{$flag}", $row['proveedor_first']);
-								$hoja->setCellValue("C{$flag}", $row['codigo_factura'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("C{$flag}", $row['codigo_factura'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 
 
 								if($row['precio_sistema'] < $row['precio_first']){
