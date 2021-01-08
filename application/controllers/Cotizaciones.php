@@ -9324,7 +9324,7 @@ class Cotizaciones extends MY_Controller {
 					$flag++;
 					$this->cellStyle("A".$flag.":BM".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("A".$flag, "CODIGO");
-					$hoja->setCellValue("C".$flag, "REAL")
+					$hoja->setCellValue("C".$flag, "COD PROV")
 					;
 					$hoja->setCellValue("D".$flag, "UM");
 					$hoja->setCellValue("E".$flag, "1ER");
@@ -9495,15 +9495,9 @@ class Cotizaciones extends MY_Controller {
 								}
 								$hoja->setCellValue("B{$flag}", $row['producto']);
 								$hoja->setCellValue("F{$flag}", $row['proveedor_first']);
-								$hoja->setCellValue("C{$flag}", $row['reales'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("C{$flag}", $row['codigo_factura'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
-								if(number_format(($row['precio_first'] - $row['reales']),2) === "0.01" || number_format(($row['precio_first'] - $row['reales']),2) === "-0.01"){
-									$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-								}elseif($row['precio_first'] < $row['reales']){
-									$this->cellStyle("C{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
-								}else{
-									$this->cellStyle("C{$flag}", "FFFFFF", "249947", FALSE, 12, "Franklin Gothic Book");
-								}
+								
 
 								if($row['precio_sistema'] < $row['precio_first']){
 									$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -10092,7 +10086,7 @@ class Cotizaciones extends MY_Controller {
 					$flag++;
 					$this->cellStyle("A".$flag.":BM".$flag."", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$hoja->setCellValue("A".$flag, "CODIGO");
-					$hoja->setCellValue("C".$flag, "REAL")
+					$hoja->setCellValue("C".$flag, "COD PROV")
 					;
 					$hoja->setCellValue("D".$flag, "UM");
 					$hoja->setCellValue("E".$flag, "1ER");
@@ -10263,15 +10257,8 @@ class Cotizaciones extends MY_Controller {
 								}
 								$hoja->setCellValue("B{$flag}", $row['producto']);
 								$hoja->setCellValue("F{$flag}", $row['proveedor_first']);
-								$hoja->setCellValue("C{$flag}", $row['reales'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("C{$flag}", $row['codigo_factura'])->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
-								if(number_format(($row['precio_first'] - $row['reales']),2) === "0.01" || number_format(($row['precio_first'] - $row['reales']),2) === "-0.01"){
-									$this->cellStyle("C{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
-								}elseif($row['precio_first'] < $row['reales']){
-									$this->cellStyle("C{$flag}", "FFFFFF", "E21600", FALSE, 12, "Franklin Gothic Book");
-								}else{
-									$this->cellStyle("C{$flag}", "FFFFFF", "249947", FALSE, 12, "Franklin Gothic Book");
-								}
 
 								if($row['precio_sistema'] < $row['precio_first']){
 									$hoja->setCellValue("E{$flag}", $row['precio_first'])->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
