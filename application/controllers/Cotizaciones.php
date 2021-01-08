@@ -7987,14 +7987,14 @@ class Cotizaciones extends MY_Controller {
 							$hoja->setCellValue("M{$flag}", $row['caja0']);
 							$hoja->setCellValue("N{$flag}", $row['pz0']);
 							$hoja->setCellValue("O{$flag}", $row['cedis']);
-							$hoja->setCellValue("P{$flag}", $row["past"]["caja0"])->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
+							$hoja->setCellValue("P{$flag}", $row["past"]["caja0"])->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#,##0-');
 							$hoja->setCellValue("Q{$flag}", $row['ped0']);
 							$this->cellStyle("Q{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
 							
 							$hoja->setCellValue("R{$flag}", $row['caja9']);
 							$hoja->setCellValue("S{$flag}", $row['pz9']);
-							$hoja->setCellValue("T{$flag}", $row["past"]["caja9"])->getStyle("T{$flag}")->getNumberFormat()->setFormatCode('#,##0.00_-');
+							$hoja->setCellValue("T{$flag}", $row["past"]["caja9"])->getStyle("T{$flag}")->getNumberFormat()->setFormatCode('#,##0-');
 							$hoja->setCellValue("U{$flag}", $row['ped9']);
 							$this->cellStyle("U{$flag}", "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
