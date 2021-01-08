@@ -853,7 +853,7 @@ $this->db->select("c.id_cotizacion,
 		$user = $this->session->userdata();
 
 		$this->db->select("fpast.fecha_registro as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,fpast.abarrotes as fpastabarrotes,fpast.cedis as fpastcedis,fpast.mercado as fpastmercado,fpast.villas as fpastpedregal,fpast.tienda fpasttienda,fpast.trincheras fpasttrincheras,fpast.tenencia as fpasttenencia,fpast.ultra as fpastultra,fpast.tijeras as fpasttijeras,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,sto.id_stock,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
@@ -1094,15 +1094,11 @@ $this->db->select("c.id_cotizacion,
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["idped".$e]	=	$resu[$d]->id_pedido;
 			}
 
-			$pedidos = $this->db->select('id_pedido,
+			$pedidos = $this->db->select('id_stock,
 				  id_producto,
 				  id_tienda,
-				  cajas,
-				  piezas,
-				  pedido,
-				  fecha_registro')
-				->from('existencias')
-				->where('WEEKOFYEAR(fecha_registro)',$this->weekNumber($fecha->format('Y-m-d H:i:s')))
+				  cantidad')
+				->from('stocks')
 				->where('id_producto',$comparativa[$i]->id_producto)
 				->order_by("id_tienda", "ASC");
 			$resu = $this->db->get()->result();
@@ -1142,12 +1138,10 @@ $this->db->select("c.id_cotizacion,
 						$e = "10";
 						break;
 				}
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]		=	$resu[$d]->cajas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["pz".$e]	=	$resu[$d]->piezas;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["ped".$e]	=	$resu[$d]->pedido;
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["caja".$e]	=	$resu[$d]->cantidad;
 				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["tienda".$e]	=	$resu[$d]->id_tienda;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_pedido;
-			}
+				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["past"]["idped".$e]	=	$resu[$d]->id_stock;
+			}	
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {
