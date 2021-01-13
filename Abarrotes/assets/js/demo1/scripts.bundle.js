@@ -9968,3 +9968,4 @@ var KTLayout = function() {
 KTUtil.ready(function() {
 	KTLayout.init();
 });
+

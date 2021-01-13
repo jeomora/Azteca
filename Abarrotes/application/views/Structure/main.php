@@ -232,6 +232,106 @@
 		});
 	}
 
+	function sendFormas(url, formData, boton){
+		toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": true,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": "location.reload()",
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "1000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+		};
+		$.ajax({
+			url: site_url + url,
+			type: "POST",
+			dataType: "JSON",
+			data: (formData).serializeArray()
+		})
+		.done(function(response) {
+			switch(response.type){
+				case "success":
+				setTimeout("location.reload()", 1000, toastr.success("Listo",response.desc), "");
+				break;
+
+				case "info":
+				toastr.options = {
+					  "closeButton": true,
+					  "debug": false,
+					  "newestOnTop": false,
+					  "progressBar": true,
+					  "positionClass": "toast-top-right",
+					  "preventDuplicates": false,
+					  "onclick": null,
+					  "showDuration": "300",
+					  "hideDuration": "1000",
+					  "timeOut": "1000",
+					  "extendedTimeOut": "1000",
+					  "showEasing": "swing",
+					  "hideEasing": "linear",
+					  "showMethod": "fadeIn",
+					  "hideMethod": "fadeOut"
+				};
+					setTimeout("location.reload()", 1000, toastr.info("Información",response.desc), "");
+				break;
+
+				case "warning":
+					toastr.options = {
+						  "closeButton": true,
+						  "debug": false,
+						  "newestOnTop": false,
+						  "progressBar": true,
+						  "positionClass": "toast-top-right",
+						  "preventDuplicates": false,
+						  "onclick": null,
+						  "showDuration": "300",
+						  "hideDuration": "3000",
+						  "timeOut": "3000",
+						  "extendedTimeOut": "1000",
+						  "showEasing": "swing",
+						  "hideEasing": "linear",
+						  "showMethod": "fadeIn",
+						  "hideMethod": "fadeOut"
+					};
+					setTimeout("location.reload()", 3000, toastr.warning("Importante",response.desc), "");
+				break;
+
+				default:
+					toastr.options = {
+						  "closeButton": true,
+						  "debug": false,
+						  "newestOnTop": false,
+						  "progressBar": true,
+						  "positionClass": "toast-top-right",
+						  "preventDuplicates": false,
+						  "onclick": null,
+						  "showDuration": "300",
+						  "hideDuration": "1000",
+						  "timeOut": "1000",
+						  "extendedTimeOut": "1000",
+						  "showEasing": "swing",
+						  "hideEasing": "linear",
+						  "showMethod": "fadeIn",
+						  "hideMethod": "fadeOut"
+					};
+						toastr.error("Error",response.desc);
+						boton.prop("disabled", false);
+			}
+			$("#notifications").html(response);
+		})
+		.fail(function(response) {
+			// console.log("Error en la respuesta: ", response);
+		});
+	}
+
 
 	function sendFormulario(url, formData, url_repuesta){
 		url_repuesta = typeof url_repuesta === 'undefined' ? "/#" : url_repuesta;

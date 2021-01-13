@@ -9874,3 +9874,97 @@ function updatePass(formData) {
         data: formData,
     });
 }
+
+var marcos33=0;
+
+$(document).off("click", ".update_usuario33").on("click", ".update_usuario33", function(event) {
+    event.preventDefault();
+    if(marcos33 !== 0 && marcos33 !== "0"){
+        sendForm("Usuarios/update_user33/"+marcos33, $("#form_usuario_edit33"), "");
+        location.reload();
+    }
+});
+
+$(document).off("click", ".marcos33").on("click", ".marcos33", function(event) {
+    event.preventDefault(); 
+    $(".marcos33").css("background","transparent")
+    $(this).css("background","red")
+    marcos33 = $(this).data("idCual");
+});
+
+$(document).off("click", ".save_pass").on("click", ".save_pass", function(event) {
+    event.preventDefault();
+    if($("#password").val() !== ""){
+        if($("#password").val() !== $("#password2").val()){
+            $("#pass_error").css({"display":"block","color":"red"});
+        }else{
+            var fdata = new FormData($("#form_usuario_edits")[0]);
+            $("#pass_error").css("display","none")
+            $('#kt_modal_90').modal('toggle');
+            updatePass(fdata).done(function(resp){
+                toastr.success("Se realizó el cambio de contraseña", user_name);    
+            })
+        }
+    }else{
+        $("#pass_error").css({"display":"block","color":"red"});
+    }
+});
+
+function formatMoney(n, c, d, t) {
+  var c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+function formatMon(n, c, d, t) {
+  var c = isNaN(c = Math.abs(c)) ? 0 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
+var calcus = "";
+function formatDate(fecha){
+    var f = new Date(fecha);
+    var d = f.getDate();
+    var dd = f.getDay();
+    var m =  f.getMonth();
+    var y = f.getFullYear();
+    var h = f.getHours();
+    var minutes = f.getMinutes();
+    var mm = ( minutes < 10 ? "0" : "" ) + minutes;
+    var seconds = f.getSeconds();
+    var s = ( seconds < 10 ? "0" : "" ) + seconds
+    var dias = new Array("DOMINGO","LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO");
+    var meses = new Array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+    return (dias[dd]+" "+d+" DE "+meses[m]+" "+h+":"+mm+":"+s);
+}
+
+function setInvalid(elemento){
+    elemento.toggleClass("is-invalid")
+}
+
+function showErrors(elemento){
+    elemento.css("display","block")
+}
+
+function hideErrors(elemento){
+    elemento.css("display","none")
+}
+
+function valis(eleme,warn,flag){
+    if(eleme.val() === ""){
+        showErrors(warn); 
+        return 0;
+    }else{
+        hideErrors(warn); 
+        return flag;
+    }
+}

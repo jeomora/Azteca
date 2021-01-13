@@ -2986,16 +2986,16 @@ class Lunes extends MY_Controller {
 
 				$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("L".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("L{$flag}", "=SUM(K{$flageas}:L".($flag-1).")")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("L{$flag}", "=SUM(L{$flageas}:L".($flag-1).")")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('P'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("P".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("P{$flag}", "=SUM(O{$flageas}:P".($flag-1).")")->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("P{$flag}", "=SUM(P{$flageas}:P".($flag-1).")")->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('U'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("U".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("U{$flag}", "=SUM(S{$flageas}:U".($flag-1).")")->getStyle("U{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("U{$flag}", "=SUM(U{$flageas}:U".($flag-1).")")->getStyle("U{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('Z'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("Z".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("Z{$flag}", "=SUM(W{$flageas}:Z".($flag-1).")")->getStyle("Z{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("Z{$flag}", "=SUM(Z{$flageas}:Z".($flag-1).")")->getStyle("Z{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('AE'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("AE".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("AE{$flag}", "=SUM(AE{$flageas}:AE".($flag-1).")")->getStyle("AE{$flag}")->getNumberFormat()->setFormatCode('#0_-');

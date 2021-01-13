@@ -8834,7 +8834,7 @@ class Cotizaciones extends MY_Controller {
 
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 								$hoja->setCellValue("BM{$flag}", $row['promocion_first']);
-								$hoja->setCellValue("BN{$flag}", "=E".$flag."*O".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BN{$flag}", "=E".$flag."*Q".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BO{$flag}", "=E".$flag."*AC".$flag)->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BP{$flag}", "=E".$flag."*AH".$flag)->getStyle("BP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BQ{$flag}", "=E".$flag."*AM".$flag)->getStyle("BQ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -9596,7 +9596,7 @@ class Cotizaciones extends MY_Controller {
 								
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 								$hoja->setCellValue("BM{$flag}", $row['promocion_first']);
-								$hoja->setCellValue("BN{$flag}", "=E".$flag."*O".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BN{$flag}", "=E".$flag."*Q".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BO{$flag}", "=E".$flag."*AC".$flag)->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BP{$flag}", "=E".$flag."*AH".$flag)->getStyle("BP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BQ{$flag}", "=E".$flag."*AM".$flag)->getStyle("BQ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -10360,7 +10360,7 @@ class Cotizaciones extends MY_Controller {
 
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 								$hoja->setCellValue("BM{$flag}", $row['promocion_first']);
-								$hoja->setCellValue("BN{$flag}", "=E".$flag."*O".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BN{$flag}", "=E".$flag."*Q".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BO{$flag}", "=E".$flag."*AC".$flag)->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BP{$flag}", "=E".$flag."*AH".$flag)->getStyle("BP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BQ{$flag}", "=E".$flag."*AM".$flag)->getStyle("BQ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -11135,7 +11135,7 @@ class Cotizaciones extends MY_Controller {
 
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 								$hoja->setCellValue("BM{$flag}", $row['promocion_first']);
-								$hoja->setCellValue("BN{$flag}", "=E".$flag."*O".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BN{$flag}", "=E".$flag."*Q".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BO{$flag}", "=E".$flag."*AC".$flag)->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BP{$flag}", "=E".$flag."*AH".$flag)->getStyle("BP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BQ{$flag}", "=E".$flag."*AM".$flag)->getStyle("BQ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -11900,7 +11900,7 @@ class Cotizaciones extends MY_Controller {
 
 								$this->cellStyle("BM{$flag}", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 								$hoja->setCellValue("BM{$flag}", $row['promocion_first']);
-								$hoja->setCellValue("BN{$flag}", "=E".$flag."*O".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$hoja->setCellValue("BN{$flag}", "=E".$flag."*Q".$flag)->getStyle("BN{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BO{$flag}", "=E".$flag."*AC".$flag)->getStyle("BO{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BP{$flag}", "=E".$flag."*AH".$flag)->getStyle("BP{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 								$hoja->setCellValue("BQ{$flag}", "=E".$flag."*AM".$flag)->getStyle("BQ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
@@ -11944,7 +11944,7 @@ class Cotizaciones extends MY_Controller {
 									$hoja->setCellValue("G{$flag}",100 - ($row['precio_first'] * 100 / $row['precio_sistema']))->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
 									$this->cellStyle("G".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 
-									$hoja->setCellValue("I{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');;
+									$hoja->setCellValue("I{$flag}", 100 - ($row['precio_sistema'] * 100 / $row['precio_four']))->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"%"#,##0.00_-');
 									$this->cellStyle("I".$flag, "FF9999", "000000", FALSE, 10, "Franklin Gothic Book");
 								
 								$this->excelfile->setActiveSheetIndex(0);
