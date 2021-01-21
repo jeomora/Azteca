@@ -676,3 +676,95 @@ function uploadPrecios(formData) {
 
 /******************  AGREGAR COTIZACIONES  **********************/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/******************  REPETIR ANTERIORES  **********************/
+$(document).off("click", "#verRepite").on("click", "#verRepite", function(event){
+    event.preventDefault();
+    $("#bodyRepite").html("");
+    $("#RepCotz").attr("data-id-user",$(this).data("idUser"));
+    getSAnteriores($(this).data("idUser")).done(function(resp){
+        $.each(resp,function(index,value){
+            value.observaciones = value.observaciones == null ? "Sin observaciones" : value.observaciones;
+            value.num_one = value.num_one == null ? " " : value.num_one+" en "+value.num_two;
+            value.descuento = value.descuento == null ? "" : value.descuento;
+            $("#bodyRepite").append("<tr><td>"+(index+1)+"</td><td>"+value.nombre+"</td><td>$ "+formatMoney(value.precio_promocion,2)+"</td><td>$ "+formatMoney(value.precio,2)+"</td><td>"+value.num_one+"</td><td>"+value.descuento+"</td><td>"+value.observaciones+"</td></tr>");
+        })
+    })
+});
+
+function getSAnteriores(id_proveedor) {
+    return $.ajax({
+        url: site_url+"Cotizaciones/getLastCot/"+id_proveedor,
+        type: "POST",
+        dataType: "JSON",
+    });
+}
+
+$(document).off("click", "#RepCotz").on("click", "#RepCotz", function(event){
+    event.preventDefault();
+    blockPage();
+    $('#kt_modal_lastCotiz').modal('toggle');
+    var ides = $(this).data("idUser");
+    $(this).prop("disabled","true")
+    repeatCotz(ides)
+        .done(function(resp) {
+            unblockPage();
+            if (resp.type == 'error'){
+                toastr.error(resp.desc, user_name);
+                setTimeout(function(){
+                    $(this).prop("disabled","false")
+                },1200);
+            }else{
+                setTimeout("location.reload()", 700, toastr.success(resp.desc, user_name), "");
+            }
+        });
+});
+
+function repeatCotz(id_prov) {
+    return $.ajax({
+        url: site_url+"/Cotizaciones/repeat_cotizacion/"+id_prov,
+        type: "POST",
+        dataType: "JSON",
+        data: {id_proveedor: id_prov},
+    });
+}
+
+
+
+
+/******************  DIFERENCIAS 20 %  **********************/
+
+$(document).off("click", "#editCotiza20").on("click", "#editCotiza20", function(event){
+    event.preventDefault();
+    var tr = $(this).closest("tr");
+    var proveedor = tr.find(".idprovs").val();
+    var id_cotizacion = $(this).data("idProd");
+    getModal("Cotizaciones/get_update/"+ id_cotizacion+"/"+proveedor, function (){
+        datePicker();
+        $(".number").inputmask("currency", {radixPoint: ".", prefix: ""});
+    });
+});

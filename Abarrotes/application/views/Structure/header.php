@@ -218,21 +218,23 @@
 											<!--begin: Head -->
 											<div class="kt-head kt-head--skin-dark kt-head--fit-x kt-head--fit-b" style="background-image: url(./assets/media/misc/bg-1.jpg)">
 												<h3 class="kt-head__title">
-													Sin Cotizar/Existencias
+													- Sin cotizar(Proveedores/productos) <br>
+													- Autorizar Cotizaciones <br>
+													- Existencias Sucursales <br>
 													&nbsp;
 												</h3>
 												<ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-success kt-notification-item-padding-x" role="tablist">
 													<li class="nav-item">
-														<a class="nav-link active show" data-toggle="tab" href="#topbar_notifications_notifications" role="tab" aria-selected="true">S/Cotz-P</a>
+														<a class="nav-link active show" data-toggle="tab" href="#topbar_notifications_notifications" role="tab" aria-selected="true">Proveedores</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" data-toggle="tab" href="#topbar_notifications_logs" role="tab" aria-selected="false">S/Exist-P</a>
+														<a class="nav-link" data-toggle="tab" href="#topbar_notifications_logs" role="tab" aria-selected="false">Productos</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" data-toggle="tab" href="#topbar_notifications_events" role="tab" aria-selected="false">S/Cotz-F</a>
+														<a class="nav-link" data-toggle="tab" href="#topbar_notifications_events" role="tab" aria-selected="false">Autorizar</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" data-toggle="tab" href="#topbar_notifications_logs" role="tab" aria-selected="false">S/Exist-F</a>
+														<a class="nav-link" data-toggle="tab" href="#topbar_notifications_logs" role="tab" aria-selected="false">Exitencias</a>
 													</li>
 												</ul>
 											</div>

@@ -29,7 +29,9 @@ class Cotizaciones extends MY_Controller {
 		$data["cuantos"] = $this->pro_mdl->getCuantos(NULL)[0];
 		$where=["usuarios.id_grupo" => 2, "usuarios.estatus" => 1];
 		$data["proveedores"] = $this->usua_mdl->getUsuarios($where);
+		$data["diferencias"] = $this->ct_mdl->getDiferences(NULL);
 		$this->estructura("cotizaciones/index", $data);
+		//$this->jsonResponse($data["cotizados"]);
 	}
 
 	public function getProveedorCot($ides){
@@ -443,4 +445,101 @@ class Cotizaciones extends MY_Controller {
 	    }
 		return $ip;
 	}
+
+	public function getLastCot($id_proveedor){
+		$cotizacion = $this->ct_mdl->getLastCot(NULL,$id_proveedor);
+		$this->jsonResponse($cotizacion);
+	}
+
+	public function repeat_cotizacion($idprovd){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		$user = $this->session->userdata();
+
+		$cotizaciones =  $this->ct_mdl->getLastCot(NULL,$idprovd);
+		$i = 0;
+		$new_cotizacion = null;
+		if ($cotizaciones){
+			foreach ($cotizaciones as $key => $value){
+				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $idprovd])[0];
+				$num_one = $value->num_one == '' ? 0 : $value->num_one;
+				$num_two = $value->num_two == '' ? 0 : $value->num_two;
+				$descuento = $value->descuento == '' ? 0 : $value->descuento;
+				if($antes){
+					$new_cotizacion[$i] = [
+						"id_proveedor"		=>	$idprovd,
+						"id_producto"		=>	$value->id_producto,
+						"precio"			=>	$value->precio,
+						"num_one"			=>	$value->num_one,
+						"num_two"			=>	$value->num_two,
+						"descuento"			=>	$value->descuento,
+						"precio_promocion"	=>	$value->precio_promocion,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+						"observaciones"		=>	strtoupper($value->observaciones),
+						'estatus' => 0
+					];
+				}else{
+					$new_cotizacion[$i] = [
+						"id_producto"		=>	$value->id_producto,
+						"id_proveedor"		=>	$idprovd,
+						"precio"			=>	$value->precio,
+						"num_one"			=>	$value->num_one,
+						"num_two"			=>	$value->num_two,
+						"descuento"			=>	$value->descuento,
+						"precio_promocion"	=>	$value->precio_promocion,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
+						"observaciones"		=>	strtoupper($value->observaciones),
+						'estatus' => 1
+					];
+				}
+
+				$i++;
+			}
+		}
+		if (sizeof($new_cotizacion) > 0) {
+			$data['cotizacion']=$this->ct_mdl->insert_batch($new_cotizacion);
+			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$idprovd])[0];
+			$cambios = [
+				"id_usuario" => $user["id_usuario"],
+				"fecha_cambio" => date('Y-m-d H:i:s'),
+				"antes" => "Repite cotizacion",
+				"despues" => "Del proveedor ".$aprov->nombre];
+			$data['cambios'] = $this->cambio_md->insert($cambios);
+			$mensaje=[	"id"	=>	'Éxito',
+						"desc"	=>	'Cotizaciones cargadas correctamente en el Sistema',
+						"type"	=>	'success'];
+		}else{
+			$mensaje=[	"id"	=>	'Error',
+						"desc"	=>	'No hay cotizaciones de la semana pasada',
+						"type"	=>	'error'];
+		}
+		$this->jsonResponse($mensaje);
+	}
+
+	public function get_update($id){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+		$data["cotizacion"] = $this->ct_mdl->get(NULL, ['id_cotizacion'=>$id])[0];
+		$data["producto"] = $this->pro_mdl->get(NULL, ['id_producto'=>$data["cotizacion"]->id_producto])[0];
+		$data["title"]="ACTUALIZAR COTIZACIÓN DE <br>".$data["producto"]->nombre;
+		$user = $this->session->userdata();
+		if($user['id_grupo'] ==2){//Proveedor
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario']];
+			$data["cots"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+			$where=["cotizaciones.id_proveedor" => $user['id_usuario'], "cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+		}else{
+			$data["cots"]=$this->ct_mdl->get_cots(NULL, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+			$where=["cotizaciones.estatus" => 0];
+			$data["cotss"]=$this->ct_mdl->get_cots($where, $data["cotizacion"]->id_producto,$fecha->format('Y-m-d H:i:s'));
+		}
+		$data["view"]=$this->load->view("Cotizaciones/edit_cotizacion", $data, TRUE);
+		$data["button"]="<button class='btn btn-success update_cotizacion' type='button'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar cambios
+						</button>";
+		$this->jsonResponse($data);
+	}
+	
 }

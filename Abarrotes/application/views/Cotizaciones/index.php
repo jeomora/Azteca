@@ -453,20 +453,20 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 kt-margin-b-20-tablet-and-mobile">
-                                            <table class="table table-striped table-bordered table-hover" id="table_sistema">
-                                                <thead>
-                                                    <tr class="trsistema">
-                                                        <th style="background-color: #000;color:#FFF;">DESCRIPCIÓN</th>
-                                                        <th style="background-color: #000;color:#FFF;">CÓDIGO</th>
-                                                        <th style="background-color: #000;color:#FFF;">SISTEMA</th>
-                                                        <th style="background-color: #000;color:#FFF;">PRECIO 4</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="tableSistema">
+                                                <table class="table table-striped table-bordered table-hover" id="table_sistema">
+                                                    <thead>
+                                                        <tr class="trsistema">
+                                                            <th style="background-color: #000;color:#FFF;">DESCRIPCIÓN</th>
+                                                            <th style="background-color: #000;color:#FFF;">CÓDIGO</th>
+                                                            <th style="background-color: #000;color:#FFF;">SISTEMA</th>
+                                                            <th style="background-color: #000;color:#FFF;">PRECIO 4</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tableSistema">
 
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -552,41 +552,217 @@
 
                                     <!--end: AGREGA COTIZACIÓN-->
 
-                                    <!--begin: Form Wizard Step 6-->
+                                    <!--begin: REPETIR COTIZACIÓN-->
                                     <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
-                                        <div class="kt-heading kt-heading--md">Repetir Anteriores</div>
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v4__form">
-                                               
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-label">
+                                                <span class="kt-portlet__head-icon">
+                                                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                                                </span>
+                                                <h3 class="kt-portlet__head-title">
+                                                    Repetir Anteriores
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="padding:20px">
+                                            <div class="col-md-12 kt-margin-b-20-tablet-and-mobile">
+                                                <div class="row">
+                                                <?php $color=[0=>"primary",1=>"warning",2=>"danger",3=>"success"];$flag=-1;foreach($cotizados as $key => $value):$flag++; ?>
+                                                    <div class="col-xl-3 col-md-4">
+
+                                                        <div class="kt-portlet kt-portlet--height-fluid">
+                                                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                                                <div class="kt-portlet__head-label">
+                                                                </div>
+                                                            </div>
+                                                            <div class="kt-portlet__body">
+
+                                                                <!--begin::Widget -->
+                                                                <?php $r = array('success','brand','danger','success','warning','primary','info');$n = rand(0,6); ?>
+                                                                <div class="kt-widget kt-widget--user-profile-2">
+                                                                    <div class="kt-widget__head">
+                                                                        <div class="kt-widget__media">
+                                                                            <div class="kt-widget__pic kt-widget__pic--<?php echo $r[$n]; ?> kt-font-info kt-font-boldestn" style="font-size:2.5rem !important">
+                                                                                <?php echo substr($value->nombre,0,1) ?>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="kt-widget__info">
+                                                                            <a class="kt-widget__username">
+                                                                                <?php echo strtoupper($value->nombre) ?>
+                                                                            </a>
+                                                                            <span class="kt-widget__desc">
+                                                                                <?php echo $value->email ?>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="kt-widget__body">
+                                                                        <div class="kt-widget__item">
+                                                                            <div class="kt-widget__contact">
+                                                                                <span class="kt-widget__label">No. productos:</span>
+                                                                                <a class="kt-widget__data"><?php echo $value->total ?></a>
+                                                                            </div>
+                                                                            <div class="kt-widget__contact">
+                                                                                <span class="kt-widget__label">Fecha:</span>
+                                                                                <a class="kt-widget__data">
+                                                                                    <?php echo $dias[date('w',strtotime($value->fecha_registro))]." ".date('d',strtotime($value->fecha_registro))." DE ".$meses[date('n',strtotime($value->fecha_registro))-1]." ".date('H:i:s', strtotime($value->fecha_registro)) ?>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="kt-widget__footer">
+                                                                        <button type="button" id="verRepite" class="btn btn-label-danger btn-lg btn-upper" data-toggle="modal" data-target="#kt_modal_lastCotiz" data-id-user="<?php echo $value->id_proveedor ?>">Repetir Cotización</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!--end::Widget -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php ?>
+                                                <?php endforeach; ?>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!--end: Form Wizard Step 6-->
+                                    <!--end: REPETIR COTIZACIÓN-->
 
-                                    <!--begin: Form Wizard Step 7-->
+                                    <!--begin: DIFERENCIAS 20%-->
                                     <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
-                                        <div class="kt-heading kt-heading--md">Diferencias 20 %</div>
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v4__form">
-                                                
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-label">
+                                                <span class="kt-portlet__head-icon">
+                                                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                                                </span>
+                                                <h3 class="kt-portlet__head-title">
+                                                    Diferencias +/- Del 20%
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="padding:20px">
+                                            <div class="col-md-12 kt-margin-b-20-tablet-and-mobile">
+                                                <table class="table table-striped table-bordered table-hover" id="table_diferencias">
+                                                    <thead>
+                                                        <tr class="trDiferencias">
+                                                            <th>CODIGO</th>
+                                                            <th>DESCRIPCIÓN</th>
+                                                            <th>PRECIO SISTEMA</th>
+                                                            <th>DIFERENCIA</th>
+                                                            <th>FECHA REGISTRO</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>PRECIO FACTURA</th>
+                                                            <th>PRECIO FACTURA C/PROMOCIÓN</th>
+                                                            <th>DESCUENTO ADICIONAL</th>
+                                                            <th colspan="2">PROMOCIÓN</th>
+                                                            <th>OBSERVACIONES</th>
+                                                            <th>ACCIÓN</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tableDiferencias">
+                                                        <?php if($diferencias):foreach ($diferencias as $key => $value): ?>
+                                                            <tr>
+                                                                <td><?php echo $value->codigo ?></td>
+                                                                <td><?php echo $value->descrip ?></td>
+                                                                <td><?php echo '$ '.number_format($value->precio_sistema,2,'.',',') ?></td>
+                                                                <td style="background-color: #ffc1c1"><?php echo '$ '.number_format($value->diferencia,2,'.',',') ?></td>
+                                                                <td><?php echo date('d-m-Y', strtotime($value->fecha_registro)) ?> <input type="text" class="idprovs" name="idprovs" value="" style="display: none"> </td>
+                                                                <td><?php echo $value->nombre ?></td>
+                                                                <td><?php echo ($value->precio >0) ? '$ '.number_format($value->precio,2,'.',',') : '' ?></td>
+                                                                <td><?php echo ($value->precio_promocion >0) ? '$ '.number_format($value->precio_promocion,2,'.',',') : '' ?></td>
+                                                                <td><?php echo ($value->descuento > 0) ? number_format($value->descuento,0,'.',',').' %' : ''  ?></td>
+                                                                <td><?php echo $value->num_one ?></td>
+                                                                <td><?php echo $value->num_two ?></td>
+                                                                <td><?php echo $value->observaciones ?></td>
+                                                                <td>
+                                                                    <a data-id-prod="<?php echo $value->id_cotizacion ?>" data-target="" id="editCotiza20" data-toggle="modal" title="Editar Cotización" class="btn btn-sm btn-clean btn-icon mr-2">
+                                                                        <span class="svg-icon svg-icon-md"><i class="la la-edit"></i></span>
+                                                                    </a>
+                                                                    <a data-id-prod="<?php echo $value->id_cotizacion ?>" data-target="" id="elimCotiza20" data-toggle="modal" title="Eliminar Cotización" class="btn btn-sm btn-clean btn-icon mr-2">
+                                                                        <span class="svg-icon svg-icon-md"><i class="la la-trash"></i></span>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        <?php endforeach;endif; ?>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!--end: Form Wizard Step 7-->
 
-                                    <!--begin: Form Wizard Step 8-->
+                                    <!--begin: COTIZACION GENERAL-->
                                     <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
-                                        <div class="kt-heading kt-heading--md">Cotización General</div>
-                                        <div class="kt-form__section kt-form__section--first">
-                                            <div class="kt-wizard-v4__form">
-                                                
+                                        <div class="kt-portlet__head kt-portlet__head--lg">
+                                            <div class="kt-portlet__head-label">
+                                                <span class="kt-portlet__head-icon">
+                                                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                                                </span>
+                                                <h3 class="kt-portlet__head-title">
+                                                    Cotizacion General
+                                                </h3>
                                             </div>
+                                        </div>
+                                        <div class="form-group row" style="padding:20px">
+                                            <label class="col-form-label col-lg-2 col-sm-12">
+                                                <a href="Cotizaciones/fill_excel">
+                                                    <button type="button" class="btn btn-outline-warning">
+                                                        <i class="flaticon-download"></i>
+                                                        Descargar Excel Cotizaciones (3 proveedores)
+                                                    </button>
+                                                </a>
+                                            </label>
+                                            <label class="col-form-label col-lg-2 col-sm-12">
+                                                <a href="Cotizaciones/fill_cotize">
+                                                    <button type="button" class="btn btn-outline-brand">
+                                                        <i class="flaticon-download"></i>
+                                                        FORMATO SR. COSME 
+                                                        (TODOS LOS PROVEEDORES)
+                                                    </button>   
+                                                </a>
+                                            </label>
+                                            <label class="col-form-label col-lg-12 col-sm-12">
+                                            <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                                                <div class="kt-input-icon kt-input-icon--left">
+                                                    <input type="text" class="form-control" placeholder="Buscar..." id="buscaCOT" onkeyup="buscaCOT()">
+                                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                                        <span><i class="la la-search"></i></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 kt-margin-b-20-tablet-and-mobile" style="overflow-x:scroll;">
+                                            <table class="table table-striped table-bordered table-hover" id="table_cotizaciones">
+                                                <thead>
+                                                    <tr class="trcotizaciones">
+                                                        <th>CÓDIGO</th>
+                                                        <th>DESCRIPCIÓN</th>
+                                                        <th>SISTEMA</th>
+                                                        <th>PRECIO 4</th>
+                                                        <th>FACTURA</th>
+                                                        <th>C/PROMOCIÓN</th>
+                                                        <th>PROVEEDOR</th>
+                                                        <th>OBSERVACIÓN</th>
+                                                        <th>PRECIO MAXIMO</th>
+                                                        <th>PRECIO PROMEDIO</th>
+                                                        <th>FACTURA</th>
+                                                        <th>C/PROMOCIÓN</th>
+                                                        <th>2DO PROVEEDOR</th>
+                                                        <th>2DA OBSERVACIÓN</th>
+                                                        <th>FACTURA</th>
+                                                        <th>C/PROMOCIÓN</th>
+                                                        <th>3ER PROVEEDOR</th>
+                                                        <th>3ER OBSERVACIÓN</th>
+                                                        <th>ACCIÓN</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tableCotizaciones">
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
 
-                                    <!--end: Form Wizard Step 8-->
+                                    <!--end: COTIZACION GENERAL-->
 
                                     <!--begin: Form Wizard Step 6-->
                                     <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
@@ -886,7 +1062,7 @@
 
 <!--end::Modal-->
 
-    <!--begin::Modal Eliminar Cotización-->
+<!--begin::Modal Eliminar Cotización-->
 <div class="modal fade" id="kt_eliminar_cotización" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -907,5 +1083,105 @@
 </div>
 <!--end::Modal-->
 
+<!--begin::Modal Volúmen-->
+<div class="modal fade" id="kt_modal_lastCotiz" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Última cotización</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="display:inline-flex;">
+                <div class="kt-portlet kt-portlet--mobile col-xl-12">
+
+                    <div class="kt-portlet__body">
+                        <h2>Cotizaciones</h2>
+                        <!--begin: Search Form -->
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th>PRECIO C/PROMOCIÓN</th>
+                                    <th>PRECIO</th>
+                                    <th># EN #</th>
+                                    <th>DESCUENTO</th>
+                                    <th>OBSERVACIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyRepite">
+                                
+                            </tbody>
+                        </table>
+
+                        <!--end: Search Form -->
+                    </div>
+                    <div class="kt-portlet__body kt-portlet__body--fit">
+                        <!--begin: Datatable -->
+                        <div class="kt-datatable datatable datatable-bordered datatable-head-custom" id="lastcotz"></div>
+                        <!--end: Datatable -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="RepCotz" data-id-user="none">Repetir Cotización</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Modal-->
+
+
+<!--begin::Modal Volúmen-->
+<div class="modal fade" id="kt_modal_fastEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Actualizar cotización</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="display:inline-flex;">
+                <div class="kt-portlet kt-portlet--mobile col-xl-12">
+
+                    <div class="kt-portlet__body">
+                        <h2>Cotizaciones</h2>
+                        <!--begin: Search Form -->
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th>PRECIO C/PROMOCIÓN</th>
+                                    <th>PRECIO</th>
+                                    <th># EN #</th>
+                                    <th>DESCUENTO</th>
+                                    <th>OBSERVACIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyRepite">
+                                
+                            </tbody>
+                        </table>
+
+                        <!--end: Search Form -->
+                    </div>
+                    <div class="kt-portlet__body kt-portlet__body--fit">
+                        <!--begin: Datatable -->
+                        <div class="kt-datatable datatable datatable-bordered datatable-head-custom" id="lastcotz"></div>
+                        <!--end: Datatable -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="RepCotz" data-id-user="none">Repetir Cotización</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Modal-->
 
 </div>

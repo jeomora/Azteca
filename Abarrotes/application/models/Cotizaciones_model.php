@@ -64,5 +64,54 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
+	public function getDiferences($where = []){
+		$fecha = new DateTime(date('Y-m-d'));
+		$intervalo = new DateInterval('P2D');
+		$fecha->add($intervalo);
+
+		$result = $this->db->query("SELECT c.id_cotizacion,p.codigo,p.nombre as descrip,p.precio_sistema, c.precio_promocion, c.id_proveedor,u.nombre, (p.precio_sistema - c.precio_promocion) AS diferencia,
+		c.precio, c.fecha_registro, c.estatus, c.observaciones, c.descuento, c.num_one, c.num_two FROM prodandprice p LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto and c.estatus = 1  
+		LEFT JOIN usuarios u ON c.id_proveedor = u.id_usuario WHERE WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND 
+		(p.precio_sistema - c.precio_promocion) > (p.precio_sistema * 0.2) OR WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fecha->format('Y-m-d H:i:s'))." AND 
+		(c.precio_promocion - p.precio_sistema) > (p.precio_sistema * 0.2) ORDER BY diferencia DESC")->result();
+
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function get_cots($where=[],$producto=0,$fechas){
+		$this->db->select("cotizaciones.id_cotizacion,cotizaciones.num_one, cotizaciones.num_two, cotizaciones.descuento, cotizaciones.id_proveedor, cotizaciones.precio_sistema,
+			cotizaciones.precio_four, cotizaciones.precio, cotizaciones.precio_promocion, cotizaciones.observaciones,
+			u.nombre as nomb")
+		->from($this->TABLE_NAME)
+		->join("usuarios u", $this->TABLE_NAME.".id_proveedor = u.id_usuario", "INNER")
+		->where($this->TABLE_NAME.".estatus", 1)
+		->where($this->TABLE_NAME.".id_producto",$producto)
+		->where("WEEKOFYEAR(".$this->TABLE_NAME.".fecha_registro)", $this->weekNumber($fechas))
+		->group_by("nomb");
+
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			return $result;
+		} else {
+			return false;
+		}
+	}
 	
 }
