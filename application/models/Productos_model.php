@@ -241,15 +241,14 @@ class Productos_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
-		$this->db->select("c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2,f3.id_producto AS sem3,f4.id_producto AS sem4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
+		$this->db->select("c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,c2.precio_promocion precio2,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
 			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
 			WEEKOFYEAR(CURDATE()) AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
 			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 7 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
 			FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f2 ON c.id_producto = f2.id_producto AND c.id_proveedor = 
-			f2.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY))) 
-			f3 ON c.id_producto = f3.id_producto AND c.id_proveedor = f3.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino)
-			 = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 14 DAY))) f4 ON c.id_producto = f4.id_producto AND c.id_proveedor = f4.id_proveedor WHERE p.estatus <> 0");
+			f2.id_proveedor LEFT JOIN cotizaciones c2 ON p.id_producto = c2.id_producto AND WEEKOFYEAR(c2.fecha_registro) = 
+			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 7 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto conv.id_proveedor = ".$prove." WHERE p.estatus <> 0");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -277,19 +276,20 @@ class Productos_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["estatus"]		=	$comparativa[$i]->estatus;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["codigo"]		=	$comparativa[$i]->codigo;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]			=	$comparativa[$i]->color;
+
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["conversion"]	=	$comparativa[$i]->conversion;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["sem1"]		=	$comparativa[$i]->sem1;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["sem2"]		=	$comparativa[$i]->sem2;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["sem3"]		=	$comparativa[$i]->sem3;
-			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["sem4"]		=	$comparativa[$i]->sem4;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	$comparativa[$i]->precio == NULL ? 0 : $comparativa[$i]->precio;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	$comparativa[$i]->num_one == NULL ? "" : $comparativa[$i]->num_one;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	$comparativa[$i]->num_two == NULL ? "" : $comparativa[$i]->num_two;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	$comparativa[$i]->observaciones == NULL ? "" : $comparativa[$i]->observaciones;
-				$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	$comparativa[$i]->descuento == NULL ? "" : $comparativa[$i]->descuento;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio"]		=	$comparativa[$i]->precio == NULL ? 0 : $comparativa[$i]->precio;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio2"]		=	$comparativa[$i]->precio2 == NULL ? 0 : $comparativa[$i]->precio2;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_one"]	=	$comparativa[$i]->num_one == NULL ? "" : $comparativa[$i]->num_one;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["num_two"]	=	$comparativa[$i]->num_two == NULL ? "" : $comparativa[$i]->num_two;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["observaciones"]	=	$comparativa[$i]->observaciones == NULL ? "" : $comparativa[$i]->observaciones;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["descuento"]	=	$comparativa[$i]->descuento == NULL ? "" : $comparativa[$i]->descuento;
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {

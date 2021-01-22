@@ -1175,7 +1175,7 @@ class Cotizaciones extends MY_Controller {
 					if ($value['articulos']) {
 						foreach ($value['articulos'] as $key => $row){
 							$arrayData = array(
-								array($row['codigo'],$row['producto'],$row['precio'],$row['observaciones'],$row['num_one'],$row['num_two'],$row['descuento'])
+								array($row['codigo'],$row['producto'],$row['precio'],$row['observaciones'],$row['num_one'],$row['num_two'],$row['descuento'],"",$row['conversion'],$row['precio2'])
 							);
 							$hoja->getActiveSheet()->fromArray(
 							    $arrayData,
@@ -1244,21 +1244,7 @@ class Cotizaciones extends MY_Controller {
 									)
 								);
 							}
-							if($row['sem4'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
-								$hoja->getActiveSheet()->getStyle("C{$row_print}")->applyFromArray(
-									array(
-										'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '8064A2'))
-									)
-								);
-							}elseif ($row['sem3'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
-								$hoja->getActiveSheet()->getStyle("C{$row_print}")->applyFromArray(
-									array(
-										'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
-										'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '8064A2'))
-									)
-								);
-							}elseif ($row['sem2'] <> NULL) {
+							if ($row['sem2'] <> NULL) {
 								$hoja->getActiveSheet()->getStyle("C{$row_print}")->applyFromArray(
 									array(
 										'font' => array('size' => 10,'bold' => false,'color' => array('rgb' => '000000')),
@@ -1274,7 +1260,7 @@ class Cotizaciones extends MY_Controller {
 								);
 							}
 
-							if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2020'){
+							if(($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() -1)) && date('Y', strtotime($row['fecha_registro'])) === '2021'){
 								$arrayData = array(
 									array("NUEVO")
 								);
