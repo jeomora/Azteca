@@ -1177,7 +1177,7 @@ class Cotizaciones extends MY_Controller {
 						foreach ($value['articulos'] as $key => $row){
 							$conversion = str_replace("CWEY", "C".$row_print, $row['conversion']);
 							$conversion = str_replace("DWEY", "D".$row_print, $conversion);
-							
+
 							$arrayData = array(
 								array($row['codigo'],$row['producto'],$row['precio'],$row['observaciones'],$row['num_one'],$row['num_two'],$row['descuento'],"",$conversion,$row['precio2'])
 							);
@@ -1486,7 +1486,7 @@ class Cotizaciones extends MY_Controller {
 							$new_conversion = [
 								"id_producto"	=>	$productos->id_producto,
 								"id_proveedor"	=>	$proveedor,
-								"conversion"	=>	$sheet->getCell('I'.$i)->getValue()
+								"conversion"	=>	$conversion
 							];
 							if($conv){
 								$data['cotizacion']=$this->conve_mdl->update($new_conversion, ['id_conversion' => $conv->id_conversion]);
@@ -1520,7 +1520,7 @@ class Cotizaciones extends MY_Controller {
 						$new_conversion = [
 							"id_producto"	=>	$productos->id_producto,
 							"id_proveedor"	=>	$proveedor,
-							"conversion"	=>	$sheet->getCell('I'.$i)->getValue()
+							"conversion"	=>	$conversion
 						];
 						if($conv){
 							$data['cotizacion']=$this->conve_mdl->update($new_conversion, ['id_conversion' => $conv->id_conversion]);
