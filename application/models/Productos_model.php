@@ -248,7 +248,7 @@ class Productos_model extends MY_Model {
 			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 7 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
 			FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f2 ON c.id_producto = f2.id_producto AND c.id_proveedor = 
 			f2.id_proveedor LEFT JOIN cotizaciones c2 ON p.id_producto = c2.id_producto AND WEEKOFYEAR(c2.fecha_registro) = 
-			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0 ORDER BY ff.nombre,p.nombre");
+			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0 ORDER BY p.id_familia,p.id_producto");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
