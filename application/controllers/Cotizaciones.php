@@ -1177,6 +1177,7 @@ class Cotizaciones extends MY_Controller {
 						foreach ($value['articulos'] as $key => $row){
 							$conversion = str_replace("CWEY", "C".$row_print, $row['conversion']);
 							$conversion = str_replace("DWEY", "D".$row_print, $conversion);
+							
 							$arrayData = array(
 								array($row['codigo'],$row['producto'],$row['precio'],$row['observaciones'],$row['num_one'],$row['num_two'],$row['descuento'],"",$conversion,$row['precio2'])
 							);
@@ -1478,7 +1479,7 @@ class Cotizaciones extends MY_Controller {
 							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
 							"estatus" => 0];
 
-							$conversion = str_replace("C".$i, "CWEY",$this->getOldVal($sheet,$i,"I"));
+							$conversion = str_replace("C".$i, "CWEY",$sheet->getCell('I'.$i)->getValue());
 							$conversion = str_replace("D".$i, "DWEY",$conversion);
 
 							$conv = $this->conve_mdl->get(NULL,["id_producto"=>$productos->id_producto,"id_proveedor"=>$proveedor])[0];
@@ -1512,7 +1513,7 @@ class Cotizaciones extends MY_Controller {
 							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
 							"estatus"			=> 1
 						];
-						$conversion = str_replace("C".$i, "CWEY",$this->getOldVal($sheet,$i,"I"));
+						$conversion = str_replace("C".$i, "CWEY",$sheet->getCell('I'.$i)->getValue());
 						$conversion = str_replace("D".$i, "DWEY",$conversion);
 
 						$conv = $this->conve_mdl->get(NULL,["id_producto"=>$productos->id_producto,"id_proveedor"=>$proveedor])[0];
