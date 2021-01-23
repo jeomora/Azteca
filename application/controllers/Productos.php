@@ -580,7 +580,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 57,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"D");];
+				$new_stock=["id_tienda" => 57,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"D")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>57])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
