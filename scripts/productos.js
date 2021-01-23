@@ -107,7 +107,7 @@ $(document).off("change", "#file_productos").on("change", "#file_productos", fun
 
 function uploadProductos(formData) {
 	return $.ajax({
-		url: site_url+"Productos/upload_productos",
+		url: site_url+"Productos/upload_stock",
 		type: "POST",
 		cache: false,
 		contentType: false,
