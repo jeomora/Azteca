@@ -572,7 +572,7 @@ class Productos extends MY_Controller {
 			$codigo = $this->pro_md->get(NULL,["codigo"=>htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 
 			if ($codigo){
-				$new_stock=["id_tienda" => 87,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"C");];
+				$new_stock=["id_tienda" => 87,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"C")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>87])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -588,7 +588,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 90,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"E");];
+				$new_stock=["id_tienda" => 90,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"E")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>90])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -596,7 +596,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 58,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"F");];
+				$new_stock=["id_tienda" => 58,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"F")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>58])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -604,7 +604,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 59,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"G");];
+				$new_stock=["id_tienda" => 59,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"G")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>59])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -612,7 +612,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 60,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"H");];
+				$new_stock=["id_tienda" => 60,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"H")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>60])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -620,7 +620,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 61,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"I");];
+				$new_stock=["id_tienda" => 61,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"I")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>61])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -628,7 +628,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 62,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"J");];
+				$new_stock=["id_tienda" => 62,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"J")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>62])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
@@ -636,7 +636,7 @@ class Productos extends MY_Controller {
 					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
 				}
 
-				$new_stock=["id_tienda" => 63,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"K");];
+				$new_stock=["id_tienda" => 63,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"K")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>63])[0];
 				if ($stocks){
 					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
