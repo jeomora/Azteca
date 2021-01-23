@@ -10,6 +10,7 @@ class Productos extends MY_Controller {
 		$this->load->model("Cambios_model", "cambio_md");
 		$this->load->model("Usuarios_model", "usua_mdl");
 		$this->load->model("Prodcaja_model", "pcaja_md");
+		$this->load->model("Stocks_model", "stock_md");
 		$this->load->model("Invoice_model", "invo_md");
 	}
 
@@ -283,7 +284,6 @@ class Productos extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
 		$excel_Writer->save("php://output");
-
 	}
 
 	public function upload_productos(){
@@ -362,7 +362,6 @@ class Productos extends MY_Controller {
 		}
 		$this->jsonResponse($mensaje);
 	}
-
 
 	public function upload_productos2(){
 		$this->load->library("excelfile");
@@ -557,6 +556,104 @@ class Productos extends MY_Controller {
 	public function getIms(){
 		$productos = $this->pro_md->getProductos(["productos.estatus<>0"]);
 		$this->jsonResponse($productos);
+	}
+
+	public function upload_stock(){
+		$arrays = array();
+		$array = array();
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_codigos"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) {
+			$codigo = $this->pro_md->get(NULL,["codigo"=>htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
+
+			if ($codigo){
+				$new_stock=["id_tienda" => 87,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"C");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>87])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 57,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"D");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>57])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 90,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"E");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>90])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 58,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"F");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>58])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 59,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"G");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>59])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 60,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"H");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>60])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 61,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"I");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>61])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 62,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"J");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>62])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 63,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"K");];
+				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>63])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+			}
+
+			
+		}
+		
+		$mensaje=[	
+			"id"	=>	'Éxito',
+			"desc"	=>	'Productos cargados correctamente en el Sistema',
+			"type"	=>	'success'];
+
+		$this->jsonResponse($mensaje);
 	}
 
 }
