@@ -976,7 +976,6 @@ class Facturas extends MY_Controller {
 		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 		   ) 
 		);
-
 		$stylebottom = array(
 		  'borders' => array(
 		    'top' => array(
@@ -1255,7 +1254,7 @@ class Facturas extends MY_Controller {
 					$flag2 = $flag;
 					if ($facturas) {
 						foreach ($facturas as $key => $value) {
-							$this->cellStyle("A".$flag.":I".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+							$this->cellStyle("A".$flag.":J".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
 							$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($stylebottom);
 							$hoja->setCellValue("A".$flag, $value->descripcion);
 							if ($value->devolucion === 1 || $value->devolucion === "1") {
@@ -1266,6 +1265,9 @@ class Facturas extends MY_Controller {
 									$hoja->setCellValue("A".$flag, $value->pprod);	
 								}
 								
+
+								$hoja->setCellValue("J".$flag, $value->comproducto);	
+
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 								$this->cellStyle("B".$flag, "FF0000", "000000", FALSE, 14, "Arial Narrow");
 								$hoja->setCellValue("B".$flag, "DEVUELTO");
@@ -1316,6 +1318,7 @@ class Facturas extends MY_Controller {
 								}else{
 									$hoja->setCellValue("A".$flag, $value->pprod);	
 								}
+								$hoja->setCellValue("J".$flag, $value->comproducto);	
 								
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 								$this->cellStyle("B".$flag, "0000FF", "000000", FALSE, 14, "Arial Narrow");
@@ -1341,7 +1344,7 @@ class Facturas extends MY_Controller {
 								}else{
 									$hoja->setCellValue("A".$flag, $value->pprod);	
 								}
-								
+								$hoja->setCellValue("J".$flag, $value->comproducto);	
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 								$hoja->setCellValue("B".$flag, "DIRECTO");
 								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
