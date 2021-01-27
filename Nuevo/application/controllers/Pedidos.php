@@ -63,7 +63,8 @@ class Pedidos extends MY_Controller {
         $config['max_width']            = 10240;
         $config['max_height']           = 7680;
         $this->load->library('upload', $config);
-        $this->upload->do_upload('file_final','PedidoFinal'.date('dmYHis'));
+        $nameme = 'PedidoFinal'.date('dmYHis');
+        $this->upload->do_upload('file_final',$nameme);
 
 		$sheet = PHPExcel_IOFactory::load($file);
 		$objExcel = PHPExcel_IOFactory::load($file);
@@ -113,7 +114,7 @@ class Pedidos extends MY_Controller {
 		$cambios = [
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
-				"antes" => "",
+				"antes" => "".$nameme,
 				"despues" => "El usuario registro pedidos finales"];
 		$data['cambios'] = $this->cambio_md->insert($cambios);
 		$mensaje=[	

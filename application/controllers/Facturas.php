@@ -1267,6 +1267,9 @@ class Facturas extends MY_Controller {
 								
 
 								$hoja->setCellValue("J".$flag, $value->comproducto);	
+								if($value->pprod === "FACTURA"){
+									$hoja->setCellValue("J".$flag, "SIN ASOCIAR");
+								}
 
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 								$this->cellStyle("B".$flag, "FF0000", "000000", FALSE, 14, "Arial Narrow");
@@ -1319,6 +1322,9 @@ class Facturas extends MY_Controller {
 									$hoja->setCellValue("A".$flag, $value->pprod);	
 								}
 								$hoja->setCellValue("J".$flag, $value->comproducto);	
+								if($value->pprod === "FACTURA"){
+									$hoja->setCellValue("J".$flag, "SIN ASOCIAR");
+								}
 								
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 								$this->cellStyle("B".$flag, "0000FF", "000000", FALSE, 14, "Arial Narrow");
@@ -1345,6 +1351,9 @@ class Facturas extends MY_Controller {
 									$hoja->setCellValue("A".$flag, $value->pprod);	
 								}
 								$hoja->setCellValue("J".$flag, $value->comproducto);	
+								if($value->pprod === "FACTURA"){
+									$hoja->setCellValue("J".$flag, "SIN ASOCIAR");
+								}
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
 								$hoja->setCellValue("B".$flag, "DIRECTO");
 								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
