@@ -1327,7 +1327,7 @@ class Facturas extends MY_Controller {
 								}
 								
 								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
-								$this->cellStyle("B".$flag, "0000FF", "000000", FALSE, 14, "Arial Narrow");
+								$this->cellStyle("B".$flag, "8C53FF", "000000", FALSE, 14, "Arial Narrow");
 								$hoja->setCellValue("B".$flag, "S/C");
 								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
 								$hoja->setCellValue("C".$flag, "")->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
