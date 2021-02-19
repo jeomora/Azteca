@@ -162,45 +162,6 @@ class Cotizaciones_model extends MY_Model {
 		}
 	}
 
-
-/*Posible Consulta
-$this->db->select("c.id_cotizacion,
-			ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,
-			prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,
-			ctz_first.precio AS precio_firsto,
-			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
-			ctz_first.observaciones AS promocion_first,
-			ctz_first.observaciones AS observaciones_first,
-			prod.precio_sistema,
-			prod.precio_four,
-			UPPER(proveedor_next.nombre) AS proveedor_next,
-			ctz_next.fecha_registro AS fecha_next,
-			ctz_next.observaciones AS promocion_next,
-			ctz_next.precio AS precio_nexto,
-			IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
-			UPPER(proveedor_nxts.nombre) AS proveedor_nxts,
-			ctz_nxts.observaciones AS promocion_nxts,
-			ctz_nxts.precio AS precio_nxtso,
-			IF((ctz_nxts.precio_promocion >0), ctz_nxts.precio_promocion, ctz_nxts.precio) AS precio_nxts,
-			ctz_maxima.precio AS precio_maximo,
-			AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia,")
-		->from("prodandprice prod")
-		->join("cotizaciones c", "prod.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = ".$this->weekNumber($fech)." ", "LEFT")
-		->join("cotizaciones ctz_first", "ctz_first.id_cotizacion = (SELECT  ctz_min.id_cotizacion FROM cotizaciones ctz_min WHERE c.id_producto = ctz_min.id_producto
-			AND WEEKOFYEAR(ctz_min.fecha_registro) = ".$this->weekNumber($fech)." AND ctz_min.precio_promocion = (SELECT MIN(ctz_min_precio.precio_promocion) FROM cotizaciones ctz_min_precio WHERE ctz_min_precio.id_producto = ctz_min.id_producto AND ctz_min_precio.estatus = 1 AND WEEKOFYEAR(ctz_min_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
-		->join("cotizaciones ctz_maxima", "ctz_maxima.id_cotizacion = (SELECT ctz_max.id_cotizacion FROM cotizaciones ctz_max WHERE ctz_first.id_producto = ctz_max.id_producto
-			AND ctz_max.precio = (SELECT  MAX(ctz_max_precio.precio) FROM cotizaciones ctz_max_precio WHERE ctz_max_precio.id_producto = ctz_max.id_producto AND WEEKOFYEAR(ctz_max_precio.fecha_registro) = ".$this->weekNumber($fech).") LIMIT 1)", "LEFT")
-		->join("cotizaciones ctz_next", "ctz_next.id_cotizacion = (SELECT cott.id_cotizacion FROM cotizaciones cott WHERE cott.id_producto = ctz_first.id_producto
-			AND cott.estatus = 1 AND cott.precio_promocion >= ctz_first.precio_promocion AND WEEKOFYEAR(cott.fecha_registro) = ".$this->weekNumber($fech)." AND cott.id_proveedor <> ctz_first.id_proveedor ORDER BY cott.precio ASC LIMIT 1 )", "LEFT")
-		->join("cotizaciones ctz_nxts", "ctz_nxts.id_cotizacion = (SELECT cots.id_cotizacion FROM cotizaciones cots WHERE cots.id_producto = ctz_first.id_producto
-			AND cots.estatus = 1 AND cots.precio_promocion >= ctz_next.precio_promocion AND WEEKOFYEAR(cots.fecha_registro) = ".$this->weekNumber($fech)." AND cots.id_proveedor <> ctz_first.id_proveedor AND cots.id_proveedor <> ctz_next.id_proveedor ORDER BY cots.precio ASC LIMIT 1 )", "LEFT")
-		->join("usuarios proveedor_first", "ctz_first.id_proveedor = proveedor_first.id_usuario", "LEFT")
-		->join("usuarios proveedor_next", "ctz_next.id_proveedor = proveedor_next.id_usuario", "LEFT")
-		->join("usuarios proveedor_nxts", "ctz_nxts.id_proveedor = proveedor_nxts.id_usuario", "LEFT")
-		->group_by("prod.nombre")
-		->order_by("prod.id_familia,prod.nombre", "ASC");
-*/
 	public function getCotz($where = [],$fech){
 		$this->db->select("c.id_cotizacion,c.id_proveedor,c.precio,c.precio_promocion,c.observaciones,c.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.producto AS producto,prod.id_producto,UPPER(proveedor.nombre) AS proveedor, MAX(c.precio) AS precio_maximo, AVG(c.precio) AS precio_promedio,prod.id_familia, prod.familia AS familia")
 		->from("prodis prod")

@@ -241,14 +241,15 @@ class Productos_model extends MY_Model {
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
 		$intervalo = new DateInterval('P3D');
 		$fecha->add($intervalo);
-		$this->db->select("c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,c2.precio_promocion precio2,conv.conversion, 
+		
+		$this->db->select("c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,c2.precio_promocion AS precio2,conv.conversion, 
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
 			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
-			WEEKOFYEAR(CURDATE()) AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
+			WEEKOFYEAR('".$fecha->format("Y-m-d")."') AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
 			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 7 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
 			FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f2 ON c.id_producto = f2.id_producto AND c.id_proveedor = 
 			f2.id_proveedor LEFT JOIN cotizaciones c2 ON p.id_producto = c2.id_producto AND WEEKOFYEAR(c2.fecha_registro) = 
-			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 7 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0 ORDER BY p.id_familia,p.id_producto");
+			WEEKOFYEAR(DATE_SUB('".$fecha->format("Y-m-d")."',INTERVAL 7 DAY)) AND c2.id_proveedor = ".$prove." LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0 ORDER BY p.id_familia,p.id_producto");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -456,12 +457,15 @@ class Productos_model extends MY_Model {
 	}
 
 	public function sinpestanias($where = [],$fech){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
 		$this->db->select("p.id_producto,p.nombre as producto,p.color,p.colorp,p.codigo,p.estatus,mx.maxis as precio_maximo, mx.prome as precio_promedio,f.nombre as familia,pp.precio_sistema,pp.precio_four,UPPER(proveedor.nombre) AS proveedor, c.id_cotizacion,c.id_proveedor,c.precio,c.precio_promocion,c.observaciones,c.fecha_registro,p.id_familia")
 		->from("productos p")
 		->join("maxis mx", "p.id_producto = mx.id_producto", "LEFT")
 		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
-		->join("precio_sistema pp", "p.id_producto = pp.id_producto AND WEEKOFYEAR(pp.fecha_registro) = WEEKOFYEAR(CURDATE())", "LEFT")
-		->join("cotizaciones c", "p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR(CURDATE()) AND c.estatus = 1", "LEFT")
+		->join("precio_sistema pp", "p.id_producto = pp.id_producto AND WEEKOFYEAR(pp.fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."')", "LEFT")
+		->join("cotizaciones c", "p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."') AND c.estatus = 1", "LEFT")
 		->join("usuarios proveedor", "c.id_proveedor = proveedor.id_usuario", "LEFT")
 		->where("p.estatus <> 0")
 		->group_by("p.codigo,c.id_cotizacion")
@@ -533,11 +537,15 @@ class Productos_model extends MY_Model {
 	}
 
 	public function byProveedor($where = []){
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P3D');
+		$fecha->add($intervalo);
+		
 		$this->db->select("c.id_cotizacion,c.id_producto,c.id_proveedor,c.precio_promocion,c.observaciones,u.nombre")
 		->from("cotizaciones c")
 		->join("usuarios u","c.id_proveedor = u.id_usuario","LEFT")
 		->where("c.estatus <> 0")
-		->where("WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR(CURDATE())")
+		->where("WEEKOFYEAR(c.fecha_registro) = WEEKOFYEAR('".$fecha->format('Y-m-d H:i:s')."')")
 		->order_by("c.id_proveedor,c.id_producto", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
