@@ -1171,6 +1171,7 @@ class Facturas extends MY_Controller {
 				if ($woe) {
 					$facturas = $this->fact_md->getDetails2(NULL,json_encode($woe),$which);
 					$hoja->mergeCells('A'.$flag.':I'.$flag.'');
+					
 					$this->cellStyle("A".$flag, "".substr($facturas[0]->color,1,6), "000000", TRUE, 24, "Berlin Sans FB Demi");
 					$hoja->setCellValue("A".$flag, $facturas[0]->tienda." GRUPO AZTECA, S.A DE C.V")->getColumnDimension('A')->setWidth(60);
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':I'.$flag.'')->applyFromArray($styleArray);
@@ -1911,6 +1912,899 @@ class Facturas extends MY_Controller {
 			$facturas = $this->comp_md->update(["devolucion"=>0,"devueltos"=>0],$id_comparacion);
 		}
 		$this->jsonResponse($facturas);
+	}
+
+
+	public function imprimeDimuflo($proveedor){
+		ini_set("memory_limit", "-1");
+		ini_set("max_execution_time", "-1");
+		$this->load->library("excelfile");
+		$hoja = $this->excelfile->getActiveSheet();
+		$styleArray9 = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_THIN
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleArray = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleArrayHL = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleArrayHR = array(
+		  'borders' => array(
+		    'allborders' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$stylebottom = array(
+		  'borders' => array(
+		    'top' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'bottom' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styletop = array(
+		  'borders' => array(
+		    'bottom' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'top' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleleft = array(
+		  'borders' => array(
+		    'bottom' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'top' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$styleright = array(
+		  'borders' => array(
+		    'bottom' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'top' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'left' => array(
+		      'style' => PHPExcel_Style_Border::BORDER_MEDIUM
+		    ),
+		    'right' => array(
+		    	'style' => PHPExcel_Style_Border::BORDER_THIN,
+		    	'color' => array('rgb' => 'cfcfcf')
+		    )
+		  ),
+		  'alignment' => array(
+		       'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		   ) 
+		);
+		$provfact = $this->fact_md->profactu(NULL,$proveedor);
+		$provnombre = $this->usua_mdl->get("nombre",["id_usuario"=>$proveedor])[0];
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("CEDIS");
+
+		$this->excelfile->createSheet();
+        $hoja1 = $this->excelfile->setActiveSheetIndex(1)->setTitle("ABARROTES");
+
+        $this->excelfile->createSheet();
+        $hoja2 = $this->excelfile->setActiveSheetIndex(2)->setTitle("TIENDA");
+
+        $this->excelfile->createSheet();
+        $hoja3 = $this->excelfile->setActiveSheetIndex(3)->setTitle("ULTRA");
+
+        $this->excelfile->createSheet();
+        $hoja4 = $this->excelfile->setActiveSheetIndex(4)->setTitle("TRINCHERAS");
+
+		$this->excelfile->createSheet();
+        $hoja5 = $this->excelfile->setActiveSheetIndex(5)->setTitle("MERCADO");
+
+        $this->excelfile->createSheet();
+        $hoja6 = $this->excelfile->setActiveSheetIndex(6)->setTitle("TENENCIA");
+
+        $this->excelfile->createSheet();
+        $hoja7 = $this->excelfile->setActiveSheetIndex(7)->setTitle("TIJERAS");
+
+        $this->excelfile->createSheet();
+        $hoja8 = $this->excelfile->setActiveSheetIndex(8)->setTitle("VILLAS");
+
+        $this->excelfile->createSheet();
+        $hoja9 = $this->excelfile->setActiveSheetIndex(9)->setTitle("FINALES");
+
+
+		//$this->jsonResponse($provfact);
+		$flag = 1;
+		$fced = 1;$faba = 1;$ftie = 1;$fult = 1;$ftri = 1;$fmer = 1; $ften = 1;$ftij = 1;$fvil = 1;
+		if ($provfact) {
+			foreach ($provfact as $key => $valorce) {
+				$folio = $valorce->folio;
+				$which = "cedis";
+				switch ($valorce->tienda) {
+					case "87":
+						$which = "cedis";
+						$pestania = 0;
+						$this->excelfile->setActiveSheetIndex(0);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fced;
+						break;
+					case "57":
+						$which = "abarrotes";
+						$pestania = 1;
+						$this->excelfile->setActiveSheetIndex(1);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $faba;
+						break;
+					case "58":
+						$which = "tienda";
+						$pestania = 2;
+						$this->excelfile->setActiveSheetIndex(2);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ftie;
+						break;
+					case "59":
+						$which = "ultra";
+						$pestania = 3;
+						$this->excelfile->setActiveSheetIndex(3);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fult;
+						break;
+					case "60":
+						$which = "trincheras";
+						$pestania = 4;
+						$this->excelfile->setActiveSheetIndex(4);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ftri;
+						break;
+					case "61":
+						$which = "mercado";
+						$pestania = 5;
+						$this->excelfile->setActiveSheetIndex(5);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fmer;
+						break;
+					case "62":
+						$which = "tenencia";
+						$pestania = 6;
+						$this->excelfile->setActiveSheetIndex(6);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ften;
+						break;
+					case "63":
+						$which = "tijeras";
+						$pestania = 7;
+						$this->excelfile->setActiveSheetIndex(7);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $ftij;
+						break;
+					case "90":
+						$which = "villas";
+						$pestania = 8;
+						$this->excelfile->setActiveSheetIndex(8);
+						$hoja = $this->excelfile->getActiveSheet();
+						$flag = $fvil;
+						break;
+					default:
+						# code...
+						break;
+				}
+				$woe = $this->comp_md->get(NULL,["folio"=>$folio])[0];
+				if ($woe) {
+					$facturas = $this->fact_md->getDetails2(NULL,json_encode($woe),$which);
+					$hoja->mergeCells('A'.$flag.':L'.$flag.'');
+					$this->cellStyle("A".$flag, "".substr($facturas[0]->color,1,6), "000000", TRUE, 24, "Berlin Sans FB Demi");
+					$hoja->setCellValue("A".$flag, $facturas[0]->tienda." GRUPO AZTECA, S.A DE C.V")->getColumnDimension('A')->setWidth(60);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':L'.$flag.'')->applyFromArray($styleArray);
+					$flag++;
+
+					$hoja->mergeCells('A'.$flag.':C'.($flag+1));
+					$this->cellStyle("A".$flag, "FFFFFF", "000000", FALSE, 18, "Arial Narrow");
+					$hoja->setCellValue("A".$flag, $facturas[0]->prove);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':C'.($flag+1))->applyFromArray($styleArray);
+					$hoja->mergeCells('D'.$flag.':F'.$flag.'');
+					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("F".$flag, "Fecha de Reporte");
+					$this->excelfile->getActiveSheet()->getStyle('D'.$flag.':F'.$flag)->applyFromArray($styleright);
+					$hoja->mergeCells('G'.$flag.':L'.$flag.'');
+					$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue('G'.$flag,$facturas[0]->fecha);  
+					$this->excelfile->getActiveSheet()->getStyle('G'.$flag.':L'.$flag.'')->applyFromArray($styleleft);
+					$flag++;
+
+					$hoja->mergeCells('D'.$flag.':F'.$flag.'');
+					$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("D".$flag, "Fecha en Factura");
+					$this->excelfile->getActiveSheet()->getStyle('D'.$flag.':F'.$flag.'')->applyFromArray($styleright);
+					$hoja->mergeCells('G'.$flag.':L'.$flag.'');
+					$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("G".$flag, $facturas[0]->fecha_factura);
+					$this->excelfile->getActiveSheet()->getStyle('G'.$flag.':L'.$flag.'')->applyFromArray($styleleft);
+					$flag++;
+
+					$hoja->mergeCells('A'.$flag.':A'.($flag+1));
+					$this->cellStyle("A".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("A".$flag, "CÓDIGO")->getColumnDimension('A')->setWidth(20);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':A'.($flag+1))->applyFromArray($styleArray);
+					$hoja->mergeCells('B'.$flag.':B'.($flag+1));
+					$this->cellStyle("B".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("B".$flag, "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(60);
+					$this->excelfile->getActiveSheet()->getStyle('B'.$flag.':B'.($flag+1))->applyFromArray($styleArray);
+
+					$hoja->mergeCells('C'.$flag.':C'.($flag+1));
+					$this->cellStyle("C".$flag, "FFFFFF", "000000", FALSE, 9, "Arial Narrow");
+					$hoja->setCellValue("C".$flag, "PROMO")->getColumnDimension('C')->setWidth(10);
+					$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':C'.($flag+1))->applyFromArray($styleArray);
+
+					$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+					$hoja->setCellValue("D".$flag, "PRECIO EN")->getColumnDimension('D')->setWidth(16);
+					$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($stylebottom);
+					
+					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+					$hoja->setCellValue("E".$flag, "CANT")->getColumnDimension('E')->setWidth(10);
+					$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($stylebottom);
+
+					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 8, "Arial Narrow");
+					$hoja->setCellValue("F".$flag, "CANT")->getColumnDimension('F')->setWidth(10);
+					$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($stylebottom);
+					
+					$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 10, "Arial Narrow");
+					$hoja->setCellValue("G".$flag, "PREC NETO")->getColumnDimension('G')->setWidth(12);
+					$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($stylebottom);
+
+					$hoja->mergeCells('H'.$flag.':H'.($flag+1));
+					$this->cellStyle("H".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("H".$flag, "IVA")->getColumnDimension('H')->setWidth(13);
+					$this->excelfile->getActiveSheet()->getStyle('H'.$flag.':H'.($flag+1))->applyFromArray($styleArray);
+
+					$hoja->mergeCells('I'.$flag.':I'.($flag+1));
+					$this->cellStyle("I".$flag, "FFFFFF", "000000", FALSE, 10, "Arial Narrow");
+					$hoja->setCellValue("I".$flag, " PRECIO C/A")->getColumnDimension('I')->setWidth(13);
+					$this->excelfile->getActiveSheet()->getStyle('I'.$flag.':I'.($flag+1))->applyFromArray($styleArray);
+					
+					$hoja->mergeCells('J'.$flag.':J'.($flag+1));
+					$this->cellStyle("J".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("J".$flag, "DIF.")->getColumnDimension('J')->setWidth(13);
+					$this->excelfile->getActiveSheet()->getStyle('J'.$flag.':J'.($flag+1))->applyFromArray($styleArray);
+
+					$this->cellStyle("K".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("K".$flag, "NOTA")->getColumnDimension('K')->setWidth(16);
+					$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($stylebottom);
+
+					$this->cellStyle("L".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("L".$flag, "TOTAL")->getColumnDimension('L')->setWidth(16);
+					$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($stylebottom);
+					$flag++;
+
+					$this->cellStyle("D".$flag, "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+					$hoja->setCellValue("D".$flag, "PEDIDO");
+					$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styletop);
+					
+					$this->cellStyle("E".$flag, "FFFFFF", "000000", FALSE, 11, "Arial Narrow");
+					$hoja->setCellValue("E".$flag, "PEDIDO");
+					$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styletop);
+
+					$this->cellStyle("F".$flag, "FFFFFF", "000000", FALSE, 8, "Arial Narrow");
+					$hoja->setCellValue("F".$flag, "FACTURA");
+					$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styletop);
+
+					$this->cellStyle("G".$flag, "FFFFFF", "000000", FALSE, 10, "Arial Narrow");
+					$hoja->setCellValue("G".$flag, "FACTURA");
+					$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styletop);
+
+					$this->cellStyle("K".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("K".$flag, "CREDITO");
+					$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styletop);
+
+					$this->cellStyle("L".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+					$hoja->setCellValue("L".$flag, "A PAGAR");
+					$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styletop);
+					$flag++;
+					$flag2 = $flag;
+					if ($facturas) {
+						foreach ($facturas as $key => $value) {
+							$this->cellStyle("A".$flag.":L".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+							$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($stylebottom);
+							$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($stylebottom);
+							$hoja->setCellValue("B".$flag, $value->descripcion);
+							$hoja->setCellValue("A".$flag, $value->comproducto);
+							if ($value->devolucion === 1 || $value->devolucion === "1") {
+								$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
+								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
+
+								if($value->pprod === "" || $value->pprod === NULL){
+									$hoja->setCellValue("B".$flag, $value->descripcion);
+								}else{
+									$hoja->setCellValue("B".$flag, $value->pprod);	
+								}
+								
+
+								if($value->pprod === "FACTURA"){
+									$hoja->setCellValue("M".$flag, "SIN ASOCIAR");
+								}
+
+								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
+								$this->cellStyle("C".$flag, "FF0000", "000000", FALSE, 14, "Arial Narrow");
+								$hoja->setCellValue("C".$flag, "DEVUELTO");
+								$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("D".$flag, "")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("E".$flag, "");
+								$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("F".$flag, $value->devueltos)->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("G".$flag, $value->precio)->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');	
+								$this->excelfile->getActiveSheet()->getStyle('H'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("H".$flag, "")->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('I'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("I".$flag, "=G{$flag}*H{$flag}")->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("J".$flag, "=G{$flag}-D{$flag}")->getStyle("J{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("K".$flag, "=J{$flag}*F{$flag}")->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("L".$flag, "=D{$flag}*F{$flag}")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+
+								$flag++;
+								$this->cellStyle("A".$flag.":L".$flag, "FFFFFF", "000000", FALSE, 14, "Arial Narrow");
+								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);								
+								if($value->pprod === "" || $value->pprod === NULL){
+									$hoja->setCellValue("B".$flag, $value->descripcion);
+								}else{
+									$hoja->setCellValue("B".$flag, $value->pprod);	
+								}
+								
+								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("C".$flag, "DIRECTO");
+								$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("D".$flag, $value->costo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("E".$flag, $value->wey);
+								$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("F".$flag, ($value->cuantos-$value->devueltos))->getStyle("F{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("G".$flag, $value->precio)->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("H".$flag, "")->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('I'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("I".$flag, "=G{$flag}*H{$flag}")->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("J".$flag, "=G{$flag}-D{$flag}");
+								$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("K".$flag, "=J{$flag}*F{$flag}")->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("L".$flag, "=D{$flag}*F{$flag}")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+							} elseif ($value->gift === 1 || $value->gift === "1") {
+								$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
+								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("A".$flag, $value->comproducto);	
+								if($value->pprod === "" || $value->pprod === NULL){
+									$hoja->setCellValue("B".$flag, $value->descripcion);
+								}else{
+									$hoja->setCellValue("B".$flag, $value->pprod);	
+								}
+								
+								if($value->pprod === "FACTURA"){
+									$hoja->setCellValue("M".$flag, "SIN ASOCIAR");
+								}
+								
+								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
+								$this->cellStyle("C".$flag, "8C53FF", "000000", FALSE, 14, "Arial Narrow");
+								$hoja->setCellValue("C".$flag, "S/C");
+								$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("D".$flag, "")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("E".$flag, $value->wey);
+								$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("F".$flag, $value->cuantos);
+								$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("G".$flag, $value->precio)->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("J".$flag, "=G{$flag}-D{$flag}")->getStyle("J{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("K".$flag, "=J{$flag}*F{$flag}")->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("L".$flag, "=D{$flag}*F{$flag}")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							} else{
+								$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArray);
+								$this->excelfile->getActiveSheet()->getStyle('B'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("A".$flag, $value->comproducto);
+								if($value->pprod === "" || $value->pprod === NULL){
+									$hoja->setCellValue("B".$flag, $value->descripcion);
+								}else{
+									$hoja->setCellValue("B".$flag, $value->pprod);	
+								}	
+								if($value->pprod === "FACTURA"){
+									$hoja->setCellValue("M".$flag, "SIN ASOCIAR");
+								}
+								$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("C".$flag, "DIRECTO");
+								$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("D".$flag, $value->costo)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("E".$flag, $value->wey);
+								$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("F".$flag, $value->cuantos);
+								$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("G".$flag, $value->precio)->getStyle("G{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("H".$flag, "")->getStyle("H{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('I'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("I".$flag, "=G{$flag}*H{$flag}")->getStyle("I{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("J".$flag, "=G{$flag}-D{$flag}")->getStyle("J{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("K".$flag, "=J{$flag}*F{$flag}")->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+								$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
+								$hoja->setCellValue("L".$flag, "=D{$flag}*F{$flag}")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+							}
+							$flag++;
+						}
+						$this->cellStyle("A".$flag.":L".$flag, "FFFFFF", "000000", TRUE, 19, "Arial Narrow");
+						$hoja->mergeCells('A'.$flag.":D".$flag);
+						$this->excelfile->getActiveSheet()->getStyle('A'.$flag.":D".$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("E".$flag, "FOLIO");
+						$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("G".$flag, "D");
+						$hoja->mergeCells('G'.$flag.':J'.$flag);
+						$this->excelfile->getActiveSheet()->getStyle('G'.$flag.':J'.$flag)->applyFromArray($styleArrayHL);
+						$this->cellStyle("G".$flag, "00FFFF", "000000", TRUE, 19, "Arial Narrow");
+						$hoja->setCellValue("G".$flag, $facturas[0]->folio);
+						$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("K".$flag, "=SUM(K".$flag2.":K".($flag-1).")")->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("L".$flag, "=SUM(L".$flag2.":L".($flag-1).")")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->cellStyle("K".$flag, "FF0000", "000000", TRUE, 16, "Arial Narrow");
+						$this->cellStyle("L".$flag, "FFFF00", "000000", TRUE, 16, "Arial Narrow");
+						$flag++;
+
+						$hoja->mergeCells('A'.$flag.":D".$flag);
+						$hoja->mergeCells('E'.$flag.":F".$flag);
+						$hoja->mergeCells('G'.$flag.":J".$flag);
+						$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('G'.$flag.':J'.$flag)->applyFromArray($styleArrayHL);
+						$this->cellStyle("G".$flag, "00FFFF", "000000", TRUE, 19, "Arial Narrow");
+						$hoja->setCellValue("G".$flag, $facturas[0]->folio);
+						$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("E".$flag, "CONTROL");
+						$flag++;
+
+						$hoja->mergeCells('E'.$flag.":G".$flag);
+						$this->cellStyle("A".$flag.":L".$flag, "FFFFFF", "000000", TRUE, 22, "Arial Narrow");
+						$this->cellStyle("A".$flag, "4f81bd", "000000", TRUE, 22, "Arial Narrow");
+						$this->cellStyle("C".$flag.":D".$flag, "FF0000", "000000", TRUE, 22, "Arial Narrow");
+						$this->excelfile->getActiveSheet()->getStyle('A'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue('C'.$flag, '=SUMIF(C'.$flag2.':C'.($flag-3).',"DEVUELTO",K'.$flag2.':K'.($flag-3).')')->getStyle("C{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->cellStyle("E".$flag, "00b0f0", "000000", TRUE, 16, "Arial Narrow");
+						$hoja->setCellValue("E".$flag, "APLICACIÓN DE CRED AC")->getStyle("E{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("D".$flag, "=K".$flag."-C".$flag)->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
+						
+						$hoja->setCellValue("J".$flag, 0)->getStyle("J{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("K".$flag, "=K".($flag-2)."-J".$flag)->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("L".$flag, "=L".($flag-2))->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$this->excelfile->getActiveSheet()->getStyle('E'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('F'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('G'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('H'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('I'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('J'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('K'.$flag)->applyFromArray($styleArrayHL);
+						$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArrayHL);
+
+						$flag++;
+						$this->cellStyle("A".$flag.":L".$flag, "4f81bd", "000000", TRUE, 22, "Arial Narrow");
+
+						$this->cellStyle("C".$flag, "00FFFF", "000000", TRUE, 10, "Arial Narrow");
+						$this->excelfile->getActiveSheet()->getStyle('C'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("C".$flag, "DEVOLUCIÓN");
+						$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->applyFromArray($styleArrayHL);
+						$hoja->setCellValue("D".$flag, "DIF EN PRECIO");
+						$this->cellStyle("D".$flag, "00FFFF", "000000", TRUE, 10, "Arial Narrow");
+						$hoja->mergeCells('E'.$flag.":J".$flag);
+						$this->excelfile->getActiveSheet()->getStyle('E'.$flag.":J".$flag)->applyFromArray($styleArrayHL);
+						$this->cellStyle("E".$flag, "FFFFFF", "000000", TRUE, 22, "Arial Narrow");
+						$hoja->setCellValue("E".$flag, "TOTAL DE FACTURA");
+
+						$hoja->mergeCells('K'.$flag.":L".$flag);
+						$this->cellStyle("K".$flag, "FFFFCC", "000000", TRUE, 22, "Arial Narrow");
+						$this->excelfile->getActiveSheet()->getStyle('K'.$flag.":L".$flag)->applyFromArray($styleArray);
+						$hoja->setCellValue("K".$flag, "K".($flag-1)."+L".($flag-1))->getStyle("K{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+					}
+					$flag = $flag + 5;
+					switch ($valorce->tienda) {
+						case "87":
+							$fced = $flag;
+							break;
+						case "57":
+							$faba = $flag;
+							break;
+						case "58":
+							$ftie = $flag;
+							break;
+						case "59":
+							$fult = $flag;
+							break;
+						case "60":
+							$ftri = $flag;
+							break;
+						case "61":
+							$fmer = $flag;
+							break;
+						case "62":
+							$ften = $flag;
+							break;
+						case "63":
+							$ftij = $flag;
+							break;
+						case "90":
+							$fvil = $flag;
+							break;
+						default:
+							# code...
+							break;
+					}
+				}
+		
+			}
+			$flag9 = 1;
+			$this->excelfile->setActiveSheetIndex(9);
+			$hoja = $this->excelfile->getActiveSheet();
+			$hoja->mergeCells('A'.$flag9.':B'.$flag9.'');
+			$this->cellStyle("A".$flag9, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("A".$flag9, "COMPARACIÓN PEDIDOS '".$provnombre->nombre."'");
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':AF'.$flag9.'')->applyFromArray($styleArray9);
+			$hoja->mergeCells('C'.$flag9.':E'.$flag9.'');
+			$this->cellStyle("C".$flag9, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("C".$flag9, "CEDIS");
+			$hoja->mergeCells('F'.$flag9.':H'.$flag9.'');
+			$this->cellStyle("F".$flag9, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("F".$flag9, "ABARROTES");
+			$hoja->mergeCells('I'.$flag9.':K'.$flag9.'');
+			$this->cellStyle("I".$flag9, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("I".$flag9, "VILLAS");
+			$hoja->mergeCells('L'.$flag9.':N'.$flag9.'');
+			$this->cellStyle("L".$flag9, "FF6D0B", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("L".$flag9, "TIENDA");
+			$hoja->mergeCells('O'.$flag9.':Q'.$flag9.'');
+			$this->cellStyle("O".$flag9, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("O".$flag9, "ULTRAMARINOS");
+			$hoja->mergeCells('R'.$flag9.':T'.$flag9.'');
+			$this->cellStyle("R".$flag9, "93D051", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("R".$flag9, "TRINCHERAS");
+			$hoja->mergeCells('U'.$flag9.':W'.$flag9.'');
+			$this->cellStyle("U".$flag9, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("U".$flag9, "AZT MERCADO");
+			$hoja->mergeCells('X'.$flag9.':Z'.$flag9.'');
+			$this->cellStyle("X".$flag9, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("X".$flag9, "TENENCIA");
+			$hoja->mergeCells('AA'.$flag9.':AC'.$flag9.'');
+			$this->cellStyle("AA".$flag9, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("AA".$flag9, "TIJERAS");
+			$hoja->mergeCells('AD'.$flag9.':AF'.$flag9.'');
+			$this->cellStyle("AD".$flag9.":AF".$flag9, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$flag9++;
+			$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':AF'.$flag9.'')->applyFromArray($styleArray9);
+			$hoja->setCellValue("A".$flag9, "CÓDIGO")->getColumnDimension('A')->setWidth(20);
+			$hoja->setCellValue("B".$flag9, "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(60);
+			$this->cellStyle("A".$flag9.":AF".$flag9, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+			$hoja->setCellValue("C".$flag9, "PEDIDO");
+			$hoja->setCellValue("D".$flag9, "FACTS");
+			$hoja->setCellValue("E".$flag9, "DIFS");
+			$hoja->setCellValue("F".$flag9, "PEDIDO");
+			$hoja->setCellValue("G".$flag9, "FACTS");
+			$hoja->setCellValue("H".$flag9, "DIFS");
+			$hoja->setCellValue("I".$flag9, "PEDIDO");
+			$hoja->setCellValue("J".$flag9, "FACTS");
+			$hoja->setCellValue("K".$flag9, "DIFS");
+			$hoja->setCellValue("L".$flag9, "PEDIDO");
+			$hoja->setCellValue("M".$flag9, "FACTS");
+			$hoja->setCellValue("N".$flag9, "DIFS");
+			$hoja->setCellValue("O".$flag9, "PEDIDO");
+			$hoja->setCellValue("P".$flag9, "FACTS");
+			$hoja->setCellValue("Q".$flag9, "DIFS");
+			$hoja->setCellValue("R".$flag9, "PEDIDO");
+			$hoja->setCellValue("S".$flag9, "FACTS");
+			$hoja->setCellValue("T".$flag9, "DIFS");
+			$hoja->setCellValue("U".$flag9, "PEDIDO");
+			$hoja->setCellValue("V".$flag9, "FACTS");
+			$hoja->setCellValue("W".$flag9, "DIFS");
+			$hoja->setCellValue("X".$flag9, "PEDIDO");
+			$hoja->setCellValue("Y".$flag9, "FACTS");
+			$hoja->setCellValue("Z".$flag9, "DIFS");
+			$hoja->setCellValue("AA".$flag9, "PEDIDO");
+			$hoja->setCellValue("AB".$flag9, "FACTS");
+			$hoja->setCellValue("AC".$flag9, "DIFS");
+			$hoja->setCellValue("AD".$flag9, "SUM PEDS")->getColumnDimension('AD')->setWidth(16);
+			$hoja->setCellValue("AE".$flag9, "SUM FACTS")->getColumnDimension('AE')->setWidth(16);
+			$hoja->setCellValue("AF".$flag9, "SUM DIFS")->getColumnDimension('AF')->setWidth(16);
+			
+			$finals = $this->fact_md->getfinals(NULL,$proveedor);
+			$facts = $this->fact_md->getfacts(NULL,$proveedor);
+			$fams = "";
+			if ($finals) {
+				foreach ($finals as $key => $val) {
+					if ($val->familia <> $fams) {
+						$fams = $val->familia;
+						$hoja->setCellValue("B".$flag9, $val->familia);
+						$this->cellStyle("B".$flag9, "000000", "FFFFFF", FALSE, 12, "Franklin Gothic Book");
+						$flag9++;
+					}
+					$this->cellStyle('A'.$flag9.':B'.$flag9.'', "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('C'.$flag9.':AF'.$flag9.'', "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('C'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('F'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('I'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('L'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('O'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('R'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('U'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('X'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('AA'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':AF'.$flag9.'')->applyFromArray($styleArray9);
+					$hoja->setCellValue("A".$flag9, $val->codigo)->getStyle("A{$flag9}")->getNumberFormat()->setFormatCode('# ???/???');
+					$hoja->setCellValue("B".$flag9, $val->nombre);
+					$hoja->setCellValue("C".$flag9, $val->cedis);
+					$hoja->setCellValue("E".$flag9, "=(C".$flag9."-D".$flag9.")");
+					$hoja->setCellValue("F".$flag9, $val->abarrotes);
+					$hoja->setCellValue("H".$flag9, "=(F".$flag9."-G".$flag9.")");
+					$hoja->setCellValue("I".$flag9, $val->villas);
+					$hoja->setCellValue("K".$flag9, "=(I".$flag9."-J".$flag9.")");
+					$hoja->setCellValue("L".$flag9, $val->tienda);
+					$hoja->setCellValue("N".$flag9, "=(L".$flag9."-M".$flag9.")");
+					$hoja->setCellValue("O".$flag9, $val->ultra);
+					$hoja->setCellValue("Q".$flag9, "=(O".$flag9."-P".$flag9.")");
+					$hoja->setCellValue("R".$flag9, $val->trincheras);
+					$hoja->setCellValue("T".$flag9, "=(R".$flag9."-S".$flag9.")");
+					$hoja->setCellValue("U".$flag9, $val->mercado);
+					$hoja->setCellValue("W".$flag9, "=(U".$flag9."-V".$flag9.")");
+					$hoja->setCellValue("X".$flag9, $val->tenencia);
+					$hoja->setCellValue("Z".$flag9, "=(X".$flag9."-Y".$flag9.")");
+					$hoja->setCellValue("AA".$flag9, $val->tijeras);
+					$hoja->setCellValue("AC".$flag9, "=(AA".$flag9."-AB".$flag9.")");
+					$hoja->setCellValue("D".$flag9, 0);
+					$hoja->setCellValue("G".$flag9, 0);
+					$hoja->setCellValue("J".$flag9, 0);
+					$hoja->setCellValue("M".$flag9, 0);
+					$hoja->setCellValue("O".$flag9, 0);
+					$hoja->setCellValue("S".$flag9, 0);
+					$hoja->setCellValue("V".$flag9, 0);
+					$hoja->setCellValue("Y".$flag9, 0);
+					$hoja->setCellValue("AB".$flag9, 0);
+
+					$this->cellStyle('D'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('G'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('J'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('M'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('P'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('S'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('V'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('Y'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+					$this->cellStyle('AB'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
+
+					if (isset($facts[$val->codigo])) {
+						$hoja->setCellValue("D".$flag9, $facts[$val->codigo][87]);
+						$hoja->setCellValue("G".$flag9, $facts[$val->codigo][57]);
+						$hoja->setCellValue("J".$flag9, $facts[$val->codigo][90]);
+						$hoja->setCellValue("M".$flag9, $facts[$val->codigo][58]);
+						$hoja->setCellValue("P".$flag9, $facts[$val->codigo][59]);
+						$hoja->setCellValue("S".$flag9, $facts[$val->codigo][60]);
+						$hoja->setCellValue("V".$flag9, $facts[$val->codigo][61]);
+						$hoja->setCellValue("Y".$flag9, $facts[$val->codigo][62]);
+						$hoja->setCellValue("AB".$flag9, $facts[$val->codigo][63]);
+					}
+
+					$this->cellStyle('AD'.$flag9, "C2B90A", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('AE'.$flag9, "CCC0DA", "000000", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle('AF'.$flag9, "FDE9D9", "000000", TRUE, 12, "Franklin Gothic Book");
+
+					$hoja->setCellValue("AD".$flag9, "=C".$flag9."+F".$flag9."+I".$flag9."+L".$flag9."+O".$flag9."+R".$flag9."+U".$flag9."+X".$flag9."+AA".$flag9."");
+					$hoja->setCellValue("AE".$flag9, "=D".$flag9."+G".$flag9."+J".$flag9."+M".$flag9."+P".$flag9."+S".$flag9."+V".$flag9."+Y".$flag9."+AB".$flag9."");
+					$hoja->setCellValue("AF".$flag9, "=AD".$flag9."-AE".$flag9."");
+
+					$arras = array(1=>"E",2=>"H",3=>"K",4=>"N",5=>"Q",6=>"T",7=>"W",8=>"Z",9=>"AC");
+					for ($i=1; $i <=9 ; $i++){
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_NOTEQUAL)
+				                ->addCondition(0)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($arras[$i].''.$flag9)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle($arras[$i].''.$flag9)->setConditionalStyles($conditionalStyles);
+					}
+					$arras2 = array(1=>"D",2=>"G",3=>"J",4=>"M",5=>"P",6=>"S",7=>"V",8=>"Y",9=>"AB");
+					for ($i=1; $i <=9 ; $i++){
+						$condRed = new PHPExcel_Style_Conditional();
+						$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_NOTEQUAL)
+				                ->addCondition(0)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF000000')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFF00'),
+										  'endcolor' =>array('argb' => 'FFFF00')
+										)
+									)
+								);
+						$conditionalStyles = $this->excelfile->getActiveSheet()->getStyle($arras2[$i].''.$flag9)->getConditionalStyles();
+						array_push($conditionalStyles,$condRed);
+						$this->excelfile->getActiveSheet()->getStyle($arras2[$i].''.$flag9)->setConditionalStyles($conditionalStyles);
+					}
+					$flag9++;
+				}
+				$flag9 = $flag9 + 4;
+				$hoja->mergeCells('A'.$flag9.':B'.$flag9.'');
+				$this->cellStyle("A".$flag9, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("A".$flag9, "SIN ASOCIAR A PEDIDOS FINALES '".$provnombre->nombre."'");
+				$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':L'.$flag9.'')->applyFromArray($styleArray9);
+				$this->cellStyle("C".$flag9, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("C".$flag9, "CEDIS");
+				$this->cellStyle("D".$flag9, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("D".$flag9, "ABARROTES");
+				$this->cellStyle("E".$flag9, "FF0000", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("E".$flag9, "VILLAS");
+				$this->cellStyle("F".$flag9, "FF6D0B", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("F".$flag9, "TIENDA");
+				$this->cellStyle("G".$flag9, "C5C5C5", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("G".$flag9, "ULTRAMARINOS");
+				$this->cellStyle("H".$flag9, "93D051", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("H".$flag9, "TRINCHERAS");
+				$this->cellStyle("I".$flag9, "B1A0C7", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("I".$flag9, "AZT MERCADO");
+				$this->cellStyle("J".$flag9, "DA9694", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("J".$flag9, "TENENCIA");
+				$this->cellStyle("K".$flag9, "4CACC6", "000000", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("K".$flag9, "TIJERAS");
+				$flag9++;
+				$this->cellStyle("A".$flag9.":L".$flag9, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+				$hoja->setCellValue("A".$flag9, "CÓDIGO");
+				$hoja->setCellValue("B".$flag9, "DESCRIPCIÓN");
+				$hoja->setCellValue("C".$flag9, "FACTS");
+				$hoja->setCellValue("D".$flag9, "FACTS");
+				$hoja->setCellValue("E".$flag9, "FACTS");
+				$hoja->setCellValue("F".$flag9, "FACTS");
+				$hoja->setCellValue("G".$flag9, "FACTS");
+				$hoja->setCellValue("H".$flag9, "FACTS");
+				$hoja->setCellValue("I".$flag9, "FACTS");
+				$hoja->setCellValue("J".$flag9, "FACTS");
+				$hoja->setCellValue("K".$flag9, "FACTS");
+				$hoja->setCellValue("K".$flag9, "TOTALES");
+				$flag9++;
+				$facts2 = $this->fact_md->getfacts2(NULL,$proveedor);
+				if ($facts2) {
+					foreach ($facts2 as $key => $varray){
+						$this->cellStyle('C'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('D'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('F'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('G'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('H'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('I'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('J'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('K'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$this->cellStyle('E'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
+						$hoja->setCellValue("A".$flag9, $varray["codigo"])->getStyle("A{$flag9}")->getNumberFormat()->setFormatCode('# ???/???');
+						$hoja->setCellValue("B".$flag9, $varray["descripcion"]);
+						$hoja->setCellValue("C".$flag9, $varray[87]);
+						$hoja->setCellValue("D".$flag9, $varray[57]);
+						$hoja->setCellValue("E".$flag9, $varray[90]);
+						$hoja->setCellValue("F".$flag9, $varray[58]);
+						$hoja->setCellValue("G".$flag9, $varray[59]);
+						$hoja->setCellValue("H".$flag9, $varray[60]);
+						$hoja->setCellValue("I".$flag9, $varray[61]);
+						$hoja->setCellValue("J".$flag9, $varray[62]);
+						$hoja->setCellValue("K".$flag9, $varray[63]);
+						$hoja->setCellValue("L".$flag9, "=SUM(C".$flag9.":K".$flag9.")");
+						$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':L'.$flag9.'')->applyFromArray($styleArray9);
+						$flag9++;
+					}
+				}
+
+			}
+
+
+
+			$file_name = "Facturas ".$provnombre->nombre.".xlsx"; //Nombre del documento con extención
+
+
+			header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+			header("Content-Disposition: attachment;filename=".$file_name);
+			header("Cache-Control: max-age=0");
+			$excel_Writer = PHPExcel_IOFactory::createWriter($this->excelfile, "Excel2007");
+			$excel_Writer->save("php://output");
+		}else{
+			$this->jsonResponse("No se pudo completar el reporte, por favor inténtalo nuevamente");
+		}
+		//$this->jsonResponse();
 	}
 
 }
