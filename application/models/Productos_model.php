@@ -371,20 +371,15 @@ class Productos_model extends MY_Model {
 	
 
 	public function getProdFamS($where = []){
-		$this->db->select("
-			productos.id_producto,
-			productos.nombre AS producto,
-			productos.codigo,
-			productos.estatus,
-			f.nombre AS familia,
-			f.id_familia,
-			productos.colorp,
-			productos.color,
-			productos.fecha_registro")
-		->from($this->TABLE_NAME)
-		->join("familias f", $this->TABLE_NAME.".id_familia = f.id_familia", "LEFT")
-		->where("productos.estatus <> 0")
-		->order_by("f.id_familia,productos.nombre", "ASC");
+		$fecha = new DateTime(date('Y-m-d H:i:s'));
+		$intervalo = new DateInterval('P4D');
+		$fecha->sub($intervalo);
+		$this->db->select("p.id_producto,p.umsistema,p.nombre AS producto,p.codigo,p.estatus,f.nombre AS familia,f.id_familia,p.colorp,p.color,p.fecha_registro,ps.precio_sistema,ps.precio_four")
+		->from($this->TABLE_NAME." p")
+		->join("familias f", "p.id_familia = f.id_familia", "LEFT")
+		->join("precio_sistema ps", "p.id_producto = ps.id_producto AND WEEKOFYEAR(ps.fecha_registro) = WEEKOFYEAR('".$fecha->format("Y-m-d")."')", "LEFT")
+		->where("p.estatus <> 0")
+		->order_by("f.id_familia,p.nombre", "ASC");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -413,6 +408,9 @@ class Productos_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["colorp"]		=	$comparativa[$i]->colorp;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["color"]		=	$comparativa[$i]->color;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["fecha_registro"]		=	$comparativa[$i]->fecha_registro;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio_sistema"]		=	$comparativa[$i]->precio_sistema;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["precio_four"]		=	$comparativa[$i]->precio_four;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["unidad"]		=	$comparativa[$i]->umsistema;
 		}
 		if ($comparativaIndexada) {
 			if (is_array($where)) {

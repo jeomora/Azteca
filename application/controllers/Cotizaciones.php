@@ -1955,6 +1955,12 @@ class Cotizaciones extends MY_Controller {
 						"precio_four"		=>	str_replace("$", "", str_replace(",", "replace", $this->getOldVal($sheet,$i,"D") )),
 						"fecha_registro"		=>	$fecha->format('Y-m-d H:i:s')
 					];
+					$new_unidad = [
+						"umsistema" => $this->getOldVal($sheet,$i,"E")
+					];
+
+					$data['unidad']=$this->prod_mdl->update($new_unidad,["id_producto"=>$productos->id_producto]);
+
 					$precios = $this->pre_mdl->get("id_precio",['id_producto'=> $productos->id_producto, 'WEEKOFYEAR(fecha_registro)' => $this->weekNumber($fecha->format('Y-m-d H:i:s'))])[0];
 					if($precios){
 						$data['cotizacion']=$this->pre_mdl->update($new_precios,
@@ -3470,7 +3476,16 @@ class Cotizaciones extends MY_Controller {
 	public function archivo_precios(){
 		ini_set("memory_limit", "-1");
 		$this->load->library("excelfile");
-		$hoja = $this->excelfile->getActiveSheet();
+		$hoja = $this->excelfile->getActiveSheet(0);
+
+		
+		$this->excelfile->setActiveSheetIndex(0)->setTitle("PRECIOS");
+		$this->excelfile->createSheet();
+		$hoja2 = $this->excelfile->setActiveSheetIndex(1);
+		$hoja2->setTitle("TXT");
+
+		$this->excelfile->setActiveSheetIndex(0);
+
 		$hoja->getDefaultStyle()
 		    ->getBorders()
 		    ->getTop()
@@ -3487,13 +3502,23 @@ class Cotizaciones extends MY_Controller {
 		    ->getBorders()
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$this->cellStyle("A1:D2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:G2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("B1", "DESCRIPCIÓN")->getColumnDimension('B')->setWidth(70);
 		$hoja->setCellValue("C1", "SISTEMA")->getColumnDimension('C')->setWidth(15);
-		$hoja->setCellValue("D1", "PRECIO 4")->getColumnDimension('D')->setWidth(50);
+		$hoja->setCellValue("D1", "PRECIO 4")->getColumnDimension('D')->setWidth(15);
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
+
+		$hoja->setCellValue("E1", "UNIDAD")->getColumnDimension('E')->setWidth(15);
+		$hoja->setCellValue("E2", "MEDIDA");
+		$hoja->setCellValue("F1", "SISTEMA")->getColumnDimension('F')->setWidth(15);
+		$hoja->setCellValue("F2", "ANTERIOR");
+		$hoja->setCellValue("G1", "PRECIO 4")->getColumnDimension('G')->setWidth(15);
+		$hoja->setCellValue("G2", "ANTERIOR");
+
+
+
 		$productos = $this->prod_mdl->getProdFamS(NULL);
 		$row_print = 2;
 		if ($productos){
@@ -3512,6 +3537,15 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("A{$row_print}", $row['codigo'])->getStyle("A{$row_print}")->getNumberFormat()->setFormatCode('# ???/???');//Formato de fraccion
 						$hoja->getStyle("A{$row_print}")->applyFromArray($border_style);
 						$hoja->setCellValue("B{$row_print}", $row['producto']);
+
+						$hoja->setCellValue("E{$row_print}", $row['unidad']);
+						$hoja->setCellValue("F{$row_print}", $row['precio_sistema']);
+						$hoja->setCellValue("G{$row_print}", $row['precio_four']);
+
+
+						$hoja->setCellValue("C{$row_print}", '=IFERROR(VLOOKUP(A'.$row_print.',TXT!A:K,9,FALSE),0)*E'.$row_print);
+						$hoja->setCellValue("D{$row_print}", '=IFERROR(VLOOKUP(A'.$row_print.',TXT!A:K,8,FALSE),0)*E'.$row_print);
+
 						if($row['estatus'] == 2){
 							$this->cellStyle("B{$row_print}", "00B0F0", "000000", FALSE, 10, "Franklin Gothic Book");
 						}
@@ -3529,6 +3563,9 @@ class Cotizaciones extends MY_Controller {
 						}
 						$hoja->getStyle("C{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("D{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("E{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("F{$row_print}")->applyFromArray($border_style);
+						$hoja->getStyle("G{$row_print}")->applyFromArray($border_style);
 						if($this->weekNumber($row['fecha_registro']) >= ($this->weekNumber() - 1)  && date("Y") == substr($row['fecha_registro'],4)){
 							$this->cellStyle("A{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("B{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
