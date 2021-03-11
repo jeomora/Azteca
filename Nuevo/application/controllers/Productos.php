@@ -272,7 +272,7 @@ class Productos extends MY_Controller {
 							"colorp" 		=> $estatus,
 							"estatus"		=> $this->getOldVal($sheet,$i,'E')
 						];
-					//$data ['id_producto'] = $this->pro_md->insert($new_producto);
+					$data ['id_producto'] = $this->pro_md->insert($new_producto);
 				}else{
 					if($this->getOldVal($sheet,$i,'D') === "1" || $this->getOldVal($sheet,$i,'D') === "SI" || $this->getOldVal($sheet,$i,'D') === "Si" || $this->getOldVal($sheet,$i,'D') === "si" || $this->getOldVal($sheet,$i,'D') === 1) {
 						$estatus = 1;
