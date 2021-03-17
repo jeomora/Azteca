@@ -6050,7 +6050,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("D1", "PRECIO")->getColumnDimension('D')->setWidth(20);
 		$hoja->setCellValue("E1", "PROMOCIÓN")->getColumnDimension('E')->setWidth(50);
 		$hoja->setCellValue("F1", "# EN #")->getColumnDimension('F')->setWidth(12);
-		$hoja->setCellValue("G1", "# EN #")->getColumnDimension('G')->setWidth(12);
+		$hoja->setCellValue("G1", "")->getColumnDimension('G')->setWidth(12);
 		$hoja->setCellValue("H1", "% DESCUENTO")->getColumnDimension('H')->setWidth(25);
 		$hoja->setCellValue("I1", "")->getColumnDimension('I')->setWidth(18);
 		$hoja->setCellValue("J1", "CONVERSIÓN")->getColumnDimension('J')->setWidth(30);
@@ -6060,7 +6060,7 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("B2", "CÓDIGO ".$provs->nombre)->getColumnDimension('B')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("J2", "ALMACENADA")->getColumnDimension('J')->setWidth(30);
 		$hoja->setCellValue("K2", "ANTERIOR")->getColumnDimension('K')->setWidth(30);
-		$hoja->mergeCells('E1:E1');
+		$hoja->mergeCells('F1:G1');
 		
 		$productos = $this->prod_mdl->getProdFamDuero(NULL,$provee);
 		
