@@ -1452,10 +1452,10 @@ class Cotizaciones extends MY_Controller {
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace",$this->getOldVal($sheet,$i,"C")));
-					$column_one =$this->getOldVal($sheet,$i,"E");
-					$column_two = $this->getOldVal($sheet,$i,"F");
-					$descuento = $this->getOldVal($sheet,$i,"G");
+					$precio = str_replace("$", "", str_replace(",", "replace",$this->getOldVal($sheet,$i,"D")));
+					$column_one =$this->getOldVal($sheet,$i,"F");
+					$column_two = $this->getOldVal($sheet,$i,"G");
+					$descuento = $this->getOldVal($sheet,$i,"H");
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($column_one >=1 && $column_two >1) {
@@ -1477,7 +1477,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"E"),
 							"estatus" => 0];
 
 							$conversion = str_replace("C".$i, "CWEY",$sheet->getCell('I'.$i)->getValue());
@@ -1512,7 +1512,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"E"),
 							"estatus"			=> 1
 						];
 						$conversion = str_replace("C".$i, "CWEY",$sheet->getCell('I'.$i)->getValue());
@@ -1601,10 +1601,10 @@ class Cotizaciones extends MY_Controller {
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
-					$precio = str_replace("$", "", str_replace(",", "replace",$this->getOldVal($sheet,$i,"C")));
-					$column_one =$this->getOldVal($sheet,$i,"E");
-					$column_two = $this->getOldVal($sheet,$i,"F");
-					$descuento = $this->getOldVal($sheet,$i,"G");
+					$precio = str_replace("$", "", str_replace(",", "replace",$this->getOldVal($sheet,$i,"D")));
+					$column_one =$this->getOldVal($sheet,$i,"F");
+					$column_two = $this->getOldVal($sheet,$i,"G");
+					$descuento = $this->getOldVal($sheet,$i,"H");
 					if ($column_one ==1 && $column_two ==1) {
 						$precio_promocion = (($precio * $column_two)/($column_one+$column_two));
 					}elseif ($column_one >=1 && $column_two >1) {
@@ -1626,7 +1626,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"E"),
 							"estatus" => 0];
 						if($cotiz){
 							$data['cotizacion']=$this->ctpr_mdl->update($new_cotizacion, ['id_cotizacion' => $cotiz->id_cotizacion]);
@@ -1645,7 +1645,7 @@ class Cotizaciones extends MY_Controller {
 							"descuento"			=>	$descuento,
 							"precio_promocion"	=>	$precio_promocion,
 							"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s'),
-							"observaciones"		=>	$this->getOldVal($sheet,$i,"D"),
+							"observaciones"		=>	$this->getOldVal($sheet,$i,"E"),
 							"estatus"			=> 1
 						];
 						if($cotiz){
@@ -6021,9 +6021,10 @@ class Cotizaciones extends MY_Controller {
 		header("Cache-Control: max-age=0");
 		$excel_Writer->save("php://output");
 	}
-	public function fill_excel_duero(){
+	public function fill_excel_cotizaciones(){
 		ini_set("memory_limit", "-1");
 		$provee = $this->input->post('id_pro');
+		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$provee])[0];
 		$this->load->library("excelfile");
 		$hoja = $this->excelfile->getActiveSheet();
 		$hoja->getDefaultStyle()
@@ -6056,11 +6057,11 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("I2", "ALMACENADA")->getColumnDimension('I')->setWidth(30);
 		$hoja->setCellValue("J2", "ANTERIOR")->getColumnDimension('J')->setWidth(30);
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
-		$hoja->setCellValue("B2", "CÓDIGO DUERO")->getColumnDimension('B')->setWidth(30); //Nombre y ajuste de texto a la columna
+		$hoja->setCellValue("B2", "CÓDIGO ".$provs->nombre)->getColumnDimension('B')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->mergeCells('E1:F1');
 		
 		$productos = $this->prod_mdl->getProdFamDuero(NULL,$provee);
-		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$provee])[0];
+		
 		$row_print = 2;
 		if ($productos){
 			foreach ($productos as $key => $value){
@@ -6108,7 +6109,18 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("H{$row_print}", $row['descuento']);
 						$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("I{$row_print}")->applyFromArray($border_style);
+
+						$hoja->setCellValue("J{$row_print}", $row['precio'])->getStyle("J{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$hoja->getStyle("J{$row_print}")->applyFromArray($border_style);
+
+						$conversion = str_replace("CWEY", "C".$row_print, $row['conversion']);
+						$conversion = str_replace("HWEY", "H".$row_print, $conversion);
+						$conversion = str_replace("DWEY", "D".$row_print, $conversion);
+						$conversion = str_replace("IWEY", "I".$row_print, $conversion);
+						$conversion = str_replace("EWEY", "E".$row_print, $conversion);
+
+						$hoja->setCellValue("I{$row_print}", $conversion)->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+
 						if($row['sem4'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
 								$this->cellStyle("D{$row_print}", "8064A2", "000000", FALSE, 10, "Franklin Gothic Book");
 							}elseif ($row['sem3'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){

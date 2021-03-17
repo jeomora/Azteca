@@ -18,6 +18,8 @@ jQuery(document).ready(function() {
           "showMethod": "fadeIn",
           "hideMethod": "fadeOut"
     };
+    KTSelect2.init();
+    KTSelect3.init();
 });
 var dataJSONArray ="";
 
@@ -366,3 +368,41 @@ var myDropzone = new Dropzone("div#my-dropzoneProd", {
         }
     }
 });
+
+// select modal FAMILIA
+var KTSelect2 = function() {
+    var modalDemos = function() {
+        $('#kt_agregar_prod').on('shown.bs.modal', function () {
+            // basic
+            $('#id_familiaA').select2({
+                placeholder: "SELECCIONE UNA FAMILIA"
+            });
+        });
+    }
+
+    // Public functions
+    return {
+        init: function() {
+            modalDemos();
+        }
+    };
+}();
+
+// select modal FAMILIA
+var KTSelect3 = function() {
+    var modalDemos = function() {
+        $('#kt_edit_prod').on('shown.bs.modal', function () {
+            // basic
+            $('#id_familia').select2({
+                placeholder: "SELECCIONE UNA FAMILIA"
+            });
+        });
+    }
+
+    // Public functions
+    return {
+        init: function() {
+            modalDemos();
+        }
+    };
+}();
