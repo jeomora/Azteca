@@ -6023,12 +6023,13 @@ class Cotizaciones extends MY_Controller {
 	}
 	public function fill_excel_duero(){
 		ini_set("memory_limit", "-1");
+		$provee = $this->input->post('id_pro');
 		$this->load->library("excelfile");
 		$hoja = $this->excelfile->getActiveSheet();
 		$hoja->getDefaultStyle()
 		    ->getBorders()
 		    ->getTop()
-		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		        ->setBorderStyle(PHPExcel_Style_Border::BO$RDER_THIN);
 		$hoja->getDefaultStyle()
 		    ->getBorders()
 		    ->getBottom()
@@ -6054,8 +6055,8 @@ class Cotizaciones extends MY_Controller {
 		$hoja->setCellValue("B2", "CÓDIGO DUERO")->getColumnDimension('B')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->mergeCells('E1:F1');
 		
-		$productos = $this->prod_mdl->getProdFamDuero(NULL,3);
-		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>3])[0];
+		$productos = $this->prod_mdl->getProdFamDuero(NULL,$provee);
+		$provs = $this->usua_mdl->get(NULL, ['id_usuario'=>$provee])[0];
 		$row_print = 2;
 		if ($productos){
 			foreach ($productos as $key => $value){

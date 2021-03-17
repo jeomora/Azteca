@@ -155,6 +155,10 @@ var KTDatatableDataLocalDemo = function() {
                                 6: {
                                     'title': 'Cuetara',
                                     'class': ' label-light-success'
+                                },
+                                7: {
+                                    'title': 'Mexicano',
+                                    'class': ' label-light-success'
                                 }
                             };
                             return '<span class="label font-weight-bold label-lg' + status[row.Estatus].class + ' label-inline">' + status[row.Estatus].title + '</span>';
