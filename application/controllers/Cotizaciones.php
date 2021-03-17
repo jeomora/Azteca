@@ -6043,22 +6043,24 @@ class Cotizaciones extends MY_Controller {
 		    ->getBorders()
 		    ->getRight()
 		        ->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-		$this->cellStyle("A1:J2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+		$this->cellStyle("A1:K2", "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 		$border_style= array('borders' => array('right' => array('style' =>
 			PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 		$hoja->setCellValue("C1", "DESCRIPCIÓN SISTEMA")->getColumnDimension('C')->setWidth(70);
-		$hoja->setCellValue("D1", "PRECIO")->getColumnDimension('D')->setWidth(15);
+		$hoja->setCellValue("D1", "PRECIO")->getColumnDimension('D')->setWidth(20);
 		$hoja->setCellValue("E1", "PROMOCIÓN")->getColumnDimension('E')->setWidth(50);
 		$hoja->setCellValue("F1", "# EN #")->getColumnDimension('F')->setWidth(12);
 		$hoja->setCellValue("G1", "# EN #")->getColumnDimension('G')->setWidth(12);
 		$hoja->setCellValue("H1", "% DESCUENTO")->getColumnDimension('H')->setWidth(25);
-		$hoja->setCellValue("I1", "CONVERSIÓN")->getColumnDimension('I')->setWidth(30);
-		$hoja->setCellValue("J1", "SEMANA")->getColumnDimension('J')->setWidth(30);
-		$hoja->setCellValue("I2", "ALMACENADA")->getColumnDimension('I')->setWidth(30);
-		$hoja->setCellValue("J2", "ANTERIOR")->getColumnDimension('J')->setWidth(30);
+		$hoja->setCellValue("I1", "")->getColumnDimension('I')->setWidth(18);
+		$hoja->setCellValue("J1", "CONVERSIÓN")->getColumnDimension('J')->setWidth(30);
+		$hoja->setCellValue("K1", "SEMANA")->getColumnDimension('K')->setWidth(30);
+
 		$hoja->setCellValue("A2", "CÓDIGO")->getColumnDimension('A')->setWidth(30); //Nombre y ajuste de texto a la columna
 		$hoja->setCellValue("B2", "CÓDIGO ".$provs->nombre)->getColumnDimension('B')->setWidth(30); //Nombre y ajuste de texto a la columna
-		$hoja->mergeCells('E1:F1');
+		$hoja->setCellValue("J2", "ALMACENADA")->getColumnDimension('J')->setWidth(30);
+		$hoja->setCellValue("K2", "ANTERIOR")->getColumnDimension('K')->setWidth(30);
+		$hoja->mergeCells('E1:E1');
 		
 		$productos = $this->prod_mdl->getProdFamDuero(NULL,$provee);
 		
@@ -6109,17 +6111,18 @@ class Cotizaciones extends MY_Controller {
 						$hoja->setCellValue("H{$row_print}", $row['descuento']);
 						$hoja->getStyle("H{$row_print}")->applyFromArray($border_style);
 						$hoja->getStyle("I{$row_print}")->applyFromArray($border_style);
-
-						$hoja->setCellValue("J{$row_print}", $row['precio'])->getStyle("J{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 						$hoja->getStyle("J{$row_print}")->applyFromArray($border_style);
+
+						$hoja->setCellValue("K{$row_print}", $row['precio'])->getStyle("K{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->getStyle("K{$row_print}")->applyFromArray($border_style);
 
 						$conversion = str_replace("CWEY", "C".$row_print, $row['conversion']);
 						$conversion = str_replace("HWEY", "H".$row_print, $conversion);
 						$conversion = str_replace("DWEY", "D".$row_print, $conversion);
-						$conversion = str_replace("IWEY", "I".$row_print, $conversion);
+						$conversion = str_replace("IWEY", "J".$row_print, $conversion);
 						$conversion = str_replace("EWEY", "E".$row_print, $conversion);
 
-						$hoja->setCellValue("I{$row_print}", $conversion)->getStyle("I{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+						$hoja->setCellValue("J{$row_print}", $conversion)->getStyle("J{$row_print}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 
 						if($row['sem4'] <> NULL && (($row['sem2'] <> NULL || $row['sem1'] == NULL) || ($row['sem2'] == NULL || $row['sem1'] <> NULL))){
 								$this->cellStyle("D{$row_print}", "8064A2", "000000", FALSE, 10, "Franklin Gothic Book");
@@ -6141,14 +6144,15 @@ class Cotizaciones extends MY_Controller {
 							$this->cellStyle("H{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("I{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
 							$this->cellStyle("J{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
-							$hoja->setCellValue("K{$row_print}", "NUEVO");
+							$this->cellStyle("K{$row_print}", "FF7F71", "000000", FALSE, 10, "Franklin Gothic Book");
+							$hoja->setCellValue("L{$row_print}", "NUEVO");
 						}
 						$row_print++;
 					}
 				}
 			}
 		}
-		$hoja->getStyle("A3:K{$row_print}")
+		$hoja->getStyle("A3:L{$row_print}")
                  ->getAlignment()
                  ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 		$hoja->getStyle("C3:C{$row_print}")
