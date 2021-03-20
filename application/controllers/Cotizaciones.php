@@ -1448,7 +1448,7 @@ class Cotizaciones extends MY_Controller {
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 		for ($i=3; $i<=$num_rows; $i++) {
-			if($sheet->getCell('C'.$i)->getValue() > 0){
+			if($this->getOldVal($sheet,$i,"D") > 0){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;
@@ -1597,7 +1597,7 @@ class Cotizaciones extends MY_Controller {
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
 		for ($i=3; $i<=$num_rows; $i++) {
-			if($sheet->getCell('C'.$i)->getValue() > 0){
+			if($this->getOldVal($sheet,$i,"D") > 0){
 				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 				if (sizeof($productos) > 0) {
 					$precio=0; $column_one=0; $column_two=0; $descuento=0; $precio_promocion=0;

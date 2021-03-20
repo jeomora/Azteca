@@ -399,7 +399,12 @@ class Lunes extends MY_Controller {
 					if ($categos) {
 						$data['catego'] = $this->cata_mdl->update($cata, $this->input->post('id_catalogo2'));
 					}else{
-						$data['catego'] = $this->cata_mdl->insert($cata);
+						$categos = $this->cata_mdl->get(NULL,["id_catalogo"=>$this->input->post("id_catalogo")])[0];
+						if ($categos) {
+							$data['catego'] = $this->cata_mdl->update($cata, $this->input->post('id_catalogo2'));	
+						}else{
+							$data['catego'] = $this->cata_mdl->insert($cata);
+						}
 					}
 				}
 
