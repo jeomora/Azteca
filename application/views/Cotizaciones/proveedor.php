@@ -17,7 +17,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		<h3>Seleccione un proveedor</h3>
 	</div>
 	<div class="row">
-		<?php echo form_open("Cotizaciones/fill_excel_pro", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
+		<?php echo form_open("Cotizaciones/fill_excel_cotizaciones", array("id" => 'reporte_cotizaciones', "target" => '_blank')); ?>
 		<div class="col-lg-3" style="margin-bottom: 1rem">
 			<select name="id_pro" id="id_pro" class="form-control">
 				<option value="nope">Seleccionar...</option>
