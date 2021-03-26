@@ -1137,8 +1137,10 @@ class Cotizaciones extends MY_Controller {
 		$excel_Writer->save("php://output");
 	}
 	public function fill_excel_pro(){
-		if ($this->input->post('id_pro') == 3 || $this->input->post('id_pro') == "3") {
-			$this->fill_excel_duero();
+		//if ($this->input->post('id_pro') == 3 || $this->input->post('id_pro') == "3") {
+		//	$this->fill_excel_duero();
+		if ($this->input->post('id_pro') >= 1) {
+			$this->fill_excel_cotizaciones();
 		}else{
 			ini_set("memory_limit", "-1");
 			$this->load->library("excelfile");
