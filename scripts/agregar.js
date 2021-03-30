@@ -1,11 +1,13 @@
 $(document).off("change", "#id_pro").on("change", "#id_pro", function() {
 	event.preventDefault();
 	var proveedor = $("#id_pro option:selected").val();
+	$("#id_pro2").val(proveedor);
 	if(proveedor != "nope"){
 		renderTable();
 	}
 
 });
+
 
 function renderTable(){
 	$(".cot-prov").html();

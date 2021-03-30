@@ -42,11 +42,17 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 						</button>
 					</div>
 					<div class="btn-group">
-
 							<button class="btn btn-primary" name="excel" data-toggle="tooltip" title="Exportar a Excel" type="submit">
-								<i class="fa fa-file-excel-o"></i> Descargar formato cotizaciones
+								<i class="fa fa-file-excel-o"></i> Descargar formato cotizaciones "Sem. Pasada"
 							</button>
-					</div>
+					<?php echo form_close();?>
+					<?php echo form_open("Cotizaciones/fill_excel_cotizacionesActual"); ?>	
+					<input type="text" name="id_pro2" id="id_pro2" style="display: none;">
+							<button class="btn btn-info" name="excel2" data-toggle="tooltip" title="Exportar a Excel" type="submit">
+								<i class="fa fa-file-excel-o"></i> Descargar formato cotizaciones "Sem. Actual"
+							</button>	
+					</div>				
+
 					<?php echo form_close(); ?>
 					<div class="btn-group">
 						<div class="col-sm-12" style="text-align:  center;font-size: 16px;color: #21b9bb;margin-top: -2rem;">
