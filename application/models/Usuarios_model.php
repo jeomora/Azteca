@@ -128,7 +128,7 @@ class Usuarios_model extends MY_Model {
 	public function getH($where=[]){
 		$this->db->select("*")
 		->from($this->TABLE_NAME)
-		->where("(id_usuario = 6 OR id_usuario = 17 OR id_usuario = 51 OR id_usuario = 53)")
+		->where("(id_usuario = 6 OR id_usuario = 17 OR id_usuario = 51 OR id_usuario = 53 OR id_usuario = 5)")
 		->order_by("id_usuario","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
