@@ -82,6 +82,8 @@ $(document).ready(function () {
  
     $("[data-toggle=popover]")
         .popover();
+
+        
 });
 
 
@@ -178,3 +180,19 @@ function formatMon(n, c, d, t) {
     j = (j = i.length) > 3 ? j % 3 : 0;
   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
+
+
+$(document).off("keyup", "#kt_timepicker_2").on("keyup", "#kt_timepicker_2", function(event){
+    cambioHorario($(this).val()).done(function(resp){
+        console.log(resp)
+    })
+})
+
+
+function cambioHorario(hora) {
+    return $.ajax({
+        url: site_url+"/Main/cambiaHoras/"+hora,
+        type: "POST",
+        dataType: "JSON"
+    });
+}

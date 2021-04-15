@@ -7,6 +7,7 @@ class Main extends MY_Controller {
 		parent::__construct();
 		$this->load->model("Familias_model", "fam_md");
 		$this->load->model("Productos_model", "pr_md");
+		$this->load->model("Horario_model", "hora_md");
 		$this->load->model("Cotizaciones_model", "cot_md");
 		$this->load->model("Cotizacionesback_model", "cotb_md");
 		$this->load->model("Usuarios_model", "user_md");
@@ -209,6 +210,11 @@ class Main extends MY_Controller {
             $this->pr_md->update($update, $id_producto);
         }
         $this->jsonResponse($data);
+	}
+
+	public function cambiaHoras($hora){
+		$this->hora_md->update(["hora_limite"=>$hora],["id_horario"=>1]);
+		$this->jsonResponse($hora);
 	}
 
 	

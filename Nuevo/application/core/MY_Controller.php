@@ -16,6 +16,8 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 		$data["usuario"] = $this->session->userdata();//Trae los datos del usuario;
 		//Asignamos el valor a las variables"!
+		$this->load->model("Horario_model", "hora_md");
+		$data["horario"] = $this->hora_md->get(NULL)[0];
 		$this->ASSETS = "./assets/";
 		$this->UPLOADS = "uploads/";
 		$this->KEY='APGoyQGOKAR5iXQ1wiO6i4jNczeMV7Sg';//Para encriptar las contraseñas

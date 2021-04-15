@@ -15,7 +15,9 @@ class MY_Controller extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model("Menus_model", "m_md");
+		$this->load->model("Horario_model", "hora_md");
 		$data["main_menu"] = $this->m_md->getMenus();
+		$data["horario"] = $this->hora_md->get()[0];
 		$data["usuario"] = $this->session->userdata();//Trae los datos del usuario;
 		//Asignamos el valor a las variables"!
 		$this->ASSETS = "./assets/";

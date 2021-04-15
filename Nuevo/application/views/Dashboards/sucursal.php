@@ -155,6 +155,10 @@
 				    <!--begin::Body-->
 				    <div class="card-body py-0">
 				    	<div class="form-group row">
+
+				    		<h3>Se podrán subir pedidos el día lunes solo antes de la <?php echo $horario->hora_limite ?></h3>
+				    		
+				    		<?php  $timestamp = time();if(date('D', $timestamp) === 'Mon' && date('H:i:s',strtotime('-5 hours')) < $horario->hora_limite ):  ?>
 							<div class="col-lg-12 col-md-12 col-sm-12">
 								<div class="dropzone dropzone-default dropzone-success" id="kt_dropzone_sucursal">
 									<div class="dropzone-msg dz-message needsclick">
@@ -163,6 +167,9 @@
 									</div>
 								</div>
 							</div>
+						<?php endif; ?>
+
+
 						</div>
 				    </div>
 				    <!--end::Body-->

@@ -95,13 +95,14 @@
 						</li>
 						
 					</ul>
-					<ul>
-						<li>
-							<input class="form-control" id="kt_timepicker_2" readonly placeholder="Select time" type="text" />
-						</li>
-					</ul>
 					<?php endif ?>
 					<ul class="nav navbar-top-links navbar-right">
+						<?php if ($usuario['id_grupo'] == 1 || $usuario['id_grupo'] == 4): ?>
+						<li>
+							<h5 style="color:#FFF">Hora limite lunes</h5>
+							<input class="form-control" id="kt_timepicker_2" placeholder="Seleccionar hora" type="text" value="<?php echo $horario->hora_limite ?>" style="width:200px;font-family:monospace;font-size:18px;font-weight:bold" />
+						</li>
+						<?php endif ?>
 						<li>
 							<a href="<?php echo site_url('Compras/logout'); ?>" class="close-session">
 								<i class="fa fa-sign-out"></i> Salir
