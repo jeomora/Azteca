@@ -46,7 +46,8 @@
 	  gtag('config', 'UA-122943105-1');
 	</script>
 
-
+	<link href="<?php base_url('Abarrotes/assets/vendors/general/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css')?>" rel="stylesheet" type="text/css" />
+	<link href="<?php base_url('Abarrotes/assets/vendors/general/bootstrap-timepicker/css/bootstrap-timepicker.css')?>" rel="stylesheet" type="text/css" />
 </head>
 
 	<!-- Estructura de la ventana modal par insertar, modificar y eliminar datos -->

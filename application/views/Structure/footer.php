@@ -63,6 +63,9 @@ label {
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/datapicker/bootstrap-datepicker.es.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo base_url('/assets/js/plugins/colorpicker/bootstrap-colorpicker.min.js') ?>"></script>
+		<script src="<?php echo base_url('Abarrotes/assets/vendors/general/bootstrap-timepicker/js/bootstrap-timepicker.js') ?>" type="text/javascript"></script>
+		<script src="<?php echo base_url('Abarrotes/assets/vendors/custom/js/vendors/bootstrap-timepicker.init.js') ?>" type="text/javascript"></script>
+
 </body>
 </html>
 

@@ -95,7 +95,11 @@
 						</li>
 						
 					</ul>
-
+					<ul>
+						<li>
+							<input class="form-control" id="kt_timepicker_2" readonly placeholder="Select time" type="text" />
+						</li>
+					</ul>
 					<?php endif ?>
 					<ul class="nav navbar-top-links navbar-right">
 						<li>
