@@ -2848,6 +2848,7 @@ class Cotizaciones extends MY_Controller {
 									}else{
 										$this->cellStyle("A{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 									}
+									$hoja->setCellValue("B{$flag}", $row['codigo_factura'])->getStyle("B{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 									$hoja->setCellValue("C{$flag}", $row['producto']);
 
 									//-----------------------------------------------------------------------------------
@@ -10524,6 +10525,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja1->setCellValue("O{$flag1}", $row['tenencia']);
 								$hoja1->setCellValue("P{$flag1}", $row['tijeras']);
 
+								/*
 								if ($row["imagen"] <> "" && !is_null($row["imagen"]) ) {
 									$objDrawing = new PHPExcel_Worksheet_Drawing();
 									$objDrawing->setName('COD'.$row['producto']);
@@ -10539,7 +10541,7 @@ class Cotizaciones extends MY_Controller {
 									$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 									$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 									$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]));
-								}
+								}*/
 
 								$hoja1->getStyle("A{$flag1}:P{$flag1}")
 						                 ->getAlignment()
@@ -12114,6 +12116,8 @@ class Cotizaciones extends MY_Controller {
 								}else{
 									$this->cellStyle("A{$flag}", "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 								}
+								//CODIGO PROV.
+								$hoja->setCellValue("B{$flag}", $row['codigo_factura'])->getStyle("B{$flag}")->getNumberFormat()->setFormatCode('# ???/???');
 								$hoja->setCellValue("C{$flag}", $row['producto']);
 								$hoja->setCellValue("G{$flag}", $row['proveedor_first']);
 								$hoja->setCellValue("D{$flag}", $row['reales'])->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
