@@ -572,6 +572,7 @@ class Productos extends MY_Controller {
 			$codigo = $this->pro_md->get(NULL,["codigo"=>htmlspecialchars($this->getOldVal($sheet,$i,"A"), ENT_QUOTES, 'UTF-8')])[0];
 
 			if ($codigo){
+				$this->db->delete('stocks', array('id_producto' => $codigo->id_producto) );
 				$new_stock=["id_tienda" => 87,"id_producto" => $codigo->id_producto,"cantidad" => $this->getOldVal($sheet,$i,"C")];
 				$stocks = $this->stock_md->get(NULL,["id_producto"=>$codigo->id_producto,"id_tienda"=>87])[0];
 				if ($stocks){

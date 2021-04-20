@@ -6425,6 +6425,7 @@ class Cotizaciones extends MY_Controller {
 		$objExcel = PHPExcel_IOFactory::load($file);
 		$sheet = $objExcel->getSheet(0);
 		$num_rows = $sheet->getHighestDataRow();
+		$horario = $this->hora_md->get()[0];
 
 		if($idesp === "0"){
 			$tienda = $this->session->userdata('id_usuario');
@@ -6442,29 +6443,31 @@ class Cotizaciones extends MY_Controller {
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_cotizaciones',$filen);
-		for ($i=3; $i<=$num_rows; $i++) {
-			$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
-			if (sizeof($productos) > 0) {
-				$exis = $this->ex_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$tienda,"id_producto"=>$productos->id_producto])[0];
-				$column_one=0; $column_two=0; $column_three=0;
-				$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();
-				$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
-				$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
-				$new_existencias[$i]=[
-					"id_producto"			=>	$productos->id_producto,
-					"id_tienda"			=>	$tienda,
-					"cajas"			=>	$column_one,
-					"piezas"			=>	$column_two,
-					"pedido"	=>	$column_three,
-					"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
-				];
-				if($exis){
-					//$data['cotizacion']=$this->ex_mdl->update($new_existencias[$i], ['id_pedido' => $exis->id_pedido]);
-				}else{
-					$data['cotizacion']=$this->ex_mdl->insert($new_existencias[$i]);
+        if (date('H:i:s',strtotime('-5 hours')) < $horario->hora_limite ) {		
+        }
+			for ($i=3; $i<=$num_rows; $i++) {
+				$productos = $this->prod_mdl->get("id_producto",['codigo'=> htmlspecialchars($sheet->getCell('D'.$i)->getValue(), ENT_QUOTES, 'UTF-8')])[0];
+				if (sizeof($productos) > 0) {
+					$exis = $this->ex_mdl->get(NULL,["WEEKOFYEAR(fecha_registro)" => $this->weekNumber($fecha->format('Y-m-d H:i:s')),"id_tienda"=>$tienda,"id_producto"=>$productos->id_producto])[0];
+					$column_one=0; $column_two=0; $column_three=0;
+					$column_one = $sheet->getCell('A'.$i)->getValue() == "" ? 0 : $sheet->getCell('A'.$i)->getValue();
+					$column_two = $sheet->getCell('B'.$i)->getValue() == "" ? 0 : $sheet->getCell('B'.$i)->getValue();
+					$column_three = $sheet->getCell('C'.$i)->getValue() == "" ? 0 : $sheet->getCell('C'.$i)->getValue();
+					$new_existencias[$i]=[
+						"id_producto"			=>	$productos->id_producto,
+						"id_tienda"			=>	$tienda,
+						"cajas"			=>	$column_one,
+						"piezas"			=>	$column_two,
+						"pedido"	=>	$column_three,
+						"fecha_registro"	=>	$fecha->format('Y-m-d H:i:s')
+					];
+					if($exis){
+						//$data['cotizacion']=$this->ex_mdl->update($new_existencias[$i], ['id_pedido' => $exis->id_pedido]);
+					}else{
+						$data['cotizacion']=$this->ex_mdl->insert($new_existencias[$i]);
+					}
 				}
 			}
-		}
 		if (isset($new_existencias)) {
 			$aprov = $this->usua_mdl->get(NULL, ['id_usuario'=>$tienda])[0];
 			$cambios=[

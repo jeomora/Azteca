@@ -1950,13 +1950,13 @@ class Lunes extends MY_Controller {
 		$fecha->add($intervalo);
 		$this->load->library("excelfile");
 		ini_set("memory_limit", -1);
-		$filen = "PedidosLunesPendientes".rand();
+		$filen = "PedidosLunesPendientes".date("dmyHis");
 		$config['upload_path']          = './assets/uploads/pedidos/';
         $config['allowed_types']        = 'xlsx|xls';
-        $config['max_size']             = 1000;
+        $config['max_size']             = 10000;
         $config['max_width']            = 10024;
         $config['max_height']           = 7608;
-        $config['max_height']           = 768;
+        $config['max_height']           = 7608;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
         $this->upload->do_upload('file_pendientes',$filen);

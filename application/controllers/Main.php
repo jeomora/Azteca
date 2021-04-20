@@ -213,7 +213,16 @@ class Main extends MY_Controller {
 	}
 
 	public function cambiaHoras($hora){
+		$horaAntes = $this->hora_md->get()[0];
 		$this->hora_md->update(["hora_limite"=>$hora],["id_horario"=>1]);
+		$cambios=[
+			"id_usuario"		=>	$this->session->userdata('id_usuario'),
+			"fecha_cambio"		=>	date("Y-m-d H:i:s"),
+			"antes"				=>	"Hora anterior ".$horaAntes->hora_limite,
+			"despues"			=>	"Hora despues ".$hora,
+			"accion"			=>	"Sube Archivo"
+		];
+		$data['cambios']=$this->cambio_md->insert($cambios);
 		$this->jsonResponse($hora);
 	}
 
