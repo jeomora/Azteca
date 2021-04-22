@@ -441,7 +441,7 @@ class Productos_model extends MY_Model {
 
 	public function getProdFamS($where = []){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P4D');
+		$intervalo = new DateInterval('P3D');
 		$fecha->sub($intervalo);
 		$this->db->select("p.id_producto,p.umsistema,p.nombre AS producto,p.codigo,p.estatus,f.nombre AS familia,f.id_familia,p.colorp,p.color,p.fecha_registro,ps.precio_sistema,ps.precio_four")
 		->from($this->TABLE_NAME." p")

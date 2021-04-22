@@ -72,6 +72,18 @@
 					</select>
 				</div>
 			</div>
+			<div class="col-sm-6" >
+				<div class="form-group">
+					<label for="detalles">Detalles</label>
+					<input type="text" name="detalles" value="" class="form-control" placeholder="Detalles">
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="extension">Extension</label>
+					<input type="text" name="extension" value="" class="form-control" placeholder="Extension">
+				</div>
+			</div>
 		</div>
 
 		<?php echo form_close(); ?>

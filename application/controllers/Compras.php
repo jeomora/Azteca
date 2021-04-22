@@ -156,7 +156,9 @@ class Compras extends MY_Controller {
 			"password"	=>	$this->encryptPassword($this->input->post('password')),
 			"id_grupo"	=>	$this->input->post('id_grupo'),
 			"conjunto"	=>	$conjunto,
-			"cargo"	=>	$cargos
+			"cargo"	=>	$cargos,
+			"detalles" => strtoupper($this->input->post('detalles')),
+			"extension" => strtoupper($this->input->post('extension'))
 		];
 
 		$getUsuario = $this->user_md->get(NULL, ['email'=>$usuario['email']])[0];
@@ -171,7 +173,7 @@ class Compras extends MY_Controller {
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
 				"antes" => "Usuario es nuevo",
-				"despues" => "Nombre : ".$usuario['nombre']." /Apellido: ".$usuario['apellido']." /Teléfono:".$usuario['telefono']." /Email: ".$usuario['email']." /Password: ".$this->input->post('password')." /Grupo: ".$usuario['id_grupo']];
+				"despues" => "Nombre : ".$usuario['nombre']." /Apellido: ".$usuario['apellido']." /Teléfono:".$usuario['telefono']." /Email: ".$usuario['email']." /Password: ".$this->input->post('password')." /Grupo: ".$usuario['id_grupo']. "/Detalles : ".$usuario['detalles']." /Extension: ".$usuario['extension']];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 		}else{
 			$mensaje = [
