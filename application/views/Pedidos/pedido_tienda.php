@@ -89,7 +89,7 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 		<div class="col-md-12" style="box-shadow:inset 0px 0px 0px #000,0px 5px 0px 0px #000,0px 10px 5px #000;border:1px solid #000;padding:20px">
 			<?php echo form_open_multipart("", array('id' => 'upload_pedidos')); ?>
 			<div class="col-md-12">
-				<h2 style="text-align:center;padding-bottom: 20px">SUBIR EXISTENCIAS Y PEDIDOS DE PRODUCTOS <br>Se podrán subir pedidos el día lunes solo antes de la <?php echo $horario->hora_limite ?></h2>
+				<h2 style="text-align:center;padding-bottom: 20px">SUBIR EXISTENCIAS Y PEDIDOS DE PRODUCTOS <br>Se podrán subir pedidos solo antes de la <?php echo $horario->hora_limite ?></h2>
 			</div>
 			<div class="col-md-12">
 				<div class="col-md-2"></div>
