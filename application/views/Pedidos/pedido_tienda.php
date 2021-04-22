@@ -110,7 +110,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 				</div>
 				<div class="col-md-3">
 					<div class="btn-group" style="margin-top: 5px;">
-						<?php  $timestamp = time();if(date('D', $timestamp) === 'Mon' && date('H:i:s',strtotime('-5 hours')) < $horario->hora_limite ):  ?>
+						<!--<?php  $timestamp // = time();if(date('D', $timestamp) === 'Mon' && date('H:i:s',strtotime('-5 hours')) < $horario->hora_limite ):  ?>-->
+						<?php  $timestamp = time();if(date('H:i:s',strtotime('-5 hours')) < $horario->hora_limite ):  ?>
 						<div class="col-sm-4">
 							<input class="btn btn-info" type="file" id="file_cotizaciones" name="file_cotizaciones" value=""/>
 						</div>
