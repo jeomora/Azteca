@@ -32,7 +32,7 @@ class Cotizaciones extends MY_Controller {
 
 	public function repeat_cotizacion($idprovd){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$user = $this->session->userdata();
 

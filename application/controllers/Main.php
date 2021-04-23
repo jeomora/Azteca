@@ -103,7 +103,7 @@ class Main extends MY_Controller {
 
 	public function repeat_cotizacion(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$semana = $this->weekNumber($fecha->format('Y-m-d H:i:s')) -1;
 		$user = $this->session->userdata();
@@ -115,7 +115,7 @@ class Main extends MY_Controller {
 			foreach ($cotizaciones as $key => $value){
 				$antes =  $this->falt_mdl->get(NULL, ['id_producto' => $value->id_producto, 'fecha_termino > ' => date("Y-m-d H:i:s"), 'id_proveedor' => $this->input->post('id_proveedor')])[0];
 				$fecha = new DateTime(date('Y-m-d H:i:s'));
-				$intervalo = new DateInterval('P3D');
+				$intervalo = new DateInterval('P2D');
 				$num_one = $value->num_one == '' ? 0 : $value->num_one;
 				$num_two = $value->num_two == '' ? 0 : $value->num_two;
 				$descuento = $value->descuento == '' ? 0 : $value->descuento;

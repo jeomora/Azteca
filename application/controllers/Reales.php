@@ -97,7 +97,7 @@ class Reales extends MY_Controller {
 
 	public function upload_reales(){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$filen = "Precios_Reales".rand();
 		$config['upload_path']          = './assets/uploads/reales/';

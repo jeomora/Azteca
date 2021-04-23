@@ -11,7 +11,7 @@ class Productos_model extends MY_Model {
 	
 	public function getProdFam22($where = [],$prove){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$this->db->select("c.observaciones,ff.id_familia, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,c.precio_promocion,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
@@ -239,7 +239,7 @@ class Productos_model extends MY_Model {
 
 	public function getProdFam($where = [],$prove){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		
 		$this->db->select("c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,c2.precio_promocion AS precio2,conv.conversion, 
@@ -305,7 +305,7 @@ class Productos_model extends MY_Model {
 
 	public function getProdSemPasada($where = [],$prove){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$this->db->select("inv.codigo as codigo_factura,c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2,conv.conversion,f3.id_producto AS sem3,f4.id_producto AS sem4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
@@ -373,7 +373,7 @@ class Productos_model extends MY_Model {
 	//Semana Actual
 	public function getProdSemActual($where = [],$prove){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$this->db->select("inv.codigo as codigo_factura,c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2,conv.conversion,f3.id_producto AS sem3,f4.id_producto AS sem4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
@@ -441,7 +441,7 @@ class Productos_model extends MY_Model {
 
 	public function getProdFamS($where = []){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->sub($intervalo);
 		$this->db->select("p.id_producto,p.umsistema,p.nombre AS producto,p.codigo,p.estatus,f.nombre AS familia,f.id_familia,p.colorp,p.color,p.fecha_registro,ps.precio_sistema,ps.precio_four")
 		->from($this->TABLE_NAME." p")
@@ -525,7 +525,7 @@ class Productos_model extends MY_Model {
 
 	public function sinpestanias($where = [],$fech){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		$this->db->select("p.id_producto,p.nombre as producto,p.color,p.colorp,p.codigo,p.estatus,mx.maxis as precio_maximo, mx.prome as precio_promedio,f.nombre as familia,pp.precio_sistema,pp.precio_four,UPPER(proveedor.nombre) AS proveedor, c.id_cotizacion,c.id_proveedor,c.precio,c.precio_promocion,c.observaciones,c.fecha_registro,p.id_familia")
 		->from("productos p")
@@ -605,7 +605,7 @@ class Productos_model extends MY_Model {
 
 	public function byProveedor($where = []){
 		$fecha = new DateTime(date('Y-m-d H:i:s'));
-		$intervalo = new DateInterval('P3D');
+		$intervalo = new DateInterval('P2D');
 		$fecha->add($intervalo);
 		
 		$this->db->select("c.id_cotizacion,c.id_producto,c.id_proveedor,c.precio_promocion,c.observaciones,u.nombre")
