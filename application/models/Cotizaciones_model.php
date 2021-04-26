@@ -814,7 +814,7 @@ class Cotizaciones_model extends MY_Model {
 		$user = $this->session->userdata();
 
 		$this->db->select("fpast.fecha_registro as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,fpast.abarrotes as fpastabarrotes,fpast.cedis as fpastcedis,fpast.mercado as fpastmercado,fpast.villas as fpastpedregal,fpast.tienda fpasttienda,fpast.trincheras fpasttrincheras,fpast.tenencia as fpasttenencia,fpast.ultra as fpastultra,fpast.tijeras as fpasttijeras,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,sto.id_stock,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo, proveedor_first.detalles, proveedor_first.extension, ctz_first.precio AS precio_firsto,sto.cantidad as stocant,sto.id_stock,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
@@ -896,6 +896,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["detalles"]	=	$comparativa[$i]->detalles;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["extension"]	=	$comparativa[$i]->extension;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
@@ -2069,7 +2071,7 @@ class Cotizaciones_model extends MY_Model {
 		$user = $this->session->userdata();
 
 		$this->db->select("finlast.lastfecha,finlast.lastfecha as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo, proveedor_first.detalles,proveedor_first.extension, ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
@@ -2153,6 +2155,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["detalles"]	=	$comparativa[$i]->detalles;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["extension"]	=	$comparativa[$i]->extension;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
@@ -2392,7 +2396,7 @@ class Cotizaciones_model extends MY_Model {
 		$user = $this->session->userdata();
 
 		$this->db->select("finlast.lastfecha,finlast.lastfecha as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo, proveedor_first.detalles,proveedor_first.extension, ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
@@ -2476,6 +2480,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["detalles"]	=	$comparativa[$i]->detalles;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["extension"]	=	$comparativa[$i]->extension;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
@@ -2774,7 +2780,7 @@ class Cotizaciones_model extends MY_Model {
 		$user = $this->session->userdata();
 
 		$this->db->select("finlast.lastfecha,finlast.lastfecha as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo, proveedor_first.detalles, proveedor_first.extension,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
@@ -2858,6 +2864,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["detalles"]	=	$comparativa[$i]->detalles;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["extension"]	=	$comparativa[$i]->extension;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
@@ -3098,8 +3106,8 @@ class Cotizaciones_model extends MY_Model {
 		$user = $this->session->userdata();
 
 		$this->db->select("finlast.lastfecha,finlast.lastfecha as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
-			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo, proveedor_first.detalles, proveedor_first.extension, ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
+			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion,  ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
 			ctz_next.precio AS precio_nexto,IF((ctz_next.precio_promocion >0), ctz_next.precio_promocion, ctz_next.precio) AS precio_next,
@@ -3182,6 +3190,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["detalles"]	=	$comparativa[$i]->detalles;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["extension"]	=	$comparativa[$i]->extension;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
@@ -3422,7 +3432,7 @@ class Cotizaciones_model extends MY_Model {
 		$user = $this->session->userdata();
 
 		$this->db->select("finlast.lastfecha,finlast.lastfecha as fpastfecha,prod.obis,prod.unidad,ppast.precio_sistema as ppasts,ppast.precio_four as ppastf,r.precio AS reales,exist,prod.abarrotes,prod.cedis,prod.mercado,prod.pedregal,prod.tienda,prod.trincheras,prod.tenencia,prod.ultra,prod.tijeras,ctz_first.id_cotizacion,prod.registrazo,inv.codigo as codigo_factura ,ctz_first.fecha_registro,prod.estatus,prod.color,prod.colorp,prod.codigo, prod.nombre AS producto,prod.id_producto,
-			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
+			UPPER(proveedor_first.nombre) AS proveedor_first,proveedor_first.cargo,proveedor_first.detalles,proveedor_first.extension,ctz_first.precio AS precio_firsto,sto.cantidad as stocant,
 			IF((ctz_first.precio_promocion >0), ctz_first.precio_promocion, ctz_first.precio) AS precio_first,
 			ctz_first.observaciones AS promocion_first,ctz_first.observaciones AS observaciones_first,prod.precio_sistema,prod.precio_four,
 			UPPER(proveedor_next.nombre) AS proveedor_next,ctz_next.fecha_registro AS fecha_next,ctz_next.observaciones AS promocion_next,
@@ -3506,6 +3516,8 @@ class Cotizaciones_model extends MY_Model {
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["stocant"]	=	$comparativa[$i]->stocant;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["cargo"]	=	$comparativa[$i]->cargo;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["detalles"]	=	$comparativa[$i]->detalles;
+			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["extension"]	=	$comparativa[$i]->extension;
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["reales"]	=	$comparativa[$i]->reales;
 
 			$comparativaIndexada[$comparativa[$i]->id_familia]["articulos"][$comparativa[$i]->id_producto]["registrazo"]	=	$comparativa[$i]->registrazo;
