@@ -2324,6 +2324,7 @@ class Cotizaciones extends MY_Controller {
 					$cargo = "";
 					$detalles = "";
 					$extension = "";
+					$pagot = "";
 					if ($cotizacionesProveedor){
 						//HOJA EXISTENCIAS
 						$this->excelfile->setActiveSheetIndex(0);
@@ -2798,6 +2799,7 @@ class Cotizaciones extends MY_Controller {
 									$cargo = $row['cargo']; //RESPONSABLE 
 									$detalles = $row['detalles'];
 									$extension = $row['extension'];
+									$pagot = $row['pagot'];
 									$registrazo = date('Y-m-d',strtotime($row['registrazo']));
 									$this->excelfile->setActiveSheetIndex(0);
 									$this->cellStyle("A".$flag1.":P".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -3318,7 +3320,8 @@ class Cotizaciones extends MY_Controller {
 								$flag++;
 								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
 								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
+								$flag++;
+								$hoja->setCellValue("C{$flag}", " ".$pagot);
 								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
 								$flag++;
 								$hoja->mergeCells('N'.$flag.':Z'.$flag);
@@ -7963,7 +7966,11 @@ class Cotizaciones extends MY_Controller {
 			$fecha->add($intervalo);
 			$where=["ctz_first.id_proveedor" => $v3->id_usuario,"prod.estatus" => 1];//Semana actual
 			$cotizacionesProveedor = $this->ct_mdl->getPedidosAll($where, $fecha->format('Y-m-d H:i:s'), 0);
-			
+			$cargo= "";
+			$detalles = "";
+			$extension = "";
+			$pagot = "";
+
 			if ($cotizacionesProveedor) {
 				$hoja1->mergeCells('A'.$flag2.':G'.$flag2);
 				$this->cellStyle("A".$flag2."", "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -8235,6 +8242,10 @@ class Cotizaciones extends MY_Controller {
 							if($row["unidad"] === null || $row["unidad"] === ""){
 								$row["unidad"] = 1;
 							}
+							$cargo = $row['cargo'];
+							$detalles = $row['detalles'];
+							$extension = $row['extension'];
+							$pagot= $row['pagot'];
 							$registrazo = date('Y-m-d',strtotime($row['registrazo']));
 							$this->excelfile->setActiveSheetIndex(0);
 							$this->cellStyle("A".$flag1.":P".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -8257,6 +8268,7 @@ class Cotizaciones extends MY_Controller {
 							$hoja1->setCellValue("O{$flag1}", $row['tenencia']);
 							$hoja1->setCellValue("P{$flag1}", $row['tijeras']);
 
+							/*
 							if ($row["imagen"] <> "" && !is_null($row["imagen"]) ) {
 								$objDrawing = new PHPExcel_Worksheet_Drawing();
 								$objDrawing->setName('COD'.$row['producto']);
@@ -8272,7 +8284,7 @@ class Cotizaciones extends MY_Controller {
 								$this->excelfile->getActiveSheet()->getRowDimension($flag1)->setRowHeight(60);
 								$this->excelfile->getActiveSheet()->getStyleByColumnAndRow(10, $flag1)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14);
 								$this->excelfile->getActiveSheet()->getCell('F'.$flag1)->getHyperlink()->setUrl('http://abarrotesazteca.com/Abarrotes/assets/img/productos/'.str_replace("_thumb.",".",$row["imagen"]));
-							}
+							}*/
 
 							$hoja1->getStyle("A{$flag1}:P{$flag1}")
 					                 ->getAlignment()
@@ -8526,6 +8538,23 @@ class Cotizaciones extends MY_Controller {
 				$hoja->setCellValue("CI{$flag}", "=SUM(CI{$bandera}:CI{$flans})")->getStyle("CI{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				$hoja->setCellValue("CJ{$flag}", "=SUM(CJ{$bandera}:CJ{$flans})")->getStyle("CJ{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				//End: TOTALES PEDIDOS PENDIENTES
+
+				if ($id_proves <> "VOLUMEN"){
+								$hoja->setCellValue("C{$flag}", "RESPONSABLE : ".$cargo);
+								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+
+								$flag++;
+								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
+								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+								$flag++;
+								$hoja->setCellValue("C{$flag}", " ".$pagot);
+								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+								$flag++;
+								$hoja->mergeCells('N'.$flag.':Z'.$flag);
+								$hoja->setCellValue("N{$flag}", " ".$detalles);
+								$this->cellStyle("N{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
+							}
+
 
 				$flans = $flag;
 				$flag += 4;
@@ -11804,6 +11833,7 @@ class Cotizaciones extends MY_Controller {
 				$cargo = "";
 				$detalles = "";
 				$extension = "";
+				$pagot = "";
 				if ($cotizacionesProveedor){
 					//HOJA EXISTENCIAS
 					$this->excelfile->setActiveSheetIndex(0);
@@ -12099,6 +12129,7 @@ class Cotizaciones extends MY_Controller {
 								$cargo = $row['cargo'];
 								$detalles = $row['detalles'];
 								$extension = $row['extension'];
+								$pagot = $row['pagot'];
 								$registrazo = date('Y-m-d',strtotime($row['registrazo']));
 								$this->excelfile->setActiveSheetIndex(0);
 								$this->cellStyle("A".$flag1.":P".$flag1, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
@@ -12398,7 +12429,8 @@ class Cotizaciones extends MY_Controller {
 								$flag++;
 								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
 								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
+								$flag++;
+								$hoja->setCellValue("C{$flag}", " ".$pagot);
 								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
 								$flag++;
 								$hoja->mergeCells('N'.$flag.':Z'.$flag);
