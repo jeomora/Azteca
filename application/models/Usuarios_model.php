@@ -49,6 +49,7 @@ class Usuarios_model extends MY_Model {
 			usuarios.cargo,
 			usuarios.detalles,
 			usuarios.extension,
+			usuarios.pagot,
 			g.nombre AS grupo")
 		->from($this->TABLE_NAME)
 		->join("grupos g", $this->TABLE_NAME.".id_grupo = g.id_grupo", "LEFT")

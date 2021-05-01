@@ -30,6 +30,24 @@
 					<input type="text" name="correo" value="<?php echo $usuario->email ?>" class="form-control" placeholder="ejemplo@email.com">
 				</div>
 			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="detalles">Detalles</label>
+					<input type="text" name="Detalles" value="<?php echo $usuario->detalles ?>" class="form-control" placeholder="Detalles">
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="extension">Extension</label>
+					<input type="text" name="extension" value="<?php echo $usuario->extension ?>" class="form-control" placeholder="Extension">
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label for="pagot">Tipo Pago</label>
+					<input type="text" name="Tipo Pago" value="<?php echo $usuario->pagot ?>" class="form-control" placeholder="Credito 30 días">
+				</div>
+			</div>
 			<div class="col-sm-3">
 				<div class="form-group">
 					<label for="password">Contraseña</label> <!-- $password trae la contraseña desencritada -->
@@ -79,6 +97,7 @@
 					</select>
 				</div>
 			</div>
+
 		</div>
 
 		<?php echo form_close(); ?>

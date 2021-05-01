@@ -2621,6 +2621,17 @@ class Facturas extends MY_Controller {
 					$this->cellStyle('X'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle('AA'.$flag9, "D4EAEF", "000000", TRUE, 12, "Franklin Gothic Book");
 
+					//----------------
+					$hoja->setCellValue("D".$flag9, 0);
+					$hoja->setCellValue("G".$flag9, 0);
+					$hoja->setCellValue("J".$flag9, 0);
+					$hoja->setCellValue("M".$flag9, 0);
+					$hoja->setCellValue("O".$flag9, 0);
+					$hoja->setCellValue("S".$flag9, 0);
+					$hoja->setCellValue("V".$flag9, 0);
+					$hoja->setCellValue("Y".$flag9, 0);
+					$hoja->setCellValue("AB".$flag9, 0);
+
 					$this->excelfile->getActiveSheet()->getStyle('A'.$flag9.':AF'.$flag9.'')->applyFromArray($styleArray9);
 					$hoja->setCellValue("A".$flag9, $val->codigo)->getStyle("A{$flag9}")->getNumberFormat()->setFormatCode('# ???/???');
 					$hoja->setCellValue("B".$flag9, $val->nombre);
@@ -2642,15 +2653,7 @@ class Facturas extends MY_Controller {
 					$hoja->setCellValue("Z".$flag9, "=(X".$flag9."-Y".$flag9.")");
 					$hoja->setCellValue("AA".$flag9, $val->tijeras);
 					$hoja->setCellValue("AC".$flag9, "=(AA".$flag9."-AB".$flag9.")");
-					$hoja->setCellValue("D".$flag9, 0);
-					$hoja->setCellValue("G".$flag9, 0);
-					$hoja->setCellValue("J".$flag9, 0);
-					$hoja->setCellValue("M".$flag9, 0);
-					$hoja->setCellValue("O".$flag9, 0);
-					$hoja->setCellValue("S".$flag9, 0);
-					$hoja->setCellValue("V".$flag9, 0);
-					$hoja->setCellValue("Y".$flag9, 0);
-					$hoja->setCellValue("AB".$flag9, 0);
+
 
 					$this->cellStyle('D'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
 					$this->cellStyle('G'.$flag9, "FFFFFF", "000000", FALSE, 12, "Franklin Gothic Book");
