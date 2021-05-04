@@ -7177,7 +7177,8 @@ class Cotizaciones extends MY_Controller {
 			$this->cellStyle('F'.($flag-1).':I'.($flag-1), "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 			$hoja->setCellValue("F".($flag-1), "TOTALES POR PENDIENTES");
 			//End: TOTALES PEDIDOS PENDIENTES
-			$this->cellStyle("C".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
+			$this->cellStyle("C".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+			//$this->cellStyle("C".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
 			$hoja->setCellValue("C".$flag, "CEDIS");
 			$hoja->setCellValue("D{$flag}", "=(BN{$flans})")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 			//Begin: TOTALES PEDIDOS PENDIENTES
@@ -8556,14 +8557,15 @@ class Cotizaciones extends MY_Controller {
 							}
 
 
-				$flans = $flag;
+				$flans = $flag -3;
 				$flag += 4;
 				//Begin: TOTALES PEDIDOS PENDIENTES
 				$hoja->mergeCells('F'.($flag-1).':I'.($flag-1));
 				$this->cellStyle('F'.($flag-1).':I'.($flag-1), "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 				$hoja->setCellValue("F".($flag-1), "TOTALES POR PENDIENTES");
 				//End: TOTALES PEDIDOS PENDIENTES
-				$this->cellStyle("C".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
+				$this->cellStyle("C".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
+				//$this->cellStyle("C".$flag, "66FFFB", "000000", TRUE, 12, "Franklin Gothic Book");
 				$hoja->setCellValue("C".$flag, "CEDIS");
 				$hoja->setCellValue("D{$flag}", "=(BN{$flans})")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				//Begin: TOTALES PEDIDOS PENDIENTES
@@ -8576,7 +8578,8 @@ class Cotizaciones extends MY_Controller {
 				$flag++;
 				$this->cellStyle("C".$flag, "01B0F0", "000000", TRUE, 12, "Franklin Gothic Book");
 				$hoja->setCellValue("C".$flag, "ABARROTES");
-				$hoja->setCellValue("D{$flag}", "=(BO{$flans})")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				$hoja->setCellValue("D{$flag}", "=BO{$flans}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
+				//$hoja->setCellValue("D{$flag}", "=(BO{$flans})")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode('"$"#,##0.00_-');
 				//Begin: TOTALES PEDIDOS PENDIENTES
 				$hoja->mergeCells('F'.$flag.':G'.$flag);
 				$hoja->mergeCells('H'.$flag.':I'.$flag);
