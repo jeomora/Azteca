@@ -2485,9 +2485,9 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->mergeCells('A'.$flag.':BK'.$flag);
 					$this->cellStyle("A".$flag, "FFFFFF", "000000", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("A".$flag."", "CEDIS, ABARROTES,PEDREGAL, TIENDA, ULTRAMARINOS, TRINCHERAS, MERCADO, TIJERAS, Y TENENCIA AZTECA AUTOSERVICIOS SA. DE CV.");
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BB'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BK'.$flag)->applyFromArray($styleArray);
 					$flag++;
-					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BB'.$flag)->applyFromArray($styleArray);
+					$this->excelfile->getActiveSheet()->getStyle('A'.$flag.':BK'.$flag)->applyFromArray($styleArray);
 					$proveedor[$key]->estatus->getColumnDimension('A')->setWidth("25");
 					$proveedor[$key]->estatus->getColumnDimension('C')->setWidth("70");
 					
@@ -2592,9 +2592,22 @@ class Lunes extends MY_Controller {
 					$this->cellStyle("BE".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("BE".$flag."", "EXISTENCIAS");
 
+					//ESTILO
 					$this->cellStyle("BJ".$flag, "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("BK".$flag, "92D050", "FF0000", TRUE, 12, "Franklin Gothic Book");
+
+					$this->excelfile->getActiveSheet()->getStyle('BM'.$flag.':BX'.$flag)->applyFromArray($styleArray);
+					$this->cellStyle("BM".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$this->cellStyle("BN".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BO".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BP".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BQ".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BR".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BS".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BT".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BU".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BV".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
+					$this->cellStyle("BW".$flag, "000000", "FFFFFF", TRUE, 12, "Franklin Gothic Book");
 					$proveedor[$key]->estatus->setCellValue("BX".$flag."", "TOTAL");
 					
 					$flag++;
@@ -2988,7 +3001,7 @@ class Lunes extends MY_Controller {
 					
 				}
 				$flag++;
-
+				//Suma Pedidods
 				$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("L".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("L{$flag}", "=SUM(L{$flageas}:L".($flag-1).")")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('#0_-');
@@ -3023,6 +3036,7 @@ class Lunes extends MY_Controller {
 				$this->cellStyle("BI".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=SUM(BI{$flageas}:BI".($flag-1).")")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 
+				//Suma Total Pedidos
 				$this->excelfile->getActiveSheet()->getStyle('BM'.$flag.':BW'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("BM".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("BM{$flag}", "=SUM(BM{$flageas}:BM".($flag-1).")")->getStyle("BM{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
@@ -3049,6 +3063,22 @@ class Lunes extends MY_Controller {
 				$totis = $flag;
 				$flag+=5;
 
+					/*FALLO
+					if ($proveedor <> "VOLUMEN"){
+								$proveedor[$key]->estatus->setCellValue("C{$flag}", " ".$cargo)->getStyle("C{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+								
+								$flag++;
+								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
+								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+								$flag++;
+								$hoja->setCellValue("C{$flag}", " ".$pagot);
+								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+								$flag++;
+								$hoja->mergeCells('N'.$flag.':Z'.$flag);
+								$hoja->setCellValue("N{$flag}", " ".$detalles);
+								$this->cellStyle("N{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
+					}*/
 
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$va->alias = "PEDIDO LUNES";
