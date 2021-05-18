@@ -209,7 +209,6 @@ class Prolunes_model extends MY_Model {
 				$comparativaIndexada[$comparativa[$i]->codigo]["mins"]		=	$comparativa[$i]->mins;
 
 
-
 				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja0"]		=	"";
 				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja1"]		=	"";
 				$comparativaIndexada[$comparativa[$i]->codigo]["past"]["caja2"]		=	"";

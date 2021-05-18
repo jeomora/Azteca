@@ -18,7 +18,6 @@ class Lunes extends MY_Controller {
 		$this->load->model("Finalunes_model", "fin_mdl");
 		$this->load->model("Facturalunes_model", "fac_mdl");
 	}
-
 	public function index(){
 		$data['links'] = [
 			'/assets/css/plugins/dataTables/dataTables.bootstrap',
@@ -89,6 +88,10 @@ class Lunes extends MY_Controller {
 		$proveedor = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
 			"alias"	=>	strtoupper($this->input->post('apellido')),
+			"cargo"	=>	strtoupper($this->input->post('cargo')),
+			"detalles"	=>	strtoupper($this->input->post('detalles')),
+			"elaborado"	=>	strtoupper($this->input->post('elaborado')),
+			"pagot"	=>	strtoupper($this->input->post('pagot')),
 		];
 		$getUsuario = $this->prove_md->get(NULL, ['nombre'=>$proveedor['nombre']])[0];
 
@@ -102,7 +105,7 @@ class Lunes extends MY_Controller {
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
 				"antes" => "Proveedor Lunes es nuevo",
-				"despues" => "Nombre : ".$proveedor['nombre']." /Alias: ".$proveedor['alias']];
+				"despues" => "Nombre : ".$proveedor['nombre']." /Alias: ".$proveedor['alias']. "/Cargo: ".$proveedor['cargo']. "/Detalles: ".$proveedor['detalles']. "/Elaborado: ".$proveedor['elaborado']. "/Pago: ".$proveedor['pagot']];
 			$data['cambios'] = $this->cambio_md->insert($cambios);
 		}else{
 			$mensaje = [
@@ -132,14 +135,18 @@ class Lunes extends MY_Controller {
 		$proveedor = [
 			"nombre"	=>	strtoupper($this->input->post('nombre')),
 			"alias"	=>	strtoupper($this->input->post('apellido')),
+			"cargo"	=>	strtoupper($this->input->post('cargo')),
+			"detalles"	=>	strtoupper($this->input->post('detalles')),
+			"elaborado"	=>	strtoupper($this->input->post('elaborado')),
+			"pagot"	=>	strtoupper($this->input->post('pagot')),
 		];
 
 		$data ['id_proveedor'] = $this->prove_md->update($proveedor, $this->input->post('id_proveedor'));
 		$cambios = [
 				"id_usuario" => $user["id_usuario"],
 				"fecha_cambio" => date('Y-m-d H:i:s'),
-				"antes" => "Nombre : ".$antes->nombre." /Alias: ".$antes->alias,
-				"despues" => "Nombre : ".$proveedor['nombre']." /Alias: ".$proveedor['alias']];
+				"antes" => "Nombre : ".$antes->nombre." /Alias: ".$antes->alias." /Cargo: ".$antes->cargo." /Detalles: ".$antes->detalles." /Elaborado: ".$antes->elaborado." /Pago: ".$antes->pagot,
+				"despues" => "Nombre : ".$proveedor['nombre']." /Alias: ".$proveedor['alias']. "/Cargo: ".$proveedor['cargo']. "/Detalles: ".$proveedor['detalles']. "/Elaborado: ".$proveedor['elaborado']. "/Pago: ".$proveedor['pagot']];
 		$data['cambios'] = $this->cambio_md->insert($cambios);
 		$mensaje = ["id" 	=> 'Éxito',
 					"desc"	=> 'Proveedor actualizado correctamente',
@@ -3061,23 +3068,39 @@ class Lunes extends MY_Controller {
 				$this->cellStyle("BW".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("BW{$flag}", "=SUM(BW{$flageas}:BW".($flag-1).")")->getStyle("BW{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$totis = $flag;
-				$flag+=5;
+				
 
-					/*FALLO
+					$flag++;
+					$proveedor[$key]->estatus->setCellValue("C".$flag."", "RESPONSABLE: ".$va->cargo);
+					$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$flag++;
+					$proveedor[$key]->estatus->setCellValue("C".$flag."", "ELABORADO POR: ".$va->elaborado);
+					$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$flag++;
+					$proveedor[$key]->estatus->setCellValue("C".$flag."", " ".$va->pagot);
+					$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+					$flag++;
+					$proveedor[$key]->estatus->mergeCells('H'.$flag.':AE'.$flag);
+					$proveedor[$key]->estatus->setCellValue("H".$flag."", " ".$va->detalles);
+					$this->cellStyle("H{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
+
+				$flag+=5;					
+				/*	
 					if ($proveedor <> "VOLUMEN"){
-								$proveedor[$key]->estatus->setCellValue("C{$flag}", " ".$cargo)->getStyle("C{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+						$flag++;
+						$proveedor[$key]->estatus->setCellValue("C{$flag}", "RESPONSABLE: ".$cargo)->getStyle("C{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
 								
-								$flag++;
-								$hoja->setCellValue("C{$flag}", "EXTENSION : ".$extension);
-								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-								$flag++;
-								$hoja->setCellValue("C{$flag}", " ".$pagot);
-								$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-								$flag++;
-								$hoja->mergeCells('N'.$flag.':Z'.$flag);
-								$hoja->setCellValue("N{$flag}", " ".$detalles);
-								$this->cellStyle("N{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
+						$flag++;
+						$proveedor[$key]->estatus->setCellValue("C{$flag}", "ELABORADO POR : ".$elaborado);
+						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+						$flag++;
+						$proveedor[$key]->estatus->setCellValue("C{$flag}", " ".$pagot);
+						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+						$flag++;
+						$proveedor[$key]->estatus->mergeCells('N'.$flag.':Z'.$flag);
+						$proveedor[$key]->estatus->setCellValue("N{$flag}", " ".$detalles);
+						$this->cellStyle("N{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
 					}*/
 
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);

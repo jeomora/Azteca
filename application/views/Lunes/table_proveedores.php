@@ -35,6 +35,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 								<th>NO</th>
 								<th>NOMBRE</th>
 								<th>ALIAS (Pestaña excel)</th>
+								<th>ENCARGADO</th>
+								<th>ELABORADO</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -45,6 +47,8 @@ if(!$this->session->userdata("username") || $this->session->userdata("id_grupo")
 										<th><?php echo $value->id_proveedor ?></th>
 										<td><?php echo $value->nombre ?></td>
 										<td><?php echo $value->alias ?></td>
+										<td><?php echo $value->cargo ?></td>
+										<td><?php echo $value->elaborado ?></td>
 										<td>
 											<button id="update_proveedor" class="btn btn-info" data-toggle="tooltip" title="Editar" data-id-proveedor="<?php echo $value->id_proveedor ?>">
 												<i class="fa fa-pencil"></i>

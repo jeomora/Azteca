@@ -10,7 +10,7 @@ class Prove_model extends MY_Model {
 	} 
 
 	public function getProveedores($where=[]){
-		$this->db->select("id_proveedor,nombre,alias")
+		$this->db->select("id_proveedor,nombre,alias,cargo,detalles,elaborado,pagot")
 		->from($this->TABLE_NAME)
 		->where("estatus","1")
 		->order_by($this->TABLE_NAME.".id_proveedor","ASC");
