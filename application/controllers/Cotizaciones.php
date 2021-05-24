@@ -9829,6 +9829,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja1->setCellValue("O{$flag1}", $row['tenencia']);
 								$hoja1->setCellValue("P{$flag1}", $row['tijeras']);
 
+								/*
 								if ($row["imagen"] <> "" && !is_null($row["imagen"]) ) {
 									$objDrawing = new PHPExcel_Worksheet_Drawing();
 									$objDrawing->setName('COD'.$row['producto']);
@@ -9849,7 +9850,7 @@ class Cotizaciones extends MY_Controller {
 								$hoja1->getStyle("A{$flag1}:P{$flag1}")
 						                 ->getAlignment()
 						                 ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-						         
+						         */
 				                 
 								//Pedidos
 								$this->excelfile->setActiveSheetIndex(1);

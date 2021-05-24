@@ -3070,7 +3070,7 @@ class Lunes extends MY_Controller {
 				$totis = $flag;
 				
 
-					$flag++;
+					//$flag++;
 					$proveedor[$key]->estatus->setCellValue("C".$flag."", "RESPONSABLE: ".$va->cargo);
 					$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
 					$flag++;
@@ -3084,25 +3084,8 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("H".$flag."", " ".$va->detalles);
 					$this->cellStyle("H{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
 
-				$flag+=5;					
-				/*	
-					if ($proveedor <> "VOLUMEN"){
-						$flag++;
-						$proveedor[$key]->estatus->setCellValue("C{$flag}", "RESPONSABLE: ".$cargo)->getStyle("C{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
-						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-								
-						$flag++;
-						$proveedor[$key]->estatus->setCellValue("C{$flag}", "ELABORADO POR : ".$elaborado);
-						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-						$flag++;
-						$proveedor[$key]->estatus->setCellValue("C{$flag}", " ".$pagot);
-						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
-						$flag++;
-						$proveedor[$key]->estatus->mergeCells('N'.$flag.':Z'.$flag);
-						$proveedor[$key]->estatus->setCellValue("N{$flag}", " ".$detalles);
-						$this->cellStyle("N{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
-					}*/
-
+				$flag+=5;		
+				
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$va->alias = "PEDIDO LUNES";
 				$this->cellStyle("C".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
