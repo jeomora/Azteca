@@ -310,12 +310,12 @@ class Productos_model extends MY_Model {
 		$this->db->select("inv.codigo as codigo_factura,c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2,conv.conversion,f3.id_producto AS sem3,f4.id_producto AS sem4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
 			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN prodcaja pc ON p.id_producto = pc.id_producto AND pc.id_proveedor = ".$prove." LEFT JOIN invoice_codes inv ON pc.id_invoice = inv.id_invoice LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
-			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 3 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
-			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 3 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
+			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 4 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
+			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 4 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
 			FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f2 ON c.id_producto = f2.id_producto AND c.id_proveedor = 
-			f2.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 3 DAY))) 
+			f2.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 4 DAY))) 
 			f3 ON c.id_producto = f3.id_producto AND c.id_proveedor = f3.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino)
-			 = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 4 DAY))) f4 ON c.id_producto = f4.id_producto AND c.id_proveedor = f4.id_proveedor LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0");
+			 = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 5 DAY))) f4 ON c.id_producto = f4.id_producto AND c.id_proveedor = f4.id_proveedor LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
@@ -378,12 +378,12 @@ class Productos_model extends MY_Model {
 		$this->db->select("inv.codigo as codigo_factura,c.observaciones,ff.id_familia,f.id_producto AS sem1,f2.id_producto AS sem2,conv.conversion,f3.id_producto AS sem3,f4.id_producto AS sem4, c.id_cotizacion,c.id_proveedor,c.id_producto,c.precio,
 			c.num_one,c.num_two,c.descuento,p.id_producto,p.nombre as producto,p.codigo,p.estatus,p.colorp,p.color,p.fecha_registro,ff.nombre as familia FROM productos p 
 			LEFT JOIN familias ff ON p.id_familia = ff.id_familia LEFT JOIN prodcaja pc ON p.id_producto = pc.id_producto AND pc.id_proveedor = ".$prove." LEFT JOIN invoice_codes inv ON pc.id_invoice = inv.id_invoice LEFT JOIN cotizaciones c ON p.id_producto = c.id_producto AND WEEKOFYEAR(c.fecha_registro) = 
-			WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
+			WEEKOFYEAR(DATE_SUB('".$fecha->format("Y-m-d")."', INTERVAL 0 DAY)) AND c.id_proveedor = ".$prove." LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = 
 			WEEKOFYEAR(DATE_ADD(CURDATE(),INTERVAL 0 DAY))) f ON c.id_producto = f.id_producto AND c.id_proveedor = f.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor 
 			FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f2 ON c.id_producto = f2.id_producto AND c.id_proveedor = 
-			f2.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) 
+			f2.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino) = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 2 DAY))) 
 			f3 ON c.id_producto = f3.id_producto AND c.id_proveedor = f3.id_proveedor LEFT JOIN (SELECT id_producto,id_proveedor FROM faltantes WHERE WEEKOFYEAR(fecha_termino)
-			 = WEEKOFYEAR(DATE_SUB(CURDATE(),INTERVAL 0 DAY))) f4 ON c.id_producto = f4.id_producto AND c.id_proveedor = f4.id_proveedor LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0");
+			 = WEEKOFYEAR(DATE_SUB('".$fecha->format("Y-m-d")."',INTERVAL 0 DAY))) f4 ON c.id_producto = f4.id_producto AND c.id_proveedor = f4.id_proveedor LEFT JOIN conversiones conv ON p.id_producto = conv.id_producto AND conv.id_proveedor = ".$prove." WHERE p.estatus <> 0");
 		if ($where !== NULL){
 			if(is_array($where)){
 				foreach($where as $field=>$value){
