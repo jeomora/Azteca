@@ -17,6 +17,8 @@ class Lunes extends MY_Controller {
 		$this->load->model("Catalogos_model", "cata_mdl");
 		$this->load->model("Finalunes_model", "fin_mdl");
 		$this->load->model("Facturalunes_model", "fac_mdl");
+		$this->load->model("Condiciones_model", "cond_md");
+		$this->load->model("StockLunes_model", "stock_md");
 	}
 	public function index(){
 		$data['links'] = [
@@ -44,6 +46,34 @@ class Lunes extends MY_Controller {
 
 		$data["usuarios"] = $this->user_md->getUsuarios();
 		$this->estructura("Lunes/table_proveedores", $data);
+	}
+
+	public function condiciones(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/condiciones',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+
+		$data["condiciones"] = $this->cond_md->getCondiciones(NULL);
+		$this->estructura("Lunes/condiciones", $data);
 	}
 
 	public function proveedores(){
@@ -2724,6 +2754,21 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->getColumnDimension('BX')->setWidth("15");
 				}
 				$flageas = $flag+1;
+				$ell = "=";
+				$epp = "=";
+				$euu = "=";
+				$ezz = "=";
+				$eae = "=";
+				$eaj = "=";
+				$eao = "=";
+				$eat = "=";
+				$eay = "=";
+				$ebd = "=";
+				$ebi = "=";
+				$ecajas = 0;
+				$ecual = "";
+				$sumRow=1;
+				$epromo = 1;
 				foreach ($infos as $keys => $v) {
 					/******************BEGIN HOJA EXISTENCIAS******************/
 					$this->excelfile->setActiveSheetIndex(0);
@@ -2930,6 +2975,62 @@ class Lunes extends MY_Controller {
 						}	
 					}
 
+					if($v["id_condicion"] <> 1 && $v["id_condicion"] <> "1") {
+						$ell .= "L".$flag."+";
+						$epp .= "P".$flag."+";
+						$euu .= "U".$flag."+";
+						$ezz .= "Z".$flag."+";
+						$eae .= "AE".$flag."+";
+						$eaj .= "AJ".$flag."+";
+						$eao .= "AO".$flag."+";
+						$eat .= "AT".$flag."+";
+						$eay .= "AY".$flag."+";
+						$ebd .= "BD".$flag."+";
+						$ebi .= "BI".$flag."+";
+						$ecual = $v["descri"];
+						$ecajas = $v["no_cajas"];
+						$epromo = $v["id_condicion"];
+					}
+
+					$condRed = new PHPExcel_Style_Conditional();
+					$condGreen = new PHPExcel_Style_Conditional();
+					$condRed->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+				                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_GREATERTHAN)
+				                ->addCondition("E".$flag)
+				                ->getStyle()
+				                ->applyFromArray(
+				                	array(
+									  'font'=>array(
+									   'color'=>array('argb'=>'FF9C0006')
+									  ),
+									  'fill'=>array(
+										  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+										  'startcolor' =>array('argb' => 'FFFFC7CE'),
+										  'endcolor' =>array('argb' => 'FFFFC7CE')
+										)
+									)
+								);
+					$condGreen->setConditionType(PHPExcel_Style_Conditional::CONDITION_CELLIS)
+			                ->setOperatorType(PHPExcel_Style_Conditional::OPERATOR_LESSTHAN)
+			                ->addCondition("E".$flag)
+			                ->getStyle()
+			                ->applyFromArray(
+			                	array(
+								  'font'=>array(
+								   'color'=>array('argb'=>'FF006100')
+								  ),
+								  'fill'=>array(
+									  'type' =>PHPExcel_Style_Fill::FILL_SOLID,
+									  'startcolor' =>array('argb' => 'FFC6EFCE'),
+									  'endcolor' =>array('argb' => 'FFC6EFCE')
+									)
+								)
+							);
+
+			        $conditionalStyles = $this->excelfile->getActiveSheet()->getStyle('D'.$flag)->getConditionalStyles();
+					array_push($conditionalStyles,$condRed);
+					array_push($conditionalStyles,$condGreen);
+					$this->excelfile->getActiveSheet()->getStyle('D'.$flag)->setConditionalStyles($conditionalStyles);
 
 					$col = 7;
 					 foreach ($v["existencias"] as $k => $vs) {
@@ -3009,39 +3110,40 @@ class Lunes extends MY_Controller {
 				}
 				$flag++;
 				//Suma Pedidods
+				$sumRow = $flag;
 				$this->excelfile->getActiveSheet()->getStyle('L'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("L".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("L{$flag}", "=SUM(L{$flageas}:L".($flag-1).")")->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("L{$flag}", substr($ell, 0, -1))->getStyle("L{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('P'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("P".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("P{$flag}", "=SUM(P{$flageas}:P".($flag-1).")")->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("P{$flag}", substr($epp, 0, -1))->getStyle("P{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('U'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("U".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("U{$flag}", "=SUM(U{$flageas}:U".($flag-1).")")->getStyle("U{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("U{$flag}", substr($euu, 0, -1))->getStyle("U{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('Z'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("Z".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("Z{$flag}", "=SUM(Z{$flageas}:Z".($flag-1).")")->getStyle("Z{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("Z{$flag}", substr($ezz, 0, -1))->getStyle("Z{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('AE'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("AE".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("AE{$flag}", "=SUM(AE{$flageas}:AE".($flag-1).")")->getStyle("AE{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("AE{$flag}", substr($eae, 0, -1))->getStyle("AE{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('AJ'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("AJ".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("AJ{$flag}", "=SUM(AJ{$flageas}:AJ".($flag-1).")")->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("AJ{$flag}", substr($eaj, 0, -1))->getStyle("AJ{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('AO'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("AO".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("AO{$flag}", "=SUM(AO{$flageas}:AO".($flag-1).")")->getStyle("AO{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("AO{$flag}", substr($eao, 0, -1))->getStyle("AO{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('AT'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("AT".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("AT{$flag}", "=SUM(AT{$flageas}:AT".($flag-1).")")->getStyle("AT{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("AT{$flag}", substr($eat, 0, -1))->getStyle("AT{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('AY'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("AY".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("AY{$flag}", "=SUM(AY{$flageas}:AY".($flag-1).")")->getStyle("AY{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("AY{$flag}", substr($eay, 0, -1))->getStyle("AY{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('BD'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("BD".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BD{$flag}", "=SUM(BD{$flageas}:BD".($flag-1).")")->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("BD{$flag}", substr($ebd, 0, -1))->getStyle("BD{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 				$this->excelfile->getActiveSheet()->getStyle('BI'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("BI".$flag, "FFFFFF", "000000", FALSE, 10, "Franklin Gothic Book");
-				$proveedor[$key]->estatus->setCellValue("BI{$flag}", "=SUM(BI{$flageas}:BI".($flag-1).")")->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('#0_-');
+				$proveedor[$key]->estatus->setCellValue("BI{$flag}", substr($ebi, 0, -1))->getStyle("BI{$flag}")->getNumberFormat()->setFormatCode('#0_-');
 
 				//Suma Total Pedidos
 				$this->excelfile->getActiveSheet()->getStyle('BM'.$flag.':BW'.$flag)->applyFromArray($styleArray);
@@ -3084,8 +3186,25 @@ class Lunes extends MY_Controller {
 					$proveedor[$key]->estatus->setCellValue("H".$flag."", " ".$va->detalles);
 					$this->cellStyle("H{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
 
-				$flag+=5;		
-				
+				$flag+=5;					
+				/*	
+					if ($proveedor <> "VOLUMEN"){
+						$flag++;
+						$proveedor[$key]->estatus->setCellValue("C{$flag}", "RESPONSABLE: ".$cargo)->getStyle("C{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
+						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+								
+						$flag++;
+						$proveedor[$key]->estatus->setCellValue("C{$flag}", "ELABORADO POR : ".$elaborado);
+						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+						$flag++;
+						$proveedor[$key]->estatus->setCellValue("C{$flag}", " ".$pagot);
+						$this->cellStyle("C{$flag}", "FFFF00", "FF0000", TRUE, 12, "Franklin Gothic Book");
+						$flag++;
+						$proveedor[$key]->estatus->mergeCells('N'.$flag.':Z'.$flag);
+						$proveedor[$key]->estatus->setCellValue("N{$flag}", " ".$detalles);
+						$this->cellStyle("N{$flag}", "FFFF00", "FF0000", TRUE, 22, "Franklin Gothic Book");
+					}*/
+
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$va->alias = "PEDIDO LUNES";
 				$this->cellStyle("C".$flag, "C00000", "000000", TRUE, 12, "Franklin Gothic Book");
@@ -3111,6 +3230,34 @@ class Lunes extends MY_Controller {
 				$proveedor[$key]->estatus->setCellValue("D{$flag}", "=BP{$totis}")->getStyle("D{$flag}")->getNumberFormat()->setFormatCode("_(\"$\"* #,##0.00_);_(\"$\"* \(#,##0.00\);_(\"$\"* \"-\"??_);_(@_)");
 				$ped=$ped."D{$flag}+";
 				$flag++;
+
+
+				$proveedor[$key]->estatus->mergeCells('F'.$flag.':G'.$flag);
+				$proveedor[$key]->estatus->setCellValue("F".$flag."", "".$ecual);
+				$this->cellStyle("F{$flag}:G{$flag}", "9BBB59", "000000", TRUE, 11, "Calibri");
+				$proveedor[$key]->estatus->mergeCells('H'.$flag.':I'.$flag);
+
+
+				$this->cellStyle("J".($flag-1).":K".($flag-1), "99CCFF", "FF0000", TRUE, 18, "Calibri");
+				$proveedor[$key]->estatus->mergeCells('J'.($flag-1).':K'.($flag-1));
+				$proveedor[$key]->estatus->setCellValue("J".($flag-1)."", "FALTAN");
+
+				$proveedor[$key]->estatus->setCellValue("H".$flag."", "".$ecajas);
+				$this->cellStyle("H{$flag}:I{$flag}", "99CCFF", "000000", TRUE, 18, "Calibri");
+				$proveedor[$key]->estatus->mergeCells('J'.$flag.':K'.$flag);
+				if ($epromo == 4){
+					$proveedor[$key]->estatus->setCellValue("J".$flag."", "=".$ecajas."-((L{$sumRow}+U{$sumRow}+Z{$sumRow}+AE{$sumRow}+AJ{$sumRow}+AO{$sumRow}+AT{$sumRow}+AY{$sumRow}+BD{$sumRow}+BI{$sumRow})/1000)");
+					$this->cellStyle("J{$flag}:K{$flag}", "CC99FF", "000000", TRUE, 18, "Calibri");
+				} else {
+					$proveedor[$key]->estatus->setCellValue("J".$flag."", "=".$ecajas."-(L{$sumRow}+U{$sumRow}+Z{$sumRow}+AE{$sumRow}+AJ{$sumRow}+AO{$sumRow}+AT{$sumRow}+AY{$sumRow}+BD{$sumRow}+BI{$sumRow})");
+					$this->cellStyle("J{$flag}:K{$flag}", "CC99FF", "000000", TRUE, 18, "Calibri");
+				}
+				
+				
+
+
+
+
 				$this->excelfile->getActiveSheet()->getStyle('C'.$flag.':D'.$flag)->applyFromArray($styleArray);
 				$this->cellStyle("C".$flag, "E26C0B", "000000", TRUE, 12, "Franklin Gothic Book");
 				$proveedor[$key]->estatus->setCellValue("C".$flag, "TIENDA");
@@ -4323,6 +4470,160 @@ class Lunes extends MY_Controller {
 		//$this->jsonResponse();
 	}
 
+	public function addCond($id_proveedor,$val){
+		$data["title"]="AGREGAR PRODUCTO A CONDICIÓN";
+		$user = $this->session->userdata();
+		$data["productos"] = $this->prolu_md->get(NULL,["id_proveedor"=>$id_proveedor]);
+		$data["id_c"] = $val;
+		$data["view"] = $this->load->view("Lunes/addCond", $data, TRUE);
+		$data["button"]="<button class='btn btn-success new_producto' type='button' data-id-user='".$val."'>
+							<span class='bold'><i class='fa fa-floppy-o'></i></span> &nbsp;Guardar
+						</button>";
+		$this->jsonResponse($data);
+	}
+
+	public function saveAddCond($val){
+		$this->prolu_md->update(["id_condicion"=>$val],["codigo"=>$this->input->post('codigo')]);
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'Se Agrego el producto correctamente',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+
+	public function delCond($codigo){
+		$this->prolu_md->update(["id_condicion"=>1],["codigo"=>$codigo]);
+		$mensaje = [
+			"id" 	=> 'Éxito',
+			"desc"	=> 'SE ELIMINO DE LA CONDICION',
+			"type"	=> 'success'
+		];
+		$this->jsonResponse($mensaje);
+	}
+
+	public function upload_stock(){
+		$arrays = array();
+		$array = array();
+		$this->load->library("excelfile");
+		ini_set("memory_limit", -1);
+		$file = $_FILES["file_productos"]["tmp_name"];
+		$sheet = PHPExcel_IOFactory::load($file);
+		$objExcel = PHPExcel_IOFactory::load($file);
+		$sheet = $objExcel->getSheet(0);
+		$num_rows = $sheet->getHighestDataRow();
+		for ($i=3; $i<=$num_rows; $i++) {
+			$codigo = $this->prolu_md->get(NULL,["codigo"=>$this->getOldVal($sheet,$i,"A")])[0];
+
+			if ($codigo){
+				
+				$new_stock=["id_tienda" => 87,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"C")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>87])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 89,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"D")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>89])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 57,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"E")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>57])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 59,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"F")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>59])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 60,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"G")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>60])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 61,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"H")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>61])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 62,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"I")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>62])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+
+				$new_stock=["id_tienda" => 63,"codigo" => $codigo->codigo,"cantidad" => $this->getOldVal($sheet,$i,"J")];
+				$stocks = $this->stock_md->get(NULL,["codigo"=>$codigo->codigo,"id_tienda"=>63])[0];
+				if ($stocks){
+					$data ['id_prodcaja']=$this->stock_md->update($new_stock,$stocks->id_stock);
+				}else{
+					$data ['id_prodcaja']=$this->stock_md->insert($new_stock);
+				}
+			}
+
+			
+		}
+		
+		$mensaje=[	
+			"id"	=>	'Éxito',
+			"desc"	=>	'Productos cargados correctamente en el Sistema',
+			"type"	=>	'success'];
+
+		$this->jsonResponse($mensaje);
+	}
+
+	public function stockme(){
+		$data['links'] = [
+			'/assets/css/plugins/dataTables/dataTables.bootstrap',
+			'/assets/css/plugins/dataTables/dataTables.responsive',
+			'/assets/css/plugins/dataTables/dataTables.tableTools.min',
+			'/assets/css/plugins/dataTables/buttons.dataTables.min',
+		];
+
+		$data['scripts'] = [
+			'/scripts/stocklunes',
+			'/assets/js/plugins/dataTables/jquery.dataTables.min',
+			'/assets/js/plugins/dataTables/jquery.dataTables',
+			'/assets/js/plugins/dataTables/dataTables.buttons.min',
+			'/assets/js/plugins/dataTables/buttons.flash.min',
+			'/assets/js/plugins/dataTables/jszip.min',
+			'/assets/js/plugins/dataTables/pdfmake.min',
+			'/assets/js/plugins/dataTables/vfs_fonts',
+			'/assets/js/plugins/dataTables/buttons.html5.min',
+			'/assets/js/plugins/dataTables/buttons.print.min',
+			'/assets/js/plugins/dataTables/dataTables.bootstrap',
+			'/assets/js/plugins/dataTables/dataTables.responsive',
+			'/assets/js/plugins/dataTables/dataTables.tableTools.min',
+		];
+		$data["tiendas"] = $this->suc_md->getByOrder(NULL);
+		$this->estructura("Lunes/table_stock", $data);
+	}
+
+	public function getStocks(){
+		$salida = $this->prolu_md->getStocks(NULL);
+		$this->jsonResponse($salida);
+	}
 }
 
 /* End of file Lunes.php */

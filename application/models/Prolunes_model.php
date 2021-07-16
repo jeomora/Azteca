@@ -167,7 +167,7 @@ class Prolunes_model extends MY_Model {
 
 	public function printProdis($where=[],$prove,$tiendas){
 		$arrayName = array(87,0,89,57,90,58,59,60,61,62,63);
-		$this->db->select("r.precio as real,pro.promo,pro.descuento,pro.cuantos1,pro.cuantos2,pro.mins,p.codigo,ss.orden,p.descripcion,p.observaciones,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal LEFT JOIN promo_lunes pro ON p.codigo = pro.codigo LEFT JOIN realunes r on p.codigo = r.id_producto AND WEEKOFYEAR(r.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(r.fecha_registro) = YEAR(CURDATE()) WHERE p.id_proveedor = ".$prove." AND p.estatus =1 ")
+		$this->db->select("r.precio as real,pro.promo,pro.descuento,pro.cuantos1,pro.cuantos2,pro.mins,p.codigo,ss.orden,p.id_condicion,cl.no_cajas,cl.descri,p.descripcion,p.observaciones,p.unidad,p.fecha_registro,p.precio,p.sistema,p.estatus,e.id_tienda,e.cajas as ecajas, e.piezas as epiezas,e.pedido as epedido,WEEKOFYEAR(p.fecha_sistema) as sis,WEEKOFYEAR(CURDATE()) as cur FROM pro_lunes p LEFT JOIN condi_lunes cl ON p.id_condicion = cl.id_condicion LEFT JOIN ex_lunes e ON p.codigo = e.id_producto AND WEEKOFYEAR(e.fecha_registro) = WEEKOFYEAR(CURDATE()) LEFT JOIN suc_lunes ss on e.id_tienda = ss.id_sucursal LEFT JOIN promo_lunes pro ON p.codigo = pro.codigo LEFT JOIN realunes r on p.codigo = r.id_producto AND WEEKOFYEAR(r.fecha_registro) = WEEKOFYEAR(CURDATE()) AND YEAR(r.fecha_registro) = YEAR(CURDATE()) WHERE p.id_proveedor = ".$prove." AND p.estatus = 1 ")
 		->order_by("ss.orden,p.orden","ASC");
 		if ($where !== NULL) {
 			if (is_array($where)) {
@@ -193,6 +193,9 @@ class Prolunes_model extends MY_Model {
 				$flag++;
 				$comparativaIndexada[$comparativa[$i]->codigo]					=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["codigo"]		=	$comparativa[$i]->codigo;
+				$comparativaIndexada[$comparativa[$i]->codigo]["id_condicion"]		=	$comparativa[$i]->id_condicion;
+				$comparativaIndexada[$comparativa[$i]->codigo]["no_cajas"]		=	$comparativa[$i]->no_cajas;
+				$comparativaIndexada[$comparativa[$i]->codigo]["descri"]		=	$comparativa[$i]->descri;
 				$comparativaIndexada[$comparativa[$i]->codigo]["past"]		=	[];
 				$comparativaIndexada[$comparativa[$i]->codigo]["real"]		=	$comparativa[$i]->real;
 				$comparativaIndexada[$comparativa[$i]->codigo]["descripcion"]	=	$comparativa[$i]->descripcion;
@@ -319,6 +322,32 @@ class Prolunes_model extends MY_Model {
 				return $comparativaIndexada;
 			} else {
 				return $comparativaIndexada;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function getStocks($where=[]){
+		$this->db->select("p.descripcion,s.id_tienda,s.cantidad,s.codigo")
+		->from("pro_lunes p")
+		->join("stocklunes s","p.codigo = s.codigo","LEFT")
+		->order_by("p.descripcion","ASC");
+		if ($where !== NULL) {
+			if (is_array($where)) {
+				foreach ($where as $field=>$value) {
+					$this->db->where($field, $value);
+				}
+			} else {
+				$this->db->where($this->PRI_INDEX, $where);
+			}
+		}
+		$result = $this->db->get()->result();
+		if ($result) {
+			if (is_array($where)) {
+				return $result;
+			} else {
+				return $result;
 			}
 		} else {
 			return false;
